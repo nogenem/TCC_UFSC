@@ -12,9 +12,7 @@ public class Alternativa {
 	private Pergunta pergunta;
 	
 	/* Construtores */
-	public Alternativa() {
-		// TODO Auto-generated constructor stub
-	}
+	public Alternativa() {}
 	
 	/* Getters e Setters */
 	public long getId() {

@@ -8,9 +8,7 @@ public class FormaDaPergunta {
 	private String descricao;
 	
 	/* Construtores */
-	public FormaDaPergunta() {
-		// TODO Auto-generated constructor stub
-	}
+	public FormaDaPergunta() {}
 	
 	/* Getters e Setters */
 	public long getId() {

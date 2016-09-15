@@ -58,7 +58,9 @@ public class Clawler extends WebCrawler {
 		System.out.println("\t" + url.getURL());
 		
 		if (chooseExtractor(url) != null && 
+				this.extractor.shouldExtract(url) &&
 				page.getParseData() instanceof HtmlParseData) {
+			
 			HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
 			
 			Questionario q = this.extractor.extract(htmlParseData);
