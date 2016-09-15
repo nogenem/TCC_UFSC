@@ -1,5 +1,25 @@
 package manager;
 
-public class QuestionarioManager {
+import dao.QuestionarioDao;
+import dao.connection.BasicConnection;
+import model.Pergunta;
+import model.Questionario;
 
+public class QuestionarioManager {
+	
+	QuestionarioDao questionarioDao;
+	PerguntaManager perguntaManager;
+	
+	public QuestionarioManager(BasicConnection c) {
+		questionarioDao = new QuestionarioDao(c);
+		perguntaManager = new PerguntaManager(c);
+	}
+	
+	public void save(Questionario q) throws Exception{
+		questionarioDao.save(q);
+		for(Pergunta p : q.getPerguntas()){
+			perguntaManager.save(p);
+		}
+	}
+	
 }
