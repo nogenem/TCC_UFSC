@@ -12,6 +12,9 @@ import model.Questionario;
 
 public class SurvioExtractor implements Extractor {
 	
+	private Questionario currentQ;
+	private Pergunta currentP;
+	
 	public SurvioExtractor(){}
 	
 	public boolean shouldExtract(WebURL url){
@@ -20,10 +23,10 @@ public class SurvioExtractor implements Extractor {
 	}
 	
 	// TODO: Terminar o extrator
-	public Questionario extract(HtmlParseData htmlParseData){
+	public Questionario extract(HtmlParseData htmlParseData) {
 		String html = htmlParseData.getHtml();
-		Questionario quest = new Questionario();
-		Pergunta perg = null;
+		currentQ = new Questionario();
+		currentP = null;
 		
 		Document doc = Jsoup.parse(html);
 		String tmpTxt = "";
@@ -40,12 +43,13 @@ public class SurvioExtractor implements Extractor {
 			System.out.println("\t\t\tTitulo Pergunta: " + tmpTxt);
 			
 			// Alternativas da pergunta
-			this.getAlternativas(field);
+			if(!this.getAlternativas(field))
+				System.err.println("ALTERNATIVA DESCONHECIDA");
 		}
 		
 		return null;
 	}
-
+	
 	private boolean getAlternativas(Element field) {
 		return this.isTextArea(field) 		||
 			this.isInput(field)				||
@@ -54,9 +58,34 @@ public class SurvioExtractor implements Extractor {
 			this.isCheckBox(field) 			||
 			this.isStars(field) 			||
 			this.isSelect(field) 			||
+			this.isSlider(field)			||
 			this.isGrid(field);
 	}
 
+	//https://www.survio.com/modelo-de-pesquisa/pesquisa-sobre-empregados-sobrecarregados-e-esgotados
+	private boolean isSlider(Element field) {
+		Elements sliders = field.select(".row-divide .divide-item"),
+				tmp = null;
+		
+		if(sliders.size() == 0) return false;
+		
+		// TODO: como representar isso?
+		
+		System.out.println("\t\t\t\tSliders:");
+		for(Element slider : sliders){
+			tmp = slider.select(".divide-title");
+			System.out.println("\t\t\t\t\tTitulo: " +tmp.get(0).ownText());
+			
+			tmp = slider.select(".divide-left");
+			System.out.println("\t\t\t\t\tValor esquerda: " +tmp.get(0).ownText());
+			
+			tmp = slider.select(".divide-right");
+			System.out.println("\t\t\t\t\tValor esquerda: " +tmp.get(0).ownText());
+		}
+		return true;
+	}
+
+	//https://www.survio.com/modelo-de-pesquisa/pesquisa-sobre-empregados-sobrecarregados-e-esgotados
 	private boolean isInput(Element field) {
 		Elements input = field.select(".input-group-text input.form-control");
 
@@ -65,7 +94,8 @@ public class SurvioExtractor implements Extractor {
 		System.out.println("\t\t\t\tEh input.");
 		return true;
 	}
-
+	
+	//https://www.survio.com/modelo-de-pesquisa/pesquisa-sobre-popularidade-de-esportes-radicais
 	private boolean isSelect(Element field) {
 		Elements select = field.select(".select select.form-control"),
 				options = null;
@@ -79,7 +109,8 @@ public class SurvioExtractor implements Extractor {
 		}
 		return true;
 	}
-
+	
+	//https://www.survio.com/modelo-de-pesquisa/pesquisa-de-preco-do-produto
 	private boolean isGrid(Element field) {
 		Elements matrix = field.select(".matrix-values"),
 				tmp = null, tmp2 = null;
@@ -107,7 +138,8 @@ public class SurvioExtractor implements Extractor {
 		}
 		return true;
 	}
-
+	
+	//https://www.survio.com/modelo-de-pesquisa/pesquisa-de-percepcao-da-publicidade-e-de-sua-eficiencia
 	private boolean isStars(Element field) {
 		Elements stars = field.select(".special-padding-row .original-stars input.star");
 		
@@ -116,7 +148,8 @@ public class SurvioExtractor implements Extractor {
 		System.out.println("\t\t\t\t" +stars.size()+ " Stars");
 		return true;
 	}
-
+	
+	//https://www.survio.com/modelo-de-pesquisa/pesquisa-de-preco-do-produto
 	private boolean isCheckBox(Element field) {
 		Elements labels = field.select(".label-cont .input-group-checkbox"),
 				tmp = null;
@@ -134,7 +167,8 @@ public class SurvioExtractor implements Extractor {
 		}
 		return true;
 	}
-
+	
+	//https://www.survio.com/modelo-de-pesquisa/pesquisa-de-percepcao-da-publicidade-e-de-sua-eficiencia
 	private boolean isImgRadioBox(Element field) {
 		Elements spans = field.select(".input-image-group .input-group-radio .input-group-title");
 		
@@ -146,7 +180,8 @@ public class SurvioExtractor implements Extractor {
 		}
 		return true;
 	}
-
+	
+	//https://www.survio.com/modelo-de-pesquisa/pesquisa-sobre-empregados-sobrecarregados-e-esgotados
 	private boolean isNormalRadioBox(Element field) {
 		Elements labels = field.select(".label-cont .input-group-radio"),
 				tmp = null;
@@ -164,7 +199,8 @@ public class SurvioExtractor implements Extractor {
 		}
 		return true;
 	}
-
+	
+	//https://www.survio.com/modelo-de-pesquisa/feedback-sobre-servico
 	private boolean isTextArea(Element field) {
 		Elements tmp = field.select(".input-group-textarea textarea");
 		
