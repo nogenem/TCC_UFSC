@@ -53,7 +53,7 @@ public class Questionario {
 	}
 	
 	public void addPergunta(Pergunta p){
-		this.perguntas.add(p);
 		p.setQuestionario(this);
+		this.perguntas.add(p);
 	}
 }

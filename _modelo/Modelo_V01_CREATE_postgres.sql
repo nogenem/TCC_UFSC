@@ -1,20 +1,18 @@
-DROP TABLE IF EXISTS Questionario;
-CREATE TABLE Questionario(
-	idQuestionario bigserial NOT NULL,
-	ASSUNTO VARCHAR NULL,
-	LINK_DOCUMENTO VARCHAR NULL,
-	PRIMARY KEY(idQuestionario)
+DROP TABLE IF EXISTS FormaDaPergunta;
+CREATE TABLE FormaDaPergunta(
+	idFormaDaPergunta bigserial NOT NULL,
+	DESCRICAO VARCHAR NULL,
+	PRIMARY KEY(idFormaDaPergunta)
 );
 
-
-DROP TABLE IF EXISTS Grupo;
-CREATE TABLE Grupo(
-	idGrupo bigserial NOT NULL,
-	Questionario_idQuestionario BIGINT NOT NULL,
-	ASSUNTO VARCHAR NULL,
-	PRIMARY KEY(idGrupo)
+DROP TABLE IF EXISTS Alternativa;
+CREATE TABLE Alternativa(
+	IdAlternativa bigserial NOT NULL,
+	Pergunta_Questionario_idQuestionario BIGINT NOT NULL,
+	Pergunta_idPergunta BIGINT NOT NULL,
+	DESCRICAO VARCHAR NULL,
+	PRIMARY KEY(IdAlternativa)
 );
-
 
 DROP TABLE IF EXISTS Pergunta;
 CREATE TABLE Pergunta(
@@ -29,25 +27,21 @@ CREATE TABLE Pergunta(
 	PRIMARY KEY(idPergunta,Questionario_idQuestionario)
 );
 
-
-DROP TABLE IF EXISTS Alternativa;
-CREATE TABLE Alternativa(
-	IdAlternativa bigserial NOT NULL,
-	Pergunta_Questionario_idQuestionario BIGINT NOT NULL,
-	Pergunta_idPergunta BIGINT NOT NULL,
-	DESCRICAO VARCHAR NULL,
-	PRIMARY KEY(IdAlternativa)
+DROP TABLE IF EXISTS Grupo;
+CREATE TABLE Grupo(
+	idGrupo bigserial NOT NULL,
+	Questionario_idQuestionario BIGINT NOT NULL,
+	ASSUNTO VARCHAR NULL,
+	PRIMARY KEY(idGrupo)
 );
 
-
-DROP TABLE IF EXISTS FormaDaPergunta;
-CREATE TABLE FormaDaPergunta(
-	idFormaDaPergunta bigserial NOT NULL,
-	DESCRICAO VARCHAR NULL,
-	PRIMARY KEY(idFormaDaPergunta)
+DROP TABLE IF EXISTS Questionario;
+CREATE TABLE Questionario(
+	idQuestionario bigserial NOT NULL,
+	ASSUNTO VARCHAR NULL,
+	LINK_DOCUMENTO VARCHAR NULL,
+	PRIMARY KEY(idQuestionario)
 );
-
-
 
 DROP VIEW IF EXISTS vi_Questionario;
 CREATE VIEW vi_Questionario AS 
@@ -97,8 +91,6 @@ SELECT
 	idFormaDaPergunta,
 	DESCRICAO
 FROM FormaDaPergunta;
-
-
 
 ALTER TABLE Grupo
 	ADD CONSTRAINT Rel_01 FOREIGN KEY (Questionario_idQuestionario) 

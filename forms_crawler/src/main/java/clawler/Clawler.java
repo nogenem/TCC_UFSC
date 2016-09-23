@@ -34,10 +34,6 @@ public class Clawler extends WebCrawler {
 	public boolean shouldVisit(Page referringPage, WebURL url) {
 		String href = url.getURL().toLowerCase();
 		
-		// Se não verificar isso os formularios do survio vão
-		// ser extraidos 2x
-		if(href.endsWith("?mobile=1")) return false;
-		
 		// Retira opções de requisições GET
 		int index = href.indexOf("?");
 	    if(index > 0)
@@ -55,7 +51,7 @@ public class Clawler extends WebCrawler {
 	@Override
 	public void visit(Page page) {
 		WebURL url = page.getWebURL();
-		System.out.println("\t" + url.getURL());
+		System.out.println("\tURL: " + url.getURL());
 		
 		if (chooseExtractor(url) != null && 
 				this.extractor.shouldExtract(url) &&
@@ -64,11 +60,13 @@ public class Clawler extends WebCrawler {
 			HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
 			
 			Questionario q = this.extractor.extract(htmlParseData);
-			if(q == null) return;
-			try {
-				this.questionarioManager.save(q);
-			} catch (Exception e) {
-				e.printStackTrace();
+			if(q != null){
+				q.setLink_doc(url.getURL());
+				try {
+					this.questionarioManager.save(q);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}

@@ -55,7 +55,7 @@ public class Pergunta {
 
 	public void setTipo(String tipo) {
 		tipo = tipo.toUpperCase();
-		if(!tipo.matches("(ABERTO|FECHADO)"))
+		if(!tipo.matches("(ABERTO|FECHADO|MULTIPLA_ESCOLHA)"))
 			System.err.println("Pergunta:setTipo()> Tipo nao permitido ("+tipo+").");
 		else
 			this.tipo = tipo;
@@ -94,8 +94,8 @@ public class Pergunta {
 	}
 	
 	public void addPergunta(Pergunta p){
-		this.perguntas.add(p);
 		p.setPai(this);
+		this.perguntas.add(p);
 	}
 
 	public ArrayList<Alternativa> getAlternativas() {

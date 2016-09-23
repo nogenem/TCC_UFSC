@@ -27,7 +27,11 @@ public class BasicDao {
 	}
 	
 	protected void query(String sql) throws Exception {
-		this.psmt = this.conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+		// Para arrumar bug: 'ERROR: syntax error at or near "RETURNING"'
+		if(sql.matches("SELECT.*FROM.*"))
+			this.psmt = this.conn.prepareStatement(sql);
+		else
+			this.psmt = this.conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 	}
 	
 	protected long getLastUID() throws Exception {
@@ -62,7 +66,7 @@ public class BasicDao {
 		SQL.append(")");
 
 		this.query(SQL.toString());
-
+		
 		int count = 1;
 		for(String field : fields){
 			this.psmt.setObject(count, data.get(field));
@@ -125,10 +129,10 @@ public class BasicDao {
 	protected void select(String s) throws Exception {
 		String SQL = "";
 		if(s.equals(""))
-			SQL = "SELECT * FROM "+this.table;
+			SQL = "SELECT * FROM "+this.table+";";
 		else
-			SQL = "SELECT "+s+" FROM "+this.table;
-
+			SQL = "SELECT "+s+" FROM "+this.table+";";
+		
 		this.query(SQL);
 		this.exec();
 	}

@@ -38,4 +38,12 @@ public class Alternativa {
 	public void setPergunta(Pergunta pergunta) {
 		this.pergunta = pergunta;
 	}
+	
+	public Alternativa clone() {
+		Alternativa c = new Alternativa();
+		c.setDescricao(this.descricao);
+		c.setId(this.id);
+		c.setPergunta(this.pergunta);
+		return c;
+	}
 }

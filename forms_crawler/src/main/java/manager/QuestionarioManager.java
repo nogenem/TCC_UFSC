@@ -13,6 +13,7 @@ public class QuestionarioManager {
 	public QuestionarioManager(BasicConnection c) {
 		questionarioDao = new QuestionarioDao(c);
 		perguntaManager = new PerguntaManager(c);
+		FormaDaPerguntaManager.loadFormas(c);//XXX parte da FormaDaPerguntaManager
 	}
 	
 	public void save(Questionario q) throws Exception{

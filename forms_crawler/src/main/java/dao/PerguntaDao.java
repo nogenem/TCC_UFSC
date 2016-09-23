@@ -21,7 +21,11 @@ public class PerguntaDao extends BasicDao {
 			data.put("PerguntaPai_idPergunta", pai.getId());
 			data.put("Pergunta_Questionario_idQuestionario", pai.getQuestionario().getId());
 		}
-		data.put("FormaDaPergunta_idFormaDaPergunta", p.getForma().getId());
+		if(p.getForma() != null)
+			data.put("FormaDaPergunta_idFormaDaPergunta", p.getForma().getId());
+		else
+			System.err.println(String.format("Pergunta sem FormaDaPergunta!\n\t [%s / %s]", 
+					p.getQuestionario().getLink_doc(), p.getDescricao()));
 		// grupo
 		
 		data.put("TipoPergunta", p.getTipo());

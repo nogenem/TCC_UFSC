@@ -12,6 +12,7 @@ public class Main {
 		String[] domains = {
 			"http://www.survio.com/br/modelos-de-pesquisa",
 			"https://www.survio.com/modelo-de-pesquisa",
+			"http://www.survio.com/modelo-de-pesquisa",
 			"http://www.faculdadeages.com.br",
 			"https://docs.google.com",
 			"http://vark-learn.com",
