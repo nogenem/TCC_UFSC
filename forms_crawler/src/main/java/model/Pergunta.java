@@ -9,7 +9,7 @@ public class Pergunta {
 	// DESCRICAO
 	private String descricao;
 	// TipoDaPergunta
-	// 	ABERTO ou FECHADO
+	// 	ABERTO, FECHADO ou MULTIPLA_ESCOLHA
 	private String tipo;
 	
 	// Forma desta pergunta
@@ -18,8 +18,9 @@ public class Pergunta {
 	private Pergunta pai;
 	// Questionario ao qual esta pergunta faz parte
 	private Questionario questionario;
-	// Grupo
-	
+	// Grupo que esta pergunta faz parte, se tiver um
+	private Grupo grupo;
+
 	// Se esta pergunta for uma pergunta pai,
 	// ela tera uma ou mais perguntas filhas
 	private ArrayList<Pergunta> perguntas;
@@ -109,5 +110,13 @@ public class Pergunta {
 	public void addAlternativa(Alternativa a){
 		this.alternativas.add(a);
 		a.setPergunta(this);
+	}
+	
+	public Grupo getGrupo() {
+		return grupo;
+	}
+
+	public void setGrupo(Grupo grupo) {
+		this.grupo = grupo;
 	}
 }

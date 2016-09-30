@@ -298,7 +298,7 @@ public class SurvioExtractor implements Extractor {
 			
 			tmpElems = div.select(".input-image img");
 			if(!tmpElems.isEmpty()){
-				//set url
+				tmpAlt.setLink_img(tmpElems.get(0).attr("src"));
 				System.out.println(tmpElems.get(0).attr("src"));
 			}
 			tmpElems = div.select("div.text-addon");

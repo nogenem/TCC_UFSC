@@ -6,7 +6,9 @@ public class Alternativa {
 	private long id;
 	// DESCRICAO
 	private String descricao;
-	
+	// LINK_IMAGEM
+	private String link_img;
+
 	// Pergunta a qual esta alternativa
 	// faz parte
 	private Pergunta pergunta;
@@ -30,6 +32,14 @@ public class Alternativa {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
+	
+	public String getLink_img() {
+		return link_img;
+	}
+
+	public void setLink_img(String link_img) {
+		this.link_img = link_img;
+	}
 
 	public Pergunta getPergunta() {
 		return pergunta;
@@ -42,6 +52,7 @@ public class Alternativa {
 	public Alternativa clone() {
 		Alternativa c = new Alternativa();
 		c.setDescricao(this.descricao);
+		c.setLink_img(this.link_img);
 		c.setId(this.id);
 		c.setPergunta(this.pergunta);
 		return c;

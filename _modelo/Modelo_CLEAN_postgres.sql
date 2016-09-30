@@ -1,0 +1,12 @@
+DELETE FROM alternativa;
+DELETE FROM pergunta;
+DELETE FROM grupo;
+DELETE FROM questionario;
+
+ALTER SEQUENCE Alternativa_seq RESTART WITH 1;
+ALTER SEQUENCE Pergunta_seq RESTART WITH 1;
+ALTER SEQUENCE Grupo_seq RESTART WITH 1;
+ALTER SEQUENCE Questionario_seq RESTART WITH 1;
+
+DELETE FROM formadapergunta;
+ALTER SEQUENCE FormaDaPergunta_seq RESTART WITH 1;

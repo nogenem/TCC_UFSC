@@ -17,11 +17,11 @@ public class AlternativaDao extends BasicDao {
 		
 		Pergunta p = a.getPergunta();
 		if(p != null){
-			data.put("Pergunta_Questionario_idQuestionario", p.getQuestionario().getId());
 			data.put("Pergunta_idPergunta", p.getId());
 		}
 		
 		data.put("DESCRICAO", a.getDescricao());
+		data.put("LINK_IMAGEM", a.getLink_img());
 
 		this.insert(data);
 		a.setId(getLastUID());

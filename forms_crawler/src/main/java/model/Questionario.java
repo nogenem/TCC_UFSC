@@ -13,12 +13,15 @@ public class Questionario {
 	
 	// Lista de perguntas do questionario
 	private ArrayList<Pergunta> perguntas;
+	// Lista de grupos do questionario
+	private ArrayList<Grupo> grupos;
 	
 	/* Construtores */
 	public Questionario() {
 		this.perguntas = new ArrayList<>();
+		this.grupos = new ArrayList<>();
 	}
-	
+
 	/* Getters e Setters */
 	public long getId() {
 		return id;
@@ -55,5 +58,18 @@ public class Questionario {
 	public void addPergunta(Pergunta p){
 		p.setQuestionario(this);
 		this.perguntas.add(p);
+	}
+	
+	public ArrayList<Grupo> getGrupos() {
+		return grupos;
+	}
+
+	public void setGrupos(ArrayList<Grupo> grupos) {
+		this.grupos = grupos;
+	}
+	
+	public void addGrupo(Grupo g){
+		g.setQuestionario(this);
+		this.grupos.add(g);
 	}
 }
