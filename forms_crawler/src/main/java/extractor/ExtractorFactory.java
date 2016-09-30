@@ -3,7 +3,8 @@ package extractor;
 public enum ExtractorFactory {
 	
 	// TODO: adicionar os outros extratores
-	Survio("survio", new SurvioExtractor());
+	Survio("survio", new SurvioExtractor()),
+	Google("google", new GoogleExtractor());
 	
 	private final String name;
 	private final Extractor extractor;
@@ -14,7 +15,8 @@ public enum ExtractorFactory {
 	}
 	
 	public static Extractor getInstanceFor(String extractorName){
-		return get(extractorName).extractor;
+		ExtractorFactory fac = get(extractorName);
+		return fac != null ? fac.extractor : null;
 	}
 	
 	private static ExtractorFactory get(String extractorName){

@@ -10,16 +10,24 @@ public class Main {
 		 * Dominios permitidos no Crawler.
 		 */
 		String[] domains = {
-			"http://www.survio.com/br/modelos-de-pesquisa",
-			"https://www.survio.com/modelo-de-pesquisa",
-			"http://www.survio.com/modelo-de-pesquisa",
-			"http://www.faculdadeages.com.br",
-			"https://docs.google.com",
-			"http://vark-learn.com",
-			"https://www.onlinepesquisa.com",
-			"http://www.opinionbox.com",
-			"http://plataforma.opinionbox.com/"
+			"www.survio.com/br/modelos-de-pesquisa",
+			"www.survio.com/modelo-de-pesquisa",
+			"www.survio.com/modelo-de-pesquisa",
+			"www.faculdadeages.com.br/uniages/questionarios-cpa/",
+			"docs.google.com",
+			"goo.gl",
+			"vark-learn.com",
+			"www.onlinepesquisa.com",
+			"www.opinionbox.com",
+			"plataforma.opinionbox.com/"
 		};
+		
+		// Cria um regex a partir dos dominios
+		String regex = "^(";
+		for(String dom : domains){
+			regex += dom + "|";
+		}
+		regex = regex.substring(0, regex.length()-1) + ").*";
 		
 		try{
 			if (args.length == 2){ 
@@ -30,7 +38,7 @@ public class Main {
 		    	System.out.println("Inicializando com os parametros padrao.");
 			}
 			
-			controller.setDomains(domains);
+			controller.setDomains(new String[]{regex});
 			controller.addSeed("http://www.survio.com/br/modelos-de-pesquisa");
 			//controller.addSeed("http://www.faculdadeages.com.br/uniages/questionarios-cpa/");
 			//controller.addSeed("http://vark-learn.com/the-vark-questionnaire/");

@@ -7,7 +7,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
 import manager.FormaDaPerguntaManager;
 import model.Alternativa;
@@ -33,8 +32,7 @@ public class SurvioExtractor implements Extractor {
 				!href.endsWith("?mobile=1");
 	}
 	
-	public Questionario extract(HtmlParseData htmlParseData) {
-		String html = htmlParseData.getHtml();
+	public Questionario extract(String html) {
 		currentQ = new Questionario();
 		
 		Document doc = Jsoup.parse(html);

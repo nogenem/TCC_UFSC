@@ -21,18 +21,21 @@ public class Clawler extends WebCrawler {
 	private Extractor extractor;
 	private BasicConnection conn;
 	private QuestionarioManager questionarioManager;
-	private String[] myDomains;
+	private String myDomainsRegex;
 	
 	@Override
 	public void onStart() {
 		this.conn = new PostgreConnection();
 		this.questionarioManager = new QuestionarioManager(this.conn);
-		this.myDomains = (String[]) myController.getCustomData();
+		this.myDomainsRegex = ((String[]) myController.getCustomData())[0];
 	}
 	
 	@Override
 	public boolean shouldVisit(Page referringPage, WebURL url) {
 		String href = url.getURL().toLowerCase();
+		
+		// Retira o http e https
+		href = href.replaceAll("^((http|https)://)", "");
 		
 		// Retira opções de requisições GET
 		int index = href.indexOf("?");
@@ -40,12 +43,7 @@ public class Clawler extends WebCrawler {
 	    	href = href.substring(0, index);
 	    
 	    // Verifica o filtro e os dominios
-		if(FILTERS.matcher(href).matches()) return false;
-		for(String dom : this.myDomains){
-			if(href.startsWith(dom))
-				return true;
-		}
-		return false;
+		return !FILTERS.matcher(href).matches() && href.matches(myDomainsRegex);
 	}
 	
 	@Override
@@ -59,7 +57,7 @@ public class Clawler extends WebCrawler {
 			
 			HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
 			
-			Questionario q = this.extractor.extract(htmlParseData);
+			Questionario q = this.extractor.extract(htmlParseData.getHtml());
 			if(q != null){
 				q.setLink_doc(url.getURL());
 				try {
@@ -73,13 +71,11 @@ public class Clawler extends WebCrawler {
 	
 	private Extractor chooseExtractor(WebURL url){
 		String dom = url.getDomain().toLowerCase();
-		if(dom.contains("survio"))
-			this.extractor = ExtractorFactory.getInstanceFor("survio");
-		else if(dom.contains("google"))
-			this.extractor = null;
-		else if(dom.contains("vark-learn"))
-			this.extractor = null;
+		dom = dom.substring(0, dom.indexOf('.'));
+		if(dom.equals("docs") || dom.equals("goo")) 
+			dom = "google";
 		
+		this.extractor = ExtractorFactory.getInstanceFor(dom);
 		return this.extractor;
 	}
 	
