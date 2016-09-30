@@ -23,10 +23,12 @@ public class FormaDaPerguntaManager {
 		return formas.get(forma);
 	}
 	
-	public synchronized static void loadFormas(BasicConnection c) {
+	public static synchronized void loadFormas(BasicConnection c) {	
 		if(formaDao != null) return;
-		
 		formaDao = new FormaDaPerguntaDao(c);
+		
+		System.out.println(Thread.currentThread().getName() + 
+				" carregou as formas das perguntas do banco de dados.");
 		try {
 			// Cache as formas de pergunta para serem
 			// usadas na extração dos dados

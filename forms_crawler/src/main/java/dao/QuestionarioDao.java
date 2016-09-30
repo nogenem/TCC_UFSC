@@ -1,6 +1,9 @@
 package dao;
 
+import java.sql.ResultSet;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import dao.connection.BasicConnection;
 import model.Questionario;
@@ -19,6 +22,18 @@ public class QuestionarioDao extends BasicDao {
 		
 		this.insert(data);
 		q.setId(getLastUID());
+	}
+	
+	public Set<String> getAllLinks() throws Exception {
+		Set<String> resp = new HashSet<>();
+		
+		this.select("LINK_DOCUMENTO");
+		
+		ResultSet result = this.getResultSet();
+		while(result != null && result.next()){
+			resp.add(result.getString("LINK_DOCUMENTO"));
+		}
+		return resp;
 	}
 
 }

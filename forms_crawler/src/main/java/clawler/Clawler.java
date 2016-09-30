@@ -34,6 +34,9 @@ public class Clawler extends WebCrawler {
 	public boolean shouldVisit(Page referringPage, WebURL url) {
 		String href = url.getURL().toLowerCase();
 		
+		// Verifica se o link ja foi extraido
+		if(QuestionarioManager.linkWasExtracted(href)) return false;
+		
 		// Retira o http e https
 		href = href.replaceAll("^((http|https)://)", "");
 		
@@ -72,7 +75,7 @@ public class Clawler extends WebCrawler {
 	private Extractor chooseExtractor(WebURL url){
 		String dom = url.getDomain().toLowerCase();
 		dom = dom.substring(0, dom.indexOf('.'));
-		if(dom.equals("docs") || dom.equals("goo")) 
+		if(dom.matches("(docs|goo)")) 
 			dom = "google";
 		
 		this.extractor = ExtractorFactory.getInstanceFor(dom);
