@@ -12,7 +12,6 @@ public class Main {
 		String[] domains = {
 			"www.survio.com/br/modelos-de-pesquisa",
 			"www.survio.com/modelo-de-pesquisa",
-			"www.survio.com/modelo-de-pesquisa",
 			"www.faculdadeages.com.br/uniages/questionarios-cpa/",
 			"docs.google.com",
 			"goo.gl",
@@ -39,8 +38,8 @@ public class Main {
 			}
 			
 			controller.setDomains(new String[]{regex});
-			controller.addSeed("http://www.survio.com/br/modelos-de-pesquisa");
-			//controller.addSeed("http://www.faculdadeages.com.br/uniages/questionarios-cpa/");
+			//controller.addSeed("http://www.survio.com/br/modelos-de-pesquisa");
+			controller.addSeed("http://www.faculdadeages.com.br/uniages/questionarios-cpa/");
 			//controller.addSeed("http://vark-learn.com/the-vark-questionnaire/");
 			//controller.addSeed("https://www.onlinepesquisa.com/s/8b456d4");
 			//controller.addSeed("http://www.opinionbox.com/plataforma-de-pesquisa/questionarios/");

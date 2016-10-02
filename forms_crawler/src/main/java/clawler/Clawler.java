@@ -16,7 +16,7 @@ import model.Questionario;
 public class Clawler extends WebCrawler {
 	
 	private static final Pattern FILTERS = Pattern.compile(
-			".*(\\.(css|js|gif|jpg|png|mp3|zip|gz))$");
+			".*(\\.(css|js|gif|jpg|png|mp3|mp4|zip|gz|pdf))$");
 	
 	private Extractor extractor;
 	private BasicConnection conn;

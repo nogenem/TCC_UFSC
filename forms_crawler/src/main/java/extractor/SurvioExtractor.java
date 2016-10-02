@@ -65,7 +65,7 @@ public class SurvioExtractor implements Extractor {
 	private boolean getAlternativas(Element field) {
 		return this.isTextArea(field) 		||
 			this.isGenericInput(field)		||
-			this.isNormalRadioBox(field) 	||
+			this.isNormalRadioInput(field) 	||
 			this.isImgRadioInput(field) 	||
 			this.isCheckBoxInput(field) 	||
 			this.isStars(field) 			||
@@ -309,7 +309,7 @@ public class SurvioExtractor implements Extractor {
 	}
 	
 	//https://www.survio.com/modelo-de-pesquisa/pesquisa-sobre-empregados-sobrecarregados-e-esgotados
-	private boolean isNormalRadioBox(Element field) {
+	private boolean isNormalRadioInput(Element field) {
 		Elements labels = field.select("div.label-cont label.input-group-radio"),
 				tmpElems = null;
 		Pergunta tmpPerg = null;
