@@ -55,7 +55,7 @@ public class GoogleExtractor implements Extractor {
 			else
 				currentQ.addPergunta(currentP);
 		}
-		return null;//TODO retornar o questionario
+		return currentQ;
 	}
 
 	private boolean getAlternativas(Element field) {

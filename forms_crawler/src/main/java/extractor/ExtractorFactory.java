@@ -4,7 +4,8 @@ public enum ExtractorFactory {
 	
 	// TODO: adicionar os outros extratores
 	Survio("survio", new SurvioExtractor()),
-	Google("google", new GoogleExtractor());
+	Google("google", new GoogleExtractor()),
+	VarkLearn("vark-learn", new VarkLearnExtractor());
 	
 	private final String name;
 	private final Extractor extractor;

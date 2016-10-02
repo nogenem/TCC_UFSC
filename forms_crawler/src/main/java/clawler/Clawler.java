@@ -61,14 +61,14 @@ public class Clawler extends WebCrawler {
 			HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
 			
 			Questionario q = this.extractor.extract(htmlParseData.getHtml());
-			if(q != null){
+			/*if(q != null){
 				q.setLink_doc(url.getURL());
 				try {
 					this.questionarioManager.save(q);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			}
+			}*/
 		}
 	}
 	
