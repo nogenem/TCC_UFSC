@@ -16,6 +16,10 @@ public class Alternativa {
 	/* Construtores */
 	public Alternativa() {}
 	
+	public Alternativa(String descricao){
+		this.descricao = descricao;
+	}
+	
 	/* Getters e Setters */
 	public long getId() {
 		return id;

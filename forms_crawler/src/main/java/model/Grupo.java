@@ -15,6 +15,11 @@ public class Grupo {
 		
 	}
 	
+	public Grupo(String assunto, Questionario questionario){
+		this.assunto = assunto;
+		this.questionario = questionario;
+	}
+	
 	/* Getters e Setters */
 	public long getId() {
 		return id;

@@ -1,6 +1,7 @@
 package extractor;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -11,6 +12,7 @@ import edu.uci.ics.crawler4j.url.WebURL;
 import manager.FormaDaPerguntaManager;
 import model.Alternativa;
 import model.FormaDaPergunta;
+import model.Grupo;
 import model.Pergunta;
 import model.Questionario;
 
@@ -18,6 +20,9 @@ public class GoogleExtractor implements Extractor {
 	
 	private Questionario currentQ;
 	private Pergunta currentP;
+	private Grupo currentG;
+	
+	private HashMap<String, Grupo> grupos;
 	
 	@Override
 	public boolean shouldExtract(WebURL url) {
@@ -28,8 +33,8 @@ public class GoogleExtractor implements Extractor {
 	@Override
 	public Questionario extract(String html) {
 		currentQ = new Questionario();
-		
-		//TODO fazer parte dos grupos
+		initGrupos();
+		currentG = null;
 		
 		Document doc = Jsoup.parse(html);
 		String tmpTxt = "";
@@ -40,20 +45,31 @@ public class GoogleExtractor implements Extractor {
 		System.out.println("\t\tAssunto Questionario: " + tmpTxt);
 		
 		// div[role=listitem] ou div.ss-form-question
-		Elements fields = doc.select("div.ss-form form ol > div.ss-form-question");
+		Elements fields = doc.select("div.ss-form form ol > div[role=listitem]");
 		for(Element field : fields){
-			currentP = new Pergunta();
-			
-			// Titulo da pergunta
-			tmpTxt = this.getTituloPergunta(field);
-			currentP.setDescricao(tmpTxt);
-			System.out.println("\t\t\tTitulo Pergunta: " + tmpTxt);
-			
-			// Alternativas da pergunta
-			if(!this.getAlternativas(field))
-				System.err.println("ALTERNATIVA DESCONHECIDA");
-			else
-				currentQ.addPergunta(currentP);
+			if(!field.hasClass("ss-form-question")){//se não é uma pergunta, então é uma seção
+				tmpTxt = this.getTituloSecao(field);
+				System.out.println("\t\t\tTitulo Secao: " + tmpTxt +"\n");
+				updateGrupo(tmpTxt, true);
+			}else{
+				currentP = new Pergunta();
+				
+				// Titulo da pergunta
+				tmpTxt = this.getTituloPergunta(field);
+				currentP.setDescricao(tmpTxt);
+				System.out.println("\t\t\tTitulo Pergunta: " + tmpTxt);
+				
+				// Atualiza o Grupo atual
+				updateGrupo(tmpTxt, false);
+				if(currentG != null)
+					currentP.setGrupo(currentG);
+				
+				// Alternativas da pergunta
+				if(!this.getAlternativas(field))
+					System.out.println("ALTERNATIVA DESCONHECIDA");
+				else
+					currentQ.addPergunta(currentP);
+			}
 		}
 		return currentQ;
 	}
@@ -78,15 +94,14 @@ public class GoogleExtractor implements Extractor {
 		ArrayList<Alternativa> altList = new ArrayList<>();
 		FormaDaPergunta forma = FormaDaPerguntaManager.getForma("RADIO_INPUT");;
 		
-		System.out.print("\t\t\t\tMatriz");
+		System.out.println("\t\t\t\tMatriz");
 		currentP.setTipo("MULTIPLA_ESCOLHA");
 		currentP.setForma(FormaDaPerguntaManager.getForma("RADIO_INPUT_MATRIX"));
 		
 		tmp2 = tmp.select("thead tr td > label");
 		for(Element lbl : tmp2){//head
 			tmpTxt = lbl.ownText().trim();
-			tmpAlt = new Alternativa();
-			tmpAlt.setDescricao(tmpTxt);
+			tmpAlt = new Alternativa(tmpTxt);
 			altList.add(tmpAlt);
 			System.out.println("\t\t\t\t\tHead: " +tmpTxt);
 		}
@@ -98,8 +113,9 @@ public class GoogleExtractor implements Extractor {
 			tmpPerg.setDescricao(tmpTxt);
 			tmpPerg.setTipo("FECHADO");
 			tmpPerg.setForma(forma);
+			tmpPerg.setGrupo(currentG);
 			for(Alternativa a : altList){
-				tmpPerg.addAlternativa(a);
+				tmpPerg.addAlternativa(a.clone());
 			}
 			tmpPerg.setQuestionario(currentQ);
 			currentP.addPergunta(tmpPerg);
@@ -123,8 +139,7 @@ public class GoogleExtractor implements Extractor {
 		for(Element opt : options){
 			tmpTxt = opt.ownText().trim();
 			if(!tmpTxt.equals("")){
-				tmpAlt = new Alternativa();
-				tmpAlt.setDescricao(tmpTxt);
+				tmpAlt = new Alternativa(tmpTxt);
 				currentP.addAlternativa(tmpAlt);
 				System.out.println("\t\t\t\t\tOption: " +tmpTxt);
 			}
@@ -133,7 +148,7 @@ public class GoogleExtractor implements Extractor {
 	}
 
 	private boolean isRadioInput(Element field) {
-		Elements items = field.select("div.ss-radio ul.ss-choices li.ss-choise-item"),
+		Elements items = field.select("div.ss-radio ul.ss-choices li.ss-choice-item"),
 				tmp = null;
 		Alternativa tmpAlt = null;
 		String tmpTxt = "";
@@ -149,8 +164,7 @@ public class GoogleExtractor implements Extractor {
 			tmpTxt = tmp.get(0).ownText().trim();
 			System.out.println("\t\t\t\t\t" +tmpTxt);
 			
-			tmpAlt = new Alternativa();
-			tmpAlt.setDescricao(tmpTxt);
+			tmpAlt = new Alternativa(tmpTxt);
 			currentP.addAlternativa(tmpAlt);
 		}
 		return true;
@@ -188,6 +202,47 @@ public class GoogleExtractor implements Extractor {
 		Elements tmp = field.select(".ss-q-item-label .ss-q-title");
 		if(tmp.isEmpty()) return "";
 		return tmp.get(0).ownText().trim();
+	}
+	
+	private String getTituloSecao(Element field) {
+		Elements tmp = field.select(".ss-section-header .ss-section-title");
+		if(tmp.isEmpty()) return "";
+		return tmp.get(0).ownText().trim();
+	}
+	
+	private void initGrupos(){
+		grupos = null;
+		grupos = new HashMap<>();
+		grupos.put("instituição", new Grupo("Instituição", currentQ));
+		grupos.put("professor", new Grupo("Professor", currentQ));
+		grupos.put("coordenação", new Grupo("Coordenação", currentQ));
+		grupos.put("curso", new Grupo("Curso", currentQ));
+		grupos.put("organização e gestão institucional", new Grupo("Organização e Gestão Institucional", currentQ));
+		grupos.put("infraestrutura", new Grupo("Infraestrutura", currentQ));
+	}
+	
+	private void updateGrupo(String perg, boolean isSection){
+		perg = perg.toLowerCase();
+		Grupo tmp = currentG;
+		
+		if(isSection){
+			currentG = grupos.get(perg);
+			if(currentG == null && perg.contains("coordenador"))
+				currentG = grupos.get("coordenação");
+		}else if(perg.startsWith("1.")){
+			currentG = grupos.get("instituição");
+		}else if(perg.contains("- nome do professor")){
+			currentG = grupos.get("professor");
+		}else if(perg.contains(". nome do coordenador")){
+			currentG = grupos.get("coordenação");
+		}else if(perg.contains("infraestrutura")){
+			currentG = grupos.get("infraestrutura");
+		}
+		
+		if(tmp != currentG){//update			
+			currentQ.addGrupo(currentG);
+			System.out.println("Grupo Atual: " + currentG.getAssunto());
+		}
 	}
 
 }

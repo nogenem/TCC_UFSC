@@ -71,8 +71,7 @@ public class VarkLearnExtractor implements Extractor {
 			tmpTxt = lbl.ownText().trim();
 			System.out.println("\t\t\t\t\t" +tmpTxt);
 			
-			tmpAlt = new Alternativa();
-			tmpAlt.setDescricao(tmpTxt);
+			tmpAlt = new Alternativa(tmpTxt);
 			currentP.addAlternativa(tmpAlt);
 		}
 		return true;

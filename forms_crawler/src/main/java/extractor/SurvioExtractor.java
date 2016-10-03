@@ -116,7 +116,6 @@ public class SurvioExtractor implements Extractor {
 		for(Element range : ranges){
 			tmpElems = range.select("div.divide-title");
 			tmpPerg = new Pergunta();
-			tmpAlt = new Alternativa();
 			
 			tmpPerg.setTipo("FECHADO");
 			tmpPerg.setForma(FormaDaPerguntaManager.getForma("RANGE_INPUT"));
@@ -131,7 +130,7 @@ public class SurvioExtractor implements Extractor {
 			tmpElems = range.select("div.divide-right");
 			tmpTxt += tmpElems.get(0).ownText().trim() +"]";
 			
-			tmpAlt.setDescricao(tmpTxt);
+			tmpAlt = new Alternativa(tmpTxt);
 			tmpPerg.addAlternativa(tmpAlt);
 			tmpPerg.setQuestionario(currentQ);
 			currentP.addPergunta(tmpPerg);
@@ -145,6 +144,7 @@ public class SurvioExtractor implements Extractor {
 		Elements select = field.select("label.select select.form-control"),
 				options = null;
 		Alternativa tmpAlt = null;
+		String tmpTxt = "";
 		
 		if(select.isEmpty()) return false;
 		
@@ -154,10 +154,10 @@ public class SurvioExtractor implements Extractor {
 		
 		options = select.select("option");
 		for(Element option : options){
-			tmpAlt = new Alternativa();
-			tmpAlt.setDescricao(option.ownText().trim());
+			tmpTxt = option.ownText().trim();
+			tmpAlt = new Alternativa(tmpTxt);
 			currentP.addAlternativa(tmpAlt);
-			System.out.println("\t\t\t\t\tOption: " +option.ownText());
+			System.out.println("\t\t\t\t\tOption: " +tmpTxt);
 		}
 		return true;
 	}
@@ -169,7 +169,7 @@ public class SurvioExtractor implements Extractor {
 		Pergunta tmpPerg = null;
 		Alternativa tmpAlt = null;
 		ArrayList<Alternativa> altList = new ArrayList<>();
-		String tipo = "";
+		String tmpTxt = "", tipo = "";
 		FormaDaPergunta forma = null;
 		
 		if(matrix.isEmpty()) return false;
@@ -196,15 +196,17 @@ public class SurvioExtractor implements Extractor {
 			tmpElems2 = e.select("div.title-groups span.input-group-title-main");
 			if(!tmpElems2.isEmpty()){//Head
 				for(Element span : tmpElems2){
-					tmpAlt = new Alternativa();
-					tmpAlt.setDescricao(span.ownText().trim());
+					tmpTxt = span.ownText().trim();
+					tmpAlt = new Alternativa(tmpTxt);
 					altList.add(tmpAlt);
-					System.out.println("\t\t\t\t\tHead: " +span.ownText());
+					System.out.println("\t\t\t\t\tHead: " +tmpTxt);
 				}
 			}else{//Body
 				tmpElems2 = e.select("div.title");
 				tmpPerg = new Pergunta();
-				tmpPerg.setDescricao(tmpElems2.get(0).ownText().trim());
+				
+				tmpTxt = tmpElems2.get(0).ownText().trim(); 
+				tmpPerg.setDescricao(tmpTxt);
 				tmpPerg.setTipo(tipo);
 				tmpPerg.setForma(forma);
 				for(Alternativa a : altList){
@@ -212,7 +214,7 @@ public class SurvioExtractor implements Extractor {
 				}
 				tmpPerg.setQuestionario(currentQ);
 				currentP.addPergunta(tmpPerg);
-				System.out.println("\t\t\t\t\tBody: " +tmpElems2.get(0).ownText());
+				System.out.println("\t\t\t\t\tBody: " +tmpTxt);
 			}
 		}
 		altList.clear();
@@ -229,8 +231,7 @@ public class SurvioExtractor implements Extractor {
 		currentP.setTipo("FECHADO");
 		currentP.setForma(FormaDaPerguntaManager.getForma("STARS"));
 		
-		tmpAlt = new Alternativa();
-		tmpAlt.setDescricao("[0, " +stars.size()+"]");
+		tmpAlt = new Alternativa("[0, " +stars.size()+"]");
 		currentP.addAlternativa(tmpAlt);
 		
 		System.out.println("\t\t\t\t" +stars.size()+ " Stars");
@@ -267,8 +268,7 @@ public class SurvioExtractor implements Extractor {
 				currentP.addPergunta(tmpPerg);
 				System.out.println("\t\t\t\t\t\tCom input text");
 			}else{
-				tmpAlt = new Alternativa();
-				tmpAlt.setDescricao(tmpTxt);
+				tmpAlt = new Alternativa(tmpTxt);
 				currentP.addAlternativa(tmpAlt);
 			}
 		}
@@ -280,6 +280,7 @@ public class SurvioExtractor implements Extractor {
 		Elements divs = field.select("div.images div.input-image-group"),
 				tmpElems = null;
 		Alternativa tmpAlt = null;
+		String tmpTxt = "";
 		
 		if(divs.isEmpty()) return false; 
 		
@@ -289,15 +290,17 @@ public class SurvioExtractor implements Extractor {
 		System.out.println("\t\t\t\tRadio com img:");
 		for(Element div : divs){
 			tmpElems = div.select(".input-group-radio .input-group-title");
-			tmpAlt = new Alternativa();
-			tmpAlt.setDescricao(tmpElems.get(0).ownText().trim());
+			
+			tmpTxt = tmpElems.get(0).ownText().trim();
+			tmpAlt = new Alternativa(tmpTxt);
 			currentP.addAlternativa(tmpAlt);
-			System.out.println("\t\t\t\t\t" +tmpElems.get(0).ownText());
+			System.out.println("\t\t\t\t\t" +tmpTxt);
 			
 			tmpElems = div.select(".input-image img");
 			if(!tmpElems.isEmpty()){
-				tmpAlt.setLink_img(tmpElems.get(0).attr("src"));
-				System.out.println(tmpElems.get(0).attr("src"));
+				tmpTxt = tmpElems.get(0).attr("src").replace("//", "");
+				tmpAlt.setLink_img(tmpTxt);
+				System.out.println(tmpTxt);
 			}
 			tmpElems = div.select("div.text-addon");
 			if(!tmpElems.isEmpty()){
@@ -338,8 +341,7 @@ public class SurvioExtractor implements Extractor {
 				currentP.addPergunta(tmpPerg);
 				System.out.println("\t\t\t\t\t\tCom input text");
 			}else{
-				tmpAlt = new Alternativa();
-				tmpAlt.setDescricao(tmpTxt);
+				tmpAlt = new Alternativa(tmpTxt);
 				currentP.addAlternativa(tmpAlt);
 			}
 		}
