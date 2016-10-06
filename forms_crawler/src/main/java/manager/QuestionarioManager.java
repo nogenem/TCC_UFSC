@@ -48,10 +48,11 @@ public class QuestionarioManager {
 	private static synchronized void loadQuestionarioLinks(QuestionarioDao dao){
 		if(extractedLinks != null) return;
 		
-		System.out.println(Thread.currentThread().getName() + 
-				" carregou os links dos questionarios do banco de dados");
 		try {
 			extractedLinks = dao.getAllLinks();
+			
+			System.out.println(Thread.currentThread().getName() + 
+					" carregou os links dos questionarios do banco de dados");
 		} catch (Exception e) {
 			// TODO melhor isso?
 			e.printStackTrace();

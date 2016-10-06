@@ -7,6 +7,7 @@ public class Main {
 	public static void main(String[] args) {
 		ClawlerController controller = null;
 		
+		
 		// Dominios permitidos no Crawler.
 		String[] domains = {
 			"www.survio.com/br/modelos-de-pesquisa",

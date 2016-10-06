@@ -52,9 +52,15 @@ public class Clawler extends WebCrawler {
 	@Override
 	public void visit(Page page) {
 		WebURL url = page.getWebURL();
+		
+		// Verifica se o link ja foi extraido 
+		// [shouldVisit() não é chamada em seeds]
+		if(QuestionarioManager.linkWasExtracted(url.getURL().toLowerCase())) 
+			return;
+		
 		System.out.println("\tURL: " + url.getURL());
 		
-		if (chooseExtractor(url) != null && 
+		if(chooseExtractor(url) != null && 
 				this.extractor.shouldExtract(url) &&
 				page.getParseData() instanceof HtmlParseData) {
 			
@@ -62,7 +68,7 @@ public class Clawler extends WebCrawler {
 			
 			Questionario q = this.extractor.extract(htmlParseData.getHtml());
 			/*if(q != null){
-				q.setLink_doc(url.getURL());
+				q.setLink_doc(url.getURL().toLowerCase());
 				try {
 					this.questionarioManager.save(q);
 				} catch (Exception e) {

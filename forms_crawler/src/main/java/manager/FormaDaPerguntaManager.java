@@ -24,15 +24,16 @@ public class FormaDaPerguntaManager {
 	}
 	
 	public static synchronized void loadFormas(BasicConnection c) {	
-		if(formaDao != null) return;
+		if(formas != null) return;
 		formaDao = new FormaDaPerguntaDao(c);
 		
-		System.out.println(Thread.currentThread().getName() + 
-				" carregou as formas das perguntas do banco de dados.");
 		try {
 			// Cache as formas de pergunta para serem
 			// usadas na extração dos dados
 			formas = formaDao.getAll();
+			
+			System.out.println(Thread.currentThread().getName() + 
+					" carregou as formas das perguntas do banco de dados.");
 		} catch (Exception e) {
 			// TODO Melhorar isso?
 			e.printStackTrace();

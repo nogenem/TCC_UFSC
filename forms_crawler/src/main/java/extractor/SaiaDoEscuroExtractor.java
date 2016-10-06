@@ -18,7 +18,7 @@ public class SaiaDoEscuroExtractor implements Extractor {
 	
 	@Override
 	public boolean shouldExtract(WebURL url) {
-		return true;
+		return url.getURL().endsWith("questionario/7.htm");
 	}
 
 	@Override
