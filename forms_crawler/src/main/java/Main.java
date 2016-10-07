@@ -17,11 +17,7 @@ public class Main {
 			"goo.gl",
 			"vark-learn.com/the-vark-questionnaire/",
 			"www.saiadoescuro.pt/questionario/7.htm",
-			"reisearch.eu/survey/index.php/388449",
-			
-			"www.onlinepesquisa.com",
-			"www.opinionbox.com",
-			"plataforma.opinionbox.com/"
+			"reisearch.eu/survey/index.php/388449"
 		};
 		
 		// Cria um regex a partir dos dominios
@@ -45,11 +41,8 @@ public class Main {
 			//controller.addSeed("http://www.faculdadeages.com.br/uniages/questionarios-cpa/");
 			//controller.addSeed("http://vark-learn.com/the-vark-questionnaire/");
 			//controller.addSeed("https://www.saiadoescuro.pt/questionario/7.htm");
-			controller.addSeed("http://reisearch.eu/survey/index.php/388449?lang=pt");			
-
+			//controller.addSeed("http://reisearch.eu/survey/index.php/388449?lang=pt");	
 			
-			//controller.addSeed("https://www.onlinepesquisa.com/s/8b456d4");
-			//controller.addSeed("http://www.opinionbox.com/plataforma-de-pesquisa/questionarios/");
 			controller.start();
 		}catch(NumberFormatException | IndexOutOfBoundsException e){
 			System.err.println("Parametros necessarios: ");

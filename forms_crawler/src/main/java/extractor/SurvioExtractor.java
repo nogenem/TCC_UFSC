@@ -48,7 +48,7 @@ public class SurvioExtractor implements Extractor {
 			currentP = new Pergunta();
 			
 			// Titulo da pergunta
-			tmpTxt = this.getTituloPergunta(field);
+			tmpTxt = this.getDescricaoPergunta(field);
 			currentP.setDescricao(tmpTxt);
 			System.out.println("\t\t\tTitulo Pergunta: " + tmpTxt);
 			
@@ -354,9 +354,15 @@ public class SurvioExtractor implements Extractor {
 		return tmp.get(0).ownText().trim();
 	}
 
-	private String getTituloPergunta(Element field) {
-		Elements tmp = field.select("div.title-part");
-		if(tmp.isEmpty()) return "";
-		return tmp.get(0).ownText().trim();
+	private String getDescricaoPergunta(Element field) {
+		Elements tmp = field.select("div.title-part"),
+				tmp2 = field.select("p.title");
+		String desc = "";
+		if(!tmp.isEmpty())
+			desc = tmp.get(0).ownText().trim();
+		if(!tmp2.isEmpty())
+			desc += (tmp.isEmpty()?"":"\n") + 
+				tmp2.get(0).ownText().trim();
+		return desc;
 	}
 }

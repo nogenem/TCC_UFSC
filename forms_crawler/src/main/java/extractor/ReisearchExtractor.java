@@ -41,7 +41,7 @@ public class ReisearchExtractor implements Extractor {
 			currentP = new Pergunta();
 			
 			// Titulo da pergunta
-			tmpTxt = this.getTituloPergunta(field);
+			tmpTxt = this.getDescricaoPergunta(field);
 			currentP.setDescricao(tmpTxt);
 			System.out.println("\t\t\tTitulo Pergunta: " + tmpTxt);
 			
@@ -148,10 +148,16 @@ public class ReisearchExtractor implements Extractor {
 		return true;
 	}
 
-	private String getTituloPergunta(Element field) {
-		Elements tmp = field.select("h3.panel-title > span.question-text");
-		if(tmp.isEmpty()) return "";
-		return tmp.get(0).ownText().trim();
+	private String getDescricaoPergunta(Element field) {
+		Elements tmp = field.select("h3.panel-title > span.question-text"),
+				tmp2 = field.select("div.panel-body div.question-help");
+		String desc = "";
+		if(!tmp.isEmpty())
+			desc = tmp.get(0).ownText().trim();
+		if(!tmp2.isEmpty())
+			desc += (tmp.isEmpty()?"":"\n") + 
+				tmp2.get(0).ownText().trim();
+		return desc;
 	}
 
 	private String getAssuntoQuestionario(Document doc) {

@@ -38,7 +38,7 @@ public class VarkLearnExtractor implements Extractor {
 			currentP = new Pergunta();
 			
 			// Titulo da pergunta
-			tmpTxt = this.getTituloPergunta(field);
+			tmpTxt = this.getDescricaoPergunta(field);
 			currentP.setDescricao(tmpTxt);
 			System.out.println("\t\t\tTitulo Pergunta: " + tmpTxt);
 			
@@ -77,14 +77,15 @@ public class VarkLearnExtractor implements Extractor {
 		return true;
 	}
 
-	private String getTituloPergunta(Element field) {
+	private String getDescricaoPergunta(Element field) {
 		Elements tmp = field.select("div.VARKQuestionText");
 		if(tmp.isEmpty()) return "";
 		return tmp.get(0).ownText().trim();
 	}
 
 	private String getAssuntoQuestionario(Document doc) {
-		Elements tmp = doc.select("header.entry-header > h1.entry-title");
+		//header.entry-header > h1.entry-title
+		Elements tmp = doc.select("div.entry-content > h2:first-of-type");
 		if(tmp.isEmpty()) return "";
 		return tmp.get(0).ownText().trim();
 	}

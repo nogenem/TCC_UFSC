@@ -38,7 +38,7 @@ public class SaiaDoEscuroExtractor implements Extractor {
 		currentP = new Pergunta();
 		
 		// Titulo da primeira pergunta
-		tmpTxt = this.getTituloPergunta(form.get(0));
+		tmpTxt = this.getDescricaoPergunta(form.get(0));
 		currentP.setDescricao(tmpTxt);
 		System.out.println("\t\t\tTitulo Pergunta: " + tmpTxt);
 		
@@ -62,7 +62,7 @@ public class SaiaDoEscuroExtractor implements Extractor {
 			currentP = new Pergunta();
 			
 			// Titulo da pergunta
-			tmpTxt = this.getTituloPergunta(tmp.get(0));
+			tmpTxt = this.getDescricaoPergunta(tmp.get(0));
 			currentP.setDescricao(tmpTxt);
 			System.out.println("\t\t\tTitulo Pergunta: " + tmpTxt);
 			
@@ -119,7 +119,7 @@ public class SaiaDoEscuroExtractor implements Extractor {
 		return true;
 	}
 
-	private String getTituloPergunta(Element field) {
+	private String getDescricaoPergunta(Element field) {
 		Elements tmp = field.select("span.title_area");
 		if(tmp.isEmpty()) return "";
 		return tmp.get(0).ownText().trim();

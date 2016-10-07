@@ -55,7 +55,7 @@ public class GoogleExtractor implements Extractor {
 				currentP = new Pergunta();
 				
 				// Titulo da pergunta
-				tmpTxt = this.getTituloPergunta(field);
+				tmpTxt = this.getDescricaoPergunta(field);
 				currentP.setDescricao(tmpTxt);
 				System.out.println("\t\t\tTitulo Pergunta: " + tmpTxt);
 				
@@ -198,10 +198,19 @@ public class GoogleExtractor implements Extractor {
 		return tmp.get(0).ownText().trim();
 	}
 	
-	private String getTituloPergunta(Element field) {
-		Elements tmp = field.select(".ss-q-item-label .ss-q-title");
-		if(tmp.isEmpty()) return "";
-		return tmp.get(0).ownText().trim();
+	private String getDescricaoPergunta(Element field) {
+		Elements tmp = field.select(".ss-q-item-label .ss-q-title"),
+				tmp2 = field.select(".ss-q-item-label .ss-secondary-text");
+		String desc = "", tmpTxt = "";
+		if(!tmp.isEmpty())
+			desc = tmp.get(0).ownText().trim();
+		if(!tmp2.isEmpty()){
+			tmpTxt = tmp2.get(0).ownText().trim();
+			if(!tmpTxt.equals(""))
+				desc += (tmp.isEmpty()?"":"\n") + 
+					tmpTxt;
+		}
+		return desc;
 	}
 	
 	private String getTituloSecao(Element field) {

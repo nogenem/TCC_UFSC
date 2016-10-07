@@ -66,6 +66,7 @@ public class Clawler extends WebCrawler {
 			
 			HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
 			
+			//TODO refazer o banco de dados do zero
 			Questionario q = this.extractor.extract(htmlParseData.getHtml());
 			/*if(q != null){
 				q.setLink_doc(url.getURL().toLowerCase());
