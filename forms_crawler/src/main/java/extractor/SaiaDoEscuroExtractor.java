@@ -40,7 +40,7 @@ public class SaiaDoEscuroExtractor implements Extractor {
 		// Titulo da primeira pergunta
 		tmpTxt = this.getDescricaoPergunta(form.get(0));
 		currentP.setDescricao(tmpTxt);
-		System.out.println("\t\t\tTitulo Pergunta: " + tmpTxt);
+		System.out.println("\t\t\tDescricao Pergunta: " + tmpTxt);
 		
 		// Tipo e Forma da primeira pergunta
 		currentP.setTipo("MULTIPLA_ESCOLHA");
@@ -64,7 +64,7 @@ public class SaiaDoEscuroExtractor implements Extractor {
 			// Titulo da pergunta
 			tmpTxt = this.getDescricaoPergunta(tmp.get(0));
 			currentP.setDescricao(tmpTxt);
-			System.out.println("\t\t\tTitulo Pergunta: " + tmpTxt);
+			System.out.println("\t\t\tDescricao Pergunta: " + tmpTxt);
 			
 			System.out.println("\t\t\t\tMatriz:");
 			// Tipo e Forma

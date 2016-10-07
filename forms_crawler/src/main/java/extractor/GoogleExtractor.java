@@ -57,7 +57,7 @@ public class GoogleExtractor implements Extractor {
 				// Titulo da pergunta
 				tmpTxt = this.getDescricaoPergunta(field);
 				currentP.setDescricao(tmpTxt);
-				System.out.println("\t\t\tTitulo Pergunta: " + tmpTxt);
+				System.out.println("\t\t\tDescricao Pergunta: " + tmpTxt);
 				
 				// Atualiza o Grupo atual
 				updateGrupo(tmpTxt, false);

@@ -58,12 +58,12 @@ public class Clawler extends WebCrawler {
 		if(QuestionarioManager.linkWasExtracted(url.getURL().toLowerCase())) 
 			return;
 		
-		System.out.println("\tURL: " + url.getURL());
 		
 		if(chooseExtractor(url) != null && 
 				this.extractor.shouldExtract(url) &&
 				page.getParseData() instanceof HtmlParseData) {
 			
+			System.out.println("\tURL: " + url.getURL());
 			HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
 			
 			//TODO refazer o banco de dados do zero

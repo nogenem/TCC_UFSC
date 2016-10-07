@@ -43,7 +43,7 @@ public class ReisearchExtractor implements Extractor {
 			// Titulo da pergunta
 			tmpTxt = this.getDescricaoPergunta(field);
 			currentP.setDescricao(tmpTxt);
-			System.out.println("\t\t\tTitulo Pergunta: " + tmpTxt);
+			System.out.println("\t\t\tDescricao Pergunta: " + tmpTxt);
 			
 			// Alternativas da pergunta
 			if(!this.getAlternativas(field))

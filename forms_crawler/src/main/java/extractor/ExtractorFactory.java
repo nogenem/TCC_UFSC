@@ -7,7 +7,8 @@ public enum ExtractorFactory {
 	Google("google", new GoogleExtractor()),
 	VarkLearn("vark-learn", new VarkLearnExtractor()),
 	SaiaDoEscuro("saiadoescuro", new SaiaDoEscuroExtractor()),
-	Reisearch("reisearch", new ReisearchExtractor());
+	Reisearch("reisearch", new ReisearchExtractor()),
+	GalenoAlvarenga("galenoalvarenga", new GalenoAlvarengaExtractor());
 	
 	private final String name;
 	private final Extractor extractor;
