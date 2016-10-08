@@ -18,6 +18,7 @@ import model.Questionario;
 
 public class GoogleExtractor implements Extractor {
 	
+	private ArrayList<Questionario> questionarios;
 	private Questionario currentQ;
 	private Pergunta currentP;
 	private Grupo currentG;
@@ -31,7 +32,8 @@ public class GoogleExtractor implements Extractor {
 	}
 
 	@Override
-	public Questionario extract(String html) {
+	public ArrayList<Questionario> extract(String html) {
+		questionarios = new ArrayList<>();
 		currentQ = new Questionario();
 		initGrupos();
 		currentG = null;
@@ -71,7 +73,8 @@ public class GoogleExtractor implements Extractor {
 					currentQ.addPergunta(currentP);
 			}
 		}
-		return currentQ;
+		questionarios.add(currentQ);
+		return questionarios;
 	}
 
 	private boolean getAlternativas(Element field) {

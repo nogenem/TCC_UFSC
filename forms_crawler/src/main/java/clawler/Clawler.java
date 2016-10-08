@@ -1,5 +1,6 @@
 package clawler;
 
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 import dao.connection.BasicConnection;
@@ -67,14 +68,15 @@ public class Clawler extends WebCrawler {
 			HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
 			
 			//TODO refazer o banco de dados do zero
-			Questionario q = this.extractor.extract(htmlParseData.getHtml());
-			/*if(q != null){
+			ArrayList<Questionario> questionarios = this.extractor.extract(htmlParseData.getHtml());
+			/*for(Questionario q : questionarios){
 				q.setLink_doc(url.getURL().toLowerCase());
 				try {
 					this.questionarioManager.save(q);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+				System.out.println("SAVE DONE!");
 			}*/
 		}
 	}

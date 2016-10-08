@@ -16,6 +16,7 @@ import model.Questionario;
 
 public class ReisearchExtractor implements Extractor {
 	
+	private ArrayList<Questionario> questionarios;
 	private Questionario currentQ;
 	private Pergunta currentP;
 	
@@ -25,7 +26,8 @@ public class ReisearchExtractor implements Extractor {
 	}
 
 	@Override
-	public Questionario extract(String html) {
+	public ArrayList<Questionario> extract(String html) {
+		questionarios = new ArrayList<>();
 		currentQ = new Questionario();
 		
 		Document doc = Jsoup.parse(html);
@@ -52,7 +54,8 @@ public class ReisearchExtractor implements Extractor {
 				currentQ.addPergunta(currentP);
 		}
 		
-		return currentQ;
+		questionarios.add(currentQ);
+		return questionarios;
 	}
 
 	private boolean getAlternativas(Element field) {

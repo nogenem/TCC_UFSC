@@ -1,5 +1,7 @@
 package extractor;
 
+import java.util.ArrayList;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -13,6 +15,7 @@ import model.Questionario;
 
 public class SaiaDoEscuroExtractor implements Extractor {
 	
+	private ArrayList<Questionario> questionarios;
 	private Questionario currentQ;
 	private Pergunta currentP;
 	
@@ -22,7 +25,8 @@ public class SaiaDoEscuroExtractor implements Extractor {
 	}
 
 	@Override
-	public Questionario extract(String html) {
+	public ArrayList<Questionario> extract(String html) {
+		questionarios = new ArrayList<>();
 		currentQ = new Questionario();
 		
 		Document doc = Jsoup.parse(html);
@@ -79,7 +83,8 @@ public class SaiaDoEscuroExtractor implements Extractor {
 			}
 			currentQ.addPergunta(currentP);
 		}
-		return currentQ;
+		questionarios.add(currentQ);
+		return questionarios;
 	}
 
 	private boolean getAlternativas(Element field) {

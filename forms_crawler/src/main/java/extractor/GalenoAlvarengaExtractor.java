@@ -15,6 +15,7 @@ import model.Questionario;
 
 public class GalenoAlvarengaExtractor implements Extractor {
 	
+	private ArrayList<Questionario> questionarios;
 	private Questionario currentQ;
 	private Pergunta currentP;
 	private ArrayList<Pergunta> pergs;
@@ -29,7 +30,8 @@ public class GalenoAlvarengaExtractor implements Extractor {
 	}
 
 	@Override
-	public Questionario extract(String html) {
+	public ArrayList<Questionario> extract(String html) {
+		questionarios = new ArrayList<>();
 		currentQ = new Questionario();
 		
 		Document doc = Jsoup.parse(html);
@@ -67,7 +69,8 @@ public class GalenoAlvarengaExtractor implements Extractor {
 				currentQ.addPergunta(currentP);
 		}
 		pergs.clear();
-		return currentQ;
+		questionarios.add(currentQ);
+		return questionarios;
 	}
 	
 	private boolean getAlternativas(Element field) {

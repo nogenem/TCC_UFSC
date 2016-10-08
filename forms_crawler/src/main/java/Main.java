@@ -18,7 +18,8 @@ public class Main {
 			"vark-learn.com/the-vark-questionnaire/",
 			"www.saiadoescuro.pt/questionario/7.htm",
 			"reisearch.eu/survey/index.php/388449",
-			"www.galenoalvarenga.com.br/testes-psicologicos/"
+			"www.galenoalvarenga.com.br/testes-psicologicos/",
+			"www.agendor.com.br/blog/questionario-de-pesquisa-de-clima-organizacional/"
 		};
 		
 		// Cria um regex a partir dos dominios
@@ -46,6 +47,7 @@ public class Main {
 			//controller.addSeed("http://www.galenoalvarenga.com.br/?s=Teste+para&submit=Pesquisar");	
 			//controller.addSeed("http://www.galenoalvarenga.com.br/page/2?s=Teste+para&submit=Pesquisar");	
 			//controller.addSeed("http://www.galenoalvarenga.com.br/page/3?s=Teste+para&submit=Pesquisar");	
+			controller.addSeed("http://www.agendor.com.br/blog/questionario-de-pesquisa-de-clima-organizacional/");	
 			
 			controller.start();
 		}catch(NumberFormatException | IndexOutOfBoundsException e){

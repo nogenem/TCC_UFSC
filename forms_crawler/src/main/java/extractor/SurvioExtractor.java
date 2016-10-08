@@ -14,13 +14,9 @@ import model.FormaDaPergunta;
 import model.Pergunta;
 import model.Questionario;
 
-/*
- * var as = document.querySelectorAll('.templates .category ul li a');
- *
- * as.forEach(function(e,i){ console.log(e.getAttribute('href')) });
- */
 public class SurvioExtractor implements Extractor {
 	
+	private ArrayList<Questionario> questionarios;
 	private Questionario currentQ;
 	private Pergunta currentP;
 	
@@ -32,7 +28,8 @@ public class SurvioExtractor implements Extractor {
 				!href.endsWith("?mobile=1");
 	}
 	
-	public Questionario extract(String html) {
+	public ArrayList<Questionario> extract(String html) {
+		questionarios = new ArrayList<>();
 		currentQ = new Questionario();
 		
 		Document doc = Jsoup.parse(html);
@@ -58,8 +55,8 @@ public class SurvioExtractor implements Extractor {
 			else
 				currentQ.addPergunta(currentP);
 		}
-		
-		return currentQ;
+		questionarios.add(currentQ);
+		return questionarios;
 	}
 	
 	private boolean getAlternativas(Element field) {

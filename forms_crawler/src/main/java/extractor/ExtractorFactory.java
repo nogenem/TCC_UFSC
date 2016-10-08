@@ -8,7 +8,8 @@ public enum ExtractorFactory {
 	VarkLearn("vark-learn", new VarkLearnExtractor()),
 	SaiaDoEscuro("saiadoescuro", new SaiaDoEscuroExtractor()),
 	Reisearch("reisearch", new ReisearchExtractor()),
-	GalenoAlvarenga("galenoalvarenga", new GalenoAlvarengaExtractor());
+	GalenoAlvarenga("galenoalvarenga", new GalenoAlvarengaExtractor()),
+	Agendor("agendor", new AgendorExtractor());
 	
 	private final String name;
 	private final Extractor extractor;
