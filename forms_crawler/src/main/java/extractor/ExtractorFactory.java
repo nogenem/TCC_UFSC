@@ -9,7 +9,8 @@ public enum ExtractorFactory {
 	SaiaDoEscuro("saiadoescuro", new SaiaDoEscuroExtractor()),
 	Reisearch("reisearch", new ReisearchExtractor()),
 	GalenoAlvarenga("galenoalvarenga", new GalenoAlvarengaExtractor()),
-	Agendor("agendor", new AgendorExtractor());
+	Agendor("agendor", new AgendorExtractor()),
+	EstilosDeAprendizaje("estilosdeaprendizaje", new EstilosDeAprendizajeExtractor());
 	
 	private final String name;
 	private final Extractor extractor;
