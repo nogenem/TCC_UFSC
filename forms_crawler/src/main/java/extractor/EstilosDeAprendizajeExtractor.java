@@ -58,9 +58,9 @@ public class EstilosDeAprendizajeExtractor implements Extractor {
 		Alternativa tmpAlt = null;
 		ArrayList<Alternativa> altList = new ArrayList<>();
 
-		tmpAlt = new Alternativa("Más");
+		tmpAlt = new Alternativa("Más(+)");
 		altList.add(tmpAlt);
-		tmpAlt = new Alternativa("Menos");
+		tmpAlt = new Alternativa("Menos(-)");
 		altList.add(tmpAlt);
 		
 		// Perguntas

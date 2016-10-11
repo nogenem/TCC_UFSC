@@ -10,7 +10,10 @@ public enum ExtractorFactory {
 	Reisearch("reisearch", new ReisearchExtractor()),
 	GalenoAlvarenga("galenoalvarenga", new GalenoAlvarengaExtractor()),
 	Agendor("agendor", new AgendorExtractor()),
-	EstilosDeAprendizaje("estilosdeaprendizaje", new EstilosDeAprendizajeExtractor());
+	EstilosDeAprendizaje("estilosdeaprendizaje", new EstilosDeAprendizajeExtractor()),
+	Anpei("tempsite", new AnpeiExtractor()),
+	InstitutoVerWeb("institutoverweb", new InstitutoVerWebExtractor()),
+	Almaderma("almaderma", new AlmadermaExtractor());
 	
 	private final String name;
 	private final Extractor extractor;

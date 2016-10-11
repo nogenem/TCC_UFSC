@@ -29,6 +29,17 @@ public class Pergunta {
 	
 	/* Construtores */
 	public Pergunta() {
+		this("");
+	}
+	
+	public Pergunta(String descricao) {
+		this(descricao, "", null);
+	}
+	
+	public Pergunta(String descricao, String tipo, FormaDaPergunta forma){
+		this.descricao = descricao;
+		this.tipo = tipo;
+		this.forma = forma;
 		this.perguntas = new ArrayList<>();
 		this.alternativas = new ArrayList<>();
 	}

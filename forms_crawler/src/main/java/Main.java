@@ -20,7 +20,11 @@ public class Main {
 			"reisearch.eu/survey/index.php/388449",
 			"www.galenoalvarenga.com.br/testes-psicologicos/",
 			"www.agendor.com.br/blog/questionario-de-pesquisa-de-clima-organizacional/",
-			"www.estilosdeaprendizaje.es/chaea/chaeagrafp2.htm"
+			"www.estilosdeaprendizaje.es/chaea/chaeagrafp2.htm",
+			"anpei.tempsite.ws/intranet/mediaempresa/",
+			"www.institutoverweb.com.br/limesurvey/index.php?sid=39941",
+			"www.almaderma.com.br/produtos_floral_questionario.php",
+			"www.almaderma.com.br/formulario/florais/"
 		};
 		
 		// Cria um regex a partir dos dominios
@@ -49,7 +53,10 @@ public class Main {
 			//controller.addSeed("http://www.galenoalvarenga.com.br/page/2?s=Teste+para&submit=Pesquisar");	
 			//controller.addSeed("http://www.galenoalvarenga.com.br/page/3?s=Teste+para&submit=Pesquisar");	
 			//controller.addSeed("http://www.agendor.com.br/blog/questionario-de-pesquisa-de-clima-organizacional/");	
-			controller.addSeed("http://www.estilosdeaprendizaje.es/chaea/chaeagrafp2.htm");	
+			//controller.addSeed("http://www.estilosdeaprendizaje.es/chaea/chaeagrafp2.htm");	
+			//controller.addSeed("http://anpei.tempsite.ws/intranet/mediaempresa/");	
+			//controller.addSeed("http://www.institutoverweb.com.br/limesurvey/index.php?sid=39941");	
+			controller.addSeed("http://www.almaderma.com.br/produtos_floral_questionario.php");				
 			
 			controller.start();
 		}catch(NumberFormatException | IndexOutOfBoundsException e){

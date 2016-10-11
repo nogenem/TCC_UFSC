@@ -59,7 +59,6 @@ public class Clawler extends WebCrawler {
 		if(QuestionarioManager.linkWasExtracted(url.getURL().toLowerCase())) 
 			return;
 		
-		
 		if(chooseExtractor(url) != null && 
 				this.extractor.shouldExtract(url) &&
 				page.getParseData() instanceof HtmlParseData) {
@@ -86,7 +85,7 @@ public class Clawler extends WebCrawler {
 		dom = dom.substring(0, dom.indexOf('.'));
 		if(dom.matches("(docs|goo)")) 
 			dom = "google";
-		
+
 		this.extractor = ExtractorFactory.getInstanceFor(dom);
 		return this.extractor;
 	}
