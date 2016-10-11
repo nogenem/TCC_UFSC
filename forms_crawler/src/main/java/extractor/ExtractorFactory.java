@@ -13,7 +13,8 @@ public enum ExtractorFactory {
 	EstilosDeAprendizaje("estilosdeaprendizaje", new EstilosDeAprendizajeExtractor()),
 	Anpei("tempsite", new AnpeiExtractor()),
 	InstitutoVerWeb("institutoverweb", new InstitutoVerWebExtractor()),
-	Almaderma("almaderma", new AlmadermaExtractor());
+	Almaderma("almaderma", new AlmadermaExtractor()),
+	HotelJardinsdAjuda("hoteljardinsdajuda", new HotelJardinsdAjudaExtractor());
 	
 	private final String name;
 	private final Extractor extractor;

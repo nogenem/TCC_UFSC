@@ -64,6 +64,7 @@ public class AlmadermaExtractor implements Extractor {
 			// Pergunta
 			tmpTxt = tnList.get(0).toString().trim();
 			System.out.println("\t\t\tDescricao Pergunta: " + tmpTxt);
+			System.out.println("\t\t\t\tRadio normal:");
 			currentP = new Pergunta(tmpTxt, "FECHADO", forma);
 			
 			// Alternativas

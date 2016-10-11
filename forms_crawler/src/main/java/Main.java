@@ -24,7 +24,8 @@ public class Main {
 			"anpei.tempsite.ws/intranet/mediaempresa/",
 			"www.institutoverweb.com.br/limesurvey/index.php?sid=39941",
 			"www.almaderma.com.br/produtos_floral_questionario.php",
-			"www.almaderma.com.br/formulario/florais/"
+			"www.almaderma.com.br/formulario/florais/",
+			"www.hoteljardinsdajuda.com/question%C3%A1rio.aspx?ID=17"
 		};
 		
 		// Cria um regex a partir dos dominios
@@ -56,7 +57,8 @@ public class Main {
 			//controller.addSeed("http://www.estilosdeaprendizaje.es/chaea/chaeagrafp2.htm");	
 			//controller.addSeed("http://anpei.tempsite.ws/intranet/mediaempresa/");	
 			//controller.addSeed("http://www.institutoverweb.com.br/limesurvey/index.php?sid=39941");	
-			controller.addSeed("http://www.almaderma.com.br/produtos_floral_questionario.php");				
+			//controller.addSeed("http://www.almaderma.com.br/produtos_floral_questionario.php");				
+			controller.addSeed("http://www.hoteljardinsdajuda.com/question%C3%A1rio.aspx?ID=17");				
 			
 			controller.start();
 		}catch(NumberFormatException | IndexOutOfBoundsException e){
