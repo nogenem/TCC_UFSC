@@ -14,7 +14,8 @@ public enum ExtractorFactory {
 	Anpei("tempsite", new AnpeiExtractor()),
 	InstitutoVerWeb("institutoverweb", new InstitutoVerWebExtractor()),
 	Almaderma("almaderma", new AlmadermaExtractor()),
-	HotelJardinsdAjuda("hoteljardinsdajuda", new HotelJardinsdAjudaExtractor());
+	HotelJardinsdAjuda("hoteljardinsdajuda", new HotelJardinsdAjudaExtractor()),
+	Mpg("mpg", new BioinfoExtractor());
 	
 	private final String name;
 	private final Extractor extractor;

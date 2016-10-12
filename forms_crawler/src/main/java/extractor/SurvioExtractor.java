@@ -20,8 +20,6 @@ public class SurvioExtractor implements Extractor {
 	private Questionario currentQ;
 	private Pergunta currentP;
 	
-	public SurvioExtractor(){}
-	
 	public boolean shouldExtract(WebURL url){
 		String href = url.getURL().toLowerCase();
 		return !href.startsWith("http://www.survio.com/br/modelos-de-pesquisa") && 
@@ -172,17 +170,18 @@ public class SurvioExtractor implements Extractor {
 		if(matrix.isEmpty()) return false;
 		
 		System.out.print("\t\t\t\tMatriz");
-		currentP.setTipo("MULTIPLA_ESCOLHA");//TODO eh sempre multipla escolha?
 		
 		// Verifica se a matriz usa input text ou radio button
 		tmpElems1 = matrix.get(0).select("div.input-group-matrix-text");
 		if(!tmpElems1.isEmpty()){ 
 			currentP.setForma(FormaDaPerguntaManager.getForma("TEXT_INPUT_MATRIX"));
+			currentP.setTipo("ABERTO");
 			tipo = "ABERTO";
 			forma = FormaDaPerguntaManager.getForma("TEXT_INPUT");
 			System.out.println(" [com input text]:");
 		}else{
 			currentP.setForma(FormaDaPerguntaManager.getForma("RADIO_INPUT_MATRIX"));
+			currentP.setTipo("MULTIPLA_ESCOLHA");
 			tipo = "FECHADO";
 			forma = FormaDaPerguntaManager.getForma("RADIO_INPUT");
 			System.out.println(" [com radio button]:");
@@ -200,12 +199,9 @@ public class SurvioExtractor implements Extractor {
 				}
 			}else{//Body
 				tmpElems2 = e.select("div.title");
-				tmpPerg = new Pergunta();
 				
 				tmpTxt = tmpElems2.get(0).ownText().trim(); 
-				tmpPerg.setDescricao(tmpTxt);
-				tmpPerg.setTipo(tipo);
-				tmpPerg.setForma(forma);
+				tmpPerg = new Pergunta(tmpTxt, tipo, forma);//TODO TESTAR ISSO
 				for(Alternativa a : altList){
 					tmpPerg.addAlternativa(a.clone());
 				}

@@ -225,12 +225,12 @@ public class GoogleExtractor implements Extractor {
 	private void initGrupos(){
 		grupos = null;
 		grupos = new HashMap<>();
-		grupos.put("instituição", new Grupo("Instituição", currentQ));
-		grupos.put("professor", new Grupo("Professor", currentQ));
-		grupos.put("coordenação", new Grupo("Coordenação", currentQ));
-		grupos.put("curso", new Grupo("Curso", currentQ));
-		grupos.put("organização e gestão institucional", new Grupo("Organização e Gestão Institucional", currentQ));
-		grupos.put("infraestrutura", new Grupo("Infraestrutura", currentQ));
+		grupos.put("instituição", new Grupo("Instituição"));
+		grupos.put("professor", new Grupo("Professor"));
+		grupos.put("coordenação", new Grupo("Coordenação"));
+		grupos.put("curso", new Grupo("Curso"));
+		grupos.put("organização e gestão institucional", new Grupo("Organização e Gestão Institucional"));
+		grupos.put("infraestrutura", new Grupo("Infraestrutura"));
 	}
 	
 	private void updateGrupo(String perg, boolean isSection){

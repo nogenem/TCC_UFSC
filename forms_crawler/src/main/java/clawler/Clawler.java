@@ -3,6 +3,9 @@ package clawler;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
 import dao.connection.BasicConnection;
 import dao.connection.PostgreConnection;
 import edu.uci.ics.crawler4j.crawler.Page;
@@ -34,7 +37,7 @@ public class Clawler extends WebCrawler {
 	@Override
 	public boolean shouldVisit(Page referringPage, WebURL url) {
 		String href = url.getURL().toLowerCase();
-		
+
 		// Verifica se o link ja foi extraido
 		if(QuestionarioManager.linkWasExtracted(href)) return false;
 		
@@ -53,7 +56,7 @@ public class Clawler extends WebCrawler {
 	@Override
 	public void visit(Page page) {
 		WebURL url = page.getWebURL();
-		
+
 		// Verifica se o link ja foi extraido 
 		// [shouldVisit() não é chamada em seeds]
 		if(QuestionarioManager.linkWasExtracted(url.getURL().toLowerCase())) 
@@ -85,7 +88,7 @@ public class Clawler extends WebCrawler {
 		dom = dom.substring(0, dom.indexOf('.'));
 		if(dom.matches("(docs|goo)")) 
 			dom = "google";
-
+		
 		this.extractor = ExtractorFactory.getInstanceFor(dom);
 		return this.extractor;
 	}

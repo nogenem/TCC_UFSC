@@ -25,7 +25,8 @@ public class Main {
 			"www.institutoverweb.com.br/limesurvey/index.php?sid=39941",
 			"www.almaderma.com.br/produtos_floral_questionario.php",
 			"www.almaderma.com.br/formulario/florais/",
-			"www.hoteljardinsdajuda.com/question%C3%A1rio.aspx?ID=17"
+			"www.hoteljardinsdajuda.com/question%C3%A1rio.aspx?ID=17",
+			"www.bioinfo.mpg.de/mctq/core_work_life/core/core.jsp"
 		};
 		
 		// Cria um regex a partir dos dominios
@@ -55,10 +56,11 @@ public class Main {
 			//controller.addSeed("http://www.galenoalvarenga.com.br/page/3?s=Teste+para&submit=Pesquisar");	
 			//controller.addSeed("http://www.agendor.com.br/blog/questionario-de-pesquisa-de-clima-organizacional/");	
 			//controller.addSeed("http://www.estilosdeaprendizaje.es/chaea/chaeagrafp2.htm");	
-			//controller.addSeed("http://anpei.tempsite.ws/intranet/mediaempresa/");	
 			//controller.addSeed("http://www.institutoverweb.com.br/limesurvey/index.php?sid=39941");	
 			//controller.addSeed("http://www.almaderma.com.br/produtos_floral_questionario.php");				
-			controller.addSeed("http://www.hoteljardinsdajuda.com/question%C3%A1rio.aspx?ID=17");				
+			//controller.addSeed("http://www.hoteljardinsdajuda.com/question%C3%A1rio.aspx?ID=17");							
+			//controller.addSeed("http://anpei.tempsite.ws/intranet/mediaempresa/");	
+			controller.addSeed("https://www.bioinfo.mpg.de/mctq/core_work_life/core/core.jsp?language=por_b");	
 			
 			controller.start();
 		}catch(NumberFormatException | IndexOutOfBoundsException e){

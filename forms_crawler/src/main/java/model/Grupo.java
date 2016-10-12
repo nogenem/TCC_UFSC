@@ -15,9 +15,8 @@ public class Grupo {
 		
 	}
 	
-	public Grupo(String assunto, Questionario questionario){
+	public Grupo(String assunto){
 		this.assunto = assunto;
-		this.questionario = questionario;
 	}
 	
 	/* Getters e Setters */

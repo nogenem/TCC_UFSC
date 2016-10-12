@@ -34,7 +34,7 @@ public class InstitutoVerWebExtractor implements Extractor {
 		currentQ.setAssunto(tmpTxt);
 		System.out.println("\t\tAssunto Questionario: " + tmpTxt);
 		
-		//TODO TERMINAR ISSO AKI
+		//TODO TERMINAR ISSO AKI [simulador]
 		
 		questionarios.add(currentQ);
 		return questionarios;

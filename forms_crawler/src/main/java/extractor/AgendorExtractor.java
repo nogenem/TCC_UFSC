@@ -111,7 +111,7 @@ public class AgendorExtractor implements Extractor {
 			tmp = doc.select("#post-15741 > div.entry > ul:nth-child("+(i+1)+") > li");
 			for(int j = 0; j<tmp.size()-1; j++){
 				li = tmp.get(j);
-				tmpTxt = li.ownText().trim();//TODO tirar o ( ) ?
+				tmpTxt = li.ownText().trim();
 				System.out.println("\t\t\t\t\t" +tmpTxt);
 				tmpAlt = new Alternativa(tmpTxt);
 				currentP.addAlternativa(tmpAlt);
