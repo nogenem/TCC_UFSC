@@ -3,9 +3,6 @@ package clawler;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-
 import dao.connection.BasicConnection;
 import dao.connection.PostgreConnection;
 import edu.uci.ics.crawler4j.crawler.Page;

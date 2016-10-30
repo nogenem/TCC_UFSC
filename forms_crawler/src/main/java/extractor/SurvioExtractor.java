@@ -82,6 +82,7 @@ public class SurvioExtractor implements Extractor {
 	}
 	
 	//Ex: https://www.survio.com/modelo-de-pesquisa/pesquisa-sobre-empregados-sobrecarregados-e-esgotados
+	//Ex: https://www.survio.com/modelo-de-pesquisa/pesquisa-para-consumidores-de-conteudo-multimidia
 	private boolean isGenericInput(Element field) {
 		Elements input = field.select(".input-group-text input.form-control");
 

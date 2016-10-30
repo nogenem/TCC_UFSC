@@ -7,8 +7,7 @@ public class Main {
 	public static void main(String[] args) {
 		ClawlerController controller = null;
 		
-		
-		// Dominios permitidos no Crawler.
+		// Dominios permitidos no Crawler [sem http].
 		String[] domains = {
 			"www.survio.com/br/modelos-de-pesquisa",
 			"www.survio.com/modelo-de-pesquisa",
@@ -46,21 +45,24 @@ public class Main {
 			}
 			
 			controller.setDomains(new String[]{regex});
-			//controller.addSeed("http://www.survio.com/br/modelos-de-pesquisa");
-			//controller.addSeed("http://www.faculdadeages.com.br/uniages/questionarios-cpa/");
-			//controller.addSeed("http://vark-learn.com/the-vark-questionnaire/");
-			//controller.addSeed("https://www.saiadoescuro.pt/questionario/7.htm");
-			//controller.addSeed("http://reisearch.eu/survey/index.php/388449?lang=pt");	
-			//controller.addSeed("http://www.galenoalvarenga.com.br/?s=Teste+para&submit=Pesquisar");	
-			//controller.addSeed("http://www.galenoalvarenga.com.br/page/2?s=Teste+para&submit=Pesquisar");	
-			//controller.addSeed("http://www.galenoalvarenga.com.br/page/3?s=Teste+para&submit=Pesquisar");	
-			//controller.addSeed("http://www.agendor.com.br/blog/questionario-de-pesquisa-de-clima-organizacional/");	
-			//controller.addSeed("http://www.estilosdeaprendizaje.es/chaea/chaeagrafp2.htm");	
+			// Ja terminados
+			/*controller.addSeed("http://www.survio.com/br/modelos-de-pesquisa");
+			controller.addSeed("http://www.faculdadeages.com.br/uniages/questionarios-cpa/");
+			controller.addSeed("http://vark-learn.com/the-vark-questionnaire/");
+			controller.addSeed("https://www.saiadoescuro.pt/questionario/7.htm");
+			controller.addSeed("http://reisearch.eu/survey/index.php/388449?lang=pt");	
+			controller.addSeed("http://www.galenoalvarenga.com.br/?s=Teste+para&submit=Pesquisar");	
+			controller.addSeed("http://www.galenoalvarenga.com.br/page/2?s=Teste+para&submit=Pesquisar");	
+			controller.addSeed("http://www.galenoalvarenga.com.br/page/3?s=Teste+para&submit=Pesquisar");	
+			controller.addSeed("http://www.agendor.com.br/blog/questionario-de-pesquisa-de-clima-organizacional/");	
+			controller.addSeed("http://www.estilosdeaprendizaje.es/chaea/chaeagrafp2.htm");	
+			controller.addSeed("http://www.almaderma.com.br/produtos_floral_questionario.php");				
+			controller.addSeed("http://www.hoteljardinsdajuda.com/question%C3%A1rio.aspx?ID=17");							
+			controller.addSeed("https://www.bioinfo.mpg.de/mctq/core_work_life/core/core.jsp?language=por_b");	*/
+			
+			// Ainda em desenvolvimento
 			//controller.addSeed("http://www.institutoverweb.com.br/limesurvey/index.php?sid=39941");	
-			//controller.addSeed("http://www.almaderma.com.br/produtos_floral_questionario.php");				
-			//controller.addSeed("http://www.hoteljardinsdajuda.com/question%C3%A1rio.aspx?ID=17");							
 			//controller.addSeed("http://anpei.tempsite.ws/intranet/mediaempresa/");	
-			controller.addSeed("https://www.bioinfo.mpg.de/mctq/core_work_life/core/core.jsp?language=por_b");	
 			
 			controller.start();
 		}catch(NumberFormatException | IndexOutOfBoundsException e){
