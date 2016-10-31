@@ -3,4 +3,21 @@
   <groupId>br.ufsc.tcc.common</groupId>
   <artifactId>questionnaires_common_lib</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  <dependencies>
+  	<dependency>
+  		<groupId>edu.uci.ics</groupId>
+  		<artifactId>crawler4j</artifactId>
+  		<version>4.2</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.postgresql</groupId>
+  		<artifactId>postgresql</artifactId>
+  		<version>9.4-1206-jdbc42</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.json</groupId>
+  		<artifactId>json</artifactId>
+  		<version>20160810</version>
+  	</dependency>
+  </dependencies>
 </project>
