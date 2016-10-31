@@ -1,0 +1,82 @@
+{
+	"questionarios": [
+		{
+			"seletor": "",
+			"assunto": "header.title > div.col-title > h1",
+			"perguntas": {
+				"seletor": "section.last fieldset",
+				"descricao": "div.title-part",
+				"subdescricao": "p.title",
+				"alternativas": {
+					"textarea": {
+						"seletor": ".input-group-textarea textarea"
+					},
+					"text_input": {
+						"seletor": ".input-group-text input.form-control[type=text]"
+					},
+					"date_input": {
+						"seletor": ".input-group-text input.form-control[type=date]"
+					},
+					"number_input": {
+						"seletor": ".input-group-text input.form-control[type=number]"
+					},
+					"range_input_group": {
+						"seletor": "div.row-divide div.divide-item",
+						"range_input": {
+							"seletor": "div.divide-title",
+							"valor_min": "div.divide-left",
+							"valor_max": "div.divide-right"
+						}
+					},
+					"select": {
+						"seletor": "label.select select.form-control",
+						"opcoes": "option"
+					},
+					"stars": {
+						"seletor": "div.special-padding-row div.original-stars input.star"
+					},
+					"checkbox_input": {
+						"seletor": "div.label-cont label.input-group-checkbox",
+						"texto": ".input-group-title",
+						"text_input": {
+							"seletor": "div.text-addon"
+						}
+					},
+					"radio_input": {
+						"seletor": "div.label-cont label.input-group-radio",
+						"texto": "span.input-group-title",
+						"text_input": {
+							"seletor": "div.text-addon"
+						}
+					},
+					"image_radio_input": {
+						"seletor": "div.images div.input-image-group",
+						"texto": ".input-group-radio .input-group-title",
+						"imagem": ".input-image img"
+					},
+					"text_input_matrix": {
+						"teste": "div.matrix-values input[type=text]",
+						"seletor": "div.matrix-values",
+						"thead": {
+							"seletor": "div.input-group-matrix div.title-groups span.input-group-title-main"
+						},
+						"tbody": {
+							"seletor": "div.input-group-matrix div.title"
+						}
+					},
+					"radio_input_matrix": {
+						"teste": "div.matrix-values input[type=radio]",
+						"seletor": "div.matrix-values",
+						"thead": {
+							"seletor": "div.input-group-matrix div.title-groups span.input-group-title-main"
+						},
+						"tbody": {
+							"seletor": "div.input-group-matrix div.title"
+						}
+					}
+				}
+			}
+		}
+	]
+
+}

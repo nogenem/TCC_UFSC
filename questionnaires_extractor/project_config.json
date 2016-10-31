@@ -1,0 +1,17 @@
+{
+	"database": {
+		"name": "tcc_extractor",
+		"host": "localhost:5432",
+		"login": "postgres",
+		"password": "123"
+	},
+	"crawler": {
+		"numberOfCrawlers": 5,
+		"crawlStorageFolder": "./tmp",
+		"politenessDelay": 500,
+		"maxDepthOfCrawling": -1,
+		"maxPagesToFetch": -1,
+		"includeBinaryContentInCrawling": false,
+		"resumableCrawling": false	
+	}
+}
