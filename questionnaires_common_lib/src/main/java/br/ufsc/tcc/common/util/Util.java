@@ -54,6 +54,7 @@ public final class Util {
 			if(cl == null)
 				cl = Util.class.getClassLoader();
 			
+			// Melhor garantir do que remeadir, certo?
 			InputStream input = cl.getResourceAsStream(resource);
 			if(input == null)
 				input = cl.getResourceAsStream("/" +resource);
@@ -71,7 +72,7 @@ public final class Util {
 			
 			content = result.toString("UTF-8");
 		} catch (IOException e) {
-			System.err.println("Util:readFile()> "+ e.toString());
+			System.err.println("Util:readResource()> "+ e.toString());
 			System.exit(-1);
 		}
 		return content;
@@ -125,7 +126,7 @@ public final class Util {
 		try {
 			desktop.open(file);
 		} catch (IOException e) {
-			System.err.println("Util:editFile()> "+ e.toString());
+			System.err.println("Util:openFile()> "+ e.toString());
 		    return false;
 		}
 		return true;

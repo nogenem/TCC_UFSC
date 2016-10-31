@@ -9,6 +9,11 @@ public abstract class BasicConnection {
 	protected Connection conn;
 	protected String database, dbms, host, login, password;
 	
+	/**
+	 * Retorna a conexão com o banco de dados.
+	 * 
+	 * @return		A conexão com o banco de dados.
+	 */
 	public Connection getConnection() {
 		if(this.conn != null)
 			return this.conn;
@@ -16,7 +21,10 @@ public abstract class BasicConnection {
 		this.newConnection();
 		return this.conn;
 	}
-
+	
+	/**
+	 * Cria uma nova conexão com o banco de dados.
+	 */
 	private void newConnection() {
 		try{
 			this.conn = DriverManager.getConnection("jdbc:"+this.dbms+"://"+this.host+"/"+this.database, 
@@ -26,6 +34,9 @@ public abstract class BasicConnection {
 		}
 	}
 	
+	/**
+	 * Fecha a conexão com o banco de dados.
+	 */
 	public void close(){
 		try {
 			this.conn.close();

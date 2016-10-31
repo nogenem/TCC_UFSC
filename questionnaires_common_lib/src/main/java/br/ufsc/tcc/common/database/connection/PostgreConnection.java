@@ -5,11 +5,17 @@ import org.json.JSONObject;
 public class PostgreConnection extends BasicConnection {
 	
 	public PostgreConnection(String database){
-		this.database = database;
-		this.dbms = "postgresql";
-		this.host = "localhost:5432";
-		this.login = "postgres";
-		this.password = "123";
+		this(database, 
+				"localhost:5432", 
+				"postgres", 
+				"123");
+	}
+	
+	public PostgreConnection(JSONObject configs){
+		this(configs.getString("name"),
+				configs.getString("host"),
+				configs.getString("login"),
+				configs.getString("password"));
 	}
 	
 	public PostgreConnection(String database, String host, String login, String password){
@@ -18,13 +24,5 @@ public class PostgreConnection extends BasicConnection {
 		this.host = host;
 		this.login = login;
 		this.password = password;
-	}
-	
-	public PostgreConnection(JSONObject configs){
-		this.database = configs.getString("name");
-		this.dbms = "postgresql";
-		this.host = configs.getString("host");
-		this.login = configs.getString("login");
-		this.password = configs.getString("password");
 	}
 }

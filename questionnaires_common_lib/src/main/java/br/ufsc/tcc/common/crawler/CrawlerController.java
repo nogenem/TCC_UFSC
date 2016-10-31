@@ -56,14 +56,29 @@ public class CrawlerController {
 	    this.controller = new CrawlController(this.crawlerConfig, pageFetcher, robotstxtServer);
 	}
 	
+	/**
+	 * Adiciona a url passada a lista de seeds, urls iniciais, do Crawler.
+	 * 
+	 * @param url		Url que se quer adicionar a lista de seeds do Crawler.
+	 */
 	public void addSeed(String url){
 		this.controller.addSeed(url);
 	}
 	
+	/**
+	 * Inicia o Clawler utilizando a classe passada.
+	 * 
+	 * @param crawlerClass		Sua classe extendendo a classe WebCrawler.
+	 */
 	public void start(Class<? extends WebCrawler> crawlerClass){
 		this.controller.start(crawlerClass, userConfigs.optInt("numberOfCrawlers", 5));
 	}
 	
+	/**
+	 * Seta os dados que serão passados para todas as threads que farão o Crawling.
+	 * 
+	 * @param data		Dado que será passado as threads.
+	 */
 	public void setCustomData(String[] data){
 		this.controller.setCustomData(data);
 	}
