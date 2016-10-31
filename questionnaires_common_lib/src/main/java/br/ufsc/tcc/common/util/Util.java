@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -64,7 +65,11 @@ public final class Util {
 						input = cl.getResourceAsStream("/resources/" +resource);
 				}
 			}
-
+			
+			// Em ultimo caso...
+			if(input == null)
+				throw new NoSuchFileException(resource);
+			
 			ByteArrayOutputStream result = new ByteArrayOutputStream();
 			byte[] buffer = new byte[1024];
 			int length;
@@ -76,7 +81,7 @@ public final class Util {
 		} catch (IOException e) {
 			System.err.println("Util:readResource()> "+ e.toString());
 			System.exit(-1);
-		}
+		} 
 		return content;
 	}
 	
