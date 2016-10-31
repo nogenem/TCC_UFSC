@@ -56,12 +56,14 @@ public final class Util {
 			
 			// Melhor garantir do que remeadir, certo?
 			InputStream input = cl.getResourceAsStream(resource);
-			if(input == null)
+			if(input == null){
 				input = cl.getResourceAsStream("/" +resource);
-			if(input == null)
-				input = cl.getResourceAsStream("resources/" +resource);
-			if(input == null)
-				input = cl.getResourceAsStream("/resources/" +resource);
+				if(input == null){
+					input = cl.getResourceAsStream("resources/" +resource);
+					if(input == null)
+						input = cl.getResourceAsStream("/resources/" +resource);
+				}
+			}
 
 			ByteArrayOutputStream result = new ByteArrayOutputStream();
 			byte[] buffer = new byte[1024];

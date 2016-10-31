@@ -29,14 +29,15 @@ public class CrawlerController {
 	/**
 	 * Inicializa o Crawler utilizando as configurações do usuario, ou usando
 	 * alguns valores padrão.  </br>
-	 * Os valores padão utilizados são: </br>
-	 * &nbsp;&nbsp;&nbsp;  CrawlerStorageFolder = ./tmp </br>
-	 * &nbsp;&nbsp;&nbsp;  PolitenessDelay = 1000 </br>
-	 * &nbsp;&nbsp;&nbsp;  MaxDepthOfCrawling = -1 (sem limite) </br>
-	 * &nbsp;&nbsp;&nbsp;  MaxPagesToFetch = 10000 </br>
-	 * &nbsp;&nbsp;&nbsp;  IncludeBinaryContentInCrawling = false </br>
-	 * &nbsp;&nbsp;&nbsp;  ResumableCrawling = false </br>
-	 * &nbsp;&nbsp;&nbsp;  NumberOfCrawlers = 5 </br>
+	 * Os valores padão utilizados são:
+	 * 
+	 * <pre>	CrawlerStorageFolder = ./tmp
+	 * 	PolitenessDelay = 1000
+	 * 	MaxDepthOfCrawling = -1 (sem limite)
+	 * 	MaxPagesToFetch = 10000
+	 * 	IncludeBinaryContentInCrawling = false
+	 * 	ResumableCrawling = false
+	 * 	NumberOfCrawlers = 5</pre>
 	 * 
 	 * @throws Exception
 	 */
