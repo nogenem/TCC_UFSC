@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -37,8 +36,6 @@ public class SurvioTest {
 	}
 	
 	//TODO testar DATE_INPUT?
-	//TODO refinar os testes verificando texto tb
-	//TODO terminar os q faltam
 	
 	@Test
 	public void allTests() {
@@ -53,97 +50,171 @@ public class SurvioTest {
 		ArrayList<Pergunta> perguntas = q.getPerguntas();
 		assertEquals("Questionario deve ter 9 perguntas", 9, q.getPerguntas().size());
 		
-		testRadioInputComTextInputPergunta(perguntas.get(0));
-		testRadioInputSemTextInputPergunta(perguntas.get(1));
-		testRadioInputMatrixPergunta(perguntas.get(2));
-		testTextInputMatrixPergunta(perguntas.get(3));
-		testCheckboxInputComTextInputPergunta(perguntas.get(4));
-		testCheckboxInputSemTextInputPergunta(perguntas.get(5));
-		testTextareaPergunta(perguntas.get(6));
-		testNumberInputPergunta(perguntas.get(7));
-		testTextInputPergunta(perguntas.get(8));
+		testPerguntaDeRadioInputComTextInput(perguntas.get(0));
+		testPerguntaDeRadioInputSemTextInput(perguntas.get(1));
+		testPerguntaDeRadioInputMatrix(perguntas.get(2));
+		testPerguntaDeTextInputMatrix(perguntas.get(3));
+		testPerguntaDeCheckboxInputComTextInput(perguntas.get(4));
+		testPerguntaDeCheckboxInputSemTextInput(perguntas.get(5));
+		testPerguntaDeTextarea(perguntas.get(6));
+		testPerguntaDeNumberInput(perguntas.get(7));
+		testPerguntaDeTextInput(perguntas.get(8));
 	}
 
-	public void testRadioInputComTextInputPergunta(Pergunta p){
+	public void testPerguntaDeRadioInputComTextInput(Pergunta p){
 		assertEquals("Pergunta deveria ser um RADIO_INPUT", "RADIO_INPUT", p.getForma().getDescricao());
-		assertEquals("Pergunta deveria ter 1 pergunta filha", 1, p.getFilhas().size());		
 		
+		assertEquals("Descricao da pergunta esta errada", 
+				"Se você sabia que o produto \"product\" custava \"price\", você pagaria mais ou menos para comprá-lo?", 
+				p.getDescricao());
+		
+		assertEquals("Pergunta deveria ter 1 pergunta filha", 1, p.getFilhas().size());		
 		Pergunta filha = p.getFilhas().get(0);
 		assertEquals("Pergunta filha deveria ser um TEXT_INPUT", "TEXT_INPUT", filha.getForma().getDescricao());				
+		assertEquals("Descricao da ultima alternativa da pergunta esta errada", 
+				"Outro (por favor, indique o valor)", filha.getDescricao());
 		
 		ArrayList<Alternativa> alternativas = p.getAlternativas();
 		assertEquals("Pergunta deveria ter 2 alternativas", 2, alternativas.size());
+		assertEquals("Descricao da primeira alternativa da pergunta esta errada",
+				"10-20% mais",
+				alternativas.get(0).getDescricao());
 	}
 	
-	public void testRadioInputSemTextInputPergunta(Pergunta p){
+	public void testPerguntaDeRadioInputSemTextInput(Pergunta p){
 		assertEquals("Pergunta deveria ser um RADIO_INPUT", "RADIO_INPUT", p.getForma().getDescricao());
-		assertEquals("Pergunta deveria ter 0 perguntas filhas", 0, p.getFilhas().size());		
-	
+		
+		assertEquals("Descricao da pergunta esta errada", 
+				"Se você sabia que o produto \"product\" custava \"price\", você pagaria mais ou menos para comprá-lo?", 
+				p.getDescricao());
+		
+		assertEquals("Pergunta deveria ter 0 perguntas filhas", 0, p.getFilhas().size());	
+		
 		ArrayList<Alternativa> alternativas = p.getAlternativas();
 		assertEquals("Pergunta deveria ter 3 alternativas", 3, alternativas.size());
+		assertEquals("Descricao da primeira alternativa da pergunta esta errada",
+				"10-20% mais",
+				alternativas.get(0).getDescricao());
+		
+		assertEquals("Descricao da ultima alternativa da pergunta esta errada",
+				"nem menos nem mais",
+				alternativas.get(alternativas.size()-1).getDescricao());
 	}
 	
-	private void testRadioInputMatrixPergunta(Pergunta p) {
+	private void testPerguntaDeRadioInputMatrix(Pergunta p) {
 		assertEquals("Pergunta deveria ser um RADIO_INPUT_MATRIX", "RADIO_INPUT_MATRIX", 
 				p.getForma().getDescricao());
-		assertEquals("Pergunta deveria ter 6 perguntas filhas", 6, p.getFilhas().size());	
 		
+		assertEquals("Descricao da pergunta esta errada", 
+				"Se o preço do produto \"product\" fosse maior/menor, quantas unidades a mais/menos você compraria?\n"
+				+ "Consider the next year at each price point listed.", 
+				p.getDescricao());
+		
+		assertEquals("Pergunta deveria ter 6 perguntas filhas", 6, p.getFilhas().size());	
 		Pergunta filha = p.getFilhas().get(0);
-		assertEquals("Pergunta filha deveria ser um RADIO_INPUT", "RADIO_INPUT", filha.getForma().getDescricao());				
+		assertEquals("Pergunta filha deveria ser um RADIO_INPUT", "RADIO_INPUT", filha.getForma().getDescricao());	
+		assertEquals("Descricao da primeira pergunta filha esta errada", 
+				"+20%", filha.getDescricao());
 		
 		ArrayList<Alternativa> alternativas = filha.getAlternativas();
 		assertEquals("Pergunta filha deveria ter 4 alternativas", 4, alternativas.size());
+		assertEquals("Descricao da primeira alternativa da primeira pergunta filha esta errada", 
+				"4 ou mais a menos", alternativas.get(0).getDescricao());
 	}
 	
-	private void testTextInputMatrixPergunta(Pergunta p) {
+	private void testPerguntaDeTextInputMatrix(Pergunta p) {
 		assertEquals("Pergunta deveria ser um TEXT_INPUT_MATRIX", "TEXT_INPUT_MATRIX", 
 				p.getForma().getDescricao());
-		assertEquals("Pergunta deveria ter 1 pergunta filha1", 1, p.getFilhas().size());	
 		
+		assertEquals("Descricao da pergunta esta errada", 
+				"Quanto você pensou que era o preço do \"produto\"?", 
+				p.getDescricao());
+		
+		assertEquals("Pergunta deveria ter 1 pergunta filha1", 1, p.getFilhas().size());	
 		Pergunta filha = p.getFilhas().get(0);
-		assertEquals("Pergunta filha deveria ser um TEXT_INPUT", "TEXT_INPUT", filha.getForma().getDescricao());				
+		assertEquals("Pergunta filha deveria ser um TEXT_INPUT", "TEXT_INPUT", filha.getForma().getDescricao());
+		assertEquals("Descricao da primeira pergunta filha esta errada", 
+				"Digite o seu preço", filha.getDescricao());
 		
 		ArrayList<Alternativa> alternativas = filha.getAlternativas();
-		assertEquals("Pergunta filha deveria ter 1 alternativa",1, alternativas.size());
+		assertEquals("Pergunta filha deveria ter 1 alternativa", 1, alternativas.size());
+		assertEquals("Descricao da primeira alternativa da primeira pergunta filha esta errada", 
+				"Preço", alternativas.get(0).getDescricao());
 	}
 	
-	public void testCheckboxInputComTextInputPergunta(Pergunta p){
+	public void testPerguntaDeCheckboxInputComTextInput(Pergunta p){
 		assertEquals("Pergunta deveria ser um CHECKBOX_INPUT", "CHECKBOX_INPUT", p.getForma().getDescricao());
-		assertEquals("Pergunta deveria ter 1 pergunta filha", 1, p.getFilhas().size());		
 		
+		assertEquals("Descricao da pergunta esta errada", 
+				"Qual das opções seguintes, tirando o próprio produto, lhe influenciaria mais na decisão de comprá-lo?", 
+				p.getDescricao());
+		
+		assertEquals("Pergunta deveria ter 1 pergunta filha", 1, p.getFilhas().size());		
 		Pergunta filha = p.getFilhas().get(0);
-		assertEquals("Pergunta filha deveria ser um TEXT_INPUT", "TEXT_INPUT", filha.getForma().getDescricao());				
+		assertEquals("Pergunta filha deveria ser um TEXT_INPUT", "TEXT_INPUT", filha.getForma().getDescricao());	
+		assertEquals("Descricao da ultima alternativa da pergunta esta errada", 
+				"Outro (por favor, especifique):", filha.getDescricao());
 		
 		ArrayList<Alternativa> alternativas = p.getAlternativas();
 		assertEquals("Pergunta deveria ter 2 alternativas", 2, alternativas.size());
+		assertEquals("Descricao da primeira alternativa da pergunta esta errada",
+				"Experiência de outros clientes",
+				alternativas.get(0).getDescricao());
 	}
 	
-	public void testCheckboxInputSemTextInputPergunta(Pergunta p){
+	public void testPerguntaDeCheckboxInputSemTextInput(Pergunta p){
 		assertEquals("Pergunta deveria ser um CHECKBOX_INPUT", "CHECKBOX_INPUT", p.getForma().getDescricao());
+		
+		assertEquals("Descricao da pergunta esta errada", 
+				"Qual das opções seguintes, tirando o próprio produto, lhe influenciaria mais na decisão de comprá-lo?", 
+				p.getDescricao());
+		
 		assertEquals("Pergunta deveria ter 0 perguntas filhas", 0, p.getFilhas().size());		
 	
 		ArrayList<Alternativa> alternativas = p.getAlternativas();
 		assertEquals("Pergunta deveria ter 3 alternativas", 3, alternativas.size());
+		assertEquals("Descricao da primeira alternativa da pergunta esta errada",
+				"Experiência de outros clientes",
+				alternativas.get(0).getDescricao());
+		
+		assertEquals("Descricao da ultima alternativa da pergunta esta errada",
+				"Tendências",
+				alternativas.get(alternativas.size()-1).getDescricao());
 	}
 	
-	public void testTextareaPergunta(Pergunta p){
+	public void testPerguntaDeTextarea(Pergunta p){
 		assertEquals("Pergunta deveria ser um TEXTAREA", "TEXTAREA", p.getForma().getDescricao());
+		
+		assertEquals("Descricao da pergunta esta errada", 
+				"Se há alguma coisa, o que você gosta mais (menos) sobre o \"produto\"?", 
+				p.getDescricao());
+		
 		assertEquals("Pergunta deveria ter 0 perguntas filhas", 0, p.getFilhas().size());	
 		
 		ArrayList<Alternativa> alternativas = p.getAlternativas();
 		assertEquals("Pergunta deveria ter 0 alternativas", 0, alternativas.size());
 	}
 	
-	private void testNumberInputPergunta(Pergunta p) {
+	private void testPerguntaDeNumberInput(Pergunta p) {
 		assertEquals("Pergunta deveria ser um NUMBER_INPUT", "NUMBER_INPUT", p.getForma().getDescricao());
+		
+		assertEquals("Descricao da pergunta esta errada", 
+				"Por favor, especifique a sua idade:", 
+				p.getDescricao());
+		
 		assertEquals("Pergunta deveria ter 0 perguntas filhas", 0, p.getFilhas().size());		
 	
 		ArrayList<Alternativa> alternativas = p.getAlternativas();
 		assertEquals("Pergunta deveria ter 0 alternativas", 0, alternativas.size());
 	}
 	
-	private void testTextInputPergunta(Pergunta p) {
+	private void testPerguntaDeTextInput(Pergunta p) {
 		assertEquals("Pergunta deveria ser um TEXT_INPUT", "TEXT_INPUT", p.getForma().getDescricao());
+		
+		assertEquals("Descricao da pergunta esta errada", 
+				"Qual é o seu canal de TV favorito?", 
+				p.getDescricao());
+		
 		assertEquals("Pergunta deveria ter 0 perguntas filhas", 0, p.getFilhas().size());		
 	
 		ArrayList<Alternativa> alternativas = p.getAlternativas();
