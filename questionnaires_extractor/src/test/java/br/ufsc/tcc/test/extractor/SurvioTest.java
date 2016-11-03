@@ -15,6 +15,7 @@ import br.ufsc.tcc.common.util.Util;
 import br.ufsc.tcc.extractor.database.manager.FormaDaPerguntaManager;
 import br.ufsc.tcc.extractor.extractor.SurvioExtractor;
 import br.ufsc.tcc.extractor.model.Alternativa;
+import br.ufsc.tcc.extractor.model.Figura;
 import br.ufsc.tcc.extractor.model.Pergunta;
 import br.ufsc.tcc.extractor.model.Questionario;
 
@@ -48,7 +49,7 @@ public class SurvioTest {
 		assertEquals("Questionario com assunto errado", "Pesquisa de Preço do Produto", q.getAssunto());		
 		
 		ArrayList<Pergunta> perguntas = q.getPerguntas();
-		assertEquals("Questionario deve ter 9 perguntas", 9, q.getPerguntas().size());
+		assertEquals("Questionario deveria ter 13 perguntas", 13, q.getPerguntas().size());
 		
 		testPerguntaDeRadioInputComTextInput(perguntas.get(0));
 		testPerguntaDeRadioInputSemTextInput(perguntas.get(1));
@@ -59,9 +60,13 @@ public class SurvioTest {
 		testPerguntaDeTextarea(perguntas.get(6));
 		testPerguntaDeNumberInput(perguntas.get(7));
 		testPerguntaDeTextInput(perguntas.get(8));
+		testPerguntaDeRangeInputGroup(perguntas.get(9));
+		testPerguntaDeSelect(perguntas.get(10));
+		testPerguntaDeStars(perguntas.get(11));
+		testPerguntaDeImageRadioInput(perguntas.get(12), q.getFiguras());
 	}
 
-	public void testPerguntaDeRadioInputComTextInput(Pergunta p){
+	private void testPerguntaDeRadioInputComTextInput(Pergunta p){
 		assertEquals("Pergunta deveria ser um RADIO_INPUT", "RADIO_INPUT", p.getForma().getDescricao());
 		
 		assertEquals("Descricao da pergunta esta errada", 
@@ -81,7 +86,7 @@ public class SurvioTest {
 				alternativas.get(0).getDescricao());
 	}
 	
-	public void testPerguntaDeRadioInputSemTextInput(Pergunta p){
+	private void testPerguntaDeRadioInputSemTextInput(Pergunta p){
 		assertEquals("Pergunta deveria ser um RADIO_INPUT", "RADIO_INPUT", p.getForma().getDescricao());
 		
 		assertEquals("Descricao da pergunta esta errada", 
@@ -142,7 +147,7 @@ public class SurvioTest {
 				"Preço", alternativas.get(0).getDescricao());
 	}
 	
-	public void testPerguntaDeCheckboxInputComTextInput(Pergunta p){
+	private void testPerguntaDeCheckboxInputComTextInput(Pergunta p){
 		assertEquals("Pergunta deveria ser um CHECKBOX_INPUT", "CHECKBOX_INPUT", p.getForma().getDescricao());
 		
 		assertEquals("Descricao da pergunta esta errada", 
@@ -162,7 +167,7 @@ public class SurvioTest {
 				alternativas.get(0).getDescricao());
 	}
 	
-	public void testPerguntaDeCheckboxInputSemTextInput(Pergunta p){
+	private void testPerguntaDeCheckboxInputSemTextInput(Pergunta p){
 		assertEquals("Pergunta deveria ser um CHECKBOX_INPUT", "CHECKBOX_INPUT", p.getForma().getDescricao());
 		
 		assertEquals("Descricao da pergunta esta errada", 
@@ -182,7 +187,7 @@ public class SurvioTest {
 				alternativas.get(alternativas.size()-1).getDescricao());
 	}
 	
-	public void testPerguntaDeTextarea(Pergunta p){
+	private void testPerguntaDeTextarea(Pergunta p){
 		assertEquals("Pergunta deveria ser um TEXTAREA", "TEXTAREA", p.getForma().getDescricao());
 		
 		assertEquals("Descricao da pergunta esta errada", 
@@ -219,6 +224,90 @@ public class SurvioTest {
 	
 		ArrayList<Alternativa> alternativas = p.getAlternativas();
 		assertEquals("Pergunta deveria ter 0 alternativas", 0, alternativas.size());
+	}
+	
+	private void testPerguntaDeRangeInputGroup(Pergunta p) {
+		assertEquals("Pergunta deveria ser um RANGE_INPUT_GROUP", "RANGE_INPUT_GROUP", p.getForma().getDescricao());
+		
+		assertEquals("Descricao da pergunta esta errada", 
+				"Por favor, especifique o número de horas que você gasta por semana:", 
+				p.getDescricao());
+		
+		String[] descs = {
+				"Trabalhando",
+				"Dormindo ou descansando",
+				"Em atividades esportivas ou de lazer"
+		};
+		ArrayList<Pergunta> filhas = p.getFilhas();
+		Pergunta filha = null;
+
+		assertEquals("Pergunta deveria ter 3 perguntas filhas", 3, filhas.size());	
+		for(int i = 0; i<filhas.size(); i++){
+			filha = filhas.get(i);
+			assertEquals("Pergunta filha deveria ser um RANGE_INPUT", "RANGE_INPUT", filha.getForma().getDescricao());
+			assertEquals("Descricao da pergunta filha esta errada", 
+					descs[i], filha.getDescricao());
+		}
+	}
+	
+	private void testPerguntaDeSelect(Pergunta p) {
+		assertEquals("Pergunta deveria ser um SELECT", "SELECT", p.getForma().getDescricao());
+		
+		assertEquals("Descricao da pergunta esta errada", 
+				"Que tipo de roupa você gosta de usar na maioria dos esportes?", 
+				p.getDescricao());
+		
+		ArrayList<Alternativa> alternativas = p.getAlternativas();
+		assertEquals("Pergunta deveria ter 5 alternativas", 5, alternativas.size());
+		assertEquals("Descricao da primeira alternativa da pergunta esta errada",
+				"Escolher",
+				alternativas.get(0).getDescricao());
+		
+		assertEquals("Descricao da ultima alternativa da pergunta esta errada",
+				"Roupa de marca, estilo ou conforto realmente não me incomodam",
+				alternativas.get(alternativas.size()-1).getDescricao());
+	}
+	
+	private void testPerguntaDeStars(Pergunta p) {
+		assertEquals("Pergunta deveria ser um STARS", "STARS", p.getForma().getDescricao());
+		
+		assertEquals("Descricao da pergunta esta errada", 
+				"Como você avalia a publicidade no sentido de poder motivador?", 
+				p.getDescricao());
+		
+		ArrayList<Alternativa> alternativas = p.getAlternativas();
+		assertEquals("Pergunta deveria ter 1 alternativas", 1, alternativas.size());
+		assertEquals("Descricao da primeira alternativa da pergunta esta errada",
+				"[0, 5]",
+				alternativas.get(0).getDescricao());
+	}
+	
+	private void testPerguntaDeImageRadioInput(Pergunta p, ArrayList<Figura> figuras) {
+		assertEquals("Pergunta deveria ser um RADIO_INPUT", "RADIO_INPUT", p.getForma().getDescricao());
+		
+		assertEquals("Descricao da pergunta esta errada", 
+				"Quais impressões você tem da publicidade?", 
+				p.getDescricao());
+		
+		assertEquals("Pergunta deveria ter 0 perguntas filhas", 0, p.getFilhas().size());	
+		
+		ArrayList<Alternativa> alternativas = p.getAlternativas();
+		assertEquals("Pergunta deveria ter 2 alternativas", 2, alternativas.size());
+		assertEquals("Descricao da primeira alternativa da pergunta esta errada",
+				"Positivas",
+				alternativas.get(0).getDescricao());
+		
+		assertEquals("Descricao da ultima alternativa da pergunta esta errada",
+				"Negativas",
+				alternativas.get(alternativas.size()-1).getDescricao());
+		
+		assertEquals("Questionario deveria ter 2 figuras", 2, figuras.size());
+		assertEquals("Image_url da primeira figura esta errada", 
+				"surviocdn.com/s1/user-img/options/c1e/c1e420e8860aa6a1aa97bcc94ee2bb6e98d38791.jpg", 
+				figuras.get(0).getImage_url());
+		assertEquals("Legenda da primeira figura esta errada", 
+				"Positivas", 
+				figuras.get(0).getLegenda());
 	}
 	
 	@AfterClass

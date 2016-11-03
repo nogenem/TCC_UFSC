@@ -80,6 +80,7 @@ public abstract class BasicExtractor implements IExtractor {
 		
 		questionarios = new ArrayList<>();
 		Document doc = Jsoup.parse(html);
+		Elements questionario = null;
 		String tmpTxt = "";
 		
 		JSONArray arrQuestionarios = configs.getJSONArray("questionarios");
@@ -87,14 +88,21 @@ public abstract class BasicExtractor implements IExtractor {
 			configQ = arrQuestionarios.getJSONObject(i);
 			currentQ = new Questionario();
 			
+			// Pega o seletor do questionario, se tiver um
+			tmpTxt = configQ.optString("seletor", "");
+			if(tmpTxt.equals(""))
+				questionario = doc.getElementsByTag("body");
+			else
+				questionario = doc.select(tmpTxt);
+			
 			// Assunto questionario
-			tmpTxt = this.getAssuntoQuestionario(doc);
+			tmpTxt = this.getAssuntoQuestionario(questionario);
 			currentQ.setAssunto(tmpTxt);
 			System.out.println("\t\tAssunto Questionario: " + tmpTxt);
 			
 			configP = configQ.getJSONObject("perguntas");
 			
-			Elements fields = doc.select(configP.getString("seletor"));
+			Elements fields = questionario.select(configP.getString("seletor"));
 			for(Element field : fields){
 				currentP = new Pergunta();
 				
@@ -184,7 +192,8 @@ public abstract class BasicExtractor implements IExtractor {
 	}
 	
 	private boolean isRangeInputGroup(Element field){
-		JSONObject rigObj = configA.optJSONObject("range_input_group");
+		JSONObject rigObj = configA.optJSONObject("range_input_group"),
+				descObj = null;
 		if(rigObj == null) return false;
 		
 		Elements elems = field.select(rigObj.getString("seletor")),
@@ -200,14 +209,16 @@ public abstract class BasicExtractor implements IExtractor {
 		System.out.println("\t\t\t\tRange Input Group:");
 		
 		rigObj = rigObj.getJSONObject("range_input");
+		descObj = rigObj.getJSONObject("descricao");
+		elems = elems.select(rigObj.getString("seletor"));
 		for(Element elem : elems){
-			tmpElems1 = elem.select(rigObj.getString("seletor"));
+			tmpElems1 = elem.select(descObj.getString("seletor"));
 			tmpPerg = new Pergunta();
 			
 			tmpPerg.setTipo("FECHADO");
 			tmpPerg.setForma(FormaDaPerguntaManager.getForma("RANGE_INPUT"));
 			
-			tmpTxt = Util.trim(tmpElems1.get(0).ownText());
+			tmpTxt = getText(tmpElems1, descObj);
 			tmpPerg.setDescricao(tmpTxt);
 			System.out.print("\t\t\t\t\tRange Input: " +tmpTxt);
 			
@@ -226,7 +237,8 @@ public abstract class BasicExtractor implements IExtractor {
 	}
 	
 	private boolean isSelect(Element field) {
-		JSONObject sObj = configA.optJSONObject("select");
+		JSONObject sObj = configA.optJSONObject("select"),
+				descObj = null;
 		if(sObj == null) return false;
 		
 		Elements elems = field.select(sObj.getString("seletor")),
@@ -240,9 +252,10 @@ public abstract class BasicExtractor implements IExtractor {
 		currentP.setForma(FormaDaPerguntaManager.getForma("SELECT"));
 		System.out.println("\t\t\t\tSelect:");
 		
-		tmpElems1 = elems.select(sObj.getString("opcoes"));
+		descObj = sObj.getJSONObject("descricao");
+		tmpElems1 = elems.select(descObj.getString("seletor"));
 		for(Element tmpElem1 : tmpElems1){
-			tmpTxt = Util.trim(tmpElem1.ownText());
+			tmpTxt = getText(tmpElem1, descObj);
 			tmpAlt = new Alternativa(tmpTxt);
 			currentP.addAlternativa(tmpAlt);
 			System.out.println("\t\t\t\t\tOption: " +tmpTxt);
@@ -272,7 +285,8 @@ public abstract class BasicExtractor implements IExtractor {
 	private boolean isCheckboxInput(Element field) {
 		JSONObject ciObj = configA.optJSONObject("checkbox_input");
 		if(ciObj == null) return false;
-		JSONObject tiObj = ciObj.optJSONObject("text_input");
+		JSONObject tiObj = ciObj.optJSONObject("text_input"),
+				descObj = ciObj.getJSONObject("descricao");
 		
 		Elements elems = field.select(ciObj.getString("seletor")),
 				tmpElems1 = null;
@@ -287,8 +301,8 @@ public abstract class BasicExtractor implements IExtractor {
 		System.out.println("\t\t\t\tCheckbox Input:");
 		
 		for(Element elem : elems){
-			tmpElems1 = elem.select(ciObj.getString("texto"));
-			tmpTxt = Util.trim(tmpElems1.get(0).ownText());
+			tmpElems1 = elem.select(descObj.getString("seletor"));
+			tmpTxt = getText(tmpElems1, descObj);
 			System.out.println("\t\t\t\t\t" +tmpTxt);
 			
 			tmpElems1 = tiObj == null? null: elem.select(tiObj.getString("seletor"));
@@ -311,7 +325,8 @@ public abstract class BasicExtractor implements IExtractor {
 	private boolean isRadioInput(Element field) {
 		JSONObject riObj = configA.optJSONObject("radio_input");
 		if(riObj == null) return false;
-		JSONObject tiObj = riObj.optJSONObject("text_input");
+		JSONObject tiObj = riObj.optJSONObject("text_input"),
+				descObj = riObj.getJSONObject("descricao");
 		
 		Elements elems = field.select(riObj.getString("seletor")),
 				tmpElems1 = null;
@@ -326,8 +341,8 @@ public abstract class BasicExtractor implements IExtractor {
 		
 		System.out.println("\t\t\t\tRadio Input:");
 		for(Element elem : elems){
-			tmpElems1 = elem.select(riObj.getString("texto"));
-			tmpTxt = Util.trim(tmpElems1.get(0).ownText());
+			tmpElems1 = elem.select(descObj.getString("seletor"));
+			tmpTxt = getText(tmpElems1, descObj);
 			System.out.println("\t\t\t\t\t" +tmpTxt);
 			
 			tmpElems1 = tiObj == null? null: elem.select(tiObj.getString("seletor"));
@@ -348,7 +363,8 @@ public abstract class BasicExtractor implements IExtractor {
 	}
 	
 	private boolean isImgRadioInput(Element field) {
-		JSONObject iriObj = configA.optJSONObject("image_radio_input");
+		JSONObject iriObj = configA.optJSONObject("image_radio_input"),
+				descObj = null;
 		if(iriObj == null) return false;
 		
 		Elements elems = field.select(iriObj.getString("seletor")),
@@ -363,10 +379,11 @@ public abstract class BasicExtractor implements IExtractor {
 		currentP.setForma(FormaDaPerguntaManager.getForma("RADIO_INPUT"));
 		
 		System.out.println("\t\t\t\tImage Radio Input:");
+		descObj = iriObj.getJSONObject("descricao");
 		for(Element elem : elems){
-			tmpElems1 = elem.select(iriObj.getString("texto"));
+			tmpElems1 = elem.select(descObj.getString("seletor"));
 			
-			tmpTxt = Util.trim(tmpElems1.get(0).ownText());
+			tmpTxt = getText(tmpElems1, descObj);
 			tmpAlt = new Alternativa(tmpTxt);
 			currentP.addAlternativa(tmpAlt);
 			System.out.println("\t\t\t\t\t" +tmpTxt);
@@ -385,6 +402,7 @@ public abstract class BasicExtractor implements IExtractor {
 				System.out.println("\t\t\t\t\t\tALT: " +tmpTxt);
 				
 				tmpFig.setDono(tmpAlt);
+				currentQ.addFigura(tmpFig);
 			}
 		}
 		return true;
@@ -393,7 +411,8 @@ public abstract class BasicExtractor implements IExtractor {
 	private boolean isTextInputMatrix(Element field) {
 		JSONObject timObj = configA.optJSONObject("text_input_matrix");
 		if(timObj == null) return false;
-		JSONObject tmpObj = null;
+		JSONObject tmpObj = null,
+				descObj = null;
 		
 		Elements elems = field.select(timObj.getString("teste")),
 				tmpElems1 = null;
@@ -414,18 +433,20 @@ public abstract class BasicExtractor implements IExtractor {
 		
 		System.out.println("\t\t\t\tText Input Matriz:");
 		tmpObj = timObj.getJSONObject("thead");
+		descObj = tmpObj.getJSONObject("descricao");
 		tmpElems1 = elems.get(0).select(tmpObj.getString("seletor"));
 		for(Element tmpElem1 : tmpElems1){
-			tmpTxt = Util.trim(tmpElem1.ownText());
+			tmpTxt = getText(tmpElem1, descObj);
 			tmpAlt = new Alternativa(tmpTxt);
 			altList.add(tmpAlt);
 			System.out.println("\t\t\t\t\tHead: " +tmpTxt);
 		}
 		
 		tmpObj = timObj.getJSONObject("tbody");
+		descObj = tmpObj.getJSONObject("descricao");
 		tmpElems1 = elems.get(0).select(tmpObj.getString("seletor"));
 		for(Element tmpElem1 : tmpElems1){
-			tmpTxt = Util.trim(tmpElem1.ownText()); 
+			tmpTxt = getText(tmpElem1, descObj); 
 			tmpPerg = new Pergunta(tmpTxt, tmpTipo, tmpForma);
 			for(Alternativa a : altList){
 				tmpPerg.addAlternativa(a.clone());
@@ -440,7 +461,8 @@ public abstract class BasicExtractor implements IExtractor {
 	private boolean isRadioInputMatrix(Element field) {
 		JSONObject rimObj = configA.optJSONObject("radio_input_matrix");
 		if(rimObj == null) return false;
-		JSONObject tmpObj = null;
+		JSONObject tmpObj = null,
+				descObj = null;
 		
 		Elements elems = field.select(rimObj.getString("teste")),
 				tmpElems1 = null;
@@ -461,18 +483,20 @@ public abstract class BasicExtractor implements IExtractor {
 		
 		System.out.println("\t\t\t\tRadio Input Matriz:");
 		tmpObj = rimObj.getJSONObject("thead");
+		descObj = tmpObj.getJSONObject("descricao");
 		tmpElems1 = elems.get(0).select(tmpObj.getString("seletor"));
 		for(Element tmpElem1 : tmpElems1){
-			tmpTxt = Util.trim(tmpElem1.ownText());
+			tmpTxt = getText(tmpElem1, descObj); 
 			tmpAlt = new Alternativa(tmpTxt);
 			altList.add(tmpAlt);
 			System.out.println("\t\t\t\t\tHead: " +tmpTxt);
 		}
 		
 		tmpObj = rimObj.getJSONObject("tbody");
+		descObj = tmpObj.getJSONObject("descricao");
 		tmpElems1 = elems.get(0).select(tmpObj.getString("seletor"));
 		for(Element tmpElem1 : tmpElems1){
-			tmpTxt = Util.trim(tmpElem1.ownText()); 
+			tmpTxt = getText(tmpElem1, descObj); 
 			tmpPerg = new Pergunta(tmpTxt, tmpTipo, tmpForma);
 			for(Alternativa a : altList){
 				tmpPerg.addAlternativa(a.clone());
@@ -485,22 +509,59 @@ public abstract class BasicExtractor implements IExtractor {
 	}
 	
 	private String getDescricaoPergunta(Element field) {
-		Elements tmpElems = field.select(configP.getString("descricao")),
-				// subdescricao é opcional
-				tmpElems2 = field.select(configP.optString("subdescricao", ""));//TODO oq acontece quando n tem subdescricao
+		JSONObject descObj = configP.optJSONObject("descricao"),
+				subDescObj = configP.optJSONObject("subdescricao");
+		Elements tmpElems = field.select(descObj.getString("seletor"));
 		String desc = "";
-		if(!tmpElems.isEmpty())
-			desc = Util.trim(tmpElems.get(0).ownText());
-		if(!tmpElems2.isEmpty())
-			desc += (tmpElems.isEmpty()?"":"\n") + 
-				Util.trim(tmpElems2.get(0).ownText());
+		
+		if(!tmpElems.isEmpty()){
+			desc = getText(tmpElems, descObj);
+			if(subDescObj != null){
+				tmpElems = field.select(subDescObj.getString("seletor"));
+				if(!tmpElems.isEmpty())
+					desc += "\n" + getText(tmpElems, subDescObj);
+			}
+		}
 		return desc;
 	}
 
-	private String getAssuntoQuestionario(Document doc) {
-		Elements tmp = doc.select(configQ.getString("assunto"));
+	private String getAssuntoQuestionario(Elements field) {
+		Elements tmp = field.select(configQ.getString("assunto"));
 		if(tmp.isEmpty()) return "";
 		return Util.trim(tmp.get(0).ownText());
 	}
-
+	
+	private String getText(Element elem, JSONObject descObj){
+		return getText(new Elements(elem), descObj);
+	}
+	
+	private String getText(Elements elems, JSONObject descObj){
+		String text = "", metodo = "";
+		Elements tmpElems = optSelect(elems, 
+				descObj.optString("seletor", ""), elems);
+		metodo = descObj.optString("metodo", "").toLowerCase();
+		
+		if(metodo.equals("owntext") || metodo.equals("")){
+			text = tmpElems.get(0).ownText();
+		}else if(metodo.equals("text")){
+			text = tmpElems.text();
+		}else if(metodo.equals("textnodes")){
+			//TODO fazer isso...
+		}
+		
+		return Util.trim(text);
+	}
+	
+	final private Elements optSelect(Elements elems, String selector, Elements defaultValue){
+		Elements tmpElems = null;
+		if(selector.equals(""))
+			tmpElems = defaultValue;
+		else{
+			tmpElems = elems.select(selector);
+			if(tmpElems.isEmpty())
+				tmpElems = defaultValue;
+		}
+		return tmpElems;
+	}
+	
 }
