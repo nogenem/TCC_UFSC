@@ -1,0 +1,27 @@
+{
+	"questionarios": [
+		{
+			"seletor": "",
+			"assunto": "table.survey-title-table span.title-text",
+			"perguntas": {
+				"seletor": "section.survey-page-body form[name=surveyForm] div.questions div.question-row",
+				"descricao": {
+					"seletor": "h4.question-title-container span.question-number, h4.question-title-container span.user-generated",
+					"metodo": "text"
+				},
+				"alternativas": {
+					"textarea": {
+						"seletor": "div.question-essay div.question-body textarea"
+					},
+					"radio_input": {
+						"seletor": "div.question-single-choice-radio div.question-body div.answer-option-cell",
+						"descricao": {
+							"seletor": "label.radio-button-label span.radio-button-label-text",
+							"metodo": "owntext"
+						}
+					}
+				}
+			}
+		}
+	]
+}

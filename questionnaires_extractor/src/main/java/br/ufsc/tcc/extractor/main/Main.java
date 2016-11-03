@@ -27,7 +27,9 @@ public class Main {
 			"www.almaderma.com.br/produtos_floral_questionario.php",
 			"www.almaderma.com.br/formulario/florais/",
 			"www.hoteljardinsdajuda.com/question%C3%A1rio.aspx?ID=17",
-			"www.bioinfo.mpg.de/mctq/core_work_life/core/core.jsp"
+			"www.bioinfo.mpg.de/mctq/core_work_life/core/core.jsp",
+			"www.surveymonkey.com/mp/",
+			"www.surveymonkey.com/r/"
 		};
 		
 		// Cria um regex a partir dos dominios
@@ -46,7 +48,8 @@ public class Main {
 			controller.setCustomData(new String[]{regex});
 			
 			// Seeds ja terminadas
-			controller.addSeed("http://www.survio.com/br/modelos-de-pesquisa");
+			//controller.addSeed("http://www.survio.com/br/modelos-de-pesquisa");
+			controller.addSeed("https://www.surveymonkey.com/mp/sample-survey-questionnaire-templates/");
 			
 			// Seeds ainda em desenvolvimento
 			

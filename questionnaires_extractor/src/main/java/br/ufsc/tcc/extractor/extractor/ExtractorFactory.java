@@ -3,7 +3,8 @@ package br.ufsc.tcc.extractor.extractor;
 public enum ExtractorFactory {
 	
 	//TODO botar o resto dos extratores
-	Survio("survio", new SurvioExtractor());
+	Survio("survio", new SurvioExtractor()),
+	SurveyMonkey("surveymonkey", new SurveyMonkeyExtractor());
 	
 	private final String name;
 	private final IExtractor extractor;
