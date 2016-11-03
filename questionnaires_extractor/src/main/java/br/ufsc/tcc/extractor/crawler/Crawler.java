@@ -82,6 +82,12 @@ public class Crawler extends WebCrawler {
 		}
 	}
 	
+	/**
+	 * Seleciona um Extrator utilizando o domínio da url passada.
+	 * 
+	 * @param url		Url atual que se quer achar o Extrator.
+	 * @return			Retorna o Extrator escolhido.
+	 */
 	private IExtractor chooseExtractor(WebURL url){
 		String dom = url.getDomain().toLowerCase();
 		dom = dom.substring(0, dom.indexOf('.'));

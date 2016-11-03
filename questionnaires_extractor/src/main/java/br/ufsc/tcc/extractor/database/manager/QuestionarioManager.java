@@ -34,6 +34,14 @@ public class QuestionarioManager {
 		QuestionarioManager.loadQuestionarioLinks(questionarioDao);
 	}
 	
+	/**
+	 * Salva o questionário passado no banco de dados.
+	 * Método mais geral que salva também os grupos, perguntas 
+	 * e figuras do questionário.
+	 * 
+	 * @param q				Questionário que se quer salvar.
+	 * @throws Exception
+	 */
 	public void save(Questionario q) throws Exception {
 		questionarioDao.save(q);
 		for(Grupo g : q.getGrupos()){
@@ -47,10 +55,23 @@ public class QuestionarioManager {
 		}
 	}
 	
+	/**
+	 * Verifica se o link passado ja tinha sido salvo no banco de dados antes do 
+	 * sistema iniciar.
+	 * 
+	 * @param link			Link que se quer verificar.
+	 * @return				<b>TRUE</b> caso o link ja tinha sido salvo anteriormente,</br>
+	 * 						<b>FALSE</b> caso contrario.
+	 */
 	public static boolean linkWasExtracted(String link){
 		return extractedLinks.contains(link);
 	}
 	
+	/**
+	 * Carrega todos os links dos questionários do banco de dados.
+	 * 
+	 * @param dao		Uma instancia de um QuestionaDao. 
+	 */
 	private static synchronized void loadQuestionarioLinks(QuestionarioDao dao) {
 		if(extractedLinks != null) return;
 		

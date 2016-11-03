@@ -63,7 +63,14 @@ public abstract class BasicExtractor implements IExtractor {
 	public boolean shouldExtract(WebURL url) {
 		return true;
 	}
-
+	
+	/**
+	 * Tenta extrair os questionários do html passado.
+	 * 
+	 * @param html		HTML que, provavelmente, possui um ou mais questionários.
+	 * @return 			Lista de objetos Questionario que possuem os dados dos questionários
+	 * 					encontrados no HTML passado.
+	 */
 	public ArrayList<Questionario> extract(String html) {
 		if(configs == null || !configs.has("questionarios")){
 			System.err.println("\nBasicExtractor:extract()> Nao foi possivel encontrar as configuracoes necessarias "

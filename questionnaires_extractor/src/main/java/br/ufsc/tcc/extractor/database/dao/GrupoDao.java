@@ -12,6 +12,12 @@ public class GrupoDao extends BasicDao {
 		super(c, "Grupo");
 	}
 	
+	/**
+	 * Salva o grupo passado no banco de dados.
+	 * 
+	 * @param g				Grupo que se quer salvar.
+	 * @throws Exception
+	 */
 	public void save(Grupo g) throws Exception{
 		HashMap<String, Object> data = new HashMap<>();
 		

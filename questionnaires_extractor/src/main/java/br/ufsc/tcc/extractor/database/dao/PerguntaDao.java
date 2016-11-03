@@ -13,6 +13,12 @@ public class PerguntaDao extends BasicDao {
 		super(c, "Pergunta");
 	}
 	
+	/**
+	 * Salva a pergunta passada no banco de dados.
+	 * 
+	 * @param p				Pergunta que se quer salvar.
+	 * @throws Exception
+	 */
 	public void save(Pergunta p) throws Exception{
 		HashMap<String, Object> data = new HashMap<>();
 		

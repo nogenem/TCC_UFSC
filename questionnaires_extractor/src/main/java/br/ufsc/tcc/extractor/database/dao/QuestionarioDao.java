@@ -14,6 +14,12 @@ public class QuestionarioDao extends BasicDao {
 		super(c, "Questionario");
 	}
 	
+	/**
+	 * Salva o questionário passado no banco de dados.
+	 * 
+	 * @param q				Questionario que se quer salvar.
+	 * @throws Exception
+	 */
 	public void save(Questionario q) throws Exception{
 		HashMap<String, Object> data = new HashMap<>();
 		
@@ -24,6 +30,13 @@ public class QuestionarioDao extends BasicDao {
 		q.setId(getLastUID());
 	}
 	
+	/**
+	 * Retorna todos os valores do campo LINK_DOCUMENTO da tabela Questionario do banco de dados.
+	 * 
+	 * @return				Uma lista com todos os valores do campo LINK_DOCUMENTO da tabela 
+	 * 						Questionario do banco de dados.
+	 * @throws Exception
+	 */
 	public ArrayList<String> getAllLinks() throws Exception {
 		ArrayList<String> resp = new ArrayList<>();
 		

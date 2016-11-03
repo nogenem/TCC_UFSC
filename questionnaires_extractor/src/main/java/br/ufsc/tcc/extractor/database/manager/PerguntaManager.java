@@ -15,7 +15,15 @@ public class PerguntaManager {
 		perguntaDao = new PerguntaDao(c);
 		alternativaDao = new AlternativaDao(c);
 	}
-
+	
+	/**
+	 * Salva a pergunta passada no banco de dados. 
+	 * Método mais geral que salva também as Alternativas e as
+	 * Perguntas filhas desta Pergunta.
+	 * 
+	 * @param p				Pergunta que se quer salvar.
+	 * @throws Exception
+	 */
 	public void save(Pergunta p) throws Exception {
 		perguntaDao.save(p);
 		for(Alternativa a : p.getAlternativas()){

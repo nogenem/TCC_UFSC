@@ -11,6 +11,12 @@ public class FormaDaPerguntaManager {
 	private static HashMap<String, FormaDaPergunta> formas;
 	private static FormaDaPerguntaDao dao;
 	
+	/**
+	 * Retorna uma FormaDaPergunta que possue a mesma descrição da forma passada.
+	 * 
+	 * @param forma		Descrição da FormaDaPergunta que se quer.
+	 * @return			Um objeto FormaDaPergunta que possue a mesma descrição da forma passada.
+	 */
 	public static FormaDaPergunta getForma(String forma){
 		if(formas == null){//TODO mudar isso?
 			System.err.println("FormaDaPerguntaManager:getForma()> Chame a funcao 'loadFormas' "
@@ -22,6 +28,11 @@ public class FormaDaPerguntaManager {
 		return formas.get(forma);
 	}
 	
+	/**
+	 * Carrega todas as FormaDaPergunta do banco de dados.
+	 * 
+	 * @param c		Conexão com o banco de dados.
+	 */
 	public static synchronized void loadFormas(BasicConnection c){
 		if(formas != null) return;
 		dao = new FormaDaPerguntaDao(c);

@@ -13,6 +13,12 @@ public class AlternativaDao extends BasicDao {
 		super(c, "Alternativa");
 	}
 	
+	/**
+	 * Salva a alternativa passada no banco de dados.
+	 * 
+	 * @param a				Alternativa que se quer salvar.
+	 * @throws Exception
+	 */
 	public void save(Alternativa a) throws Exception {
 		HashMap<String, Object> data = new HashMap<>();
 		

@@ -13,6 +13,12 @@ public class FormaDaPerguntaDao extends BasicDao {
 		super(c, "FormaDaPergunta");
 	}
 	
+	/**
+	 * Salva a forma da pergunta passada no banco de dados.
+	 * 
+	 * @param fp				FormaDaPergunta que se quer salvar.
+	 * @throws Exception
+	 */
 	public void save(FormaDaPergunta fp) throws Exception{
 		HashMap<String, Object> data = new HashMap<>();
 		
@@ -22,6 +28,13 @@ public class FormaDaPerguntaDao extends BasicDao {
 		fp.setId(getLastUID());
 	}
 	
+	/**
+	 * Retorna um mapa contendo todas as FormaDaPergunta do banco de dados
+	 * com seus atributos. O mapa é da forma: (descrição, FormaDaPergunta).
+	 * 
+	 * @return				Um mapa contendo todas as FormaDaPergunta do banco de dados.
+	 * @throws Exception
+	 */
 	public HashMap<String, FormaDaPergunta> getAll() throws Exception {
 		HashMap<String, FormaDaPergunta> resp = new HashMap<>();
 		

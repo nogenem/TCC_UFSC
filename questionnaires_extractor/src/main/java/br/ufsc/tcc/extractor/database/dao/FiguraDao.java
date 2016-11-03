@@ -14,6 +14,12 @@ public class FiguraDao extends BasicDao {
 		super(c, "Figura");
 	}
 	
+	/**
+	 * Salva a figura passada no banco de dados.
+	 * 
+	 * @param f				Figura que se quer salvar.
+	 * @throws Exception
+	 */
 	public void save(Figura f) throws Exception{
 		HashMap<String, Object> data = new HashMap<>();
 		
