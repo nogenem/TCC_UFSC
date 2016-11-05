@@ -257,6 +257,9 @@ public class SurvioTest {
 			assertEquals("Pergunta filha deveria ser um RANGE_INPUT", "RANGE_INPUT", filha.getForma().getDescricao());
 			assertEquals("Descricao da pergunta filha esta errada", 
 					descs[i], filha.getDescricao());
+			
+			assertEquals("Alternativa da filha esta errada", 
+					"[0, 168]", filha.getAlternativas().get(0).getDescricao());
 		}
 	}
 	

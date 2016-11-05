@@ -145,6 +145,7 @@ public abstract class BasicExtractor implements IExtractor {
 				this.isRadioInputMatrix(field) ||
 				this.isCheckboxInput(field) ||
 				this.isRangeInputGroup(field) ||
+				this.isRangeInput(field) ||
 				this.isRadioInput(field) ||
 				this.isSelect(field) ||
 				this.isRating(field) || 
@@ -153,7 +154,7 @@ public abstract class BasicExtractor implements IExtractor {
 				this.isDateInput(field) ||
 				this.isNumberInput(field);
 	}
-	
+
 	protected boolean isTextArea(Element field) {
 		JSONArray taArr = configA.optJSONArray("textarea");
 		if(taArr == null) return false;
@@ -247,7 +248,8 @@ public abstract class BasicExtractor implements IExtractor {
 		if(riArr == null) return false;
 		
 		JSONObject riObj = null,
-				descObj = null;
+				descObj = null,
+				tmpObj = null;
 		Elements teste = null, 
 				elems = null,
 				tmpElems1 = null;
@@ -279,17 +281,53 @@ public abstract class BasicExtractor implements IExtractor {
 					tmpPerg.setDescricao(tmpTxt);
 					System.out.print("\t\t\t\t\tRange Input: " +tmpTxt);
 					
-					tmpElems1 = elem.select(riObj.getString("valor_min"));
-					tmpTxt = "[" +Util.trim(tmpElems1.get(0).ownText())+ ", ";
+					tmpObj = riObj.getJSONObject("valor_min");
+					tmpTxt = "[" +getText(elems, tmpObj)+ ", ";
 					
-					tmpElems1 = elem.select(riObj.getString("valor_max"));
-					tmpTxt += Util.trim(tmpElems1.get(0).ownText()) +"]";
+					tmpObj = riObj.getJSONObject("valor_max");
+					tmpTxt += getText(elems, tmpObj) +"]";
 					
 					tmpAlt = new Alternativa(tmpTxt);
 					tmpPerg.addAlternativa(tmpAlt);
 					currentP.addFilha(tmpPerg);
 					System.out.println(tmpTxt);
 				}
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private boolean isRangeInput(Element field) {
+		JSONArray riArr = configA.optJSONArray("range_input");
+		if(riArr == null) return false;
+		
+		JSONObject riObj = null,
+				descObj = null;
+		Elements teste = null, 
+				elems = null;
+		Alternativa tmpAlt = null;
+		String tmpTxt = "";
+		
+		for(int i = 0; i < riArr.length(); i++){
+			riObj = riArr.getJSONObject(i);
+			
+			elems = field.select(riObj.getString("seletor"));
+			teste = optSelect(field, riObj.optString("teste"), elems);
+			if(!teste.isEmpty()){
+				currentP.setTipo("FECHADO");
+				currentP.setForma(FormaDaPerguntaManager.getForma("RANGE_INPUT"));
+				System.out.println("\t\t\t\tRange Input:");
+				
+				descObj = riObj.getJSONObject("valor_min");
+				tmpTxt = "[" +getText(elems, descObj)+ ", ";
+				
+				descObj = riObj.getJSONObject("valor_max");
+				tmpTxt += getText(elems, descObj) +"]";
+				
+				tmpAlt = new Alternativa(tmpTxt);
+				currentP.addAlternativa(tmpAlt);
+				System.out.println("\t\t\t\t\t" +tmpTxt);
 				return true;
 			}
 		}

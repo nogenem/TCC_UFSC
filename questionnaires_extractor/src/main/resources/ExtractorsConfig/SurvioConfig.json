@@ -46,8 +46,14 @@
 									"seletor": "div.divide-title",
 									"metodo": "owntext"
 								},
-								"valor_min": "div.divide-left",
-								"valor_max": "div.divide-right"
+								"valor_min": {
+									"seletor": "div.divide-left",
+									"metodo": "owntext"
+								},
+								"valor_max": {
+									"seletor": "div.divide-right",
+									"metodo": "owntext"
+								}
 							}
 						}
 					],
