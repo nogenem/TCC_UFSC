@@ -82,8 +82,9 @@ public abstract class BasicExtractor implements IExtractor {
 		Document doc = Jsoup.parse(html);
 		Elements questionario = null;
 		String tmpTxt = "";
+		Figura tmpFig = null;
 		
-		//TODO adicionar verificação de IMAGE em todos os tipos de alternativas e perguntas
+		//TODO adicionar verificação de IMAGE em todos os tipos de alternativas
 		//TODO adicionar verificação de teste em todos os tipos de alternativas
 		
 		JSONArray arrQuestionarios = configs.getJSONArray("questionarios");
@@ -113,6 +114,11 @@ public abstract class BasicExtractor implements IExtractor {
 				tmpTxt = this.getDescricaoPergunta(field);
 				currentP.setDescricao(tmpTxt);
 				System.out.println("\t\t\tDescricao Pergunta: " + tmpTxt);
+				
+				// Figura
+				tmpFig = getImage(field, configP);
+				if(tmpFig != null)
+					tmpFig.setDono(currentP);
 				
 				// Alternativas
 				configA = configP.getJSONObject("alternativas");
@@ -148,6 +154,7 @@ public abstract class BasicExtractor implements IExtractor {
 		
 		JSONObject taObj = null;
 		Elements elems = null;
+		
 		for(int i = 0; i < taArr.length(); i++){
 			taObj = taArr.getJSONObject(i);
 			
@@ -168,6 +175,7 @@ public abstract class BasicExtractor implements IExtractor {
 		
 		JSONObject tiObj = null;
 		Elements elems = null;
+		
 		for(int i = 0; i < tiArr.length(); i++){
 			tiObj = tiArr.getJSONObject(i);
 			
@@ -188,6 +196,7 @@ public abstract class BasicExtractor implements IExtractor {
 		
 		JSONObject diObj = null;
 		Elements elems = null;
+		
 		for(int i = 0; i < diArr.length(); i++){
 			diObj = diArr.getJSONObject(i);
 			
@@ -208,6 +217,7 @@ public abstract class BasicExtractor implements IExtractor {
 		
 		JSONObject niObj = null;
 		Elements elems = null;
+		
 		for(int i = 0; i < niArr.length(); i++){
 			niObj = niArr.getJSONObject(i);
 			
@@ -576,15 +586,20 @@ public abstract class BasicExtractor implements IExtractor {
 		return Util.trim(tmp.get(0).ownText());
 	}
 	
-	final private Figura getImage(Element elem, JSONObject obj){
-		Elements tmpElems1 = optSelect(elem, obj.optString("imagem", ""), null);
+	final private Figura getImage(Element elem, JSONObject configObj){
+		return getImage(new Elements(elem), configObj);
+	}
+	
+	final private Figura getImage(Elements elems, JSONObject configObj){
+		Elements tmpElems1 = optSelect(elems, configObj.optString("imagem", ""), null);
 		Figura tmpFig = null;
 		String tmpTxt = "";
 		if(tmpElems1 != null && !tmpElems1.isEmpty()){
 			tmpFig = new Figura();
 			System.out.println("\t\t\t\t\tImagem:");
 			
-			tmpTxt = tmpElems1.get(0).attr("src").replace("//", "");
+			tmpTxt = tmpElems1.get(0).attr("src")
+					.replaceAll("^((http|https)://)", "").replace("//", "");
 			tmpFig.setImage_url(tmpTxt);
 			System.out.println("\t\t\t\t\t\tSRC: " +tmpTxt);
 			
