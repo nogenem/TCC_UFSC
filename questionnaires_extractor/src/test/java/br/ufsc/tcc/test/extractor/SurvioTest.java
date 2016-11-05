@@ -62,10 +62,11 @@ public class SurvioTest {
 		testPerguntaDeTextInput(perguntas.get(8));
 		testPerguntaDeRangeInputGroup(perguntas.get(9));
 		testPerguntaDeSelect(perguntas.get(10));
-		testPerguntaDeStars(perguntas.get(11));
+		testPerguntaDeRating(perguntas.get(11));
 		testPerguntaDeImageRadioInput(perguntas.get(12), q.getFiguras());
 	}
-
+	
+	//Ex: https://www.survio.com/modelo-de-pesquisa/pesquisa-sobre-empregados-sobrecarregados-e-esgotados
 	private void testPerguntaDeRadioInputComTextInput(Pergunta p){
 		assertEquals("Pergunta deveria ser um RADIO_INPUT", "RADIO_INPUT", p.getForma().getDescricao());
 		
@@ -86,6 +87,7 @@ public class SurvioTest {
 				alternativas.get(0).getDescricao());
 	}
 	
+	//Ex: https://www.survio.com/modelo-de-pesquisa/pesquisa-sobre-empregados-sobrecarregados-e-esgotados
 	private void testPerguntaDeRadioInputSemTextInput(Pergunta p){
 		assertEquals("Pergunta deveria ser um RADIO_INPUT", "RADIO_INPUT", p.getForma().getDescricao());
 		
@@ -106,6 +108,7 @@ public class SurvioTest {
 				alternativas.get(alternativas.size()-1).getDescricao());
 	}
 	
+	//Ex: https://www.survio.com/modelo-de-pesquisa/pesquisa-de-preco-do-produto
 	private void testPerguntaDeRadioInputMatrix(Pergunta p) {
 		assertEquals("Pergunta deveria ser um RADIO_INPUT_MATRIX", "RADIO_INPUT_MATRIX", 
 				p.getForma().getDescricao());
@@ -127,6 +130,7 @@ public class SurvioTest {
 				"4 ou mais a menos", alternativas.get(0).getDescricao());
 	}
 	
+	//Ex: https://www.survio.com/modelo-de-pesquisa/pesquisa-de-preco-do-produto
 	private void testPerguntaDeTextInputMatrix(Pergunta p) {
 		assertEquals("Pergunta deveria ser um TEXT_INPUT_MATRIX", "TEXT_INPUT_MATRIX", 
 				p.getForma().getDescricao());
@@ -147,6 +151,7 @@ public class SurvioTest {
 				"Preço", alternativas.get(0).getDescricao());
 	}
 	
+	//Ex: https://www.survio.com/modelo-de-pesquisa/pesquisa-de-preco-do-produto
 	private void testPerguntaDeCheckboxInputComTextInput(Pergunta p){
 		assertEquals("Pergunta deveria ser um CHECKBOX_INPUT", "CHECKBOX_INPUT", p.getForma().getDescricao());
 		
@@ -167,6 +172,7 @@ public class SurvioTest {
 				alternativas.get(0).getDescricao());
 	}
 	
+	//Ex: https://www.survio.com/modelo-de-pesquisa/pesquisa-de-preco-do-produto
 	private void testPerguntaDeCheckboxInputSemTextInput(Pergunta p){
 		assertEquals("Pergunta deveria ser um CHECKBOX_INPUT", "CHECKBOX_INPUT", p.getForma().getDescricao());
 		
@@ -187,6 +193,7 @@ public class SurvioTest {
 				alternativas.get(alternativas.size()-1).getDescricao());
 	}
 	
+	//Ex: https://www.survio.com/modelo-de-pesquisa/feedback-sobre-servico
 	private void testPerguntaDeTextarea(Pergunta p){
 		assertEquals("Pergunta deveria ser um TEXTAREA", "TEXTAREA", p.getForma().getDescricao());
 		
@@ -200,6 +207,7 @@ public class SurvioTest {
 		assertEquals("Pergunta deveria ter 0 alternativas", 0, alternativas.size());
 	}
 	
+	//Ex: https://www.survio.com/modelo-de-pesquisa/pesquisa-sobre-empregados-sobrecarregados-e-esgotados
 	private void testPerguntaDeNumberInput(Pergunta p) {
 		assertEquals("Pergunta deveria ser um NUMBER_INPUT", "NUMBER_INPUT", p.getForma().getDescricao());
 		
@@ -213,6 +221,7 @@ public class SurvioTest {
 		assertEquals("Pergunta deveria ter 0 alternativas", 0, alternativas.size());
 	}
 	
+	//Ex: https://www.survio.com/modelo-de-pesquisa/pesquisa-para-consumidores-de-conteudo-multimidia
 	private void testPerguntaDeTextInput(Pergunta p) {
 		assertEquals("Pergunta deveria ser um TEXT_INPUT", "TEXT_INPUT", p.getForma().getDescricao());
 		
@@ -226,6 +235,7 @@ public class SurvioTest {
 		assertEquals("Pergunta deveria ter 0 alternativas", 0, alternativas.size());
 	}
 	
+	//Ex: https://www.survio.com/modelo-de-pesquisa/pesquisa-sobre-empregados-sobrecarregados-e-esgotados
 	private void testPerguntaDeRangeInputGroup(Pergunta p) {
 		assertEquals("Pergunta deveria ser um RANGE_INPUT_GROUP", "RANGE_INPUT_GROUP", p.getForma().getDescricao());
 		
@@ -250,6 +260,7 @@ public class SurvioTest {
 		}
 	}
 	
+	//Ex: https://www.survio.com/modelo-de-pesquisa/pesquisa-sobre-popularidade-de-esportes-radicais
 	private void testPerguntaDeSelect(Pergunta p) {
 		assertEquals("Pergunta deveria ser um SELECT", "SELECT", p.getForma().getDescricao());
 		
@@ -268,20 +279,22 @@ public class SurvioTest {
 				alternativas.get(alternativas.size()-1).getDescricao());
 	}
 	
-	private void testPerguntaDeStars(Pergunta p) {
-		assertEquals("Pergunta deveria ser um STARS", "STARS", p.getForma().getDescricao());
+	//Ex: https://www.survio.com/modelo-de-pesquisa/pesquisa-de-percepcao-da-publicidade-e-de-sua-eficiencia
+	private void testPerguntaDeRating(Pergunta p) {
+		assertEquals("Pergunta deveria ser um RATING", "RATING", p.getForma().getDescricao());
 		
 		assertEquals("Descricao da pergunta esta errada", 
 				"Como você avalia a publicidade no sentido de poder motivador?", 
 				p.getDescricao());
 		
 		ArrayList<Alternativa> alternativas = p.getAlternativas();
-		assertEquals("Pergunta deveria ter 1 alternativas", 1, alternativas.size());
+		assertEquals("Pergunta deveria ter 5 alternativas", 5, alternativas.size());
 		assertEquals("Descricao da primeira alternativa da pergunta esta errada",
-				"[0, 5]",
+				"1",
 				alternativas.get(0).getDescricao());
 	}
 	
+	//Ex: https://www.survio.com/modelo-de-pesquisa/pesquisa-de-percepcao-da-publicidade-e-de-sua-eficiencia
 	private void testPerguntaDeImageRadioInput(Pergunta p, ArrayList<Figura> figuras) {
 		assertEquals("Pergunta deveria ser um RADIO_INPUT", "RADIO_INPUT", p.getForma().getDescricao());
 		

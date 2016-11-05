@@ -14,104 +14,130 @@
 					"metodo": "owntext"
 				},
 				"alternativas": {
-					"textarea": {
-						"seletor": ".input-group-textarea textarea"
-					},
-					"text_input": {
-						"seletor": ".input-group-text input.form-control[type=text]"
-					},
-					"date_input": {
-						"seletor": ".input-group-text input.form-control[type=date]"
-					},
-					"number_input": {
-						"seletor": ".input-group-text input.form-control[type=number]"
-					},
-					"range_input_group": {
-						"seletor": "div.row-divide",
-						"range_input": {
-                            "seletor": "div.divide-item",
+					"textarea": [
+						{
+							"seletor": ".input-group-textarea textarea"
+						}
+					],
+					"text_input": [
+						{
+							"seletor": ".input-group-text input.form-control[type=text]"
+						}
+					],
+					"date_input": [
+						{
+							"seletor": ".input-group-text input.form-control[type=date]"
+						}
+					],
+					"number_input": [
+						{
+							"seletor": ".input-group-text input.form-control[type=number]"
+						}
+					],
+					"range_input_group": [
+						{
+							"seletor": "div.row-divide",
+							"range_input": {
+	                            "seletor": "div.divide-item",
+								"descricao": {
+									"seletor": "div.divide-title",
+									"metodo": "owntext"
+								},
+								"valor_min": "div.divide-left",
+								"valor_max": "div.divide-right"
+							}
+						}
+					],
+					"select": [
+						{
+							"seletor": "label.select select.form-control option",
 							"descricao": {
-								"seletor": "div.divide-title",
+								"seletor": "",
+								"metodo": "owntext"
+							}
+						}
+					],
+					"rating": [
+						{
+							"seletor": "div.special-padding-row div.original-stars input.star",
+							"descricao": {
+								"seletor": "",
+								"metodo": "value"
+							}
+						}
+					],
+					"checkbox_input": [
+						{
+							"seletor": "div.label-cont label.input-group-checkbox",
+							"descricao": {
+								"seletor": ".input-group-title",
 								"metodo": "owntext"
 							},
-							"valor_min": "div.divide-left",
-							"valor_max": "div.divide-right"
-						}
-					},
-					"select": {
-						"seletor": "label.select select.form-control",
-						"descricao": {
-							"seletor": "option",
-							"metodo": "owntext"
-						}
-					},
-					"stars": {
-						"seletor": "div.special-padding-row div.original-stars input.star"
-					},
-					"checkbox_input": {
-						"seletor": "div.label-cont label.input-group-checkbox",
-						"descricao": {
-							"seletor": ".input-group-title",
-							"metodo": "owntext"
-						},
-						"text_input": {
-							"seletor": "div.text-addon"
-						}
-					},
-					"radio_input": {
-						"seletor": "div.label-cont label.input-group-radio",
-						"descricao": {
-							"seletor": "span.input-group-title",
-							"metodo": "owntext"
-						},
-						"text_input": {
-							"seletor": "div.text-addon"
-						}
-					},
-					"image_radio_input": {
-						"seletor": "div.images div.input-image-group",
-						"descricao": {
-							"seletor": ".input-group-radio .input-group-title",
-							"metodo": "owntext"
-						},
-						"imagem": ".input-image img"
-					},
-					"text_input_matrix": {
-						"teste": "div.matrix-values input[type=text]",
-						"seletor": "div.matrix-values",
-						"thead": {
-							"seletor": "div.input-group-matrix div.title-groups",
-							"descricao": {
-								"seletor": "span.input-group-title-main",
-								"metodo": "owntext"
-							}
-						},
-						"tbody": {
-							"seletor": "div.input-group-matrix div.title",
-							"descricao": {
-								"seletor": "",
-								"metodo": "owntext"
+							"text_input": {
+								"seletor": "div.text-addon"
 							}
 						}
-					},
-					"radio_input_matrix": {
-						"teste": "div.matrix-values input[type=radio]",
-						"seletor": "div.matrix-values",
-						"thead": {
-							"seletor": "div.input-group-matrix div.title-groups",
+					],
+					"radio_input": [
+						{
+							"seletor": "div.label-cont label.input-group-radio",
 							"descricao": {
-								"seletor": "span.input-group-title-main",
+								"seletor": "span.input-group-title",
 								"metodo": "owntext"
+							},
+							"text_input": {
+								"seletor": "div.text-addon"
 							}
 						},
-						"tbody": {
-							"seletor": "div.input-group-matrix div.title",
+						{
+							"seletor": "div.images div.input-image-group",
 							"descricao": {
-								"seletor": "",
+								"seletor": ".input-group-radio .input-group-title",
 								"metodo": "owntext"
+							},
+							"imagem": "label.input-image img"
+						}
+					],
+					"text_input_matrix": [
+						{
+							"teste": "div.matrix-values input[type=text]",
+							"seletor": "div.matrix-values",
+							"thead": {
+								"seletor": "div.input-group-matrix div.title-groups",
+								"descricao": {
+									"seletor": "span.input-group-title-main",
+									"metodo": "owntext"
+								}
+							},
+							"tbody": {
+								"seletor": "div.input-group-matrix div.title",
+								"descricao": {
+									"seletor": "",
+									"metodo": "owntext"
+								}
 							}
 						}
-					}
+					],
+					"radio_input_matrix": [
+						{
+							"teste": "div.matrix-values input[type=radio]",
+							"seletor": "div.matrix-values",
+							"thead": {
+								"seletor": "div.input-group-matrix div.title-groups",
+								"descricao": {
+									"seletor": "span.input-group-title-main",
+									"metodo": "owntext"
+								}
+							},
+							"tbody": {
+								"seletor": "div.input-group-matrix div.title",
+								"descricao": {
+									"seletor": "",
+									"metodo": "owntext"
+								}
+							}
+						}
+					]
 				}
 			}
 		}
