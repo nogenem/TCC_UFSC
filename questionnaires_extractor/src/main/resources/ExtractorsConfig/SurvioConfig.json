@@ -2,7 +2,10 @@
 	"questionarios": [
 		{
 			"seletor": "",
-			"assunto": "header.title > div.col-title > h1",
+			"assunto": {
+				"seletor": "header.title > div.col-title > h1",
+				"metodo": "owntext"
+			},
 			"perguntas": {
 				"seletor": "section.last fieldset",
 				"descricao": {
