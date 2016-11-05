@@ -83,7 +83,6 @@ public abstract class BasicExtractor implements IExtractor {
 		Elements questionario = null;
 		String tmpTxt = "";
 		
-		//TODO criar uma formadapergunta = UNKNOWN para poder detectar melhor estes casos
 		//TODO adicionar verificação de IMAGE em todos os tipos de alternativas e perguntas
 		//TODO adicionar verificação de teste em todos os tipos de alternativas
 		
@@ -117,10 +116,11 @@ public abstract class BasicExtractor implements IExtractor {
 				
 				// Alternativas
 				configA = configP.getJSONObject("alternativas");
-				if(!this.getAlternativas(field))
+				if(!this.getAlternativas(field)){
+					currentP.setForma(FormaDaPerguntaManager.getForma("UNKNOWN"));
 					System.out.println("BasicExtractor:extract()> Alternativa desconhecida");
-				else
-					currentQ.addPergunta(currentP);
+				}
+				currentQ.addPergunta(currentP);
 			}
 			questionarios.add(currentQ);
 		}
