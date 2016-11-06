@@ -53,6 +53,7 @@ public class QuestionarioManager {
 		for(Figura f : q.getFiguras()){
 			figuraDao.save(f);
 		}
+		extractedLinks.add(q.getLink_doc());
 	}
 	
 	/**

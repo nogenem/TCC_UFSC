@@ -35,7 +35,7 @@ public class Crawler extends WebCrawler {
 	
 	@Override
 	public boolean shouldVisit(Page referringPage, WebURL url) {
-		String href = url.getURL().toLowerCase();
+		String href = url.getURL();
 
 		// Verifica se o link ja foi extraido
 		if(QuestionarioManager.linkWasExtracted(href)) return false;
@@ -71,7 +71,7 @@ public class Crawler extends WebCrawler {
 			//TODO refazer o banco de dados do zero
 			ArrayList<Questionario> questionarios = this.extractor.extract(htmlParseData.getHtml());
 			for(Questionario q : questionarios){
-				q.setLink_doc(url.getURL().toLowerCase());
+				q.setLink_doc(url.getURL());
 				try {
 					//this.questionarioManager.save(q);
 					System.out.println("SAVE DONE!");
