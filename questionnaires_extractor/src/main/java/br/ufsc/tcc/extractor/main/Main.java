@@ -29,7 +29,8 @@ public class Main {
 			"www.hoteljardinsdajuda.com/question%C3%A1rio.aspx?ID=17",
 			"www.bioinfo.mpg.de/mctq/core_work_life/core/core.jsp",
 			"www.surveymonkey.com/mp/",
-			"www.surveymonkey.com/r/"
+			"www.surveymonkey.com/r/",
+			"www.surveymonkey.com/s/"
 		};
 		
 		// Cria um regex a partir dos dominios
