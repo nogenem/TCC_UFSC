@@ -84,6 +84,18 @@
 								"metodo": "owntext"
 							}
 						}
+					],
+					"text_input_group": [
+						{
+							"seletor": "fieldset.text-input-group div.question-body div.text-input-container",
+							"text_input": {
+	                            "seletor": "label.answer-label",
+								"descricao": {
+									"seletor": "",
+									"metodo": "owntext"
+								}
+							}
+						}
 					]
 				}
 			}

@@ -15,3 +15,4 @@ INSERT INTO FormaDaPergunta(descricao) VALUES ('TEXTAREA');
 INSERT INTO FormaDaPergunta(descricao) VALUES ('SELECT');
 INSERT INTO FormaDaPergunta(descricao) VALUES ('RATING');
 INSERT INTO formadapergunta(descricao) VALUES ('UNKNOWN');
+INSERT INTO formadapergunta(descricao) VALUES ('TEXT_INPUT_GROUP');

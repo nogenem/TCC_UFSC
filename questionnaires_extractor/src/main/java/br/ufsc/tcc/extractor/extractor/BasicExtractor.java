@@ -89,6 +89,7 @@ public abstract class BasicExtractor implements IExtractor {
 		Figura tmpFig = null;
 		
 		//TODO adicionar verificação de IMAGE em todos os tipos de alternativas (?)
+		//TODO simplificar os 'group'? -fazendo a função de group chamar a função normal-
 		
 		body = doc.getElementsByTag("body");
 		JSONArray arrQuestionarios = configs.getJSONArray("questionarios");
@@ -143,16 +144,58 @@ public abstract class BasicExtractor implements IExtractor {
 	private boolean getAlternativas(Element field) {
 		return this.isTextInputMatrix(field) ||
 				this.isRadioInputMatrix(field) ||
-				this.isCheckboxInput(field) ||
+				this.isTextInputGroup(field) ||
 				this.isRangeInputGroup(field) ||
+				this.isCheckboxInput(field) ||
 				this.isRangeInput(field) ||
 				this.isRadioInput(field) ||
 				this.isSelect(field) ||
 				this.isRating(field) || 
 				this.isTextArea(field) || 
 				this.isTextInput(field) ||
-				this.isDateInput(field) ||
-				this.isNumberInput(field);
+				this.isNumberInput(field) ||
+				this.isDateInput(field);
+	}
+
+	protected boolean isTextInputGroup(Element field) {
+		JSONArray tigArr = configA.optJSONArray("text_input_group");
+		if(tigArr == null) return false;
+		
+		JSONObject tigObj = null,
+				descObj = null;
+		Elements teste = null, 
+				elems = null;
+		Pergunta tmpPerg = null;
+		String tmpTxt = "";
+		
+		for(int i = 0; i < tigArr.length(); i++){
+			tigObj = tigArr.getJSONObject(i);
+			
+			elems = field.select(tigObj.getString("seletor"));
+			teste = optSelect(field, tigObj.optString("teste"), elems);
+			if(!teste.isEmpty()){
+				currentP.setTipo("ABERTO");
+				currentP.setForma(FormaDaPerguntaManager.getForma("TEXT_INPUT_GROUP"));
+				System.out.println("\t\t\t\tText Input Group:");
+				
+				tigObj = tigObj.getJSONObject("text_input");
+				descObj = tigObj.getJSONObject("descricao");
+				elems = elems.select(tigObj.getString("seletor"));
+				for(Element elem : elems){
+					tmpPerg = new Pergunta();
+					
+					tmpPerg.setTipo("ABERTO");
+					tmpPerg.setForma(FormaDaPerguntaManager.getForma("TEXT_INPUT"));
+					
+					tmpTxt = getText(elem, descObj);
+					tmpPerg.setDescricao(tmpTxt);
+					System.out.println("\t\t\t\t\tText Input: " +tmpTxt);
+					currentP.addFilha(tmpPerg);
+				}
+				return true;
+			}
+		}
+		return false;
 	}
 
 	protected boolean isTextArea(Element field) {

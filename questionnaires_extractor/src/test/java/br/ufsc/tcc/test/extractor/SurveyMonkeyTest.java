@@ -47,11 +47,11 @@ public class SurveyMonkeyTest {
 		assertEquals("Questionario com assunto errado", "Internet Relationships Template", q.getAssunto());		
 		
 		ArrayList<Pergunta> perguntas = q.getPerguntas();
-		assertEquals("Questionario deveria ter 10 perguntas", 10, q.getPerguntas().size());
+		assertEquals("Questionario deveria ter 12 perguntas", 12, q.getPerguntas().size());
 		
 		testPerguntaDeTextarea(perguntas.get(0));
 		testPerguntaDeRadioInput(perguntas.get(1));
-		testPerguntaDeRating(perguntas.get(2));
+		testPerguntaDeRating1(perguntas.get(2));
 		testPerguntaDeCheckboxInputSemTextInput(perguntas.get(3));
 		testPerguntaDeRadioInputComTextInput(perguntas.get(4));
 		testPerguntaDeTextInput(perguntas.get(5));
@@ -59,6 +59,8 @@ public class SurveyMonkeyTest {
 		testPerguntaDeCheckboxInputComTextInput(perguntas.get(7));
 		testPerguntaDeRangeInput(perguntas.get(8));
 		testPerguntaDeSelect(perguntas.get(9));
+		testPerguntaDeTextInputGroup1(perguntas.get(10));
+		testPerguntaDeTextInputGroup2(perguntas.get(11));
 	}
 
 	//Ex: https://www.surveymonkey.com/r/customer-satisfaction-survey-template?sm=d9yyh03hx%2fRxh26ptsvay03MP0ZkErSidp5ni5TkqGw%3d
@@ -97,7 +99,7 @@ public class SurveyMonkeyTest {
 	}
 	
 	//Ex: https://www.surveymonkey.com/r/customer-satisfaction-survey-template?sm=d9yyh03hx%2fRxh26ptsvay03MP0ZkErSidp5ni5TkqGw%3d
-	private void testPerguntaDeRating(Pergunta p) {
+	private void testPerguntaDeRating1(Pergunta p) {
 		assertEquals("Pergunta deveria ser um RATING", "RATING", p.getForma().getDescricao());
 		
 		assertEquals("Descricao da pergunta esta errada", 
@@ -250,5 +252,57 @@ public class SurveyMonkeyTest {
 		assertEquals("Descricao da ultima alternativa da pergunta esta errada",
 				"Completed graduate school",
 				alternativas.get(alternativas.size()-1).getDescricao());
+	}
+	
+	//Ex: https://www.surveymonkey.com/r/US-Voting-HIstory-Template3
+	private void testPerguntaDeTextInputGroup1(Pergunta p) {
+		assertEquals("Pergunta deveria ser um TEXT_INPUT_GROUP", "TEXT_INPUT_GROUP", p.getForma().getDescricao());
+		
+		assertEquals("Descricao da pergunta esta errada", 
+				"1. Of all the political candidates you voted for during the last 10 years, "
+				+ "what percent of them were Republicans, what percent were Democrats, what percent "
+				+ "were Independents, and what percent were something else? (Your answers should add up to 100%.)", 
+				p.getDescricao());
+		
+		String[] descs = {
+				"Percent Republicans",
+				"Percent Democrats",
+				"Percent Independents",
+				"Percent something else"
+		};
+		ArrayList<Pergunta> filhas = p.getFilhas();
+		Pergunta filha = null;
+
+		assertEquals("Pergunta deveria ter 4 perguntas filhas", 4, filhas.size());	
+		for(int i = 0; i<filhas.size(); i++){
+			filha = filhas.get(i);
+			assertEquals("Pergunta filha deveria ser um TEXT_INPUT", "TEXT_INPUT", filha.getForma().getDescricao());
+			assertEquals("Descricao da pergunta filha esta errada", 
+					descs[i], filha.getDescricao());
+		}
+	}
+	
+	//Ex: https://www.surveymonkey.com/r/online-photo-sharing-template
+	private void testPerguntaDeTextInputGroup2(Pergunta p) {
+		assertEquals("Pergunta deveria ser um TEXT_INPUT_GROUP", "TEXT_INPUT_GROUP", p.getForma().getDescricao());
+		
+		assertEquals("Descricao da pergunta esta errada", 
+				"4. In a typical week, about how much time do you spend using photo sharing websites?", 
+				p.getDescricao());
+		
+		String[] descs = {
+				"Hours",
+				"Minutes"
+		};
+		ArrayList<Pergunta> filhas = p.getFilhas();
+		Pergunta filha = null;
+
+		assertEquals("Pergunta deveria ter 2 perguntas filhas", 2, filhas.size());	
+		for(int i = 0; i<filhas.size(); i++){
+			filha = filhas.get(i);
+			assertEquals("Pergunta filha deveria ser um TEXT_INPUT", "TEXT_INPUT", filha.getForma().getDescricao());
+			assertEquals("Descricao da pergunta filha esta errada", 
+					descs[i], filha.getDescricao());
+		}
 	}
 }
