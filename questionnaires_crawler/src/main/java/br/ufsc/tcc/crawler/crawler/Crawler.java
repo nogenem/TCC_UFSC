@@ -39,7 +39,7 @@ public class Crawler extends WebCrawler {
 	
 	@Override
 	public boolean shouldVisit(Page referringPage, WebURL url) {
-		String href = url.getURL().toLowerCase();
+		String href = url.getURL();
 				
 		// Retira o http e https
 		href = href.replaceAll("^((http|https)://)", "");
