@@ -37,7 +37,9 @@ public class CrawlerController {
 	 * 	MaxPagesToFetch = 10000
 	 * 	IncludeBinaryContentInCrawling = false
 	 * 	ResumableCrawling = false
-	 * 	NumberOfCrawlers = 5</pre>
+	 * 	NumberOfCrawlers = 5
+	 * 	UserAgentString = "crawler4j (https://github.com/yasserg/crawler4j/)"
+	 * 	Proxy.port = 8080</pre>
 	 * 
 	 * @throws Exception
 	 */
@@ -50,6 +52,22 @@ public class CrawlerController {
 		this.crawlerConfig.setMaxPagesToFetch(userConfigs.optInt("maxPagesToFetch", 10000));
 		this.crawlerConfig.setIncludeBinaryContentInCrawling(userConfigs.optBoolean("includeBinaryContentInCrawling", false));
 		this.crawlerConfig.setResumableCrawling(userConfigs.optBoolean("resumableCrawling", false));
+		this.crawlerConfig.setUserAgentString(userConfigs.optString("useragent", "crawler4j (https://github.com/yasserg/crawler4j/)"));
+		
+		JSONObject proxy = userConfigs.optJSONObject("proxy");
+		String tmpTxt = "";
+		if(proxy != null){
+			this.crawlerConfig.setProxyHost(proxy.getString("host"));
+			this.crawlerConfig.setProxyPort(proxy.optInt("port", 8080));
+			
+			tmpTxt = proxy.optString("username");
+			if(!tmpTxt.equals(""))
+				this.crawlerConfig.setProxyUsername(tmpTxt);
+			
+			tmpTxt = proxy.optString("password");
+			if(!tmpTxt.equals(""))
+				this.crawlerConfig.setProxyPassword(tmpTxt);
+		}
 		
 		PageFetcher pageFetcher = new PageFetcher(this.crawlerConfig);
 	    RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
