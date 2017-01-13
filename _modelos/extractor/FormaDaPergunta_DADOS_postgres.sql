@@ -16,3 +16,7 @@ INSERT INTO FormaDaPergunta(descricao) VALUES ('SELECT');
 INSERT INTO FormaDaPergunta(descricao) VALUES ('RATING');
 INSERT INTO formadapergunta(descricao) VALUES ('UNKNOWN');
 INSERT INTO formadapergunta(descricao) VALUES ('TEXT_INPUT_GROUP');
+INSERT INTO formadapergunta(descricao) VALUES ('MIX_COMP_GROUP');
+INSERT INTO formadapergunta(descricao) VALUES ('MIX_COMP_MATRIX');
+INSERT INTO formadapergunta(descricao) VALUES ('CHECKBOX_INPUT_MATRIX');
+INSERT INTO formadapergunta(descricao) VALUES ('TEXTAREA_MATRIX');
