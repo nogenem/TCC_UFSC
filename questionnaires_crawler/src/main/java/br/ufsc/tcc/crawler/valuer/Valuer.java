@@ -136,6 +136,7 @@ public class Valuer {
 				// <td>Pergunta</td><td>Opções</td>
 				tmp = table.select("tr");
 				for(Element tr : tmp){
+                    //TODO fazer getAllTextNodes
 					if(tr.textNodes().size() >= 1)
 						count += getCountOfElems(tr);
 				}

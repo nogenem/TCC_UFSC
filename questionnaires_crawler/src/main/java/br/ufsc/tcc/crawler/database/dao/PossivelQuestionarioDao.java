@@ -24,8 +24,8 @@ public class PossivelQuestionarioDao extends BasicDao {
 		HashMap<String, Object> data = new HashMap<>();
 		
 		data.put("LINK_DOCUMENTO", q.getLink_doc());
-		data.put("TITLE_DOCUMENTO", q.getTitulo_doc());
-		data.put("FOUND_AT", q.getEncontrado_em());
+		data.put("TITULO_DOCUMENTO", q.getTitulo_doc());
+		data.put("ENCONTRADO_EM", q.getEncontrado_em());
 		
 		this.insert(data);
 		q.setId(getLastUID());
