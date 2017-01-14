@@ -55,6 +55,20 @@ public class CommonUtil {
 	private final static String REQUIRED_REGEX = 
 			"(required|resposta exigida|requirido|\\*)";
 	
+	// Getters e Setters
+	public static List<String> getSingleComps(){
+		return singleComps;
+	}
+	
+	public static List<String> getMultiComps(){
+		return multiComps;
+	}
+	
+	public static List<String> getAllComps(){
+		return allComps;
+	}
+	
+	// Demais métodos
 	/**
 	 * Le todo o conteúdo de um arquivo e o retorna em 
 	 * forma de uma String.
