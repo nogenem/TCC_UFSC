@@ -250,13 +250,12 @@ public class CommonUtil {
 		if(c == null) return -1;
 		
 		double count = 0;
-		//TODO terminar este método
-//		for(MyNode node : c.getGroup()){
-//			if(singleComps.contains(node.getText()))
-//				count++;
-//			else if(multiComps.contains(node.getText()))
-//				count += 0.5;
-//		}
+		for(MyNode node : c.getGroup()){
+			if(singleComps.contains(node.getText()))
+				count++;
+			else if(multiComps.contains(node.getText()))
+				count += 0.5;
+		}
 		return (int) count;
 	}
 	
