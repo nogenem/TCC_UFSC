@@ -42,12 +42,13 @@ public class DistanceMatrix {
 	
 	// Demais métodos
 	public boolean areNear(Cluster c1, Cluster c2){
+		if(c1 == null || c2 == null) return false;
 		return this.areNear(c1.last(), c2.first());
 	}
 	
 	public boolean areNear(MyNode n1, MyNode n2){
+		if(n1 == null || n2 == null) return false;
 		Dewey dist = this.getDist(n1, n2);
-		//TODO testar isso
 		return dist.getDeweyWeight() <= 1000 && dist.getHeight() <= 3;
 	}
 	
