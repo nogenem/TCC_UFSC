@@ -6,7 +6,7 @@ import br.ufsc.tcc.common.util.CommonUtil;
 
 public class Dewey {
 	
-	private String dewey;
+	private String value;
 	private ArrayList<Integer> numbers;
 	private int weight;//TODO remover isso?
 
@@ -15,19 +15,19 @@ public class Dewey {
 		this("");
 	}
 	
-	public Dewey(String dewey){
-		this.dewey = dewey;
+	public Dewey(String value){
+		this.value = value;
 		this.weight = Integer.MIN_VALUE;
-		this.numbers = this.parseDeweyToNumbers(dewey);
+		this.numbers = this.parseValueToNumbers(value);
 	}
 	
 	// Getters e Setters
-	public String getDewey(){
+	public String getValue(){
 		//Atualiza a 'cache'
-		if(this.dewey.isEmpty()){
-			this.dewey = this.parseNumbersToDewey(this.numbers);
+		if(this.value.isEmpty()){
+			this.value = this.parseNumbersToValue(this.numbers);
 		}
-		return this.dewey;
+		return this.value;
 	}
 	
 	public int getDeweyWeight(){
@@ -46,8 +46,8 @@ public class Dewey {
 	public String getCommonPrefix(Dewey other){
 		if(other == null) return "";
 		
-		String str1 = this.getDewey(), 
-				str2 = other.getDewey();
+		String str1 = this.getValue(), 
+				str2 = other.getValue();
 		
 		String result = "";
 	    int n1 = str1.length(), n2 = str2.length();
@@ -87,7 +87,7 @@ public class Dewey {
 		if(!this.numbers.isEmpty() || n != 0){
 			this.numbers.add(n);
 			//Limpa a 'cache'
-			this.dewey = "";
+			this.value = "";
 			this.weight = Integer.MIN_VALUE;
 		}
 		return this;
@@ -97,7 +97,6 @@ public class Dewey {
 		if(other == null) return null;
 		
 		Dewey diff = new Dewey();
-		
 		ArrayList<Integer> d1 = this.numbers,
 				d2 = other.numbers,
 				d3 = null;
@@ -126,26 +125,26 @@ public class Dewey {
 	}
 	
 	//TODO tratar possivel erro do valueOf?
-	public ArrayList<Integer> parseDeweyToNumbers(String dewey) {
+	public ArrayList<Integer> parseValueToNumbers(String value) {
 		ArrayList<Integer> numbers = new ArrayList<>();
-		if(dewey.isEmpty()) return numbers;
+		if(value.isEmpty()) return numbers;
 		
-		String[] tmp = this.dewey.split("\\.");
+		String[] tmp = value.split("\\.");
 		for(String s : tmp){
 			numbers.add(Integer.valueOf(s));
 		}
 		return numbers;
 	}
 	
-	public String parseNumbersToDewey(ArrayList<Integer> numbers){
+	public String parseNumbersToValue(ArrayList<Integer> numbers){
 		if(numbers == null || numbers.isEmpty()) return "";
 		
-		String dewey = "";
+		String value = "";
 		for(int n : numbers){
-			dewey += CommonUtil.padNumber(n) + ".";
+			value += CommonUtil.padNumber(n) + ".";
 		}
-		dewey = dewey.substring(0, dewey.length()-1);
-		return dewey;
+		value = value.substring(0, value.length()-1);
+		return value;
 	}
 	
 	public boolean isNegative(){
@@ -156,7 +155,7 @@ public class Dewey {
 	
 	@Override
 	public String toString() {
-		return this.getDewey();
+		return this.getValue();
 	}
 	
 	@Override
@@ -166,7 +165,7 @@ public class Dewey {
 		if (obj == null || getClass() != obj.getClass())
 			return false;
 		Dewey other = (Dewey) obj;
-		return this.getDewey().equals(other.getDewey());
+		return this.getValue().equals(other.getValue());
 	}
 	
 	@Override
