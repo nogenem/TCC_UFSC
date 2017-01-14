@@ -32,7 +32,7 @@ public class Dewey {
 	
 	public int getDeweyWeight(){
 		//Atualiza a 'cache'
-		if(this.weight == Integer.MIN_VALUE){
+		if(this.weight == Integer.MIN_VALUE && !this.numbers.isEmpty()){
 			int n = this.numbers.size()-1, tmp = 0;
 			this.weight = 0;
 			for(int i = n; i>=0; i--){
@@ -44,6 +44,8 @@ public class Dewey {
 	}
 	
 	public String getCommonPrefix(Dewey other){
+		if(other == null) return "";
+		
 		String str1 = this.getDewey(), 
 				str2 = other.getDewey();
 		
@@ -92,6 +94,8 @@ public class Dewey {
 	}
 	
 	public Dewey distanceOf(Dewey other){
+		if(other == null) return null;
+		
 		Dewey diff = new Dewey();
 		
 		ArrayList<Integer> d1 = this.numbers,
@@ -134,6 +138,8 @@ public class Dewey {
 	}
 	
 	public String parseNumbersToDewey(ArrayList<Integer> numbers){
+		if(numbers == null || numbers.isEmpty()) return "";
+		
 		String dewey = "";
 		for(int n : numbers){
 			dewey += CommonUtil.padNumber(n) + ".";

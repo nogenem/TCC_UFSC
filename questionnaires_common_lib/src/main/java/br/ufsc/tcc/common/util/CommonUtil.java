@@ -199,6 +199,8 @@ public class CommonUtil {
 	}
 	
 	public static String getNodeRepresentation(Node node){
+		if(node == null) return "";
+		
 		String name = node.nodeName();
 		switch(name){
 		case "#text":
@@ -217,6 +219,8 @@ public class CommonUtil {
 	}
 	
 	public static String removeRequiredAndTrim(String text){
+		if(text.isEmpty()) return text;
+		
 		text = CommonUtil.trim(text);
 		return CommonUtil.trim(text.replaceAll(
 				String.format("(?i)(^%s|%s$)", 
@@ -224,6 +228,8 @@ public class CommonUtil {
 	}
 	
 	public static boolean isCompImgOrTextNode(Node node){
+		if(node == null) return false;
+		
 		String name = removeRequiredAndTrim(getNodeRepresentation(node));
 		return (!name.equals("") && node.nodeName().equals("#text")) || 
 				((name.startsWith("img") || allComps.contains(name)) && 
@@ -256,7 +262,8 @@ public class CommonUtil {
 	
 	public static List<MyNode> findCompsImgsAndTexts(Node root) {
 		List<MyNode> ret = new ArrayList<>();
-		findCompsImgsAndTexts(root, "01", ret);
+		if(root != null)
+			findCompsImgsAndTexts(root, "01", ret);
 //		System.out.println("\n\n");
 		return ret;
 	}

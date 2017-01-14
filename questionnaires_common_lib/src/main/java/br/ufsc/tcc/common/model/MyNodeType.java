@@ -1,0 +1,19 @@
+package br.ufsc.tcc.common.model;
+
+public enum MyNodeType {
+	UNKNOWN,
+	TEXT,
+	IMG,
+	TEXT_INPUT,
+	NUMBER_INPUT,
+	DATE_INPUT,
+	EMAIL_INPUT,
+	TEL_INPUT,
+	TIME_INPUT,
+	URL_INPUT,
+	CHECKBOX_INPUT,
+	RADIO_INPUT,
+	RANGE_INPUT,
+	TEXTAREA,
+	SELECT;
+}
