@@ -15,5 +15,6 @@ public enum MyNodeType {
 	RADIO_INPUT,
 	RANGE_INPUT,
 	TEXTAREA,
-	SELECT;
+	SELECT,
+	OPTION;
 }

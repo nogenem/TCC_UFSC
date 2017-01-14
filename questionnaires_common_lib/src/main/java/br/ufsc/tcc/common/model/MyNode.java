@@ -137,6 +137,9 @@ public class MyNode implements Comparable<MyNode> {
 		case "select":
 			this.type = MyNodeType.SELECT;
 			break;
+		case "option":
+			this.type = MyNodeType.OPTION;
+			break;
 		default:
 			this.type = MyNodeType.UNKNOWN;
 		}
