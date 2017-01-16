@@ -1,5 +1,5 @@
 # Minhas regras
-resources/cache/
+**/resources/cache/
 
 
 # Created by https://www.gitignore.io/api/eclipse,maven,java,node,macos,windows
