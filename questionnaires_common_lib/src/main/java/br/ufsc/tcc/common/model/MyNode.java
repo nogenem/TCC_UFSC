@@ -21,7 +21,7 @@ public class MyNode implements Comparable<MyNode> {
 		if(node != null){
 			this.text = CommonUtil.getNodeRepresentation(node);
 			this.attrs = node.attributes();
-			this.parseTextToType(node.nodeName());
+			this.type = MyNodeType.get(this.text, node.nodeName());
 		}else{
 			this.text = "";
 			this.attrs = null;
@@ -95,56 +95,4 @@ public class MyNode implements Comparable<MyNode> {
 		return this.dewey.toString()
 				.compareTo(o.dewey.toString());
 	}
-	
-	private void parseTextToType(String name) {
-		switch(this.text){
-		case "img":
-			this.type = MyNodeType.IMG;
-			break;
-		case "input[type=text]":
-			this.type = MyNodeType.TEXT_INPUT;
-			break;
-		case "input[type=number]":
-			this.type = MyNodeType.NUMBER_INPUT;
-			break;
-		case "input[type=date]":
-			this.type = MyNodeType.DATE_INPUT;
-			break;
-		case "input[type=email]":
-			this.type = MyNodeType.EMAIL_INPUT;
-			break;
-		case "input[type=tel]":
-			this.type = MyNodeType.TEL_INPUT;
-			break;
-		case "input[type=time]":
-			this.type = MyNodeType.TIME_INPUT;
-			break;
-		case "input[type=url]":
-			this.type = MyNodeType.URL_INPUT;
-			break;
-		case "input[type=checkbox]":
-			this.type = MyNodeType.CHECKBOX_INPUT;
-			break;
-		case "input[type=radio]":
-			this.type = MyNodeType.RADIO_INPUT;
-			break;
-		case "input[type=range]":
-			this.type = MyNodeType.RANGE_INPUT;
-			break;
-		case "textarea":
-			this.type = MyNodeType.TEXTAREA;
-			break;
-		case "select":
-			this.type = MyNodeType.SELECT;
-			break;
-		case "option":
-			this.type = MyNodeType.OPTION;
-			break;
-		default:
-			this.type = MyNodeType.UNKNOWN;
-		}
-		if(name.equals("#text"))
-			this.type = MyNodeType.TEXT;
-	}
-
 }
