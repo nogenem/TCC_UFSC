@@ -9,21 +9,18 @@ import org.jsoup.nodes.Node;
 import br.ufsc.tcc.common.model.Cluster;
 import br.ufsc.tcc.common.model.MyNode;
 import br.ufsc.tcc.common.util.CommonUtil;
-import br.ufsc.tcc.common.util.DistanceMatrix;
 import br.ufsc.tcc.extractor.model.Questionario;
 
 public class QuestionarioBuilder {
 	
 	private Questionario currentQ;
-	private DistanceMatrix distMatrix;
 	private PerguntaBuilder pBuilder;
 	private RulesChecker checker;
 	
 	public QuestionarioBuilder(){
 		this.currentQ = null;
-		this.distMatrix = new DistanceMatrix();
-		this.checker = new RulesChecker(this.distMatrix);
-		this.pBuilder = new PerguntaBuilder(this.distMatrix, this.checker);
+		this.checker = new RulesChecker();
+		this.pBuilder = new PerguntaBuilder(this.checker);
 	}
 	
 	public ArrayList<Questionario> build(Node root) {
@@ -43,12 +40,10 @@ public class QuestionarioBuilder {
 			
 			if(nTmp.isImgOrText()){
 				//Verifica se tem que criar um novo cluster
-				if(!cTmp.isEmpty()){
-					if(!this.distMatrix.areNear(cTmp.last(), nTmp)){
-//						System.out.println(cTmp);
-						cTmp = new Cluster();
-						cStack.add(cTmp);
-					}
+				if(this.checker.shouldCreateNewCluster(cTmp, nTmp)){
+//					System.out.println(cTmp);
+					cTmp = new Cluster();
+					cStack.add(cTmp);
 				}
 				
 				//Verifica se esta começando um novo questinario
@@ -59,7 +54,7 @@ public class QuestionarioBuilder {
 					if(this.currentQ.getAssunto().isEmpty()){
 						System.out.println("1================================================\n");
 						this.currentQ = new Questionario();
-					}else if(checker.shouldCreateNewQuestionario(lastDesc, nTmp)){
+					}else if(checker.shouldStartNewQuestionario(lastDesc, nTmp)){
 						//Um questionario deve ter no minimo 2 perguntas
 						if(this.currentQ.getPerguntas().size() >= 2){
 							ret.add(this.currentQ);

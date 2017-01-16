@@ -13,9 +13,9 @@ public class PerguntaBuilder {
 	private DistanceMatrix distMatrix;
 	private RulesChecker checker;
 	
-	public PerguntaBuilder(DistanceMatrix distMatrix, RulesChecker checker) {
-		this.distMatrix = distMatrix;
+	public PerguntaBuilder(RulesChecker checker) {
 		this.checker = checker;
+		this.distMatrix = this.checker.getDistMatrix();
 	}
 
 	public int build(Questionario currentQ, List<MyNode> nodes, int i, Stack<Cluster> cStack) {
