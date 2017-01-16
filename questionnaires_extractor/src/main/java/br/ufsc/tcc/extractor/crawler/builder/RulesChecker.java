@@ -19,6 +19,8 @@ public class RulesChecker {
 	}
 	
 	// Demais métodos
+	
+	// Métodos usados pela classe QuestionarioBuilder
 	public boolean shouldStartNewQuestionario(Cluster lastDesc, MyNode newNode) {
 		if(lastDesc == null || lastDesc.isEmpty() || newNode == null) 
 			return false;
@@ -37,4 +39,17 @@ public class RulesChecker {
 		return !this.distMatrix.areNear(lastCluster.last(), newNode);
 	}
 
+	// Métodos usados pela classe PerguntaBuilder
+	public boolean isOnlyOneImg(Cluster c) {
+		return c.size() == 1 && c.first().isImage();
+	}
+
+	public boolean areCompAndTextNear(MyNode comp, MyNode text) {
+		if(comp == null || text == null) return false;
+		Dewey dist = this.distMatrix.getDist(comp, text);
+		//TODO testar esses numeros
+		return dist.getHeight() <= 2 && dist.getMaxHeight() <= 3;
+	}
+	
+	
 }
