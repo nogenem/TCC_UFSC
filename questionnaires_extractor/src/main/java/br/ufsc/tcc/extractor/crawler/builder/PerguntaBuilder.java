@@ -1,5 +1,6 @@
 package br.ufsc.tcc.extractor.crawler.builder;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
@@ -21,6 +22,7 @@ public class PerguntaBuilder {
 	private int currentI;
 	private DistanceMatrix distMatrix;
 	private RulesChecker checker;
+	private Cluster firstGroupOfQuestionnaire;
 	
 	public PerguntaBuilder(RulesChecker checker) {
 		this.currentP = null;
@@ -28,6 +30,7 @@ public class PerguntaBuilder {
 		this.currentI = 0;
 		this.checker = checker;
 		this.distMatrix = this.checker.getDistMatrix();
+		this.firstGroupOfQuestionnaire = null;
 	}
 
 	public int build(Questionario currentQ, List<MyNode> nodes, int i, Stack<Cluster> cStack) {
@@ -78,6 +81,83 @@ public class PerguntaBuilder {
 			break;
 		default:
 			break;
+		}
+		
+		if(this.currentP.getForma() != null){
+			ArrayList<Alternativa> tmpAlts = this.currentP.getAlternativas();
+			desc = checker.getCorrectDescription(desc, tmpAlts, firstNode, cStack);
+			
+			//A distancia da pergunta para a sua descrição não pode ser maior que 2 
+			if(checker.checkDistBetweenDescAndPerg(desc, firstNode)){
+				return this.currentI;
+			}
+			
+			this.currentP.setDescricao(desc.getText());
+			System.out.println("Descrição: " +this.currentP.getDescricao() +"\n\n");
+			
+			//Verifica matriz
+			boolean matrixFlag = false;
+			
+			//Verifica grupo de perguntas
+			boolean questionGroupFlag = false;
+			
+			//Encontra o assunto do questionario
+			if(currentQ.getAssunto().isEmpty() && !cStack.isEmpty()){
+				cTmp1 = cStack.pop();
+				this.firstGroupOfQuestionnaire = null;
+				
+				//Verifica se não apenas uma img
+				if(this.checker.isOnlyOneImg(cTmp1)){
+					MyNode tmp = cTmp1.last();
+					Figura fig = new Figura(tmp.getAttr("src"), tmp.getAttr("alt"));
+					fig.setDono(currentQ);
+					currentQ.addFigura(fig);
+					System.out.println("Figura do questionario: " +fig);
+					cTmp1 = cStack.pop();
+				}
+				//Verifica se não é um grupo
+				if(!cStack.isEmpty() && this.checker.isGroupText(cTmp1, desc, this.firstGroupOfQuestionnaire)){
+					currentG = new Grupo(cTmp1.getText());
+					currentQ.addGrupo(currentG);
+					this.firstGroupOfQuestionnaire = cTmp1;
+
+					System.out.println("\nGroup: " +cTmp1.getText()+ "\n\n");
+					cTmp1 = cStack.pop();
+				}
+				currentQ.setAssunto(cTmp1.getText());
+				System.out.println("Assunto: " +currentQ.getAssunto() +"\n\n");
+			}
+			
+			//Verifica se o texto acima não é um grupo
+			if(!cStack.isEmpty()){
+				cTmp1 = cStack.peek();
+				if(this.checker.isGroupText(cTmp1, desc, this.firstGroupOfQuestionnaire)){
+					cTmp1 = cStack.pop();
+					this.currentG = new Grupo(cTmp1.getText());
+					currentQ.addGrupo(currentG);
+
+					System.out.println("\nGroup: " +cTmp1.getText()+ "\n\n");
+				}
+			}
+			
+			//Verifica se o texto abaixo, se tiver, não faz parte desta pergunta (Peso: [...] kg)
+			if(this.checker.checkNextText(nodes, this.currentI)){
+				nTmp1 = nodes.get(++this.currentI);
+				this.currentP.setDescricao(
+						this.currentP.getDescricao() +"\n"+ nTmp1.getText());
+				System.out.println("Descrição atualizada: " +this.currentP.getDescricao() +"\n\n");
+			}
+			
+			if(this.currentG != null){
+				this.currentP.setGrupo(this.currentG);
+//				if(this.lastMatrix != null && this.lastMatrix.getGrupo() == null)
+//					this.lastMatrix.setGrupo(this.currentG);
+//				if(this.lastQuestionGroup != null && this.lastQuestionGroup.getGrupo() == null)
+//					this.lastQuestionGroup.setGrupo(this.currentG);
+			}	
+			
+			if(!matrixFlag && !questionGroupFlag)
+				currentQ.addPergunta(this.currentP);
 		}
 		
 		return this.currentI;
