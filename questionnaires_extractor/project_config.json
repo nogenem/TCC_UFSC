@@ -1,0 +1,35 @@
+{
+	"database": {
+		"crawler": {
+			"name": "tcc_crawler",
+			"host": "localhost:5432",
+			"login": "postgres",
+			"password": "123"
+		},
+		"extractor": {
+			"name": "tcc_extractor",
+			"host": "localhost:5432",
+			"login": "postgres",
+			"password": "123"
+		}
+	},
+	"crawler": {
+		"numberOfCrawlers": 5,
+		"crawlStorageFolder": "./tmp",
+		"politenessDelay": 500,
+		"maxDepthOfCrawling": 0,
+		"maxPagesToFetch": -1,
+		"includeBinaryContentInCrawling": false,
+		"resumableCrawling": false	
+	},
+	"data": {
+		"loadUrlsFromCrawler": true,
+		"extra_urls": [
+			"https://www.survio.com/modelo-de-pesquisa/feedback-sobre-servico",
+			"https://www.survio.com/modelo-de-pesquisa/pesquisa-de-preco-do-produto",
+			"https://www.survio.com/modelo-de-pesquisa/pesquisa-de-percepcao-da-publicidade-e-de-sua-eficiencia",
+			"https://www.survio.com/modelo-de-pesquisa/pesquisa-da-notoriedade-da-marca",
+			"https://www.survio.com/modelo-de-pesquisa/pesquisa-da-experiencia-de-compra"
+		]
+	}
+}
