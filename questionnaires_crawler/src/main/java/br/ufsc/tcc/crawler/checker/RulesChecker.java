@@ -168,13 +168,13 @@ public class RulesChecker {
 			//Todo cluster deve ter pelo menos 1 texto e não deve ser um cluster de login/registro/busca
 			if(!isLogin && tCount >= 1){
 				if(cCount >= 4){
-					System.err.println("MIN 4 COMPONENTES EM UM CLUSTER");
+					System.out.println("\t\tMIN 4 COMPONENTES EM UM CLUSTER");
 					return true;
 				}else if(cCount >= 1)
 					qCount++;
 			}
 			if(qCount == 3){
-				System.err.println("MIN 3 CLUSTERS COM COMPONENTES");
+				System.out.println("\t\tMIN 3 CLUSTERS COM COMPONENTES");
 				return true;
 			}
 		}
