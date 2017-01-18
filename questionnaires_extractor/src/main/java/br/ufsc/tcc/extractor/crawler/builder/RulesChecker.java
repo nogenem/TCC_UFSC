@@ -187,6 +187,16 @@ public class RulesChecker {
 		}
 		return flag;
 	}
+
+	public boolean checkDistForQuestionGroup(MyNode n1, MyNode n2) {
+		Dewey dist = this.distMatrix.getDist(n1, n2);
+		return dist.getHeight() == 1 && dist.getWidth() <= 4;
+	}
+
+	public boolean checkPrefixForQuestionGroup(MyNode n1, MyNode n2, String prefix) {
+		String tmp = n1.getDewey().getCommonPrefix(n2.getDewey());
+		return tmp.equals(prefix);
+	}
 	
 	
 }

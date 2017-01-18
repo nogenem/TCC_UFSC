@@ -27,6 +27,10 @@ public class PerguntaBuilder {
 	private Cluster lastMatrixHead;
 	private Pergunta lastMatrix;
 	
+	private Cluster lastQuestionGroupDesc;
+	private Pergunta lastQuestionGroup;
+	private String lastQuestionGroupCommonPrefix;
+	
 	public PerguntaBuilder(RulesChecker checker) {
 		this.currentP = null;
 		this.currentG = null;
@@ -37,6 +41,10 @@ public class PerguntaBuilder {
 		
 		this.lastMatrixHead = null;
 		this.lastMatrix = null;
+		
+		this.lastQuestionGroup = null;
+		this.lastQuestionGroupDesc = null;
+		this.lastQuestionGroupCommonPrefix = null;
 	}
 
 	public int build(Questionario currentQ, List<MyNode> nodes, int i, Stack<Cluster> cStack) {
@@ -124,6 +132,38 @@ public class PerguntaBuilder {
 			
 			//Verifica grupo de perguntas
 			boolean questionGroupFlag = false;
+			nTmp1 = nodes.get(this.currentI);
+			nTmp2 = this.lastQuestionGroupDesc != null ? 
+						this.lastQuestionGroupDesc.last() : null;
+			
+			if(!cStack.isEmpty()){
+				if(nTmp2 == null){
+					nTmp2 = cStack.peek().last();
+				}else if(this.checker.isAbove(nTmp2, cStack.peek().first())){
+					//Se tiver um texto no meio quer dizer que ja termino o grupo de pergunta
+					this.saveLastQuestionGroup(currentQ);
+					nTmp2 = cStack.peek().last();
+				}
+			}
+			
+			if(nTmp2 != null){
+				if(checker.checkDistForQuestionGroup(nTmp1, nTmp2)){
+					if(this.lastQuestionGroup == null){
+						nTmp2 = nodes.get(this.currentI+1);
+						if(checker.checkDistForQuestionGroup(nTmp1, nTmp2)){
+							this.updateLastQuestionGroup(currentQ, cStack, nTmp1);
+							questionGroupFlag = true;
+						}
+					}else if(this.checker.checkPrefixForQuestionGroup(nTmp1, lastQuestionGroupDesc.last(), this.lastQuestionGroupCommonPrefix)){
+						this.lastQuestionGroup.addFilha(this.currentP);
+						questionGroupFlag = true;
+					}else{
+						this.saveLastQuestionGroup(currentQ);
+					}
+				}else if(this.lastQuestionGroup != null){
+					this.saveLastQuestionGroup(currentQ);
+				}
+			}
 			
 			//Encontra o assunto do questionario
 			if(currentQ.getAssunto().isEmpty() && !cStack.isEmpty()){
@@ -185,6 +225,33 @@ public class PerguntaBuilder {
 		}
 		
 		return this.currentI;
+	}
+
+	private void updateLastQuestionGroup(Questionario currentQ, Stack<Cluster> cStack, MyNode nTmp1) {
+		if(cStack.isEmpty()) return;
+		
+		this.lastQuestionGroupDesc = cStack.pop();
+		this.lastQuestionGroupCommonPrefix = nTmp1.getDewey().
+				getCommonPrefix(this.lastQuestionGroupDesc.last().getDewey());
+		
+		this.lastQuestionGroup = new Pergunta();
+		//TODO verificar o tipo de input/criar _GROUP para todos?
+		if(this.currentP.getForma() == FormaDaPerguntaManager.getForma("TEXT_INPUT")){
+			this.lastQuestionGroup.setForma(FormaDaPerguntaManager.getForma("TEXT_INPUT_GROUP"));
+			this.lastQuestionGroup.setTipo("ABERTO");
+		}
+		this.lastQuestionGroup.setDescricao(this.lastQuestionGroupDesc.getText());							
+		this.lastQuestionGroup.addFilha(this.currentP);
+	}
+
+	private void saveLastQuestionGroup(Questionario currentQ) {
+		if(this.lastQuestionGroup != null){
+			currentQ.addPergunta(this.lastQuestionGroup);
+			System.out.println("Group Descricao: " +this.lastQuestionGroup.getDescricao()+ "\n\n");
+			
+			this.lastQuestionGroup = null;
+			this.lastQuestionGroupDesc = null;
+		}
 	}
 
 	private void updateLastMatrix(Stack<Cluster> cStack, Cluster cTmp2) {
