@@ -24,6 +24,9 @@ public class PerguntaBuilder {
 	private RulesChecker checker;
 	private Cluster firstGroupOfQuestionnaire;
 	
+	private Cluster lastMatrixHead;
+	private Pergunta lastMatrix;
+	
 	public PerguntaBuilder(RulesChecker checker) {
 		this.currentP = null;
 		this.currentG = null;
@@ -31,6 +34,9 @@ public class PerguntaBuilder {
 		this.checker = checker;
 		this.distMatrix = this.checker.getDistMatrix();
 		this.firstGroupOfQuestionnaire = null;
+		
+		this.lastMatrixHead = null;
+		this.lastMatrix = null;
 	}
 
 	public int build(Questionario currentQ, List<MyNode> nodes, int i, Stack<Cluster> cStack) {
@@ -97,6 +103,24 @@ public class PerguntaBuilder {
 			
 			//Verifica matriz
 			boolean matrixFlag = false;
+			cTmp2 = this.lastMatrixHead;
+			
+			if(!cStack.isEmpty()){
+				if(cTmp2 == null){
+					cTmp2 = cStack.peek();
+				}else if(this.checker.isAbove(cTmp2.last(), cStack.peek().first())){
+					//Se tiver um texto no meio quer dizer que ja termino a matriz
+					this.saveLastMatrix(currentQ);
+					cTmp2 = cStack.peek();
+				}
+			}
+			
+			matrixFlag = this.checker.hasSameTexts(this.currentP, cTmp2);
+			if(matrixFlag){
+				this.updateLastMatrix(cStack, cTmp2);
+			}else if(this.lastMatrix != null){
+				this.saveLastMatrix(currentQ);
+			}
 			
 			//Verifica grupo de perguntas
 			boolean questionGroupFlag = false;
@@ -150,8 +174,8 @@ public class PerguntaBuilder {
 			
 			if(this.currentG != null){
 				this.currentP.setGrupo(this.currentG);
-//				if(this.lastMatrix != null && this.lastMatrix.getGrupo() == null)
-//					this.lastMatrix.setGrupo(this.currentG);
+				if(this.lastMatrix != null && this.lastMatrix.getGrupo() == null)
+					this.lastMatrix.setGrupo(this.currentG);
 //				if(this.lastQuestionGroup != null && this.lastQuestionGroup.getGrupo() == null)
 //					this.lastQuestionGroup.setGrupo(this.currentG);
 			}	
@@ -161,6 +185,35 @@ public class PerguntaBuilder {
 		}
 		
 		return this.currentI;
+	}
+
+	private void updateLastMatrix(Stack<Cluster> cStack, Cluster cTmp2) {
+		if(!cStack.isEmpty() && cTmp2 == cStack.peek()){
+			this.lastMatrixHead = cStack.pop();
+		}
+		if(!cStack.isEmpty() && lastMatrix == null){
+			this.lastMatrix = new Pergunta();
+			if(this.currentP.getForma() == FormaDaPerguntaManager.getForma("RADIO_INPUT")){
+				this.lastMatrix.setForma(FormaDaPerguntaManager.getForma("RADIO_INPUT_MATRIX"));
+				this.lastMatrix.setTipo("MULTIPLA_ESCOLHA");
+			}else if(this.currentP.getForma() == FormaDaPerguntaManager.getForma("TEXT_INPUT")){
+				this.lastMatrix.setForma(FormaDaPerguntaManager.getForma("TEXT_INPUT_MATRIX"));
+				this.lastMatrix.setTipo("ABERTO");
+			}
+			this.lastMatrix.setDescricao(cStack.pop().getText());
+		}
+		if(this.lastMatrix != null)
+			this.lastMatrix.addFilha(this.currentP);
+	}
+
+	private void saveLastMatrix(Questionario currentQ) {
+		if(this.lastMatrix != null){
+			currentQ.addPergunta(this.lastMatrix);
+			System.out.println("Matrix Descricao: " +this.lastMatrix.getDescricao()+ "\n\n");
+		
+			this.lastMatrix = null;
+			this.lastMatrixHead = null;
+		}
 	}
 
 	private void extractTextarea(List<MyNode> nodes) {

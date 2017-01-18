@@ -10,6 +10,7 @@ import br.ufsc.tcc.common.model.MyNode;
 import br.ufsc.tcc.common.model.MyNodeType;
 import br.ufsc.tcc.common.util.DistanceMatrix;
 import br.ufsc.tcc.extractor.model.Alternativa;
+import br.ufsc.tcc.extractor.model.Pergunta;
 
 public class RulesChecker {
 	
@@ -83,6 +84,33 @@ public class RulesChecker {
 		return cTmp1;
 	}
 
+	public Cluster checkIfShouldBeInSameCluster(Cluster c, Stack<Cluster> cStack, MyNode firstNode) {
+		//TODO devo ativar a proteção abaixo?
+		//Da conflito entre os links:
+		//	https://www.survio.com/modelo-de-pesquisa/pesquisa-de-preco-do-produto [matriz para de funcionar]
+		//	https://www.surveycrest.com/template_preview/pyof1IFwp9Xa1_x430JdUeVsuHVRKuw [arruma um dos problemas]
+		// 	http://anpei.tempsite.ws/intranet/mediaempresa [arruma um dos problemas]
+		
+		//Todos os textos da descrição devem ter o mesmo prefixo
+		//comum ao 1* componente da pergunta
+		Cluster cTmp2 = new Cluster();
+		String tTmp1 = "", tTmp2 = "";
+		for(MyNode node : c.getGroup()){
+			if(tTmp1.isEmpty()){
+				tTmp1 = node.getDewey().getCommonPrefix(firstNode.getDewey());
+			}else{
+				tTmp2 = node.getDewey().getCommonPrefix(firstNode.getDewey());
+				if(!tTmp1.equals(tTmp2)){
+					tTmp1 = tTmp2;
+					cStack.add(cTmp2);
+					cTmp2 = new Cluster();
+				}
+			}
+			cTmp2.add(node);
+		}
+		return cTmp2;
+	}
+
 	public boolean checkDistBetweenDescAndPerg(Cluster desc, MyNode perg) {
 		if(desc == null || desc.isEmpty() || perg == null)
 			return false;
@@ -134,6 +162,30 @@ public class RulesChecker {
 			}
 		}
 		return false;
+	}
+
+	public boolean isAbove(MyNode n1, MyNode n2) {
+		//Verifica se n1 esta acima de n2
+		Dewey dist = this.distMatrix.getDist(n1, n2);
+		return dist.isNegative();
+	}
+
+	public boolean hasSameTexts(Pergunta currentP, Cluster cTmp2) {
+		//Verifica se as alternativas da currentP contêm todos os textos
+		//do cTmp2, ou se a descrição da currentP contém o texto de cTmp2
+		ArrayList<Alternativa> tmpAlts = currentP.getAlternativas();
+		boolean flag = cTmp2 != null && !cTmp2.getText().isEmpty() && 
+				(tmpAlts.size() == cTmp2.size() || tmpAlts.size() == 0 && cTmp2.size() == 1);
+		if(flag){
+			if(tmpAlts.size() == 0)
+				flag = currentP.getDescricao().contains(cTmp2.getText());
+			else{
+				for(int j = 0; j < cTmp2.getGroup().size(); j++){
+					flag = flag && tmpAlts.get(j).getDescricao().contains(cTmp2.get(j).getText());
+				}
+			}
+		}
+		return flag;
 	}
 	
 	
