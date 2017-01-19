@@ -80,7 +80,7 @@ public class RulesChecker {
 			else
 				break;
 		}
-		//cTmp1 = checkIfShouldBeInSameCluster(cTmp1, cStack, firstNode);
+		cTmp1 = checkIfShouldBeInSameCluster(cTmp1, cStack, firstNode);
 		return cTmp1;
 	}
 
@@ -120,9 +120,11 @@ public class RulesChecker {
 
 	public boolean isGroupText(Cluster cTmp, Cluster desc, Cluster firstGroupOfQuestionnaire) {
 		//TODO Todos os group text tem a mesma tag pai (?)
+		if(cTmp == null || cTmp.isEmpty() || desc == null || desc.isEmpty())
+			return false;
 		
-		//Cluster tem tamanho = 1?
-		if(cTmp.size() == 1){
+		//Cluster tem tamanho = 1 ou cluster de text e img?
+		if(cTmp.size() == 1 || (cTmp.size() == 2 && cTmp.isAllTextOrImg())){
 			//A altura da distância entre esse cTmp e a descrição da pergunta é menor ou igual a 1?
 			//E a largura é menor ou igual a 7?
 			Dewey dist = distMatrix.getDist(cTmp.last(), desc.first());
@@ -135,8 +137,9 @@ public class RulesChecker {
 						if(firstGroupOfQuestionnaire.last().getDewey().toString().length() == 
 								cTmp.last().getDewey().toString().length())
 							return true;
-					}else
+					}else{
 						return true;
+					}
 				}
 			}
 		}
@@ -196,6 +199,22 @@ public class RulesChecker {
 	public boolean checkPrefixForQuestionGroup(MyNode n1, MyNode n2, String prefix) {
 		String tmp = n1.getDewey().getCommonPrefix(n2.getDewey());
 		return tmp.equals(prefix);
+	}
+
+	public boolean isSimpleMatrix(List<MyNode> nodes, int i, Stack<Cluster> cStack) {
+		int count = 0;
+		Cluster cTmp = !cStack.isEmpty() ? cStack.peek() : null;
+		MyNode nTmp = nodes.get(i);
+		
+		while(nTmp != null && nTmp.isComponent()){ 
+			count++;
+			if(i+count < nodes.size())
+				nTmp = nodes.get(i+count);
+			else
+				nTmp = null;
+		}
+		
+		return cTmp != null && cTmp.isAllText() && cTmp.size() == count;
 	}
 	
 	

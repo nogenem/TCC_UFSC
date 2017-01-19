@@ -52,9 +52,11 @@ public class QuestionarioBuilder {
 					//provavelmente este componente encontrado não faz parte de um questionario
 					//ou deu alguma coisa errada
 					if(this.currentQ.getAssunto().isEmpty()){
+						this.pBuilder.clearData(this.currentQ);
 						System.out.println("1================================================\n");
 						this.currentQ = new Questionario();
 					}else if(checker.shouldStartNewQuestionario(lastDesc, nTmp)){
+						this.pBuilder.clearData(this.currentQ);
 						//Um questionario deve ter no minimo 2 perguntas
 						if(this.currentQ.getPerguntas().size() >= 2){
 							ret.add(this.currentQ);
@@ -72,6 +74,7 @@ public class QuestionarioBuilder {
 				cStack.add(cTmp);
 			}
 		}
+		this.pBuilder.clearData(this.currentQ);
 		if(this.currentQ.getPerguntas().size() >= 2)
 			ret.add(this.currentQ);
 		
