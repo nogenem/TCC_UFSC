@@ -193,12 +193,7 @@ public class RulesChecker {
 
 	public boolean checkDistForQuestionGroup(MyNode n1, MyNode n2) {
 		Dewey dist = this.distMatrix.getDist(n1, n2);
-		return dist.getHeight() == 1 && dist.getWidth() <= 4;
-	}
-
-	public boolean checkPrefixForQuestionGroup(MyNode n1, MyNode n2, String prefix) {
-		String tmp = n1.getDewey().getCommonPrefix(n2.getDewey());
-		return tmp.equals(prefix);
+		return dist.getHeight() == 1 && dist.getWidth() <= 5;
 	}
 
 	public boolean isSimpleMatrix(List<MyNode> nodes, int i, Stack<Cluster> cStack) {
@@ -215,6 +210,26 @@ public class RulesChecker {
 		}
 		
 		return cTmp != null && cTmp.isAllText() && cTmp.size() == count;
+	}
+	
+	public boolean checkPrefixForQuestionGroup(MyNode n1, MyNode n2, String prefix) {
+		String tmp = n1.getDewey().getCommonPrefix(n2.getDewey());
+		return tmp.equals(prefix);
+	}
+	
+	// Meio e bottom devem esta perto um do outro
+	// o prefixo entre middle e groupDesc e entre bottom e groupDesc deve ser o mesmo
+	// o prefixo acima deve ser menor que o prefixo entre middle e bottom
+	public boolean checkQuestionGroup(MyNode middle, MyNode groupDesc, List<MyNode> nodes, int currentI) {
+		String prefix1 = middle.getDewey().getCommonPrefix(groupDesc.getDewey());
+		MyNode bottom = nodes.get(currentI+1);
+		
+		if(checkDistForQuestionGroup(middle, bottom) && 
+				checkPrefixForQuestionGroup(bottom, groupDesc, prefix1)){
+			String prefix2 = middle.getDewey().getCommonPrefix(bottom.getDewey());
+			return prefix1.length() < prefix2.length();
+		}
+		return false;
 	}
 	
 	

@@ -41,6 +41,10 @@ public class QuestionarioBuilder {
 			if(nTmp.isImgOrText()){
 				//Verifica se tem que criar um novo cluster
 				if(this.checker.shouldCreateNewCluster(cTmp, nTmp)){
+					cTmp = cStack.pop();
+					cTmp = this.checker.checkIfShouldBeInSameCluster(cTmp, cStack, nTmp);
+					cStack.add(cTmp);
+					
 //					System.out.println(cTmp);
 					cTmp = new Cluster();
 					cStack.add(cTmp);

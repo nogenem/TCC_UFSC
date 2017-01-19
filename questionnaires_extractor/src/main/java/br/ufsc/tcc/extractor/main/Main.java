@@ -31,7 +31,7 @@ public class Main {
 //		path = "https://www.survio.com/modelo-de-pesquisa/pesquisa-sobre-empregados-sobrecarregados-e-esgotados";
 		
 //		path = "cache/SurveyMonkey_1.html";
-		path = "cache/SurveyMonkey_2.html";
+//		path = "cache/SurveyMonkey_2.html";
 //		path = "https://www.surveymonkey.com/r/General-Event-Feedback-Template";
 //		path = "https://www.surveymonkey.com/r/online-social-networking-template";
 //		path = "https://www.surveymonkey.com/r/logo_testing_template"; 
@@ -48,7 +48,7 @@ public class Main {
 //		path = "http://anpei.tempsite.ws/intranet/mediaempresa";
 		
 		//TODO tratar input[radio] sozinho / testar mais a matrix
-//		path = "https://www.surveycrest.com/template_preview/pyof1IFwp9Xa1_x430JdUeVsuHVRKuw";
+		path = "https://www.surveycrest.com/template_preview/pyof1IFwp9Xa1_x430JdUeVsuHVRKuw";
 		
 //		path = "https://www.surveygizmo.com/survey-examples/";
 //		path = "http://www.createsurvey.com/demo/templates.htm";

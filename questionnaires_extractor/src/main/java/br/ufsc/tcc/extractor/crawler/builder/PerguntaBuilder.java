@@ -156,13 +156,10 @@ public class PerguntaBuilder {
 			
 			if(nTmp2 != null){
 				if(checker.checkDistForQuestionGroup(nTmp1, nTmp2)){
-					if(this.lastQuestionGroup == null){
-						nTmp2 = nodes.get(this.currentI+1);
-						if(checker.checkDistForQuestionGroup(nTmp1, nTmp2)){
-							this.updateLastQuestionGroup(currentQ, cStack, nTmp1);
-							questionGroupFlag = true;
-						}
-					}else if(this.checker.checkPrefixForQuestionGroup(nTmp1, lastQuestionGroupDesc.last(), this.lastQuestionGroupCommonPrefix)){
+					if(this.lastQuestionGroup == null && this.checker.checkQuestionGroup(nTmp1, nTmp2, nodes, this.currentI)){
+						this.updateLastQuestionGroup(currentQ, cStack, nTmp1);
+						questionGroupFlag = true;
+					}else if(this.checker.checkPrefixForQuestionGroup(nTmp1, nTmp2, this.lastQuestionGroupCommonPrefix)){
 						this.lastQuestionGroup.addFilha(this.currentP);
 						questionGroupFlag = true;
 					}else{
@@ -173,43 +170,43 @@ public class PerguntaBuilder {
 				}
 			}
 			
-			//Encontra o assunto do questionario
-			if(currentQ.getAssunto().isEmpty() && !cStack.isEmpty()){
-				cTmp1 = cStack.pop();
-				cTmp1 = this.checker.checkIfShouldBeInSameCluster(cTmp1, cStack, firstNode);
-				this.firstGroupOfQuestionnaire = null;
-				
-				//Verifica se não apenas uma img
-				if(this.checker.isOnlyOneImg(cTmp1)){
-					MyNode tmp = cTmp1.last();
-					Figura fig = new Figura(tmp.getAttr("src"), tmp.getAttr("alt"));
-					fig.setDono(currentQ);
-					currentQ.addFigura(fig);
-					System.out.println("Figura do questionario: " +fig);
-					cTmp1 = cStack.pop();
-				}
-				//Verifica se não é um grupo
-				if(!cStack.isEmpty() && this.checker.isGroupText(cTmp1, desc, this.firstGroupOfQuestionnaire)){
-					currentG = new Grupo(cTmp1.getText());
-					currentQ.addGrupo(currentG);
-					this.firstGroupOfQuestionnaire = cTmp1;
-
-					System.out.println("\nGroup: " +cTmp1.getText()+ "\n\n");
-					cTmp1 = cStack.pop();
-				}
-				currentQ.setAssunto(cTmp1.getText());
-				System.out.println("Assunto: " +currentQ.getAssunto() +"\n\n");
-			}
-			
-			//Verifica se o texto acima não é um grupo
 			if(!cStack.isEmpty()){
-				cTmp1 = cStack.peek();
-				if(this.checker.isGroupText(cTmp1, desc, this.firstGroupOfQuestionnaire)){
+				if(currentQ.getAssunto().isEmpty()){
+					//Encontra o assunto do questionario
 					cTmp1 = cStack.pop();
-					this.currentG = new Grupo(cTmp1.getText());
-					currentQ.addGrupo(currentG);
+					cTmp1 = this.checker.checkIfShouldBeInSameCluster(cTmp1, cStack, firstNode);
+					this.firstGroupOfQuestionnaire = null;
+					
+					//Verifica se não apenas uma img
+					if(this.checker.isOnlyOneImg(cTmp1)){
+						MyNode tmp = cTmp1.last();
+						Figura fig = new Figura(tmp.getAttr("src"), tmp.getAttr("alt"));
+						fig.setDono(currentQ);
+						currentQ.addFigura(fig);
+						System.out.println("Figura do questionario: " +fig);
+						cTmp1 = cStack.pop();
+					}
+					//Verifica se não é um grupo
+					if(!cStack.isEmpty() && this.checker.isGroupText(cTmp1, desc, this.firstGroupOfQuestionnaire)){
+						currentG = new Grupo(cTmp1.getText());
+						currentQ.addGrupo(currentG);
+						this.firstGroupOfQuestionnaire = cTmp1;
 
-					System.out.println("\nGroup: " +cTmp1.getText()+ "\n\n");
+						System.out.println("\nGroup: " +cTmp1.getText()+ "\n\n");
+						cTmp1 = cStack.pop();
+					}
+					currentQ.setAssunto(cTmp1.getText());
+					System.out.println("Assunto: " +currentQ.getAssunto() +"\n\n");
+				}else{
+					//Verifica se o texto acima não é um grupo
+					cTmp1 = cStack.peek();
+					if(this.checker.isGroupText(cTmp1, desc, this.firstGroupOfQuestionnaire)){
+						cTmp1 = cStack.pop();
+						this.currentG = new Grupo(cTmp1.getText());
+						currentQ.addGrupo(currentG);
+
+						System.out.println("\nGroup: " +cTmp1.getText()+ "\n\n");
+					}
 				}
 			}
 			
