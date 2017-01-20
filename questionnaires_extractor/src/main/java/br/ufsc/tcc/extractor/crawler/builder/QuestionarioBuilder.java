@@ -39,13 +39,15 @@ public class QuestionarioBuilder {
 			MyNode nTmp = nodes.get(i);
 			
 			if(nTmp.isImgOrText()){
+				cTmp = cStack.pop();
+				cTmp = this.checker.checkIfShouldBeInSameCluster(cTmp, cStack, nTmp);
+				cStack.add(cTmp);
+				
+				//TODO inverter a ordem, adicionar o cTmp soh quando for criar novo cluster!
+				
 				//Verifica se tem que criar um novo cluster
-				if(this.checker.shouldCreateNewCluster(cTmp, nTmp)){
-					cTmp = cStack.pop();
-					cTmp = this.checker.checkIfShouldBeInSameCluster(cTmp, cStack, nTmp);
-					cStack.add(cTmp);
-					
-//					System.out.println(cTmp);
+				if(this.checker.shouldCreateNewCluster(cTmp, nTmp)){	
+//					System.out.println(cTmp + "\n" +nTmp);
 					cTmp = new Cluster();
 					cStack.add(cTmp);
 				}
@@ -72,6 +74,10 @@ public class QuestionarioBuilder {
 				
 				cTmp.add(nTmp);
 			}else{
+				cTmp = cStack.pop();
+				cTmp = this.checker.checkIfShouldBeInSameCluster(cTmp, cStack, nTmp);
+				cStack.add(cTmp);
+				
 				i = pBuilder.build(this.currentQ, nodes, i, cStack);
 				lastDesc = cTmp;
 				cTmp = new Cluster();

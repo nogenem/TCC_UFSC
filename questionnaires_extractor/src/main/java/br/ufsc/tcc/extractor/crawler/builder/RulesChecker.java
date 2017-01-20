@@ -80,7 +80,7 @@ public class RulesChecker {
 			else
 				break;
 		}
-		cTmp1 = checkIfShouldBeInSameCluster(cTmp1, cStack, firstNode);
+		//cTmp1 = checkIfShouldBeInSameCluster(cTmp1, cStack, firstNode);
 		return cTmp1;
 	}
 
@@ -88,6 +88,7 @@ public class RulesChecker {
 		//TODO devo ativar a proteção abaixo?
 		//Da conflito entre os links:
 		//	https://www.survio.com/modelo-de-pesquisa/pesquisa-de-preco-do-produto [matriz para de funcionar]
+		//  http://anpei.tempsite.ws/intranet/mediaempresa [problema com: site da empresa http://]
 		//	https://www.surveycrest.com/template_preview/pyof1IFwp9Xa1_x430JdUeVsuHVRKuw [arruma um dos problemas]
 		// 	http://anpei.tempsite.ws/intranet/mediaempresa [arruma um dos problemas]
 		
@@ -156,9 +157,10 @@ public class RulesChecker {
 				Dewey dist = distMatrix.getDist(nTmp1, nTmp2);
 				if(dist.getHeight() <= 1 && dist.getWidth() <= 4){
 					String prefix1 = nTmp1.getDewey().getCommonPrefix(nTmp3.getDewey()),
-							prefix2 = nTmp2.getDewey().getCommonPrefix(nTmp3.getDewey());
+							prefix2 = nTmp2.getDewey().getCommonPrefix(nTmp3.getDewey()),
+							prefix3 = nTmp1.getDewey().getCommonPrefix(nTmp2.getDewey());
 					//O prefixo entre nTmp1 e nTmp3 e entre nTmp2 e nTmp3 são iguais?
-					if(prefix1.equals(prefix2)){
+					if(prefix1.equals(prefix2) && prefix3.length() > prefix1.length()){
 						return true;
 					}
 				}
@@ -174,20 +176,28 @@ public class RulesChecker {
 	}
 
 	public boolean hasSameTexts(Pergunta currentP, Cluster cTmp2) {
-		//Verifica se as alternativas da currentP contêm todos os textos
+		//Verifica se as alternativas/filhas da currentP contêm todos os textos
 		//do cTmp2, ou se a descrição da currentP contém o texto de cTmp2
-		ArrayList<Alternativa> tmpAlts = currentP.getAlternativas();
-		boolean flag = cTmp2 != null && !cTmp2.getText().isEmpty() && 
-				(tmpAlts.size() == cTmp2.size() || tmpAlts.size() == 0 && cTmp2.size() == 1);
-		if(flag){
-			if(tmpAlts.size() == 0)
-				flag = currentP.getDescricao().contains(cTmp2.getText());
-			else{
-				for(int j = 0; j < cTmp2.getGroup().size(); j++){
-					flag = flag && tmpAlts.get(j).getDescricao().contains(cTmp2.get(j).getText());
-				}
+		if(cTmp2 == null || cTmp2.getText().isEmpty()) return false;
+		
+		ArrayList<Alternativa> alts = currentP.getAlternativas();
+		ArrayList<Pergunta> filhas = currentP.getFilhas();
+		String txt = cTmp2.getText(), regex = "(?s).*(\nXXX|XXX\n).*";
+		boolean flag = false;
+		int count = filhas.size()+alts.size();
+
+		if(count == 0 && cTmp2.size() == 1){//Ex: https://www.survio.com/modelo-de-pesquisa/pesquisa-de-preco-do-produto
+			flag = currentP.getDescricao().matches(regex.replaceAll("XXX", cTmp2.getText()));
+		}else if(count == cTmp2.size()){
+			flag = true;
+			for(int j = 0; j < alts.size(); j++){
+				flag = flag && txt.matches(regex.replaceAll("XXX", alts.get(j).getDescricao()));
+			}
+			for(int j = 0; j < filhas.size(); j++){
+				flag = flag && txt.matches(regex.replaceAll("XXX", filhas.get(j).getDescricao()));
 			}
 		}
+		
 		return flag;
 	}
 

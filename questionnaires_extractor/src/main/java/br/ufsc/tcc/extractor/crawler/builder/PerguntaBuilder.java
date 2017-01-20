@@ -72,9 +72,10 @@ public class PerguntaBuilder {
 			break;
 		case RADIO_INPUT:{
 			if(nodes.get(this.currentI+1).getType() == MyNodeType.RADIO_INPUT){
-				//TODO tratar quando eh matrix > matrix!
-				if(this.lastMatrixHead == null)
-					desc = this.checker.checkIfShouldBeInSameCluster(desc, cStack, firstNode);	
+				if(this.lastMatrixHead != null && 
+						this.checker.isAbove(this.lastMatrixHead.last(), cStack.peek().first())){
+					this.saveLastMatrix(currentQ);
+				}
 				if(this.lastMatrixHead != null || this.checker.isSimpleMatrix(nodes, this.currentI, cStack)){
 					if(this.lastMatrixHead == null)
 						this.lastMatrixHead = cStack.pop();
@@ -91,9 +92,18 @@ public class PerguntaBuilder {
 		case TEL_INPUT:
 		case TIME_INPUT:
 		case URL_INPUT:{
-			//TODO tratar matriz http://anpei.tempsite.ws/intranet/mediaempresa
-			//TODO tratar quando eh matrix > matrix!
-			this.extractGenericInput(nodes);
+			if(nodes.get(this.currentI+1).isComponent()){
+				if(this.lastMatrixHead != null && 
+						this.checker.isAbove(this.lastMatrixHead.last(), cStack.peek().first())){
+					this.saveLastMatrix(currentQ);
+				}
+				if(this.lastMatrixHead != null || this.checker.isSimpleMatrix(nodes, this.currentI, cStack)){
+					if(this.lastMatrixHead == null)
+						this.lastMatrixHead = cStack.pop();
+					this.extractSimpleMatrix(nodes, currentQ);
+				}
+			}else
+				this.extractGenericInput(nodes);
 			break;
 		}case TEXTAREA:
 			this.extractTextarea(nodes);
@@ -183,7 +193,7 @@ public class PerguntaBuilder {
 						Figura fig = new Figura(tmp.getAttr("src"), tmp.getAttr("alt"));
 						fig.setDono(currentQ);
 						currentQ.addFigura(fig);
-						System.out.println("Figura do questionario: " +fig);
+						System.out.println("Figura do questionario: " +fig+ "\n");
 						cTmp1 = cStack.pop();
 					}
 					//Verifica se não é um grupo
@@ -226,6 +236,7 @@ public class PerguntaBuilder {
 					this.lastQuestionGroup.setGrupo(this.currentG);
 			}	
 			
+			//TODO verificar se a desc ta vazia ou se eh login?
 			if(!matrixFlag && !questionGroupFlag)
 				currentQ.addPergunta(this.currentP);
 		}
@@ -239,6 +250,7 @@ public class PerguntaBuilder {
 		boolean isMix = false;
 		int j = 0;
 		
+		System.out.println("\tSimple Matrix:");
 		input = nodes.get(this.currentI);
 		while(input != null && j < this.lastMatrixHead.size() && input.isComponent()){
 			if(!isMix && lastCompType != null && lastCompType != input.getType())
@@ -246,7 +258,7 @@ public class PerguntaBuilder {
 			lastCompType = input.getType();
 			
 			String text = this.lastMatrixHead.get(j).getText();
-			System.out.println("\tText: " +text+ " - Comp: " +input.getText());
+			System.out.println("\t\tText: " +text+ " - Comp: " +input.getText());
 			
 			if(lastCompType == MyNodeType.RADIO_INPUT || lastCompType == MyNodeType.CHECKBOX_INPUT){
 				Alternativa alt = new Alternativa(text);

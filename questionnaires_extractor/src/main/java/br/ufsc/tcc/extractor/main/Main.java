@@ -24,6 +24,7 @@ public class Main {
 	//TODO remover isso ao final do desenvolvimento!
 	private static void test(){
 		//TODO TESTAR PARA VER OQ ACONTECE QUANDO TEM UM GRUPO DE PERG OU MATRIZ COMO ULTIMA PERG!
+		//TODO fazer group misto!
 		
 		String path = "cache/Survio_1.html";
 //		path = "https://www.survio.com/modelo-de-pesquisa/pesquisa-de-preco-do-produto";
@@ -37,7 +38,8 @@ public class Main {
 //		path = "https://www.surveymonkey.com/r/logo_testing_template"; 
 		
 //		path = "cache/Vark-Learn_1.html";
-//		path = "http://vark-learn.com/the-vark-questionnaire/";//TODO tratar problema de não criar 2 questionarios
+		//TODO tratar problema de não criar 2 questionarios / titulo ficando como group
+		path = "http://vark-learn.com/the-vark-questionnaire/the-vark-questionnaire-for-younger-people/";
 		
 //		path = "cache/Bioinfo_1.html";
 		//TODO tratar do group perg [data] / texto embaixo do Email
@@ -47,8 +49,7 @@ public class Main {
 		//TODO tratar de sub pergunta / descrição atualizada com texto abaixo
 //		path = "http://anpei.tempsite.ws/intranet/mediaempresa";
 		
-		//TODO tratar input[radio] sozinho / testar mais a matrix
-		path = "https://www.surveycrest.com/template_preview/pyof1IFwp9Xa1_x430JdUeVsuHVRKuw";
+//		path = "https://www.surveycrest.com/template_preview/pyof1IFwp9Xa1_x430JdUeVsuHVRKuw";
 		
 //		path = "https://www.surveygizmo.com/survey-examples/";
 //		path = "http://www.createsurvey.com/demo/templates.htm";
@@ -65,8 +66,6 @@ public class Main {
 			}else{
 //				System.setProperty("javax.net.debug", "all");
 				System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2");
-//				enableSSLSocket();
-//				setTrustAllCerts();
 				doc = Jsoup.connect(path)
 					.validateTLSCertificates(false)
 					.get();
