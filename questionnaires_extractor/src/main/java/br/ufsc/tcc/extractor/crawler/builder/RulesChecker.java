@@ -7,7 +7,6 @@ import java.util.Stack;
 import br.ufsc.tcc.common.model.Cluster;
 import br.ufsc.tcc.common.model.Dewey;
 import br.ufsc.tcc.common.model.MyNode;
-import br.ufsc.tcc.common.model.MyNodeType;
 import br.ufsc.tcc.common.util.DistanceMatrix;
 import br.ufsc.tcc.extractor.model.Alternativa;
 import br.ufsc.tcc.extractor.model.Pergunta;
@@ -63,7 +62,6 @@ public class RulesChecker {
 		if(desc == null || desc.isEmpty()) return desc;
 		
 		boolean flag = true;
-		Cluster cTmp1 = desc;
 		String altsTxt = "";
 		
 		//Pega o texto de todas as alternativas da perguta
@@ -71,21 +69,20 @@ public class RulesChecker {
 			altsTxt += alt.getDescricao()+"\n";
 		}
 		
+		//Ex: https://www.surveymonkey.com/r/General-Event-Feedback-Template
 		while(true){
-			for(MyNode node : cTmp1.getGroup()){
+			for(MyNode node : desc.getGroup()){
 				flag = flag && altsTxt.contains(node.getText());
 			}
-			if(flag && !cStack.isEmpty())
-				cTmp1 = cStack.pop();
-			else
+			if(flag && !cStack.isEmpty()){
+				desc = cStack.pop();
+			}else
 				break;
 		}
-		//cTmp1 = checkIfShouldBeInSameCluster(cTmp1, cStack, firstNode);
-		return cTmp1;
+		return desc;
 	}
 
 	public Cluster checkIfShouldBeInSameCluster(Cluster c, Stack<Cluster> cStack, MyNode firstNode) {
-		//TODO devo ativar a proteção abaixo?
 		//Da conflito entre os links:
 		//	https://www.survio.com/modelo-de-pesquisa/pesquisa-de-preco-do-produto [matriz para de funcionar]
 		//  http://anpei.tempsite.ws/intranet/mediaempresa [problema com: site da empresa http://]
@@ -223,6 +220,8 @@ public class RulesChecker {
 	}
 	
 	public boolean checkPrefixForQuestionGroup(MyNode n1, MyNode n2, String prefix) {
+		if(n1 == null || n2 == null || prefix.isEmpty()) return false;
+		
 		String tmp = n1.getDewey().getCommonPrefix(n2.getDewey());
 		return tmp.equals(prefix);
 	}

@@ -117,7 +117,7 @@ public class PerguntaBuilder {
 		
 		if(this.currentP.getForma() != null){
 			ArrayList<Alternativa> tmpAlts = this.currentP.getAlternativas();
-			desc = checker.getCorrectDescription(desc, tmpAlts, firstNode, cStack);
+			desc = this.checker.getCorrectDescription(desc, tmpAlts, firstNode, cStack);
 			
 			//A distancia da pergunta para a sua descrição não pode ser maior que 2 
 			if(checker.checkDistBetweenDescAndPerg(desc, firstNode)){
@@ -169,7 +169,8 @@ public class PerguntaBuilder {
 					if(this.lastQuestionGroup == null && this.checker.checkQuestionGroup(nTmp1, nTmp2, nodes, this.currentI)){
 						this.updateLastQuestionGroup(currentQ, cStack, nTmp1);
 						questionGroupFlag = true;
-					}else if(this.checker.checkPrefixForQuestionGroup(nTmp1, nTmp2, this.lastQuestionGroupCommonPrefix)){
+					}else if(this.lastQuestionGroup != null && 
+							this.checker.checkPrefixForQuestionGroup(nTmp1, nTmp2, this.lastQuestionGroupCommonPrefix)){
 						this.lastQuestionGroup.addFilha(this.currentP);
 						questionGroupFlag = true;
 					}else{
@@ -225,7 +226,7 @@ public class PerguntaBuilder {
 				nTmp1 = nodes.get(++this.currentI);
 				this.currentP.setDescricao(
 						this.currentP.getDescricao() +"\n"+ nTmp1.getText());
-				System.out.println("Descrição atualizada: " +this.currentP.getDescricao() +"\n\n");
+				System.out.println("Descrição atualizada1: " +this.currentP.getDescricao() +"\n\n");
 			}
 			
 			if(this.currentG != null){
@@ -337,6 +338,7 @@ public class PerguntaBuilder {
 			
 			this.lastQuestionGroup = null;
 			this.lastQuestionGroupDesc = null;
+			this.lastQuestionGroupCommonPrefix = "";
 		}
 	}
 

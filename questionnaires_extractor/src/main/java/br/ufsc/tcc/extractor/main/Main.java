@@ -39,7 +39,7 @@ public class Main {
 		
 //		path = "cache/Vark-Learn_1.html";
 		//TODO tratar problema de não criar 2 questionarios / titulo ficando como group
-		path = "http://vark-learn.com/the-vark-questionnaire/the-vark-questionnaire-for-younger-people/";
+//		path = "http://vark-learn.com/the-vark-questionnaire/";
 		
 //		path = "cache/Bioinfo_1.html";
 		//TODO tratar do group perg [data] / texto embaixo do Email
@@ -47,9 +47,11 @@ public class Main {
 		
 //		path = "cache/Anpei_1.html";
 		//TODO tratar de sub pergunta / descrição atualizada com texto abaixo
-//		path = "http://anpei.tempsite.ws/intranet/mediaempresa";
+		path = "http://anpei.tempsite.ws/intranet/mediaempresa";
 		
 //		path = "https://www.surveycrest.com/template_preview/pyof1IFwp9Xa1_x430JdUeVsuHVRKuw";
+		path = "https://www.surveycrest.com/template_preview/pufLBGbsEEBvdJvPPxIe9hYJx0Q";
+		path = "https://www.surveycrest.com/template_preview/pcTMgau0DnNMqRJGbCqSAknAAjJA";
 		
 //		path = "https://www.surveygizmo.com/survey-examples/";
 //		path = "http://www.createsurvey.com/demo/templates.htm";
