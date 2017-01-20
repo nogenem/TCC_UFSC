@@ -63,56 +63,48 @@ public class PerguntaBuilder {
 		}
 		
 		
-		switch (firstNode.getType()) {
-		case SELECT:
-			this.extractSelect(nodes);
-			break;
-		case CHECKBOX_INPUT:
-			this.extractCheckboxOrRadioInput(currentQ, nodes);
-			break;
-		case RADIO_INPUT:{
-			if(nodes.get(this.currentI+1).getType() == MyNodeType.RADIO_INPUT){
-				if(this.lastMatrixHead != null && 
-						this.checker.isAbove(this.lastMatrixHead.last(), cStack.peek().first())){
-					this.saveLastMatrix(currentQ);
-				}
-				if(this.lastMatrixHead != null || this.checker.isSimpleMatrix(nodes, this.currentI, cStack)){
-					if(this.lastMatrixHead == null)
-						this.lastMatrixHead = cStack.pop();
-					this.extractSimpleMatrix(nodes, currentQ);
-				}else
-					this.extractSimpleRating(nodes);
-			}else
+		if(nodes.get(this.currentI+1).isComponent()){
+			if(this.lastMatrixHead != null && 
+					this.checker.isAbove(this.lastMatrixHead.last(), cStack.peek().first())){
+				this.saveLastMatrix(currentQ);
+			}
+			if(this.lastMatrixHead != null || this.checker.isSimpleMatrix(nodes, this.currentI, cStack)){
+				if(this.lastMatrixHead == null)
+					this.lastMatrixHead = cStack.pop();
+				this.extractSimpleMatrix(nodes, currentQ);
+			}else if(firstNode.getType() == MyNodeType.RADIO_INPUT && 
+					nodes.get(this.currentI+1).getType() == MyNodeType.RADIO_INPUT){
+				this.extractSimpleRating(nodes);
+			}
+		}else{
+			switch (firstNode.getType()) {
+			case SELECT:
+				this.extractSelect(nodes);
+				break;
+			case CHECKBOX_INPUT:
 				this.extractCheckboxOrRadioInput(currentQ, nodes);
-			break;
-		}case TEXT_INPUT:
-		case NUMBER_INPUT:
-		case EMAIL_INPUT:
-		case DATE_INPUT:
-		case TEL_INPUT:
-		case TIME_INPUT:
-		case URL_INPUT:{
-			if(nodes.get(this.currentI+1).isComponent()){
-				if(this.lastMatrixHead != null && 
-						this.checker.isAbove(this.lastMatrixHead.last(), cStack.peek().first())){
-					this.saveLastMatrix(currentQ);
-				}
-				if(this.lastMatrixHead != null || this.checker.isSimpleMatrix(nodes, this.currentI, cStack)){
-					if(this.lastMatrixHead == null)
-						this.lastMatrixHead = cStack.pop();
-					this.extractSimpleMatrix(nodes, currentQ);
-				}
-			}else
+				break;
+			case RADIO_INPUT:{
+				this.extractCheckboxOrRadioInput(currentQ, nodes);
+				break;
+			}case TEXT_INPUT:
+			case NUMBER_INPUT:
+			case EMAIL_INPUT:
+			case DATE_INPUT:
+			case TEL_INPUT:
+			case TIME_INPUT:
+			case URL_INPUT:{
 				this.extractGenericInput(nodes);
-			break;
-		}case TEXTAREA:
-			this.extractTextarea(nodes);
-			break;
-		case RANGE_INPUT:
-			//TODO tentar achar um exemplo?
-			break;
-		default:
-			break;
+				break;
+			}case TEXTAREA:
+				this.extractTextarea(nodes);
+				break;
+			case RANGE_INPUT:
+				//TODO tentar achar um exemplo?
+				break;
+			default:
+				break;
+			}
 		}
 		
 		if(this.currentP.getForma() != null){
