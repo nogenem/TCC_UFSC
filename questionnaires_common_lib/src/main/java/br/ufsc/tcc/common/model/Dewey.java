@@ -56,6 +56,13 @@ public class Dewey {
 	            break;
 	        result += str1.charAt(i);
 	    }
+	    if(!result.isEmpty()){
+	    	int i = result.lastIndexOf('.');
+	    	if(i == -1)
+	    		result = "";
+	    	else if(result.length()-i <= 2)//Ficou pela metade, ex: 01.02.01 e 01.02.02
+		    	result = result.substring(0, result.lastIndexOf('.'));
+	    }
 		return result;
 	}
 	
