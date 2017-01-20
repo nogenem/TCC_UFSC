@@ -11,6 +11,7 @@ import br.ufsc.tcc.common.util.DistanceMatrix;
 import br.ufsc.tcc.extractor.database.manager.FormaDaPerguntaManager;
 import br.ufsc.tcc.extractor.model.Alternativa;
 import br.ufsc.tcc.extractor.model.Figura;
+import br.ufsc.tcc.extractor.model.FormaDaPergunta;
 import br.ufsc.tcc.extractor.model.Grupo;
 import br.ufsc.tcc.extractor.model.Pergunta;
 import br.ufsc.tcc.extractor.model.Questionario;
@@ -163,6 +164,10 @@ public class PerguntaBuilder {
 						questionGroupFlag = true;
 					}else if(this.lastQuestionGroup != null && 
 							this.checker.checkPrefixForQuestionGroup(nTmp1, nTmp2, this.lastQuestionGroupCommonPrefix)){
+						if(!this.lastQuestionGroup.getForma().toString().
+								startsWith(this.currentP.getForma().toString())){
+							this.lastQuestionGroup.setForma(FormaDaPerguntaManager.getForma("MIX_COMP_GROUP"));
+						}
 						this.lastQuestionGroup.addFilha(this.currentP);
 						questionGroupFlag = true;
 					}else{
@@ -258,13 +263,7 @@ public class PerguntaBuilder {
 				this.currentP.addAlternativa(alt);
 			}else{
 				Pergunta tmpPerg = new Pergunta(text);
-				if(lastCompType == MyNodeType.TEXT_INPUT){
-					tmpPerg.setTipo("ABERTO");
-					tmpPerg.setForma(FormaDaPerguntaManager.getForma("TEXT_INPUT"));
-				}else if(lastCompType == MyNodeType.TEXTAREA){
-					tmpPerg.setTipo("ABERTO");
-					tmpPerg.setForma(FormaDaPerguntaManager.getForma("TEXTAREA"));
-				}
+				tmpPerg.setForma(FormaDaPerguntaManager.getForma(lastCompType.toString()));
 				tmpPerg.setQuestionario(currentQ);
 				this.currentP.addFilha(tmpPerg);
 			}
@@ -278,32 +277,10 @@ public class PerguntaBuilder {
 		if(input != null)
 			this.currentI--;
 		
-		if(isMix){
-			this.currentP.setTipo("ABERTO");
-			//TODO mudar este nome?
+		if(isMix)
 			this.currentP.setForma(FormaDaPerguntaManager.getForma("MIX_COMP_GROUP"));
-		}else{
-			switch(lastCompType){
-			case RADIO_INPUT:
-				this.currentP.setTipo("FECHADO");
-				this.currentP.setForma(FormaDaPerguntaManager.getForma("RADIO_INPUT"));
-				break;
-			case CHECKBOX_INPUT:
-				this.currentP.setTipo("MULTIPLA_ESCOLHA");
-				this.currentP.setForma(FormaDaPerguntaManager.getForma("CHECKBOX_INPUT"));
-				break;
-			case TEXT_INPUT:
-				this.currentP.setTipo("ABERTO");
-				this.currentP.setForma(FormaDaPerguntaManager.getForma("TEXT_INPUT"));
-				break;
-			case TEXTAREA:
-				this.currentP.setTipo("ABERTO");
-				this.currentP.setForma(FormaDaPerguntaManager.getForma("TEXTAREA"));
-				break;
-			default:
-				break;
-			}
-		}
+		else
+			this.currentP.setForma(FormaDaPerguntaManager.getForma(lastCompType.toString()));
 	}
 
 	private void updateLastQuestionGroup(Questionario currentQ, Stack<Cluster> cStack, MyNode nTmp1) {
@@ -314,11 +291,7 @@ public class PerguntaBuilder {
 				getCommonPrefix(this.lastQuestionGroupDesc.last().getDewey());
 		
 		this.lastQuestionGroup = new Pergunta();
-		//TODO verificar o tipo de input/criar _GROUP para todos?
-		if(this.currentP.getForma() == FormaDaPerguntaManager.getForma("TEXT_INPUT")){
-			this.lastQuestionGroup.setForma(FormaDaPerguntaManager.getForma("TEXT_INPUT_GROUP"));
-			this.lastQuestionGroup.setTipo("ABERTO");
-		}
+		this.lastQuestionGroup.setForma(FormaDaPerguntaManager.getForma(this.currentP.getForma().toString()+"_GROUP"));
 		this.lastQuestionGroup.setDescricao(this.lastQuestionGroupDesc.getText());							
 		this.lastQuestionGroup.addFilha(this.currentP);
 	}
@@ -340,15 +313,11 @@ public class PerguntaBuilder {
 		}
 		if(!cStack.isEmpty() && lastMatrix == null){
 			this.lastMatrix = new Pergunta();
-			if(this.currentP.getForma() == FormaDaPerguntaManager.getForma("RADIO_INPUT")){
-				this.lastMatrix.setForma(FormaDaPerguntaManager.getForma("RADIO_INPUT_MATRIX"));
-				this.lastMatrix.setTipo("MULTIPLA_ESCOLHA");
-			}else if(this.currentP.getForma() == FormaDaPerguntaManager.getForma("TEXT_INPUT")){
-				this.lastMatrix.setForma(FormaDaPerguntaManager.getForma("TEXT_INPUT_MATRIX"));
-				this.lastMatrix.setTipo("ABERTO");
-			}else if(this.currentP.getForma() == FormaDaPerguntaManager.getForma("MIX_COMP_GROUP")){
+			FormaDaPergunta forma = this.currentP.getForma();
+			if(forma == FormaDaPerguntaManager.getForma("MIX_COMP_GROUP")){
 				this.lastMatrix.setForma(FormaDaPerguntaManager.getForma("MIX_COMP_MATRIX"));
-				this.lastMatrix.setTipo("ABERTO");
+			}else{
+				this.lastMatrix.setForma(FormaDaPerguntaManager.getForma(forma.toString()+"_MATRIX"));
 			}
 			this.lastMatrix.setDescricao(cStack.pop().getText());
 		}

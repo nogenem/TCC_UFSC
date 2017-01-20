@@ -29,18 +29,18 @@ public class Pergunta {
 	
 	// Construtores
 	public Pergunta(){
-		this("", "", null);
+		this("", null);
 	}
 	
 	public Pergunta(String descricao){
-		this(descricao, "", null);
+		this(descricao, null);
 	}
 	
-	public Pergunta(String descricao, String tipo, FormaDaPergunta forma){
+	public Pergunta(String descricao, FormaDaPergunta forma){
 		this.id = -1;
 		this.descricao = descricao;
-		this.tipo = tipo;
 		this.forma = forma;
+		this.tipo = this.convertFormaToTipo();
 		this.pai = null;
 		this.questionario = null;
 		this.grupo = null;
@@ -83,6 +83,7 @@ public class Pergunta {
 
 	public void setForma(FormaDaPergunta forma) {
 		this.forma = forma;
+		this.tipo = this.convertFormaToTipo();
 	}
 
 	public Pergunta getPai() {
@@ -140,6 +141,37 @@ public class Pergunta {
 	}
 	
 	// Demais métodos
+	private String convertFormaToTipo(){
+		if(this.getForma() == null) return "";
+		
+		switch(this.getForma().toString()){
+		case "SELECT":
+		case "RADIO_INPUT":
+		case "RANGE_INPUT":
+		case "RANGE_INPUT_GROUP":
+		case "RATING":
+			return "FECHADO";
+		case "CHECKBOX_INPUT":
+		case "CHECKBOX_INPUT_MATRIX":
+		case "RADIO_INPUT_MATRIX"://TODO é mesmo multipla?
+			return "MULTIPLA_ESCOLHA";
+		case "TEXT_INPUT":
+		case "TEXT_INPUT_MATRIX":
+		case "TEXT_INPUT_GROUP":
+		case "NUMBER_INPUT":
+		case "EMAIL_INPUT":
+		case "DATE_INPUT":
+		case "TEL_INPUT":
+		case "TIME_INPUT":
+		case "URL_INPUT":
+		case "TEXTAREA":
+		case "TEXTAREA_MATRIX":
+			return "ABERTO";
+		default:
+			return "";
+		}
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
