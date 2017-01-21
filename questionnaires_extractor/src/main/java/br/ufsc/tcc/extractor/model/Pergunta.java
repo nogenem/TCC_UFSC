@@ -144,27 +144,38 @@ public class Pergunta {
 	private String convertFormaToTipo(){
 		if(this.getForma() == null) return "";
 		
+		//TODO adicionar mix_comp_group e _matrix
 		switch(this.getForma().toString()){
 		case "SELECT":
+		case "SELECT_GROUP":
 		case "RADIO_INPUT":
+		case "RADIO_INPUT_GROUP":
 		case "RANGE_INPUT":
 		case "RANGE_INPUT_GROUP":
 		case "RATING":
 			return "FECHADO";
 		case "CHECKBOX_INPUT":
+		case "CHECKBOX_INPUT_GROUP":
 		case "CHECKBOX_INPUT_MATRIX":
-		case "RADIO_INPUT_MATRIX"://TODO é mesmo multipla?
+		case "RADIO_INPUT_MATRIX":
 			return "MULTIPLA_ESCOLHA";
 		case "TEXT_INPUT":
-		case "TEXT_INPUT_MATRIX":
 		case "TEXT_INPUT_GROUP":
+		case "TEXT_INPUT_MATRIX":
 		case "NUMBER_INPUT":
+		case "NUMBER_INPUT_GROUP":
 		case "EMAIL_INPUT":
+		case "EMAIL_INPUT_GROUP":
 		case "DATE_INPUT":
+		case "DATE_INPUT_GROUP":
 		case "TEL_INPUT":
+		case "TEL_INPUT_GROUP":
 		case "TIME_INPUT":
+		case "TIME_INPUT_GROUP":
 		case "URL_INPUT":
+		case "URL_INPUT_GROUP":
 		case "TEXTAREA":
+		case "TEXTAREA_GROUP":
 		case "TEXTAREA_MATRIX":
 			return "ABERTO";
 		default:

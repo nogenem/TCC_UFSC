@@ -23,9 +23,6 @@ public class Main {
 	
 	//TODO remover isso ao final do desenvolvimento!
 	private static void test(){
-		//TODO TESTAR PARA VER OQ ACONTECE QUANDO TEM UM GRUPO DE PERG OU MATRIZ COMO ULTIMA PERG!
-		//TODO fazer group misto!
-		
 		String path = "cache/Survio_1.html";
 //		path = "https://www.survio.com/modelo-de-pesquisa/pesquisa-de-preco-do-produto";
 //		path = "https://www.survio.com/modelo-de-pesquisa/avaliacao-de-um-e-shop";
@@ -49,6 +46,7 @@ public class Main {
 		//TODO tratar de sub pergunta / descrição atualizada com texto abaixo
 		path = "http://anpei.tempsite.ws/intranet/mediaempresa";
 		
+//		path = "cache/SurveyCrest_1.html";
 //		path = "https://www.surveycrest.com/template_preview/pyof1IFwp9Xa1_x430JdUeVsuHVRKuw";
 //		path = "https://www.surveycrest.com/template_preview/pufLBGbsEEBvdJvPPxIe9hYJx0Q";
 //		path = "https://www.surveycrest.com/template_preview/pcTMgau0DnNMqRJGbCqSAknAAjJA";

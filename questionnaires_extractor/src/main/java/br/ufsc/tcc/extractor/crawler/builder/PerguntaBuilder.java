@@ -182,7 +182,6 @@ public class PerguntaBuilder {
 				if(currentQ.getAssunto().isEmpty()){
 					//Encontra o assunto do questionario
 					cTmp1 = cStack.pop();
-					cTmp1 = this.checker.checkIfShouldBeInSameCluster(cTmp1, cStack, firstNode);
 					this.firstGroupOfQuestionnaire = null;
 					
 					//Verifica se não apenas uma img
@@ -234,8 +233,8 @@ public class PerguntaBuilder {
 					this.lastQuestionGroup.setGrupo(this.currentG);
 			}	
 			
-			//TODO verificar se a desc ta vazia ou se eh login?
-			if(!matrixFlag && !questionGroupFlag)
+			//TODO verificar se eh login?
+			if(!matrixFlag && !questionGroupFlag && !this.currentP.getDescricao().isEmpty())
 				currentQ.addPergunta(this.currentP);
 		}
 		

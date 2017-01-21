@@ -122,7 +122,7 @@ public class RulesChecker {
 			return false;
 		
 		//Cluster tem tamanho = 1 ou cluster de text e img?
-		if(cTmp.size() == 1 || (cTmp.size() == 2 && cTmp.isAllTextOrImg())){
+		if((cTmp.size() == 1 && cTmp.isAllText()) || (cTmp.size() == 2 && cTmp.isAllTextOrImg())){
 			//A altura da distância entre esse cTmp e a descrição da pergunta é menor ou igual a 1?
 			//E a largura é menor ou igual a 7?
 			Dewey dist = distMatrix.getDist(cTmp.last(), desc.first());
