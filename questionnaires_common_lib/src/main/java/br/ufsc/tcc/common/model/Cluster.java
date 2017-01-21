@@ -43,7 +43,7 @@ public class Cluster {
 	public String getText(){
 		StringBuilder builder = new StringBuilder();
 		for(MyNode node : this.group){
-			if(node.getType() == MyNodeType.TEXT)
+			if(node.isText())
 				builder.append(node.getText() +"\n");
 		}
 		if(builder.length() == 0) return "";
@@ -87,15 +87,14 @@ public class Cluster {
 	public boolean isAllText(){
 		return this.group.parallelStream()
 				.reduce(true, 
-						(a,b) -> a && b.getType() == MyNodeType.TEXT, 
+						(a,b) -> a && b.isText(), 
 						Boolean::logicalAnd);
 	}
 	
 	public boolean isAllTextOrImg(){
 		return this.group.parallelStream()
 				.reduce(true, 
-						(a,b) -> a && (b.getType() == MyNodeType.TEXT || 
-										b.getType() == MyNodeType.IMG), 
+						(a,b) -> a && b.isImgOrText(), 
 						Boolean::logicalAnd);
 	}
 	
