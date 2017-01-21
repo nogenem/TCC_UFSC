@@ -33,23 +33,17 @@ public class QuestionarioBuilder {
 		this.currentQ = new Questionario();
 		Stack<Cluster> cStack = new Stack<>();
 		Cluster cTmp = new Cluster(), lastDesc = null;
-		cStack.add(cTmp);
 		
 		for(int i = 0; i<nodes.size(); i++){
 			MyNode nTmp = nodes.get(i);
 			
+			cTmp = this.checker.checkIfShouldBeInSameCluster(cTmp, cStack, nTmp);
 			if(nTmp.isImgOrText()){
-				cTmp = cStack.pop();
-				cTmp = this.checker.checkIfShouldBeInSameCluster(cTmp, cStack, nTmp);
-				cStack.add(cTmp);
-				
-				//TODO inverter a ordem, adicionar o cTmp soh quando for criar novo cluster!
-				
 				//Verifica se tem que criar um novo cluster
 				if(this.checker.shouldCreateNewCluster(cTmp, nTmp)){	
-//					System.out.println(cTmp + "\n" +nTmp);
-					cTmp = new Cluster();
+//					System.out.println(cTmp + "\n\t" +nTmp);
 					cStack.add(cTmp);
+					cTmp = new Cluster();
 				}
 				
 				//Verifica se esta começando um novo questinario
@@ -64,9 +58,8 @@ public class QuestionarioBuilder {
 					}else if(checker.shouldStartNewQuestionario(lastDesc, nTmp)){
 						this.pBuilder.clearData(this.currentQ);
 						//Um questionario deve ter no minimo 2 perguntas
-						if(this.currentQ.getPerguntas().size() >= 2){
+						if(this.currentQ.getPerguntas().size() >= 2)
 							ret.add(this.currentQ);
-						}
 						System.out.println("2================================================\n");
 						this.currentQ = new Questionario();
 					}
@@ -74,14 +67,10 @@ public class QuestionarioBuilder {
 				
 				cTmp.add(nTmp);
 			}else{
-				cTmp = cStack.pop();
-				cTmp = this.checker.checkIfShouldBeInSameCluster(cTmp, cStack, nTmp);
-				cStack.add(cTmp);
-				
+				cStack.add(cTmp);				
 				i = pBuilder.build(this.currentQ, nodes, i, cStack);
 				lastDesc = cTmp;
 				cTmp = new Cluster();
-				cStack.add(cTmp);
 			}
 		}
 		this.pBuilder.clearData(this.currentQ);

@@ -59,11 +59,9 @@ public class PerguntaBuilder {
 		
 		//Verifica se o cluster de desc é apenas uma img
 		//		Ex: https://www.survio.com/modelo-de-pesquisa/avaliacao-de-um-e-shop
-		if(this.checker.isOnlyOneImg(desc) && !cStack.isEmpty()){
+		if(this.checker.isOnlyOneImg(desc) && !cStack.isEmpty())
 			desc = cStack.pop();
-		}
-		
-		
+
 		if(nodes.get(this.currentI+1).isComponent()){
 			if(this.lastMatrixHead != null && 
 					this.checker.isAbove(this.lastMatrixHead.last(), cStack.peek().first())){
@@ -113,9 +111,8 @@ public class PerguntaBuilder {
 			desc = this.checker.getCorrectDescription(desc, tmpAlts, firstNode, cStack);
 			
 			//A distancia da pergunta para a sua descrição não pode ser maior que 2 
-			if(checker.checkDistBetweenDescAndPerg(desc, firstNode)){
+			if(checker.checkDistBetweenDescAndPerg(desc, firstNode))
 				return this.currentI;
-			}
 			
 			this.currentP.setDescricao(desc.getText());
 			System.out.println("Descrição: " +this.currentP.getDescricao() +"\n\n");
@@ -184,7 +181,7 @@ public class PerguntaBuilder {
 					cTmp1 = cStack.pop();
 					this.firstGroupOfQuestionnaire = null;
 					
-					//Verifica se não apenas uma img
+					//Verifica se não é apenas uma img
 					if(this.checker.isOnlyOneImg(cTmp1)){
 						MyNode tmp = cTmp1.last();
 						Figura fig = new Figura(tmp.getAttr("src"), tmp.getAttr("alt"));
@@ -217,7 +214,7 @@ public class PerguntaBuilder {
 				}
 			}
 			
-			//Verifica se o texto abaixo, se tiver, não faz parte desta pergunta (Peso: [...] kg)
+			//Verifica se o texto abaixo, se tiver, não faz parte desta pergunta (Ex: Peso: [...] kg)
 			if(this.checker.checkNextText(nodes, this.currentI)){
 				nTmp1 = nodes.get(++this.currentI);
 				this.currentP.setDescricao(
@@ -239,47 +236,6 @@ public class PerguntaBuilder {
 		}
 		
 		return this.currentI;
-	}
-
-	private void extractSimpleMatrix(List<MyNode> nodes, Questionario currentQ) {
-		MyNode input = null;
-		MyNodeType lastCompType = null;
-		boolean isMix = false;
-		int j = 0;
-		
-		System.out.println("\tSimple Matrix:");
-		input = nodes.get(this.currentI);
-		while(input != null && j < this.lastMatrixHead.size() && input.isComponent()){
-			if(!isMix && lastCompType != null && lastCompType != input.getType())
-				isMix = true;
-			lastCompType = input.getType();
-			
-			String text = this.lastMatrixHead.get(j).getText();
-			System.out.println("\t\tText: " +text+ " - Comp: " +input.getText());
-			
-			if(lastCompType == MyNodeType.RADIO_INPUT || lastCompType == MyNodeType.CHECKBOX_INPUT){
-				Alternativa alt = new Alternativa(text);
-				this.currentP.addAlternativa(alt);
-			}else{
-				Pergunta tmpPerg = new Pergunta(text);
-				tmpPerg.setForma(FormaDaPerguntaManager.getForma(lastCompType.toString()));
-				tmpPerg.setQuestionario(currentQ);
-				this.currentP.addFilha(tmpPerg);
-			}
-			
-			if(this.currentI+1 < nodes.size())
-				input = nodes.get(++this.currentI);
-			else
-				input = null;
-			j++;
-		}
-		if(input != null)
-			this.currentI--;
-		
-		if(isMix)
-			this.currentP.setForma(FormaDaPerguntaManager.getForma("MIX_COMP_GROUP"));
-		else
-			this.currentP.setForma(FormaDaPerguntaManager.getForma(lastCompType.toString()));
 	}
 
 	private void updateLastQuestionGroup(Questionario currentQ, Stack<Cluster> cStack, MyNode nTmp1) {
@@ -337,7 +293,6 @@ public class PerguntaBuilder {
 	private void extractTextarea(List<MyNode> nodes) {
 		System.out.println("\tTextarea.");
 		
-		currentP.setTipo("ABERTO");
 		currentP.setForma(FormaDaPerguntaManager.getForma("TEXTAREA"));
 	}
 
@@ -346,7 +301,6 @@ public class PerguntaBuilder {
 
 		System.out.println("\tInput [" +type+ "].");
 		
-		currentP.setTipo("ABERTO");
 		currentP.setForma(FormaDaPerguntaManager.getForma(type + "_INPUT"));
 	}
 
@@ -355,7 +309,6 @@ public class PerguntaBuilder {
 		int i = 1;
 		boolean error = false;
 				
-		currentP.setTipo("FECHADO");
 		currentP.setForma(FormaDaPerguntaManager.getForma("RATING"));
 		System.out.println("\tRating:");
 		
@@ -389,16 +342,11 @@ public class PerguntaBuilder {
 		
 		input = nodes.get(this.currentI);
 		
-		if(input.getType() == MyNodeType.CHECKBOX_INPUT){
-			this.currentP.setTipo("MULTIPLA_ESCOLHA");
-			this.currentP.setForma(FormaDaPerguntaManager.getForma("CHECKBOX_INPUT"));
+		this.currentP.setForma(FormaDaPerguntaManager.getForma(input.getType().toString()));
+		if(input.getType() == MyNodeType.CHECKBOX_INPUT)
 			System.out.println("\tCheckbox Input:");
-		}else if(input.getType() == MyNodeType.RADIO_INPUT){
-			this.currentP.setTipo("FECHADO");
-			this.currentP.setForma(FormaDaPerguntaManager.getForma("RADIO_INPUT"));
+		else
 			System.out.println("\tRadio Input:");
-		}else
-			return;
 		
 		img = nodes.get(this.currentI-1);
 		text = nodes.get(++this.currentI);
@@ -421,7 +369,6 @@ public class PerguntaBuilder {
 				Pergunta tmpPerg = new Pergunta(text.getText());
 				dono = tmpPerg;
 				
-				tmpPerg.setTipo("ABERTO");
 				tmpPerg.setForma(FormaDaPerguntaManager.getForma("TEXT_INPUT"));
 				System.out.println("\t\t\tCom Text Input.");
 				
@@ -468,7 +415,6 @@ public class PerguntaBuilder {
 		MyNode opt = null, text = null;
 		boolean error = false;
 		
-		currentP.setTipo("FECHADO");
 		currentP.setForma(FormaDaPerguntaManager.getForma("SELECT"));
 		System.out.println("\tSelect:");
 		
@@ -494,6 +440,47 @@ public class PerguntaBuilder {
 			this.currentI -= 2;
 		if(error && this.currentP.getAlternativas().size() == 0)
 			this.currentP.setForma(null);
+	}
+	
+	private void extractSimpleMatrix(List<MyNode> nodes, Questionario currentQ) {
+		MyNode input = null;
+		MyNodeType lastCompType = null;
+		boolean isMix = false;
+		int j = 0;
+		
+		System.out.println("\tSimple Matrix:");
+		input = nodes.get(this.currentI);
+		while(input != null && j < this.lastMatrixHead.size() && input.isComponent()){
+			if(!isMix && lastCompType != null && lastCompType != input.getType())
+				isMix = true;
+			lastCompType = input.getType();
+			
+			String text = this.lastMatrixHead.get(j).getText();
+			System.out.println("\t\tText: " +text+ " - Comp: " +input.getText());
+			
+			if(lastCompType == MyNodeType.RADIO_INPUT || lastCompType == MyNodeType.CHECKBOX_INPUT){
+				Alternativa alt = new Alternativa(text);
+				this.currentP.addAlternativa(alt);
+			}else{
+				Pergunta tmpPerg = new Pergunta(text);
+				tmpPerg.setForma(FormaDaPerguntaManager.getForma(lastCompType.toString()));
+				tmpPerg.setQuestionario(currentQ);
+				this.currentP.addFilha(tmpPerg);
+			}
+			
+			if(this.currentI+1 < nodes.size())
+				input = nodes.get(++this.currentI);
+			else
+				input = null;
+			j++;
+		}
+		if(input != null)
+			this.currentI--;
+		
+		if(isMix)
+			this.currentP.setForma(FormaDaPerguntaManager.getForma("MIX_COMP_GROUP"));
+		else
+			this.currentP.setForma(FormaDaPerguntaManager.getForma(lastCompType.toString()));
 	}
 
 	public void clearData(Questionario currentQ) {

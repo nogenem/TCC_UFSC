@@ -48,6 +48,6 @@ public class Grupo {
 	
 	@Override
 	public String toString() {
-		return this.getId() + " - " + this.getAssunto();
+		return this.getAssunto();
 	}
 }
