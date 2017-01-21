@@ -111,7 +111,7 @@ public class PerguntaBuilder {
 			desc = this.checker.getCorrectDescription(desc, tmpAlts, firstNode, cStack);
 			
 			//A distancia da pergunta para a sua descrição não pode ser maior que 2 
-			if(checker.checkDistBetweenDescAndPerg(desc, firstNode))
+			if(checker.areDescAndPergNear(desc, firstNode))
 				return this.currentI;
 			
 			this.currentP.setDescricao(desc.getText());

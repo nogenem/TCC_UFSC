@@ -37,7 +37,7 @@ public class QuestionarioBuilder {
 		for(int i = 0; i<nodes.size(); i++){
 			MyNode nTmp = nodes.get(i);
 			
-			cTmp = this.checker.checkIfShouldBeInSameCluster(cTmp, cStack, nTmp);
+			cTmp = this.checker.checkIfNodesShouldBeInSameCluster(cTmp, cStack, nTmp);
 			if(nTmp.isImgOrText()){
 				//Verifica se tem que criar um novo cluster
 				if(this.checker.shouldCreateNewCluster(cTmp, nTmp)){	

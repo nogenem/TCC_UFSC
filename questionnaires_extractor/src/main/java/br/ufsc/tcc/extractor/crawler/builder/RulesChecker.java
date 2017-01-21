@@ -82,7 +82,7 @@ public class RulesChecker {
 		return desc;
 	}
 
-	public Cluster checkIfShouldBeInSameCluster(Cluster c, Stack<Cluster> cStack, MyNode firstNode) {
+	public Cluster checkIfNodesShouldBeInSameCluster(Cluster c, Stack<Cluster> cStack, MyNode nextNode) {
 		//Da conflito entre os links:
 		//	https://www.survio.com/modelo-de-pesquisa/pesquisa-de-preco-do-produto [matriz para de funcionar]
 		//  http://anpei.tempsite.ws/intranet/mediaempresa [problema com: site da empresa http://]
@@ -90,14 +90,14 @@ public class RulesChecker {
 		// 	http://anpei.tempsite.ws/intranet/mediaempresa [arruma um dos problemas]
 		
 		//Todos os textos da descrição devem ter o mesmo prefixo
-		//comum ao 1* componente da pergunta
+		//comum ao proximo nodo encontrado
 		Cluster cTmp2 = new Cluster();
 		String tTmp1 = "", tTmp2 = "";
 		for(MyNode node : c.getGroup()){
 			if(tTmp1.isEmpty()){
-				tTmp1 = node.getDewey().getCommonPrefix(firstNode.getDewey());
+				tTmp1 = node.getDewey().getCommonPrefix(nextNode.getDewey());
 			}else{
-				tTmp2 = node.getDewey().getCommonPrefix(firstNode.getDewey());
+				tTmp2 = node.getDewey().getCommonPrefix(nextNode.getDewey());
 				if(!tTmp1.equals(tTmp2)){
 					tTmp1 = tTmp2;
 					cStack.add(cTmp2);
@@ -109,7 +109,7 @@ public class RulesChecker {
 		return cTmp2;
 	}
 
-	public boolean checkDistBetweenDescAndPerg(Cluster desc, MyNode perg) {
+	public boolean areDescAndPergNear(Cluster desc, MyNode perg) {
 		if(desc == null || desc.isEmpty() || perg == null)
 			return false;
 		Dewey dist = this.distMatrix.getDist(desc.last(), perg);
@@ -121,23 +121,25 @@ public class RulesChecker {
 		if(cTmp == null || cTmp.isEmpty() || desc == null || desc.isEmpty())
 			return false;
 		
-		//Cluster tem tamanho = 1 ou cluster de text e img?
-		if((cTmp.size() == 1 && cTmp.isAllText()) || (cTmp.size() == 2 && cTmp.isAllTextOrImg())){
-			//A altura da distância entre esse cTmp e a descrição da pergunta é menor ou igual a 1?
-			//E a largura é menor ou igual a 7?
-			Dewey dist = distMatrix.getDist(cTmp.last(), desc.first());
-			if(dist.getHeight() <= 1 && dist.getWidth() <= 7){
-				//O texto do grupo deve ter no maximo 5 palavras (?)
-				if(cTmp.getText().split(" ").length <= 5){
-					if(firstGroupOfQuestionnaire != null){
-						//O tamanho do Dewey dos grupos de um questionario, geralmente,
-						//é o mesmo
-						if(firstGroupOfQuestionnaire.last().getDewey().toString().length() == 
-								cTmp.last().getDewey().toString().length())
-							return true;
-					}else{
+		String txt = cTmp.getText();
+		//Cluster deve ter um e APENAS um texto
+		if(txt.isEmpty() || txt.contains("\n"))
+			return false;
+		
+		//A altura da distância entre esse cTmp e a descrição da pergunta é menor ou igual a 1?
+		//E a largura é menor ou igual a 7?
+		Dewey dist = distMatrix.getDist(cTmp.last(), desc.first());
+		if(dist.getHeight() <= 1 && dist.getWidth() <= 7){
+			//O texto do grupo deve ter no maximo 5 palavras (?)
+			if(txt.split(" ").length <= 5){
+				if(firstGroupOfQuestionnaire != null){
+					//O tamanho do Dewey dos grupos de um questionario, geralmente,
+					//é o mesmo
+					if(firstGroupOfQuestionnaire.last().getDewey().toString().length() == 
+							cTmp.last().getDewey().toString().length())
 						return true;
-					}
+				}else{
+					return true;
 				}
 			}
 		}
@@ -156,7 +158,8 @@ public class RulesChecker {
 					String prefix1 = nTmp1.getDewey().getCommonPrefix(nTmp3.getDewey()),
 							prefix2 = nTmp2.getDewey().getCommonPrefix(nTmp3.getDewey()),
 							prefix3 = nTmp1.getDewey().getCommonPrefix(nTmp2.getDewey());
-					//O prefixo entre nTmp1 e nTmp3 e entre nTmp2 e nTmp3 são iguais?
+					//O prefixo3 deve ser maior que o prefix1, pois isso indica que nTmp1 e nTmp2 estão, 
+					//pelo menos, uma div a mais juntos
 					if(prefix1.equals(prefix2) && prefix3.length() > prefix1.length()){
 						return true;
 					}
@@ -205,9 +208,10 @@ public class RulesChecker {
 
 	public boolean isSimpleMatrix(List<MyNode> nodes, int i, Stack<Cluster> cStack) {
 		int count = 0;
-		Cluster cTmp = !cStack.isEmpty() ? cStack.peek() : null;
+		Cluster head = !cStack.isEmpty() ? cStack.peek() : null;
 		MyNode nTmp = nodes.get(i);
 		
+		//Conta a quantidade de componentes em sequencia
 		while(nTmp != null && nTmp.isComponent()){ 
 			count++;
 			if(i+count < nodes.size())
@@ -216,7 +220,8 @@ public class RulesChecker {
 				nTmp = null;
 		}
 		
-		return cTmp != null && cTmp.isAllText() && cTmp.size() == count;
+		//A quantidade encontrada acima deve ser a mesma de textos no head da matriz
+		return head != null && head.isAllText() && head.size() == count;
 	}
 	
 	public boolean checkPrefixForQuestionGroup(MyNode n1, MyNode n2, String prefix) {
@@ -226,7 +231,7 @@ public class RulesChecker {
 		return tmp.equals(prefix);
 	}
 	
-	// Meio e bottom devem esta perto um do outro
+	// Middle e bottom devem esta perto um do outro
 	// o prefixo entre middle e groupDesc e entre bottom e groupDesc deve ser o mesmo
 	// o prefixo acima deve ser menor que o prefixo entre middle e bottom
 	public boolean checkQuestionGroup(MyNode middle, MyNode groupDesc, List<MyNode> nodes, int currentI) {
