@@ -8,7 +8,7 @@ public class Dewey {
 	
 	private String value;
 	private ArrayList<Integer> numbers;
-	private int weight;//TODO remover isso?
+	private int weight;
 
 	// Construtores
 	public Dewey(){

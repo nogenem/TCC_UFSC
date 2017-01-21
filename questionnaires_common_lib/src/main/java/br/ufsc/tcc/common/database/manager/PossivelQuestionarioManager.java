@@ -46,6 +46,10 @@ public class PossivelQuestionarioManager {
 		return savedLinks;
 	}
 	
+	public static synchronized void loadPossivelQuestionarioLinks(BasicConnection c){
+		loadPossivelQuestionarioLinks(new PossivelQuestionarioDao(c));
+	}
+	
 	private static synchronized void loadPossivelQuestionarioLinks(PossivelQuestionarioDao dao) {
 		if(savedLinks != null) return;
 		
