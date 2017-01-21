@@ -144,7 +144,6 @@ public class Pergunta {
 	private String convertFormaToTipo(){
 		if(this.getForma() == null) return "";
 		
-		//TODO adicionar mix_comp_group e _matrix
 		switch(this.getForma().toString()){
 		case "SELECT":
 		case "SELECT_GROUP":
@@ -177,6 +176,8 @@ public class Pergunta {
 		case "TEXTAREA":
 		case "TEXTAREA_GROUP":
 		case "TEXTAREA_MATRIX":
+		case "MIX_COMP_GROUP"://TODO deixar assim mesmo?
+		case "MIX_COMP_MATRIX":
 			return "ABERTO";
 		default:
 			return "";

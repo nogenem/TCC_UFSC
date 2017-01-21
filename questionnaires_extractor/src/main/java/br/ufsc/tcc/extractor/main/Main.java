@@ -84,9 +84,10 @@ public class Main {
 			
 			// Seeds do banco de dados
 			if(ProjectConfigs.loadUrlsFromCrawler()){
-				//TODO melhorar isso
 				BasicConnection conn = new PostgreConnection(ProjectConfigs.getCrawlerDatabaseConfigs());
-				new PossivelQuestionarioManager(conn);
+				PossivelQuestionarioManager.loadPossivelQuestionarioLinks(conn);
+				conn.close();
+				conn = null;
 				
 				for(String seed : PossivelQuestionarioManager.getSavedLinks()){
 					controller.addSeed(seed);					
