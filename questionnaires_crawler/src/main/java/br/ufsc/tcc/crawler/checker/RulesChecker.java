@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import br.ufsc.tcc.common.config.ProjectConfigs;
 import br.ufsc.tcc.common.model.Cluster;
 import br.ufsc.tcc.common.model.MyNode;
 import br.ufsc.tcc.common.model.MyNodeType;
@@ -17,13 +19,10 @@ import edu.uci.ics.crawler4j.parser.HtmlParseData;
 
 public class RulesChecker {
 	
-	private static final Pattern SURVEY_WORDS_REGEX = Pattern.compile("(.*surveys?.*|.*questionnaires?.*|"
-			+ ".*question(a|á)rios?.*|.*pesquisas?.*|.*testes?\\s+para.*|.*b(u|ú)squedas?.*)", 
-			Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
-	private static final Pattern LOGIN_WORDS_REGEX = Pattern.compile("(register|login|password|forgot password\\?|"
-				+ "keep me logged in|reset password|search:?|registre(\\-se)?|logar|entrar|esqueceu sua senha\\?|"
-				+ "me mantenha logado|recupere sua senha|buscar:?)", 
-			Pattern.CASE_INSENSITIVE);
+	private static Pattern SURVEY_WORDS_REGEX = null;
+	private static Pattern LOGIN_WORDS_REGEX = null;
+	private static int MIN_COMPS_IN_ONE_CLUSTER = 0;
+	private static int MIN_CLUSTERS_WITH_COMP = 0;
 
 	private DistanceMatrix distMatrix;
 	
@@ -167,18 +166,52 @@ public class RulesChecker {
 			}
 			//Todo cluster deve ter pelo menos 1 texto e não deve ser um cluster de login/registro/busca
 			if(!isLogin && tCount >= 1){
-				if(cCount >= 4){
-					System.out.println("\t\tMIN 4 COMPONENTES EM UM CLUSTER");
+				if(cCount >= MIN_COMPS_IN_ONE_CLUSTER){
+					System.out.println("\t\tMIN "+MIN_COMPS_IN_ONE_CLUSTER+" COMPONENTES EM UM CLUSTER");
 					return true;
 				}else if(cCount >= 1)
 					qCount++;
 			}
-			if(qCount == 3){
-				System.out.println("\t\tMIN 3 CLUSTERS COM COMPONENTES");
+			if(qCount == MIN_CLUSTERS_WITH_COMP){
+				System.out.println("\t\tMIN "+MIN_CLUSTERS_WITH_COMP+" CLUSTERS COM COMPONENTES");
 				return true;
 			}
 		}
 		return false;
+	}
+	
+	// Métodos/Blocos estáticos
+	static {
+		//Load heuristics
+		JSONObject h = ProjectConfigs.getHeuristics();
+		if(h != null){
+			String txtTmp = h.optString("surveyWordsRegex", "");
+			if(!txtTmp.isEmpty()){
+				SURVEY_WORDS_REGEX = Pattern.compile(txtTmp, 
+						Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
+			}
+			txtTmp = h.optString("loginWordsRegex", "");
+			if(!txtTmp.isEmpty()){
+				LOGIN_WORDS_REGEX = Pattern.compile(txtTmp, 
+						Pattern.CASE_INSENSITIVE);
+			}
+			MIN_COMPS_IN_ONE_CLUSTER = h.optInt("minCompsInOneCluster");
+			MIN_CLUSTERS_WITH_COMP = h.optInt("minClustersWithComp");
+		}
+		
+		if(SURVEY_WORDS_REGEX == null)
+			SURVEY_WORDS_REGEX = Pattern.compile("(.*surveys?.*|.*questionnaires?.*|"
+					+ ".*question(a|á)rios?.*|.*pesquisas?.*|.*testes?\\s+para.*|.*b(u|ú)squedas?.*)", 
+					Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
+		if(LOGIN_WORDS_REGEX == null)
+			LOGIN_WORDS_REGEX = Pattern.compile("(register|login|password|forgot password\\?|"
+					+ "keep me logged in|reset password|search:?|registre(\\-se)?|logar|entrar|esqueceu sua senha\\?|"
+					+ "me mantenha logado|recupere sua senha|buscar:?)", 
+				Pattern.CASE_INSENSITIVE);
+		if(MIN_COMPS_IN_ONE_CLUSTER <= 0) MIN_COMPS_IN_ONE_CLUSTER = 4;
+		if(MIN_CLUSTERS_WITH_COMP <= 0) MIN_CLUSTERS_WITH_COMP = 3;
+		
+		System.out.println("RULESCHECKER: " +MIN_COMPS_IN_ONE_CLUSTER+ " / " +MIN_CLUSTERS_WITH_COMP);
 	}
 
 }

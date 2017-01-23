@@ -21,5 +21,15 @@
 		"http://www.ask.com/web?q=questionnaires+template&qsrc=1&o=0&l=dir&qo=serpSearchTopBox",
 		"http://www.yippy.com/search?v%3Aproject=clusty-new&query=survey+template",
 		"http://www.yippy.com/search?v%3Aproject=clusty-new&query=questionnaire+template"
-	]
+	],
+	"heuristics": {
+		"distBetweenNearNodes": {
+			"deweyWeight": 1000,
+			"height": 3
+		},
+		"surveyWordsRegex": "(.*surveys?.*|.*questionnaires?.*|.*question(a|á)rios?.*|.*pesquisas?.*|.*testes?\\s+para.*|.*b(u|ú)squedas?.*)",
+		"loginWordsRegex": "(register|login|password|forgot password\\?|keep me logged in|reset password|search:?|registre(\\-se)?|logar|entrar|esqueceu sua senha\\?|me mantenha logado|recupere sua senha|buscar:?)",
+		"minCompsInOneCluster": 4,
+		"minClustersWithComp": 3
+	}
 }
