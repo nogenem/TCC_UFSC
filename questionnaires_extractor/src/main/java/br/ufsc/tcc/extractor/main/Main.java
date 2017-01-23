@@ -95,9 +95,9 @@ public class Main {
 			}
 			
 			// Seeds do arquivo de configuração
-			JSONArray extraUrls = ProjectConfigs.getExtraUrls();
-			if(extraUrls != null){
-				extraUrls.forEach((seed) -> controller.addSeed((String)seed));	
+			JSONArray seeds = ProjectConfigs.getSeeds();
+			if(seeds != null){
+				seeds.forEach((seed) -> controller.addSeed((String)seed));	
 			}
 			
 			// Inicia o crawling

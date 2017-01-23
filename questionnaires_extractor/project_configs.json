@@ -1,5 +1,6 @@
 {
 	"database": {
+		"loadUrlsFromCrawler": true,
 		"crawler": {
 			"name": "tcc_crawler",
 			"host": "localhost:5432",
@@ -22,14 +23,11 @@
 		"includeBinaryContentInCrawling": false,
 		"resumableCrawling": false	
 	},
-	"data": {
-		"loadUrlsFromCrawler": true,
-		"extra_urls": [
-			"https://www.survio.com/modelo-de-pesquisa/feedback-sobre-servico",
-			"https://www.survio.com/modelo-de-pesquisa/pesquisa-de-preco-do-produto",
-			"https://www.survio.com/modelo-de-pesquisa/pesquisa-de-percepcao-da-publicidade-e-de-sua-eficiencia",
-			"https://www.survio.com/modelo-de-pesquisa/pesquisa-da-notoriedade-da-marca",
-			"https://www.survio.com/modelo-de-pesquisa/pesquisa-da-experiencia-de-compra"
-		]
-	}
+	"seeds": [
+		"https://www.survio.com/modelo-de-pesquisa/feedback-sobre-servico",
+		"https://www.survio.com/modelo-de-pesquisa/pesquisa-de-preco-do-produto",
+		"https://www.survio.com/modelo-de-pesquisa/pesquisa-de-percepcao-da-publicidade-e-de-sua-eficiencia",
+		"https://www.survio.com/modelo-de-pesquisa/pesquisa-da-notoriedade-da-marca",
+		"https://www.survio.com/modelo-de-pesquisa/pesquisa-da-experiencia-de-compra"
+	]
 }
