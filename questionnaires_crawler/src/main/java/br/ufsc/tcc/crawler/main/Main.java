@@ -77,11 +77,11 @@ public class Main {
 			final CrawlerController controller = new CrawlerController(ProjectConfigs.getCrawlerConfigs());
 			
 			// Adiciona as seeds do arquivo de configuração
-			JSONArray extraUrls = ProjectConfigs.getExtraUrls();
-			if(extraUrls != null){
-				extraUrls.forEach((seed) -> controller.addSeed((String)seed));	
+			JSONArray seeds = ProjectConfigs.getSeeds();
+			if(seeds != null){
+				seeds.forEach((seed) -> controller.addSeed((String)seed));	
 			}
-			System.out.println("\nSeeds: " +extraUrls.length()+ "\n\n");
+			System.out.println("\nSeeds: " +seeds.length()+ "\n\n");
 
 			// precisam de simulador
 			//controller.addSeed("http://www.contenko.com/?q=survey%20template");

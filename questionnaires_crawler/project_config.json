@@ -16,12 +16,10 @@
 		"includeBinaryContentInCrawling": false,
 		"resumableCrawling": false	
 	},
-	"data": {
-		"extra_urls": [
-			"http://www.ask.com/web?q=survey+template&qsrc=0&o=0&l=dir&qo=homepageSearchBox",
-			"http://www.ask.com/web?q=questionnaires+template&qsrc=1&o=0&l=dir&qo=serpSearchTopBox",
-			"http://www.yippy.com/search?v%3Aproject=clusty-new&query=survey+template",
-			"http://www.yippy.com/search?v%3Aproject=clusty-new&query=questionnaire+template"
-		]
-	}
+	"seeds": [
+		"http://www.ask.com/web?q=survey+template&qsrc=0&o=0&l=dir&qo=homepageSearchBox",
+		"http://www.ask.com/web?q=questionnaires+template&qsrc=1&o=0&l=dir&qo=serpSearchTopBox",
+		"http://www.yippy.com/search?v%3Aproject=clusty-new&query=survey+template",
+		"http://www.yippy.com/search?v%3Aproject=clusty-new&query=questionnaire+template"
+	]
 }
