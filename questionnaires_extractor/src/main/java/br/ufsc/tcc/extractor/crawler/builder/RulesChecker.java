@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+import org.json.JSONObject;
+
+import br.ufsc.tcc.common.config.ProjectConfigs;
 import br.ufsc.tcc.common.model.Cluster;
 import br.ufsc.tcc.common.model.Dewey;
 import br.ufsc.tcc.common.model.MyNode;
@@ -12,6 +15,8 @@ import br.ufsc.tcc.extractor.model.Alternativa;
 import br.ufsc.tcc.extractor.model.Pergunta;
 
 public class RulesChecker {
+	
+	private static JSONObject CONFIGS = null;
 	
 	private DistanceMatrix distMatrix;
 	
@@ -30,10 +35,9 @@ public class RulesChecker {
 	public boolean shouldStartNewQuestionario(Cluster lastDesc, MyNode newNode) {
 		if(lastDesc == null || lastDesc.isEmpty() || newNode == null) 
 			return false;
+		JSONObject obj = CONFIGS.getJSONObject("distBetweenTextsInsideQuestionnaire");
 		Dewey dist = this.distMatrix.getDist(lastDesc.last(), newNode);	
-		//Elementos de texto dentro de um questionario não podem estar a 
-		//mais de 4 elementos de altura de distancia
-		return dist.getHeight() > 4;
+		return dist.getHeight() > obj.getInt("height");
 	}
 
 	public boolean shouldCreateNewCluster(Cluster lastCluster, MyNode newNode) {
@@ -51,10 +55,12 @@ public class RulesChecker {
 	}
 
 	public boolean areCompAndTextNear(MyNode comp, MyNode text) {
-		if(comp == null || text == null) return false;
+		if(comp == null || text == null) 
+			return false;
+		JSONObject obj = CONFIGS.getJSONObject("distBetweenCompAndText");
 		Dewey dist = this.distMatrix.getDist(comp, text);
-		//TODO testar esses numeros
-		return dist.getHeight() <= 2 && dist.getMaxHeight() <= 3;
+		return dist.getHeight() <= obj.getInt("height") && 
+				dist.getMaxHeight() <= obj.getInt("maxHeight");
 	}
 
 	public Cluster getCorrectDescription(Cluster desc, ArrayList<Alternativa> tmpAlts, MyNode firstNode,
@@ -127,8 +133,10 @@ public class RulesChecker {
 	public boolean areDescAndPergNear(Cluster desc, MyNode perg) {
 		if(desc == null || desc.isEmpty() || perg == null)
 			return false;
+		JSONObject obj = CONFIGS.getJSONObject("distBetweenDescAndQuestion");
 		Dewey dist = this.distMatrix.getDist(desc.last(), perg);
-		return dist.getHeight() <= 2 && dist.getMaxHeight() <= 4;
+		return dist.getHeight() <= obj.getInt("height") && 
+				dist.getMaxHeight() <= obj.getInt("maxHeight");
 	}
 
 	public boolean isGroupText(Cluster cTmp, Cluster desc, Cluster firstGroupOfQuestionnaire) {
@@ -141,10 +149,12 @@ public class RulesChecker {
 		if(txt.isEmpty() || txt.contains("\n"))
 			return false;
 		
+		JSONObject obj = CONFIGS.getJSONObject("distBetweenGroupAndFirstQuestion");
+		
 		//A altura da distância entre esse cTmp e a descrição da pergunta é menor ou igual a 1?
 		//E a largura é menor ou igual a 7?
 		Dewey dist = distMatrix.getDist(cTmp.last(), desc.first());
-		if(dist.getHeight() <= 1 && dist.getWidth() <= 7){
+		if(dist.getHeight() <= obj.getInt("height") && dist.getWidth() <= obj.getInt("width")){
 			//O texto do grupo deve ter no maximo 5 palavras (?)
 			if(txt.split(" ").length <= 5){
 				if(firstGroupOfQuestionnaire != null){
@@ -166,10 +176,11 @@ public class RulesChecker {
 			MyNode nTmp1 = nodes.get(i),
 				nTmp2 = nodes.get(i+1),
 				nTmp3 = nodes.get(i+2);
+			JSONObject obj = CONFIGS.getJSONObject("distBetweenNextText");
 			
 			if(nTmp2.isText() && nTmp3.isImgOrText()){
 				Dewey dist = distMatrix.getDist(nTmp1, nTmp2);
-				if(dist.getHeight() <= 1 && dist.getWidth() <= 4){
+				if(dist.getHeight() <= obj.getInt("height") && dist.getWidth() <= obj.getInt("width")){
 					String prefix1 = nTmp1.getDewey().getCommonPrefix(nTmp3.getDewey()),
 							prefix2 = nTmp2.getDewey().getCommonPrefix(nTmp3.getDewey()),
 							prefix3 = nTmp1.getDewey().getCommonPrefix(nTmp2.getDewey());
@@ -242,8 +253,9 @@ public class RulesChecker {
 	}
 	
 	public boolean checkDistForQuestionGroup(MyNode n1, MyNode n2) {
+		JSONObject obj = CONFIGS.getJSONObject("distBetweenTextsInQuestionGroup");
 		Dewey dist = this.distMatrix.getDist(n1, n2);
-		return dist.getHeight() == 1 && dist.getWidth() <= 5;
+		return dist.getHeight() == obj.getInt("height") && dist.getWidth() <= obj.getInt("width");
 	}
 	
 	// Middle e bottom devem esta perto um do outro
@@ -261,5 +273,54 @@ public class RulesChecker {
 		return false;
 	}
 	
-	
+	// Métodos/Blocos estáticos
+	static {
+		CONFIGS = new JSONObject();
+		CONFIGS.put("distBetweenTextsInsideQuestionnaire", new JSONObject())
+			.put("distBetweenCompAndText", new JSONObject())
+			.put("distBetweenDescAndQuestion", new JSONObject())
+			.put("distBetweenGroupAndFirstQuestion", new JSONObject())
+			.put("distBetweenNextText", new JSONObject())
+			.put("distBetweenTextsInQuestionGroup", new JSONObject());
+		
+		JSONObject h = ProjectConfigs.getHeuristics(), 
+				tmp1 = new JSONObject(), tmp2 = null;
+		
+		tmp2 = h!=null ? h.optJSONObject("distBetweenTextsInsideQuestionnaire") : tmp1;
+		tmp2 = tmp2!=null ? tmp2 : tmp1;
+		CONFIGS.getJSONObject("distBetweenTextsInsideQuestionnaire")
+			.put("height", tmp2.optInt("height", 4));
+		
+		tmp2 = h!=null ? h.optJSONObject("distBetweenCompAndText") : tmp1;
+		tmp2 = tmp2!=null ? tmp2 : tmp1;
+		CONFIGS.getJSONObject("distBetweenCompAndText")
+			.put("height", tmp2.optInt("height", 2))
+			.put("maxHeight", tmp2.optInt("maxHeight", 3));
+		
+		tmp2 = h!=null ? h.optJSONObject("distBetweenDescAndQuestion") : tmp1;
+		tmp2 = tmp2!=null ? tmp2 : tmp1;
+		CONFIGS.getJSONObject("distBetweenDescAndQuestion")
+			.put("height", tmp2.optInt("height", 2))
+			.put("maxHeight", tmp2.optInt("maxHeight", 4));
+		
+		tmp2 = h!=null ? h.optJSONObject("distBetweenGroupAndFirstQuestion") : tmp1;
+		tmp2 = tmp2!=null ? tmp2 : tmp1;
+		CONFIGS.getJSONObject("distBetweenGroupAndFirstQuestion")
+			.put("height", tmp2.optInt("height", 1))
+			.put("width", tmp2.optInt("width", 7));
+		
+		tmp2 = h!=null ? h.optJSONObject("distBetweenNextText") : tmp1;
+		tmp2 = tmp2!=null ? tmp2 : tmp1;
+		CONFIGS.getJSONObject("distBetweenNextText")
+			.put("height", tmp2.optInt("height", 1))
+			.put("width", tmp2.optInt("width", 4));
+		
+		tmp2 = h!=null ? h.optJSONObject("distBetweenTextsInQuestionGroup") : tmp1;
+		tmp2 = tmp2!=null ? tmp2 : tmp1;
+		CONFIGS.getJSONObject("distBetweenTextsInQuestionGroup")
+			.put("height", tmp2.optInt("height", 1))
+			.put("width", tmp2.optInt("width", 5));
+		
+		System.out.println("RULESCHECKER: " +CONFIGS.getJSONObject("distBetweenNextText"));
+	}
 }

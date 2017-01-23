@@ -29,5 +29,34 @@
 		"https://www.survio.com/modelo-de-pesquisa/pesquisa-de-percepcao-da-publicidade-e-de-sua-eficiencia",
 		"https://www.survio.com/modelo-de-pesquisa/pesquisa-da-notoriedade-da-marca",
 		"https://www.survio.com/modelo-de-pesquisa/pesquisa-da-experiencia-de-compra"
-	]
+	],
+	"heuristics": {
+		"distBetweenNearNodes": {
+			"deweyWeight": 1000,
+			"height": 3
+		},
+		"distBetweenTextsInsideQuestionnaire": {
+			"height": 4
+		},
+		"distBetweenCompAndText": {
+			"height": 2,
+			"maxHeight": 3
+		},
+		"distBetweenDescAndQuestion": {
+			"height": 2,
+			"maxHeight": 4
+		},
+		"distBetweenGroupAndFirstQuestion": {
+			"height": 1,
+			"width": 7
+		},
+		"distBetweenNextText": {
+			"height": 1,
+			"width": 4
+		},
+		"distBetweenTextsInQuestionGroup": {
+			"height": 1,
+			"width": 5
+		}
+	}
 }
