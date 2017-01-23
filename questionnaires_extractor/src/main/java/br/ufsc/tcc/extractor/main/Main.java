@@ -39,15 +39,15 @@ public class Main {
 //		path = "http://vark-learn.com/the-vark-questionnaire/";
 		
 //		path = "cache/Bioinfo_1.html";
-		//TODO tratar do group perg [data] / texto embaixo do Email
+		//TODO tratar texto embaixo do Email (?)
 //		path = "https://www.bioinfo.mpg.de/mctq/core_work_life/core/core.jsp?language=por_b";
 		
 //		path = "cache/Anpei_1.html";
-		//TODO tratar de sub pergunta / descrição atualizada com texto abaixo
-		path = "http://anpei.tempsite.ws/intranet/mediaempresa";
+//		path = "http://anpei.tempsite.ws/intranet/mediaempresa";
 		
+		//TODO tratar do Personal+general information
 //		path = "cache/SurveyCrest_1.html";
-//		path = "https://www.surveycrest.com/template_preview/pyof1IFwp9Xa1_x430JdUeVsuHVRKuw";
+		path = "https://www.surveycrest.com/template_preview/pyof1IFwp9Xa1_x430JdUeVsuHVRKuw";
 //		path = "https://www.surveycrest.com/template_preview/pufLBGbsEEBvdJvPPxIe9hYJx0Q";
 //		path = "https://www.surveycrest.com/template_preview/pcTMgau0DnNMqRJGbCqSAknAAjJA";
 		

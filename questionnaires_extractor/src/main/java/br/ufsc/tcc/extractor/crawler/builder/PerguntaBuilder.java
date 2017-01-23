@@ -62,7 +62,7 @@ public class PerguntaBuilder {
 		if(this.checker.isOnlyOneImg(desc) && !cStack.isEmpty())
 			desc = cStack.pop();
 
-		if(nodes.get(this.currentI+1).isComponent()){
+		if(firstNode.getType() != MyNodeType.SELECT && nodes.get(this.currentI+1).isComponent()){
 			if(this.lastMatrixHead != null && 
 					this.checker.isAbove(this.lastMatrixHead.last(), cStack.peek().first())){
 				this.saveLastMatrix(currentQ);
@@ -77,10 +77,10 @@ public class PerguntaBuilder {
 			}
 		}else{
 			switch (firstNode.getType()) {
-			case SELECT:
+			case SELECT:{
 				this.extractSelect(nodes);
 				break;
-			case CHECKBOX_INPUT:
+			}case CHECKBOX_INPUT:
 				this.extractCheckboxOrRadioInput(currentQ, nodes);
 				break;
 			case RADIO_INPUT:{
@@ -95,13 +95,13 @@ public class PerguntaBuilder {
 			case URL_INPUT:{
 				this.extractGenericInput(nodes);
 				break;
-			}case TEXTAREA:
+			}case TEXTAREA:{
 				this.extractTextarea(nodes);
 				break;
-			case RANGE_INPUT:
+			}case RANGE_INPUT:{
 				//TODO tentar achar um exemplo?
 				break;
-			default:
+			}default:
 				break;
 			}
 		}
@@ -109,9 +109,10 @@ public class PerguntaBuilder {
 		if(this.currentP.getForma() != null){
 			ArrayList<Alternativa> tmpAlts = this.currentP.getAlternativas();
 			desc = this.checker.getCorrectDescription(desc, tmpAlts, firstNode, cStack);
+			desc = this.checker.checkIfDescIsComplete(desc, cStack, nodes, this.currentI);
 			
 			//A distancia da pergunta para a sua descrição não pode ser maior que 2 
-			if(checker.areDescAndPergNear(desc, firstNode))
+			if(!checker.areDescAndPergNear(desc, firstNode))
 				return this.currentI;
 			
 			this.currentP.setDescricao(desc.getText());
@@ -133,7 +134,7 @@ public class PerguntaBuilder {
 			
 			matrixFlag = this.checker.hasSameTexts(this.currentP, cTmp2);
 			if(matrixFlag){
-				this.updateLastMatrix(cStack, cTmp2);
+				this.updateLastMatrix(nodes, cStack, cTmp2);
 			}else if(this.lastMatrix != null){
 				this.saveLastMatrix(currentQ);
 			}
@@ -153,11 +154,11 @@ public class PerguntaBuilder {
 					nTmp2 = cStack.peek().last();
 				}
 			}
-			
-			if(nTmp2 != null){
-				if(checker.checkDistForQuestionGroup(nTmp1, nTmp2)){
+
+			if(nTmp2 != null && nTmp2.isText()){
+				if(checker.checkDistForQuestionGroup(nTmp2, nTmp1)){
 					if(this.lastQuestionGroup == null && this.checker.checkQuestionGroup(nTmp1, nTmp2, nodes, this.currentI)){
-						this.updateLastQuestionGroup(currentQ, cStack, nTmp1);
+						this.updateLastQuestionGroup(currentQ, nodes, cStack, nTmp1);
 						questionGroupFlag = true;
 					}else if(this.lastQuestionGroup != null && 
 							this.checker.checkPrefixForQuestionGroup(nTmp1, nTmp2, this.lastQuestionGroupCommonPrefix)){
@@ -176,12 +177,25 @@ public class PerguntaBuilder {
 			}
 			
 			if(!cStack.isEmpty()){
+				//Verifica se não é a imagem da pergunta
+				cTmp1 = cStack.peek();
+				if(this.checker.isOnlyOneImg(cTmp1) && this.distMatrix.areNear(cTmp1, desc)){
+					cTmp1 = cStack.pop();
+					MyNode tmp = cTmp1.last();
+					Figura fig = new Figura(tmp.getAttr("src"), tmp.getAttr("alt"));
+					fig.setDono(this.currentP);
+					currentQ.addFigura(fig);
+					System.out.println("Figura da pergunta: " +fig+ "\n");
+				}
+			}
+			
+			if(!cStack.isEmpty()){	
 				if(currentQ.getAssunto().isEmpty()){
 					//Encontra o assunto do questionario
 					cTmp1 = cStack.pop();
 					this.firstGroupOfQuestionnaire = null;
 					
-					//Verifica se não é apenas uma img
+					//Verifica se não é a imagem do questionário
 					if(this.checker.isOnlyOneImg(cTmp1)){
 						MyNode tmp = cTmp1.last();
 						Figura fig = new Figura(tmp.getAttr("src"), tmp.getAttr("alt"));
@@ -196,20 +210,22 @@ public class PerguntaBuilder {
 						currentQ.addGrupo(currentG);
 						this.firstGroupOfQuestionnaire = cTmp1;
 
-						System.out.println("\nGroup: " +cTmp1.getText()+ "\n\n");
+						System.out.println("\nGroup1: " +cTmp1.getText()+ "\n\n");
 						cTmp1 = cStack.pop();
 					}
+					cTmp1 = this.checker.checkIfDescIsComplete(cTmp1, cStack, nodes, this.currentI);
 					currentQ.setAssunto(cTmp1.getText());
 					System.out.println("Assunto: " +currentQ.getAssunto() +"\n\n");
 				}else{
-					//Verifica se o texto acima não é um grupo
 					cTmp1 = cStack.peek();
+					
+					//Verifica se o texto acima não é um grupo
 					if(this.checker.isGroupText(cTmp1, desc, this.firstGroupOfQuestionnaire)){
 						cTmp1 = cStack.pop();
 						this.currentG = new Grupo(cTmp1.getText());
 						currentQ.addGrupo(currentG);
 
-						System.out.println("\nGroup: " +cTmp1.getText()+ "\n\n");
+						System.out.println("\nGroup2: " +cTmp1.getText()+ "\n\n");
 					}
 				}
 			}
@@ -238,10 +254,12 @@ public class PerguntaBuilder {
 		return this.currentI;
 	}
 
-	private void updateLastQuestionGroup(Questionario currentQ, Stack<Cluster> cStack, MyNode nTmp1) {
+	private void updateLastQuestionGroup(Questionario currentQ, List<MyNode> nodes, Stack<Cluster> cStack, MyNode nTmp1) {
 		if(cStack.isEmpty()) return;
 		
 		this.lastQuestionGroupDesc = cStack.pop();
+		this.lastQuestionGroupDesc = this.checker.
+				checkIfDescIsComplete(this.lastQuestionGroupDesc, cStack, nodes, this.currentI);
 		this.lastQuestionGroupCommonPrefix = nTmp1.getDewey().
 				getCommonPrefix(this.lastQuestionGroupDesc.last().getDewey());
 		
@@ -262,7 +280,7 @@ public class PerguntaBuilder {
 		}
 	}
 
-	private void updateLastMatrix(Stack<Cluster> cStack, Cluster cTmp2) {
+	private void updateLastMatrix(List<MyNode> nodes, Stack<Cluster> cStack, Cluster cTmp2) {
 		if(!cStack.isEmpty() && cTmp2 == cStack.peek()){
 			this.lastMatrixHead = cStack.pop();
 		}
@@ -274,7 +292,9 @@ public class PerguntaBuilder {
 			}else{
 				this.lastMatrix.setForma(FormaDaPerguntaManager.getForma(forma.toString()+"_MATRIX"));
 			}
-			this.lastMatrix.setDescricao(cStack.pop().getText());
+			Cluster desc = cStack.pop();
+			desc = this.checker.checkIfDescIsComplete(desc, cStack, nodes, this.currentI);
+			this.lastMatrix.setDescricao(desc.getText());
 		}
 		if(this.lastMatrix != null)
 			this.lastMatrix.addFilha(this.currentP);
@@ -302,6 +322,17 @@ public class PerguntaBuilder {
 		System.out.println("\tInput [" +type+ "].");
 		
 		currentP.setForma(FormaDaPerguntaManager.getForma(type + "_INPUT"));
+		
+		//Checagem para coisas do genêro: Hora: [ ] : [ ]
+		//	Ex: https://www.bioinfo.mpg.de/mctq/core_work_life/core/core.jsp?language=por_b
+		if(this.currentI+2 < nodes.size() && type.matches("TEXT|NUMBER")){
+			MyNode tmp1 = nodes.get(this.currentI+1), 
+					tmp2 = nodes.get(this.currentI+2);
+			if(tmp1.isText() && tmp1.getText().equals(":") && 
+					tmp2.isComponent() && tmp2.getType() == nodes.get(this.currentI).getType()){
+				this.currentI += 2;
+			}
+		}
 	}
 
 	private void extractSimpleRating(List<MyNode> nodes) {

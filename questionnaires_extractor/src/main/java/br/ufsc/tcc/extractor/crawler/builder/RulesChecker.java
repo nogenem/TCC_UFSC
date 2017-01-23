@@ -72,12 +72,27 @@ public class RulesChecker {
 		//Ex: https://www.surveymonkey.com/r/General-Event-Feedback-Template
 		while(true){
 			for(MyNode node : desc.getGroup()){
-				flag = flag && altsTxt.contains(node.getText());
+				String txt = node.getText();
+				flag = flag && !txt.isEmpty() && altsTxt.contains(txt);
 			}
 			if(flag && !cStack.isEmpty()){
 				desc = cStack.pop();
 			}else
 				break;
+		}
+		return desc;
+	}
+	
+	public Cluster checkIfDescIsComplete(Cluster desc, Stack<Cluster> cStack, List<MyNode> nodes, int i){
+		if(desc == null || desc.isEmpty() || cStack.isEmpty())
+			return desc;
+		
+		Cluster tmp = cStack.peek();
+		if(!tmp.getText().isEmpty() && this.distMatrix.areNear(tmp, desc) && 
+				!this.distMatrix.areNear(tmp.last(), nodes.get(i+1))){
+			tmp = cStack.pop();
+			tmp = tmp.join(desc);
+			return tmp;
 		}
 		return desc;
 	}
@@ -113,7 +128,7 @@ public class RulesChecker {
 		if(desc == null || desc.isEmpty() || perg == null)
 			return false;
 		Dewey dist = this.distMatrix.getDist(desc.last(), perg);
-		return dist.getHeight() > 2 || dist.getMaxHeight() > 4;
+		return dist.getHeight() <= 2 && dist.getMaxHeight() <= 4;
 	}
 
 	public boolean isGroupText(Cluster cTmp, Cluster desc, Cluster firstGroupOfQuestionnaire) {
@@ -201,11 +216,6 @@ public class RulesChecker {
 		return flag;
 	}
 
-	public boolean checkDistForQuestionGroup(MyNode n1, MyNode n2) {
-		Dewey dist = this.distMatrix.getDist(n1, n2);
-		return dist.getHeight() == 1 && dist.getWidth() <= 5;
-	}
-
 	public boolean isSimpleMatrix(List<MyNode> nodes, int i, Stack<Cluster> cStack) {
 		int count = 0;
 		Cluster head = !cStack.isEmpty() ? cStack.peek() : null;
@@ -229,6 +239,11 @@ public class RulesChecker {
 		
 		String tmp = n1.getDewey().getCommonPrefix(n2.getDewey());
 		return tmp.equals(prefix);
+	}
+	
+	public boolean checkDistForQuestionGroup(MyNode n1, MyNode n2) {
+		Dewey dist = this.distMatrix.getDist(n1, n2);
+		return dist.getHeight() == 1 && dist.getWidth() <= 5;
 	}
 	
 	// Middle e bottom devem esta perto um do outro

@@ -8,6 +8,7 @@ import org.jsoup.nodes.Node;
 
 import br.ufsc.tcc.common.model.Cluster;
 import br.ufsc.tcc.common.model.MyNode;
+import br.ufsc.tcc.common.model.MyNodeType;
 import br.ufsc.tcc.common.util.CommonUtil;
 import br.ufsc.tcc.extractor.model.Questionario;
 
@@ -76,6 +77,9 @@ public class QuestionarioBuilder {
 		this.pBuilder.clearData(this.currentQ);
 		if(this.currentQ.getPerguntas().size() >= 2)
 			ret.add(this.currentQ);
+		
+//		System.out.println("\nClusters:");
+//		cStack.forEach(System.out::println);
 		
 		System.out.println("\nQuestionarios:");
 		for(Questionario q : ret){
