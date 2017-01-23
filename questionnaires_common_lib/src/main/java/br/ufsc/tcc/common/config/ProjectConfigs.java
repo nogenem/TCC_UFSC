@@ -20,6 +20,13 @@ public class ProjectConfigs {
 		return configs.optJSONObject("database");
 	}
 	
+	public static boolean loadUrlsFromCrawler(){
+		JSONObject tmp = getDatabaseConfigs();
+		if(tmp != null)
+			return tmp.optBoolean("loadUrlsFromCrawler", false);
+		return false;
+	}
+	
 	public static JSONObject getCrawlerDatabaseConfigs(){
 		JSONObject tmp = getDatabaseConfigs();
 		if(tmp != null)
@@ -34,22 +41,8 @@ public class ProjectConfigs {
 		return null;
 	}
 	
-	public static JSONObject getDataConfigs(){
-		return configs.optJSONObject("data");
-	}
-	
-	public static boolean loadUrlsFromCrawler(){
-		JSONObject tmp = getDataConfigs();
-		if(tmp != null)
-			return tmp.optBoolean("loadUrlsFromCrawler", false);
-		return false;
-	}
-	
-	public static JSONArray getExtraUrls(){
-		JSONObject tmp = getDataConfigs();
-		if(tmp != null)
-			return tmp.optJSONArray("extra_urls");
-		return null;
+	public static JSONArray getSeeds(){
+		return configs.optJSONArray("seeds");
 	}
 	
 	// Demais métodos
