@@ -4,14 +4,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
+import org.json.JSONObject;
+
+import br.ufsc.tcc.common.config.ProjectConfigs;
 import br.ufsc.tcc.common.model.Cluster;
 import br.ufsc.tcc.common.model.Dewey;
 import br.ufsc.tcc.common.model.MyNode;
 
 public class DistanceMatrix {
 	
-	private HashMap<String, HashMap<String, Dewey>> distances;
+	private static int MAX_WEIGHT = 0;
+	private static int MAX_HEIGHT = 0;
 	
+	private HashMap<String, HashMap<String, Dewey>> distances;
+
 	// Construtores
 	public DistanceMatrix(){
 		this.distances = new HashMap<>();
@@ -49,7 +55,8 @@ public class DistanceMatrix {
 	public boolean areNear(MyNode n1, MyNode n2){
 		if(n1 == null || n2 == null) return false;
 		Dewey dist = this.getDist(n1, n2);
-		return dist.getDeweyWeight() <= 1000 && dist.getHeight() <= 3;
+		return dist.getDeweyWeight() <= MAX_WEIGHT && 
+				dist.getHeight() <= MAX_HEIGHT;
 	}
 	
 	public void clear(){
@@ -59,5 +66,22 @@ public class DistanceMatrix {
 	private void calculateDist(Dewey d1, Dewey d2) {
 		Dewey dist = d1.distanceOf(d2);
 		this.distances.get(d1.getValue()).put(d2.getValue(), dist);
+	}
+	
+	// Métodos/Blocos estáticos
+	static {
+		//Load heuristics
+		JSONObject tmp = ProjectConfigs.getHeuristics();
+		if(tmp != null){
+			tmp = tmp.optJSONObject("distBetweenNearNodes");
+			if(tmp != null){
+				MAX_WEIGHT = tmp.optInt("deweyWeight");
+				MAX_HEIGHT = tmp.optInt("height");
+			}
+		}
+		if(MAX_WEIGHT <= 0) MAX_WEIGHT = 1000;
+		if(MAX_HEIGHT <= 0) MAX_HEIGHT = 3;
+		
+		System.out.println("DISTMATRIX: " +MAX_WEIGHT+ " / " +MAX_HEIGHT);
 	}
 }

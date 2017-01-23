@@ -5,17 +5,12 @@ import org.json.JSONObject;
 
 import br.ufsc.tcc.common.util.CommonUtil;
 
-public class ProjectConfigs {
+public abstract class ProjectConfigs {
 	
-	//TODO dar uma repensada nisso...
 	private static String configPath = "./project_configs.json";
 	private static JSONObject configs = loadConfigs();
 	
 	// Getters e Setters
-	public static JSONObject getCrawlerConfigs(){
-		return configs.optJSONObject("crawler");
-	}
-	
 	public static JSONObject getDatabaseConfigs(){
 		return configs.optJSONObject("database");
 	}
@@ -39,6 +34,14 @@ public class ProjectConfigs {
 		if(tmp != null)
 			return tmp.optJSONObject("extractor");
 		return null;
+	}
+	
+	public static JSONObject getCrawlerConfigs(){
+		return configs.optJSONObject("crawler");
+	}
+	
+	public static JSONObject getHeuristics(){
+		return configs.optJSONObject("heuristics");
 	}
 	
 	public static JSONArray getSeeds(){
