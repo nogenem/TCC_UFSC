@@ -81,7 +81,6 @@ public class Main {
 			if(seeds != null){
 				seeds.forEach((seed) -> controller.addSeed((String)seed));	
 			}
-			System.out.println("\nSeeds: " +seeds.length()+ "\n\n");
 
 			// precisam de simulador
 			//controller.addSeed("http://www.contenko.com/?q=survey%20template");

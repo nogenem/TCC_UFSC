@@ -1,4 +1,5 @@
 {
+	"logLevels": "ERROR|INFO|DEBUG",
 	"database": {
 		"crawler": {
 			"name": "tcc_crawler",

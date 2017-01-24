@@ -13,6 +13,7 @@ import br.ufsc.tcc.common.config.ProjectConfigs;
 import br.ufsc.tcc.common.model.Cluster;
 import br.ufsc.tcc.common.model.MyNode;
 import br.ufsc.tcc.common.model.MyNodeType;
+import br.ufsc.tcc.common.util.CommonLogger;
 import br.ufsc.tcc.common.util.CommonUtil;
 import br.ufsc.tcc.common.util.DistanceMatrix;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
@@ -46,7 +47,7 @@ public class RulesChecker {
 		List<Cluster> clusters = groupNearNodes(nodes, distMatrix);
 		groupClustersByHeuristics(clusters);
 		
-		clusters.forEach(System.out::println);
+		CommonLogger.debug(clusters);
 		
 		boolean ret = hasQuestionnarie(clusters);
 		this.distMatrix.clear();
@@ -167,13 +168,13 @@ public class RulesChecker {
 			//Todo cluster deve ter pelo menos 1 texto e não deve ser um cluster de login/registro/busca
 			if(!isLogin && tCount >= 1){
 				if(cCount >= MIN_COMPS_IN_ONE_CLUSTER){
-					System.out.println("\t\tMIN "+MIN_COMPS_IN_ONE_CLUSTER+" COMPONENTES EM UM CLUSTER");
+					CommonLogger.debug("\t\tMinimo {} componentes em um cluster!", MIN_COMPS_IN_ONE_CLUSTER);
 					return true;
 				}else if(cCount >= 1)
 					qCount++;
 			}
 			if(qCount == MIN_CLUSTERS_WITH_COMP){
-				System.out.println("\t\tMIN "+MIN_CLUSTERS_WITH_COMP+" CLUSTERS COM COMPONENTES");
+				CommonLogger.debug("\t\tMinimo {} clusters com componentes!", MIN_CLUSTERS_WITH_COMP);
 				return true;
 			}
 		}
@@ -211,7 +212,7 @@ public class RulesChecker {
 		if(MIN_COMPS_IN_ONE_CLUSTER <= 0) MIN_COMPS_IN_ONE_CLUSTER = 4;
 		if(MIN_CLUSTERS_WITH_COMP <= 0) MIN_CLUSTERS_WITH_COMP = 3;
 		
-		System.out.println("RULESCHECKER: " +MIN_COMPS_IN_ONE_CLUSTER+ " / " +MIN_CLUSTERS_WITH_COMP);
+		CommonLogger.debug("RULESCHECKER {} / {}", MIN_COMPS_IN_ONE_CLUSTER, MIN_CLUSTERS_WITH_COMP);
 	}
 
 }

@@ -7,6 +7,7 @@ import br.ufsc.tcc.common.database.connection.BasicConnection;
 import br.ufsc.tcc.common.database.connection.PostgreConnection;
 import br.ufsc.tcc.common.database.manager.PossivelQuestionarioManager;
 import br.ufsc.tcc.common.model.PossivelQuestionario;
+import br.ufsc.tcc.common.util.CommonLogger;
 import br.ufsc.tcc.crawler.checker.RulesChecker;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
@@ -68,16 +69,16 @@ public class Crawler extends WebCrawler {
 			
 			HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();			
 			if(checker.shouldSave(htmlParseData)){
-				System.out.println("\tPossivelQuestioanrio: " + url.getURL());
+				CommonLogger.debug("\tPossivelQuestionario: {}", url.getURL());
 				PossivelQuestionario pq = new PossivelQuestionario(
 						url.getURL(), htmlParseData.getTitle());
 				try {
 					//pqManager.save(pq);
 				} catch (Exception e) {
-					e.printStackTrace();
+					CommonLogger.error(e);
 				}
 			}else
-				System.out.println("URL: " + url.getURL());		
+				CommonLogger.debug("URL: {}", url.getURL());
 		}
 	}
 }
