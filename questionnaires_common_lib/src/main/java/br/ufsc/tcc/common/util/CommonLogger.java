@@ -1,5 +1,7 @@
 package br.ufsc.tcc.common.util;
 
+import java.util.List;
+
 import org.slf4j.helpers.MessageFormatter;
 
 import br.ufsc.tcc.common.config.ProjectConfigs;
@@ -22,12 +24,40 @@ public class CommonLogger {
 		}
 	}
 	
+	public static void debug(List<? extends Object> arr){
+		if(enabledLevels.contains("DEBUG")){
+			if(!logger.isDebugEnabled()){
+				arr.forEach(System.out::println);
+				System.out.println();
+			}else{
+				final StringBuilder builder = new StringBuilder();
+				builder.append("\n");
+				arr.forEach(e -> builder.append(e.toString()+"\n"));
+				logger.debug(builder.toString());
+			}
+		}
+	}
+	
 	public static void info(String format, Object ...args){
 		if(enabledLevels.contains("INFO")){
 			if(logger.isInfoEnabled())
 				logger.info(format, args);
 			else
 				System.err.println(MessageFormatter.arrayFormat(format, args).getMessage());
+		}
+	}
+	
+	public static void info(List<? extends Object> arr){
+		if(enabledLevels.contains("INFO")){
+			if(logger.isInfoEnabled()){
+				final StringBuilder builder = new StringBuilder();
+				builder.append("\n");
+				arr.forEach(e -> builder.append(e.toString()+"\n"));
+				logger.info(builder.toString());
+			}else{
+				arr.forEach(System.err::println);
+				System.out.println();
+			}
 		}
 	}
 	
