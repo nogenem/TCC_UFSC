@@ -62,7 +62,9 @@ public class PerguntaBuilder {
 		if(this.checker.isOnlyOneImg(desc) && !cStack.isEmpty())
 			desc = cStack.pop();
 
-		if(firstNode.getType() != MyNodeType.SELECT && nodes.get(this.currentI+1).isComponent()){
+		if(firstNode.getType() != MyNodeType.SELECT && nodes.get(this.currentI+1).isComponent() &&
+				this.distMatrix.areNear(firstNode, nodes.get(this.currentI+1))){
+			
 			if(this.lastMatrixHead != null && 
 					this.checker.isAbove(this.lastMatrixHead.last(), cStack.peek().first())){
 				this.saveLastMatrix(currentQ);
