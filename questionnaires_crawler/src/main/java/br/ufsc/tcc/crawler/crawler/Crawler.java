@@ -34,6 +34,12 @@ public class Crawler extends WebCrawler {
 	}
 	
 	@Override
+	public void onBeforeExit() {
+		if(this.conn != null)
+			this.conn.close();
+	}
+	
+	@Override
 	public boolean shouldVisit(Page referringPage, WebURL url) {
 		String href = url.getURL();
 				
