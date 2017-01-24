@@ -3,6 +3,7 @@ package br.ufsc.tcc.extractor.database.manager;
 import java.util.ArrayList;
 
 import br.ufsc.tcc.common.database.connection.BasicConnection;
+import br.ufsc.tcc.common.util.CommonLogger;
 import br.ufsc.tcc.extractor.database.dao.FiguraDao;
 import br.ufsc.tcc.extractor.database.dao.GrupoDao;
 import br.ufsc.tcc.extractor.database.dao.QuestionarioDao;
@@ -58,11 +59,11 @@ public class QuestionarioManager {
 		try {
 			extractedLinks = dao.getAllLinks();
 			
-			System.out.println(Thread.currentThread().getName() + 
-					" carregou os links dos questionarios do banco de dados");
+			CommonLogger.debug("{} carregou os links dos questionarios do banco de dados.",
+					Thread.currentThread().getName());
 		} catch (Exception e) {
 			// Database não deve ta funcionado, então mata a aplicação
-			e.printStackTrace();
+			CommonLogger.error(e);
 			System.exit(-1);
 		}
 	}

@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import br.ufsc.tcc.common.database.connection.BasicConnection;
 import br.ufsc.tcc.common.database.dao.BasicDao;
+import br.ufsc.tcc.common.util.CommonLogger;
 import br.ufsc.tcc.extractor.model.Pergunta;
 import br.ufsc.tcc.extractor.model.Questionario;
 
@@ -27,8 +28,8 @@ public class PerguntaDao extends BasicDao {
 		if(p.getForma() != null)
 			data.put("FormaDaPergunta_idFormaDaPergunta", p.getForma().getId());
 		else
-			System.err.println(String.format("PerguntaDao::save()> Pergunta sem FormaDaPergunta!\n\t [%s / %s]", 
-					q.getLink_doc(), p.getDescricao()));
+			CommonLogger.info("PerguntaDao::save()> Pergunta sem FormaDaPergunta!\n\t [{} / {}]", 
+					q.getLink_doc(), p.getDescricao());
 		
 		if(p.getGrupo() != null)
 			data.put("Grupo_idGrupo", p.getGrupo().getId());

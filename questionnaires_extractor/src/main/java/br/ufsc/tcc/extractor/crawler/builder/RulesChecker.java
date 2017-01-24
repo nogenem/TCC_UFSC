@@ -10,6 +10,7 @@ import br.ufsc.tcc.common.config.ProjectConfigs;
 import br.ufsc.tcc.common.model.Cluster;
 import br.ufsc.tcc.common.model.Dewey;
 import br.ufsc.tcc.common.model.MyNode;
+import br.ufsc.tcc.common.util.CommonLogger;
 import br.ufsc.tcc.common.util.DistanceMatrix;
 import br.ufsc.tcc.extractor.model.Alternativa;
 import br.ufsc.tcc.extractor.model.Pergunta;
@@ -321,6 +322,6 @@ public class RulesChecker {
 			.put("height", tmp2.optInt("height", 1))
 			.put("width", tmp2.optInt("width", 5));
 		
-		System.out.println("RULESCHECKER: " +CONFIGS.getJSONObject("distBetweenNextText"));
+		CommonLogger.debug("RULESCHECKER: {}", CONFIGS.getJSONObject("distBetweenNextText"));
 	}
 }

@@ -7,6 +7,7 @@ import java.util.Stack;
 import br.ufsc.tcc.common.model.Cluster;
 import br.ufsc.tcc.common.model.MyNode;
 import br.ufsc.tcc.common.model.MyNodeType;
+import br.ufsc.tcc.common.util.CommonLogger;
 import br.ufsc.tcc.common.util.DistanceMatrix;
 import br.ufsc.tcc.extractor.database.manager.FormaDaPerguntaManager;
 import br.ufsc.tcc.extractor.model.Alternativa;
@@ -118,7 +119,7 @@ public class PerguntaBuilder {
 				return this.currentI;
 			
 			this.currentP.setDescricao(desc.getText());
-			System.out.println("Descrição: " +this.currentP.getDescricao() +"\n\n");
+			CommonLogger.debug("Descricao: {}\n\n", this.currentP.getDescricao());
 			
 			//Verifica matriz
 			boolean matrixFlag = false;
@@ -187,7 +188,7 @@ public class PerguntaBuilder {
 					Figura fig = new Figura(tmp.getAttr("src"), tmp.getAttr("alt"));
 					fig.setDono(this.currentP);
 					currentQ.addFigura(fig);
-					System.out.println("Figura da pergunta: " +fig+ "\n");
+					CommonLogger.debug("Digura da pergunta: {}\n", fig);
 				}
 			}
 			
@@ -203,7 +204,7 @@ public class PerguntaBuilder {
 						Figura fig = new Figura(tmp.getAttr("src"), tmp.getAttr("alt"));
 						fig.setDono(currentQ);
 						currentQ.addFigura(fig);
-						System.out.println("Figura do questionario: " +fig+ "\n");
+						CommonLogger.debug("Figura do questionario: {}\n", fig);
 						cTmp1 = cStack.pop();
 					}
 					//Verifica se não é um grupo
@@ -211,13 +212,13 @@ public class PerguntaBuilder {
 						currentG = new Grupo(cTmp1.getText());
 						currentQ.addGrupo(currentG);
 						this.firstGroupOfQuestionnaire = cTmp1;
-
-						System.out.println("\nGroup1: " +cTmp1.getText()+ "\n\n");
+						
+						CommonLogger.debug("\nGroup1: {}\n\n", cTmp1.getText());
 						cTmp1 = cStack.pop();
 					}
 					cTmp1 = this.checker.checkIfDescIsComplete(cTmp1, cStack, nodes, this.currentI);
 					currentQ.setAssunto(cTmp1.getText());
-					System.out.println("Assunto: " +currentQ.getAssunto() +"\n\n");
+					CommonLogger.debug("Assunto: {}\n\n", currentQ.getAssunto());
 				}else{
 					cTmp1 = cStack.peek();
 					
@@ -226,8 +227,8 @@ public class PerguntaBuilder {
 						cTmp1 = cStack.pop();
 						this.currentG = new Grupo(cTmp1.getText());
 						currentQ.addGrupo(currentG);
-
-						System.out.println("\nGroup2: " +cTmp1.getText()+ "\n\n");
+						
+						CommonLogger.debug("\nGroup2: {}\n\n", cTmp1.getText());
 					}
 				}
 			}
@@ -237,7 +238,7 @@ public class PerguntaBuilder {
 				nTmp1 = nodes.get(++this.currentI);
 				this.currentP.setDescricao(
 						this.currentP.getDescricao() +"\n"+ nTmp1.getText());
-				System.out.println("Descrição atualizada1: " +this.currentP.getDescricao() +"\n\n");
+				CommonLogger.debug("Descricao atualizada: {}\n\n", this.currentP.getDescricao());
 			}
 			
 			if(this.currentG != null){
@@ -274,7 +275,7 @@ public class PerguntaBuilder {
 	private void saveLastQuestionGroup(Questionario currentQ) {
 		if(this.lastQuestionGroup != null){
 			currentQ.addPergunta(this.lastQuestionGroup);
-			System.out.println("Group Descricao: " +this.lastQuestionGroup.getDescricao()+ "\n\n");
+			CommonLogger.debug("Group descricao: {}\n\n", this.lastQuestionGroup.getDescricao());
 			
 			this.lastQuestionGroup = null;
 			this.lastQuestionGroupDesc = null;
@@ -305,7 +306,7 @@ public class PerguntaBuilder {
 	private void saveLastMatrix(Questionario currentQ) {
 		if(this.lastMatrix != null){
 			currentQ.addPergunta(this.lastMatrix);
-			System.out.println("Matrix Descricao: " +this.lastMatrix.getDescricao()+ "\n\n");
+			CommonLogger.debug("Matrix descricao: {}\n\n", this.lastMatrix.getDescricao());
 		
 			this.lastMatrix = null;
 			this.lastMatrixHead = null;
@@ -313,15 +314,15 @@ public class PerguntaBuilder {
 	}
 
 	private void extractTextarea(List<MyNode> nodes) {
-		System.out.println("\tTextarea.");
+		CommonLogger.debug("\tTextarea");
 		
 		currentP.setForma(FormaDaPerguntaManager.getForma("TEXTAREA"));
 	}
 
 	private void extractGenericInput(List<MyNode> nodes) {
 		String type = nodes.get(this.currentI).getAttr("type").toUpperCase();
-
-		System.out.println("\tInput [" +type+ "].");
+		
+		CommonLogger.debug("\tInput [{}].", type);
 		
 		currentP.setForma(FormaDaPerguntaManager.getForma(type + "_INPUT"));
 		
@@ -343,7 +344,7 @@ public class PerguntaBuilder {
 		boolean error = false;
 				
 		currentP.setForma(FormaDaPerguntaManager.getForma("RATING"));
-		System.out.println("\tRating:");
+		CommonLogger.debug("\tRating:");
 		
 		input = nodes.get(this.currentI);
 		while(input != null && input.getType() == MyNodeType.RADIO_INPUT){
@@ -355,7 +356,7 @@ public class PerguntaBuilder {
 			
 			Alternativa tmpAlt = new Alternativa(""+ (i++));
 			this.currentP.addAlternativa(tmpAlt);
-			System.out.println("\t\t" +tmpAlt.getDescricao());
+			CommonLogger.debug("\t\t{}", tmpAlt.getDescricao());
 			
 			lastInput = input;
 			if(this.currentI+1 < nodes.size())
@@ -377,9 +378,9 @@ public class PerguntaBuilder {
 		
 		this.currentP.setForma(FormaDaPerguntaManager.getForma(input.getType().toString()));
 		if(input.getType() == MyNodeType.CHECKBOX_INPUT)
-			System.out.println("\tCheckbox Input:");
+			CommonLogger.debug("\tCheckbox Input:");
 		else
-			System.out.println("\tRadio Input:");
+			CommonLogger.debug("\tRadio Input:");
 		
 		img = nodes.get(this.currentI-1);
 		text = nodes.get(++this.currentI);
@@ -393,8 +394,8 @@ public class PerguntaBuilder {
 				error = true;
 				break;
 			}
-				
-			System.out.println("\t\t" +text.getText());
+			
+			CommonLogger.debug("\t\t{}", text.getText());
 			Object dono = null;
 			
 			if(tmp != null && tmp.getType() == MyNodeType.TEXT_INPUT &&
@@ -403,7 +404,7 @@ public class PerguntaBuilder {
 				dono = tmpPerg;
 				
 				tmpPerg.setForma(FormaDaPerguntaManager.getForma("TEXT_INPUT"));
-				System.out.println("\t\t\tCom Text Input.");
+				CommonLogger.debug("\t\t\tCom Text Input.");
 				
 				tmpPerg.setQuestionario(currentQ);
 				this.currentP.addFilha(tmpPerg);
@@ -417,7 +418,7 @@ public class PerguntaBuilder {
 				Figura fig = new Figura(img.getAttr("src"), img.getAttr("alt"));
 				fig.setDono(dono);
 				currentQ.addFigura(fig);
-				System.out.println("\t\t\tLegenda: " +fig.getLegenda());
+				CommonLogger.debug("\t\t\tLegenda: {}", fig.getLegenda());
 			}
 			
 			if(this.currentI+1 < nodes.size() && isImgQuestion)
@@ -449,7 +450,7 @@ public class PerguntaBuilder {
 		boolean error = false;
 		
 		currentP.setForma(FormaDaPerguntaManager.getForma("SELECT"));
-		System.out.println("\tSelect:");
+		CommonLogger.debug("\tSelect:");
 		
 		opt = nodes.get(++this.currentI);
 		text = nodes.get(++this.currentI);
@@ -461,7 +462,7 @@ public class PerguntaBuilder {
 			
 			Alternativa tmpAlt = new Alternativa(text.getText());
 			this.currentP.addAlternativa(tmpAlt);
-			System.out.println("\t\t" +tmpAlt.getDescricao());
+			CommonLogger.debug("\t\t{}", tmpAlt.getDescricao());
 			
 			if(this.currentI+2 < nodes.size()){
 				opt = nodes.get(++this.currentI);
@@ -481,7 +482,7 @@ public class PerguntaBuilder {
 		boolean isMix = false;
 		int j = 0;
 		
-		System.out.println("\tSimple Matrix:");
+		CommonLogger.debug("\tSimple Matrix:");
 		input = nodes.get(this.currentI);
 		while(input != null && j < this.lastMatrixHead.size() && input.isComponent()){
 			if(!isMix && lastCompType != null && lastCompType != input.getType())
@@ -489,7 +490,7 @@ public class PerguntaBuilder {
 			lastCompType = input.getType();
 			
 			String text = this.lastMatrixHead.get(j).getText();
-			System.out.println("\t\tText: " +text+ " - Comp: " +input.getText());
+			CommonLogger.debug("\t\tText: {} - Comp: {}", text, input.getText());
 			
 			if(lastCompType == MyNodeType.RADIO_INPUT || lastCompType == MyNodeType.CHECKBOX_INPUT){
 				Alternativa alt = new Alternativa(text);

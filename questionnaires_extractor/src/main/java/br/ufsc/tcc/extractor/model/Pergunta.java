@@ -2,6 +2,8 @@ package br.ufsc.tcc.extractor.model;
 
 import java.util.ArrayList;
 
+import br.ufsc.tcc.common.util.CommonLogger;
+
 public class Pergunta {
 	
 	// idPergunta
@@ -72,7 +74,7 @@ public class Pergunta {
 	public void setTipo(String tipo) {
 		tipo = tipo.toUpperCase();
 		if(!tipo.matches("(ABERTO|FECHADO|MULTIPLA_ESCOLHA)"))
-			System.err.println("Pergunta:setTipo()> Tipo nao permitido ("+tipo+").");
+			CommonLogger.info("Pergunta:setTipo()> Tipo nao permitido ({}).", tipo);
 		else
 			this.tipo = tipo;
 	}

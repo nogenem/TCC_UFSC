@@ -10,6 +10,7 @@ import br.ufsc.tcc.common.config.ProjectConfigs;
 import br.ufsc.tcc.common.database.connection.BasicConnection;
 import br.ufsc.tcc.common.database.connection.PostgreConnection;
 import br.ufsc.tcc.common.database.manager.PossivelQuestionarioManager;
+import br.ufsc.tcc.common.util.CommonLogger;
 import br.ufsc.tcc.extractor.crawler.builder.QuestionarioBuilder;
 import br.ufsc.tcc.extractor.database.manager.QuestionarioManager;
 import br.ufsc.tcc.extractor.model.Questionario;
@@ -50,7 +51,7 @@ public class Crawler extends WebCrawler {
 			HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
 			WebURL url = page.getWebURL();
 			String link = url.getURL();
-			System.out.println("Link: " +link);
+			CommonLogger.debug("Link: {}", link);
 			
 			Document doc = null;
 			try{
@@ -63,7 +64,7 @@ public class Crawler extends WebCrawler {
 //					this.qManager.save(q);
 //					this.pqManager.remove(link);
 					
-					System.out.println("SAVE DONE!");
+					CommonLogger.debug("SAVE DONE!");
 				}
 				questionarios.clear();
 			}catch (Exception e) {

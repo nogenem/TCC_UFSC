@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import br.ufsc.tcc.common.database.connection.BasicConnection;
 import br.ufsc.tcc.common.database.dao.BasicDao;
+import br.ufsc.tcc.common.util.CommonLogger;
 import br.ufsc.tcc.extractor.model.Alternativa;
 import br.ufsc.tcc.extractor.model.Figura;
 import br.ufsc.tcc.extractor.model.Pergunta;
@@ -32,8 +33,8 @@ public class FiguraDao extends BasicDao {
 			data.put("dono", "A");
 			data.put("idDono", ((Alternativa)dono).getId());
 		}else{
-			System.err.println("FiguraDao:save()> Dono da Figura nao eh um "
-					+ "Questionario, uma Alternativa e nem uma Pergunta!\n\t<"+f.getImage_url()+">");
+			CommonLogger.info("FiguraDao:save()> Dono da Figura nao eh um Questionario, "
+					+ "uma Alternativa e nem uma Pergunta!\n\t<{}>", f.getImage_url());
 			return;
 		}
 		

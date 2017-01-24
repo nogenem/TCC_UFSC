@@ -1,5 +1,7 @@
 package br.ufsc.tcc.extractor.main;
 
+import javax.swing.JOptionPane;
+
 import org.json.JSONArray;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -10,6 +12,7 @@ import br.ufsc.tcc.common.crawler.CrawlerController;
 import br.ufsc.tcc.common.database.connection.BasicConnection;
 import br.ufsc.tcc.common.database.connection.PostgreConnection;
 import br.ufsc.tcc.common.database.manager.PossivelQuestionarioManager;
+import br.ufsc.tcc.common.util.CommonLogger;
 import br.ufsc.tcc.common.util.CommonUtil;
 import br.ufsc.tcc.extractor.crawler.Crawler;
 import br.ufsc.tcc.extractor.crawler.builder.QuestionarioBuilder;
@@ -72,8 +75,9 @@ public class Main {
 			}
 			Element root = doc.select("body").get(0);
 			qBuilder.build(root);
+			JOptionPane.showMessageDialog(null, "Extração completa!");
 		}catch(Exception e){
-			e.printStackTrace();
+			CommonLogger.error(e);
 		}
 	}
 	
@@ -84,6 +88,7 @@ public class Main {
 			
 			// Seeds do banco de dados
 			if(ProjectConfigs.loadUrlsFromCrawler()){
+				//TODO rever isso...
 				BasicConnection conn = new PostgreConnection(ProjectConfigs.getCrawlerDatabaseConfigs());
 				PossivelQuestionarioManager.loadPossivelQuestionarioLinks(conn);
 				conn.close();
@@ -103,7 +108,7 @@ public class Main {
 			// Inicia o crawling
 			controller.start(Crawler.class);
 		}catch(Exception e){
-			e.printStackTrace();
+			CommonLogger.error(e);
 		}
 	}
 }
