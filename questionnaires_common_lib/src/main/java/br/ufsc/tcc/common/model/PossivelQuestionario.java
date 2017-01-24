@@ -3,6 +3,8 @@ package br.ufsc.tcc.common.model;
 import java.sql.Timestamp;
 import java.util.Calendar;
 
+import br.ufsc.tcc.common.util.CommonUtil;
+
 public class PossivelQuestionario {
 	
 	private long id;
@@ -55,7 +57,6 @@ public class PossivelQuestionario {
 	}
 	
 	public void updateFoundAt(){
-		Calendar calendar = Calendar.getInstance();
-		this.foundAt = new Timestamp(calendar.getTime().getTime());
+		this.foundAt = CommonUtil.getCurrentTime();
 	}
 }

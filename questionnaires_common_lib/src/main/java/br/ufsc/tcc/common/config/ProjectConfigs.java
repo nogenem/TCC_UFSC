@@ -11,6 +11,10 @@ public abstract class ProjectConfigs {
 	private static JSONObject configs = loadConfigs();
 	
 	// Getters e Setters
+	public static String getLogLevels() {
+		return configs.optString("logLevels");
+	}
+	
 	public static JSONObject getDatabaseConfigs(){
 		return configs.optJSONObject("database");
 	}

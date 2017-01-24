@@ -5,13 +5,18 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 import org.json.JSONException;
@@ -129,17 +134,23 @@ public class CommonUtil {
 	 * 
 	 * @param path			Caminho para o arquivo que se quer salvar.
 	 * @param content		Conteúdo que se quer salvar.
+	 * @param options		Opções especificando como o arquivo será aberto, utilize a classe StandardOpenOption.
 	 * @return				<b>TRUE</b> caso seja possivel escrever o arquivo, ou</br>
 	 * 						<b>FALSE</b> caso contrario.
 	 */
-	public static boolean writeFile(String path, String content){
+	public static boolean writeFile(String path, String content, OpenOption ... options){
 		try {
-			Files.write(Paths.get(path), content.getBytes(StandardCharsets.UTF_8));
+			Files.write(Paths.get(path), content.getBytes(StandardCharsets.UTF_8), options);
 			return true;
 		} catch (IOException e) {
 			System.err.println("Util:writeFile()> "+ e.toString());
 			return false;
 		}
+	}
+	
+	public static boolean appendToFile(String path, String content){
+		return writeFile(path, content, StandardOpenOption.CREATE, 
+				StandardOpenOption.APPEND);
 	}
 	
 	/**
@@ -206,6 +217,19 @@ public class CommonUtil {
 	public static String trim(String str){
 		return str.replaceAll("\u00a0", " ")
 				.replaceAll("&nbsp;", " ").trim();
+	}
+	
+	public static Timestamp getCurrentTime() {
+		Calendar calendar = Calendar.getInstance();
+		return new Timestamp(calendar.getTime().getTime());
+	}
+	
+	public static String exceptionStacktraceToString(Exception e){
+	    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	    PrintStream ps = new PrintStream(baos);
+	    e.printStackTrace(ps);
+	    ps.close();
+	    return baos.toString();
 	}
 	
 	public static String padNumber(int i){
