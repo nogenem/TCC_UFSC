@@ -82,6 +82,6 @@ public class DistanceMatrix {
 		if(MAX_WEIGHT <= 0) MAX_WEIGHT = 1000;
 		if(MAX_HEIGHT <= 0) MAX_HEIGHT = 3;
 		
-		System.out.println("DISTMATRIX: " +MAX_WEIGHT+ " / " +MAX_HEIGHT);
+		CommonLogger.debug("DISTMATRIX: {} / {}", MAX_WEIGHT, MAX_HEIGHT);
 	}
 }

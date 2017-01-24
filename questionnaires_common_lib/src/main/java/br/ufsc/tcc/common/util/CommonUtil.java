@@ -87,11 +87,10 @@ public class CommonUtil {
 		try {
 			Path path = Paths.get(file);
 			
-			content = new String(Files.readAllBytes(
-					path),
+			content = new String(Files.readAllBytes(path),
 					Charset.forName("UTF-8"));
 		} catch (IOException e) {
-			System.err.println("Util:readFile()> "+ e.toString());
+			CommonLogger.error(e);
 			System.exit(-1);
 		}
 		return content;
@@ -123,7 +122,7 @@ public class CommonUtil {
 			
 			content = result.toString("UTF-8");
 		} catch (IOException e) {
-			System.err.println("Util:readFile()> "+ e.toString());
+			CommonLogger.error(e);
 			System.exit(-1);
 		}
 		return content;
@@ -143,7 +142,7 @@ public class CommonUtil {
 			Files.write(Paths.get(path), content.getBytes(StandardCharsets.UTF_8), options);
 			return true;
 		} catch (IOException e) {
-			System.err.println("Util:writeFile()> "+ e.toString());
+			CommonLogger.error(e);
 			return false;
 		}
 	}
@@ -183,7 +182,7 @@ public class CommonUtil {
 		try {
 			desktop.open(file);
 		} catch (IOException e) {
-			System.err.println("Util:editFile()> "+ e.toString());
+			CommonLogger.error(e);
 		    return false;
 		}
 		return true;
@@ -200,8 +199,7 @@ public class CommonUtil {
 		try{
 			obj = new JSONObject(content);
 		}catch(JSONException e){
-			System.err.println("Util:getJson()> " +e.toString());
-			System.err.println("Util:getJson()> Content provided:\n" +content);
+			CommonLogger.error(e);
 			System.exit(-1);
 		}
 		return obj;
@@ -301,14 +299,12 @@ public class CommonUtil {
 		List<MyNode> ret = new ArrayList<>();
 		if(root != null)
 			findCompsImgsAndTexts(root, "01", ret);
-//		System.out.println("\n\n");
 		return ret;
 	}
 
 	private static void findCompsImgsAndTexts(Node root, String dewey, List<MyNode> ret) {
 		if(isCompImgOrTextNode(root)){
 			MyNode node = new MyNode(root, new Dewey(dewey));
-//			System.out.println(node);
 			ret.add(node);
 		}
 		

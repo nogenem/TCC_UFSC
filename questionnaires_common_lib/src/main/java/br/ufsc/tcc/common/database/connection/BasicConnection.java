@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import br.ufsc.tcc.common.util.CommonLogger;
+
 public class BasicConnection {
 	
 	protected Connection conn;
@@ -20,7 +22,7 @@ public class BasicConnection {
 			this.conn = DriverManager.getConnection("jdbc:"+this.dbms+"://"+this.host+"/"+this.database, 
 					this.login, this.password);
 		}catch(Exception e){
-			System.err.println("BasicConnection::newConnection()> " +e.getMessage());
+			CommonLogger.error(e);
 		}
 		return this.conn;
 	}
@@ -29,7 +31,7 @@ public class BasicConnection {
 		try {
 			this.conn.close();
 		} catch (SQLException e) {
-			System.err.println("BasicConnection::close()> " +e.getMessage());
+			CommonLogger.error(e);
 		}
 	}
 }

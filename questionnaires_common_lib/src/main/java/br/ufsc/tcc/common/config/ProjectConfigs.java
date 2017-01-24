@@ -3,6 +3,7 @@ package br.ufsc.tcc.common.config;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import br.ufsc.tcc.common.util.CommonLogger;
 import br.ufsc.tcc.common.util.CommonUtil;
 
 public abstract class ProjectConfigs {
@@ -54,7 +55,15 @@ public abstract class ProjectConfigs {
 	
 	// Demais métodos
 	private static JSONObject loadConfigs(){
-		String configContent = CommonUtil.readFile(configPath);
-		return CommonUtil.parseJson(configContent);
+		JSONObject obj = null;
+		try{
+			String configContent = CommonUtil.readFile(configPath);
+			obj = CommonUtil.parseJson(configContent);
+		}catch(Exception e){
+			// É obrigatório fornecer o arquivo de configuração!
+			CommonLogger.error(e);
+			System.exit(-1);
+		}
+		return obj;
 	}
 }

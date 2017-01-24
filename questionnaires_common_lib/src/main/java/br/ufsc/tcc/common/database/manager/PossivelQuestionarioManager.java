@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import br.ufsc.tcc.common.database.connection.BasicConnection;
 import br.ufsc.tcc.common.database.dao.PossivelQuestionarioDao;
 import br.ufsc.tcc.common.model.PossivelQuestionario;
+import br.ufsc.tcc.common.util.CommonLogger;
 
 public class PossivelQuestionarioManager {
 	
@@ -56,11 +57,11 @@ public class PossivelQuestionarioManager {
 		try {
 			savedLinks = dao.getAllLinks();
 			
-			System.out.println(Thread.currentThread().getName() + 
-					" carregou os links dos questionarios do banco de dados");
+			CommonLogger.debug("{} carregou os links dos questionarios do banco de dados.", 
+					Thread.currentThread().getName());
 		} catch (Exception e) {
 			// Database não deve esta funcionado, então mata a aplicação
-			e.printStackTrace();
+			CommonLogger.error(e);
 			System.exit(-1);
 		}
 	}

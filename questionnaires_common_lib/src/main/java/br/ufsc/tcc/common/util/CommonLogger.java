@@ -1,29 +1,38 @@
 package br.ufsc.tcc.common.util;
 
-import java.util.ArrayList;
+import org.slf4j.helpers.MessageFormatter;
 
 import br.ufsc.tcc.common.config.ProjectConfigs;
-import uk.org.lidalia.slf4jext.Level;
 import uk.org.lidalia.slf4jext.Logger;
 import uk.org.lidalia.slf4jext.LoggerFactory;
 
 public class CommonLogger {
 
+	protected static final String path = "./log.txt";
 	protected static final Logger logger = LoggerFactory.getLogger(CommonLogger.class);
-	protected static final String path = "log.txt";
-	private static final ArrayList<Level> enabledLevels = new ArrayList<>();
+	//Começa como ERROR para caso de erro na leitura do arquivo de configurações
+	private static String enabledLevels = "ERROR";
 	
-	public static void debug(String msg){
-		if(enabledLevels.contains(Level.DEBUG)){
+	public static void debug(String format, Object ...args){
+		if(enabledLevels.contains("DEBUG")){
 			if(!logger.isDebugEnabled())
-				System.out.println(msg);
+				System.out.println(MessageFormatter.arrayFormat(format, args).getMessage());
 			else
-				logger.debug(msg);
+				logger.debug(format, args);
+		}
+	}
+	
+	public static void info(String format, Object ...args){
+		if(enabledLevels.contains("INFO")){
+			if(logger.isInfoEnabled())
+				logger.info(format, args);
+			else
+				System.err.println(MessageFormatter.arrayFormat(format, args).getMessage());
 		}
 	}
 	
 	public static void error(Exception e){
-		if(enabledLevels.contains(Level.ERROR)){
+		if(enabledLevels.contains("ERROR")){
 			if(logger.isErrorEnabled())
 				logger.error("Stacktrace: ", e);
 			else
@@ -40,16 +49,6 @@ public class CommonLogger {
 	
 	// Bloco estático
 	static {
-		String levels = ProjectConfigs.getLogLevels().toUpperCase();	
-		if(levels.contains("TRACE"))
-			enabledLevels.add(Level.TRACE);
-		if(levels.contains("DEBUG"))
-			enabledLevels.add(Level.DEBUG);
-		if(levels.contains("INFO"))
-			enabledLevels.add(Level.INFO);
-		if(levels.contains("WARN"))
-			enabledLevels.add(Level.WARN);
-		if(levels.contains("ERROR"))
-			enabledLevels.add(Level.ERROR);
+		enabledLevels = ProjectConfigs.getLogLevels().toUpperCase();
 	}
 }

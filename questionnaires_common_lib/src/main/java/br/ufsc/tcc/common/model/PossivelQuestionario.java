@@ -1,7 +1,6 @@
 package br.ufsc.tcc.common.model;
 
 import java.sql.Timestamp;
-import java.util.Calendar;
 
 import br.ufsc.tcc.common.util.CommonUtil;
 
