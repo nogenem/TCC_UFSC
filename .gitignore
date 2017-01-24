@@ -1,5 +1,6 @@
 # Minhas regras
 **/resources/cache/
+log.txt
 
 
 # Created by https://www.gitignore.io/api/eclipse,maven,java,node,macos,windows
