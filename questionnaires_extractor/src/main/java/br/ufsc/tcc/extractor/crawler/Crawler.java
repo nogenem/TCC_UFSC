@@ -49,8 +49,7 @@ public class Crawler extends WebCrawler {
 	public void visit(Page page) {
 		if(page.getParseData() instanceof HtmlParseData){
 			HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
-			WebURL url = page.getWebURL();
-			String link = url.getURL();
+			String link = page.getWebURL().getURL();
 			CommonLogger.debug("Link: {}", link);
 			
 			Document doc = null;

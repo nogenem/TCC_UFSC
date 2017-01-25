@@ -74,6 +74,7 @@ public class QuestionarioBuilder {
 			}
 		}
 		this.pBuilder.clearData(this.currentQ);
+		//Um questionario deve ter no minimo 2 perguntas
 		if(this.currentQ.getPerguntas().size() >= 2)
 			ret.add(this.currentQ);
 		

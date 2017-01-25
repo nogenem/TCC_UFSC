@@ -76,7 +76,7 @@ public class RulesChecker {
 			altsTxt += alt.getDescricao()+"\n";
 		}
 		
-		//Ex: https://www.surveymonkey.com/r/General-Event-Feedback-Template
+		//Ex: https://www.surveymonkey.com/r/General-Event-Feedback-Template [questão 1]
 		while(true){
 			for(MyNode node : desc.getGroup()){
 				String txt = node.getText();
@@ -105,12 +105,6 @@ public class RulesChecker {
 	}
 
 	public Cluster checkIfNodesShouldBeInSameCluster(Cluster c, Stack<Cluster> cStack, MyNode nextNode) {
-		//Da conflito entre os links:
-		//	https://www.survio.com/modelo-de-pesquisa/pesquisa-de-preco-do-produto [matriz para de funcionar]
-		//  http://anpei.tempsite.ws/intranet/mediaempresa [problema com: site da empresa http://]
-		//	https://www.surveycrest.com/template_preview/pyof1IFwp9Xa1_x430JdUeVsuHVRKuw [arruma um dos problemas]
-		// 	http://anpei.tempsite.ws/intranet/mediaempresa [arruma um dos problemas]
-		
 		//Todos os textos da descrição devem ter o mesmo prefixo
 		//comum ao proximo nodo encontrado
 		Cluster cTmp2 = new Cluster();
@@ -151,10 +145,8 @@ public class RulesChecker {
 			return false;
 		
 		JSONObject obj = CONFIGS.getJSONObject("distBetweenGroupAndFirstQuestion");
-		
-		//A altura da distância entre esse cTmp e a descrição da pergunta é menor ou igual a 1?
-		//E a largura é menor ou igual a 7?
 		Dewey dist = distMatrix.getDist(cTmp.last(), desc.first());
+		
 		if(dist.getHeight() <= obj.getInt("height") && dist.getWidth() <= obj.getInt("width")){
 			//O texto do grupo deve ter no maximo 5 palavras (?)
 			if(txt.split(" ").length <= 5){
@@ -185,11 +177,11 @@ public class RulesChecker {
 					String prefix1 = nTmp1.getDewey().getCommonPrefix(nTmp3.getDewey()),
 							prefix2 = nTmp2.getDewey().getCommonPrefix(nTmp3.getDewey()),
 							prefix3 = nTmp1.getDewey().getCommonPrefix(nTmp2.getDewey());
+					
 					//O prefixo3 deve ser maior que o prefix1, pois isso indica que nTmp1 e nTmp2 estão, 
-					//pelo menos, uma div a mais juntos
-					if(prefix1.equals(prefix2) && prefix3.length() > prefix1.length()){
+					//pelo menos, um elemento a mais juntos
+					if(prefix1.equals(prefix2) && prefix3.length() > prefix1.length())
 						return true;
-					}
 				}
 			}
 		}
@@ -233,7 +225,7 @@ public class RulesChecker {
 		Cluster head = !cStack.isEmpty() ? cStack.peek() : null;
 		MyNode nTmp = nodes.get(i);
 		
-		//Conta a quantidade de componentes em sequencia
+		//Conta a quantidade de componentes em sequência
 		while(nTmp != null && nTmp.isComponent()){ 
 			count++;
 			if(i+count < nodes.size())

@@ -58,11 +58,14 @@ public class PerguntaBuilder {
 		Cluster desc = cStack.pop();
 		Cluster cTmp1 = null, cTmp2 = null;
 		
-		//Verifica se o cluster de desc é apenas uma img
+		//Se a desc for apenas uma imagem então ela é provavelmente a imagem
+		//da 1* alternativa da pergunta
 		//		Ex: https://www.survio.com/modelo-de-pesquisa/avaliacao-de-um-e-shop
 		if(this.checker.isOnlyOneImg(desc) && !cStack.isEmpty())
 			desc = cStack.pop();
-
+		
+		//Verifica se tem componentes em sequência que podem fazer parte de uma
+		//matriz ou uma pergunta de RATING
 		if(firstNode.getType() != MyNodeType.SELECT && nodes.get(this.currentI+1).isComponent() &&
 				this.distMatrix.areNear(firstNode, nodes.get(this.currentI+1))){
 			
@@ -83,10 +86,10 @@ public class PerguntaBuilder {
 			case SELECT:{
 				this.extractSelect(nodes);
 				break;
-			}case CHECKBOX_INPUT:
+			}case CHECKBOX_INPUT:{
 				this.extractCheckboxOrRadioInput(currentQ, nodes);
 				break;
-			case RADIO_INPUT:{
+			}case RADIO_INPUT:{
 				this.extractCheckboxOrRadioInput(currentQ, nodes);
 				break;
 			}case TEXT_INPUT:
@@ -109,19 +112,23 @@ public class PerguntaBuilder {
 			}
 		}
 		
+		//Verifica se foi possivel extrair a pergunta
 		if(this.currentP.getForma() != null){
 			ArrayList<Alternativa> tmpAlts = this.currentP.getAlternativas();
+			
+			//Atualiza a desc da pergunta
 			desc = this.checker.getCorrectDescription(desc, tmpAlts, firstNode, cStack);
 			desc = this.checker.checkIfDescIsComplete(desc, cStack, nodes, this.currentI);
 			
-			//A distancia da pergunta para a sua descrição não pode ser maior que 2 
+			//Verifica se a desc e a pergunta estão perto uma da outra
 			if(!checker.areDescAndPergNear(desc, firstNode))
 				return this.currentI;
 			
 			this.currentP.setDescricao(desc.getText());
 			CommonLogger.debug("Descricao: {}\n\n", this.currentP.getDescricao());
 			
-			//Verifica matriz
+			//Verifica se é uma matriz
+			//	Ex: https://www.survio.com/modelo-de-pesquisa/pesquisa-de-preco-do-produto [questão 3]
 			boolean matrixFlag = false;
 			cTmp2 = this.lastMatrixHead;
 			
@@ -142,7 +149,8 @@ public class PerguntaBuilder {
 				this.saveLastMatrix(currentQ);
 			}
 			
-			//Verifica grupo de perguntas
+			//Verifica se é um grupo de perguntas
+			//	Ex: https://www.surveymonkey.com/r/online-social-networking-template [questão 4]
 			boolean questionGroupFlag = false;
 			nTmp1 = nodes.get(this.currentI);
 			nTmp2 = this.lastQuestionGroupDesc != null ? 
@@ -188,7 +196,7 @@ public class PerguntaBuilder {
 					Figura fig = new Figura(tmp.getAttr("src"), tmp.getAttr("alt"));
 					fig.setDono(this.currentP);
 					currentQ.addFigura(fig);
-					CommonLogger.debug("Digura da pergunta: {}\n", fig);
+					CommonLogger.debug("Figura da pergunta: {}\n", fig);
 				}
 			}
 			
@@ -207,7 +215,7 @@ public class PerguntaBuilder {
 						CommonLogger.debug("Figura do questionario: {}\n", fig);
 						cTmp1 = cStack.pop();
 					}
-					//Verifica se não é um grupo
+					//Verifica se não é o texto de um grupo
 					if(!cStack.isEmpty() && this.checker.isGroupText(cTmp1, desc, this.firstGroupOfQuestionnaire)){
 						currentG = new Grupo(cTmp1.getText());
 						currentQ.addGrupo(currentG);
@@ -220,9 +228,8 @@ public class PerguntaBuilder {
 					currentQ.setAssunto(cTmp1.getText());
 					CommonLogger.debug("Assunto: {}\n\n", currentQ.getAssunto());
 				}else{
+					//Verifica se não é o texto de um grupo
 					cTmp1 = cStack.peek();
-					
-					//Verifica se o texto acima não é um grupo
 					if(this.checker.isGroupText(cTmp1, desc, this.firstGroupOfQuestionnaire)){
 						cTmp1 = cStack.pop();
 						this.currentG = new Grupo(cTmp1.getText());
@@ -233,7 +240,7 @@ public class PerguntaBuilder {
 				}
 			}
 			
-			//Verifica se o texto abaixo, se tiver, não faz parte desta pergunta (Ex: Peso: [...] kg)
+			//Verifica se o texto abaixo, se tiver, não faz parte desta pergunta (Ex: Peso: [ ] kg)
 			if(this.checker.checkNextText(nodes, this.currentI)){
 				nTmp1 = nodes.get(++this.currentI);
 				this.currentP.setDescricao(
@@ -267,7 +274,8 @@ public class PerguntaBuilder {
 				getCommonPrefix(this.lastQuestionGroupDesc.last().getDewey());
 		
 		this.lastQuestionGroup = new Pergunta();
-		this.lastQuestionGroup.setForma(FormaDaPerguntaManager.getForma(this.currentP.getForma().toString()+"_GROUP"));
+		String forma = this.currentP.getForma().toString();
+		this.lastQuestionGroup.setForma(FormaDaPerguntaManager.getForma(forma+"_GROUP"));
 		this.lastQuestionGroup.setDescricao(this.lastQuestionGroupDesc.getText());							
 		this.lastQuestionGroup.addFilha(this.currentP);
 	}
@@ -284,9 +292,8 @@ public class PerguntaBuilder {
 	}
 
 	private void updateLastMatrix(List<MyNode> nodes, Stack<Cluster> cStack, Cluster cTmp2) {
-		if(!cStack.isEmpty() && cTmp2 == cStack.peek()){
+		if(!cStack.isEmpty() && cTmp2 == cStack.peek())
 			this.lastMatrixHead = cStack.pop();
-		}
 		if(!cStack.isEmpty() && lastMatrix == null){
 			this.lastMatrix = new Pergunta();
 			FormaDaPergunta forma = this.currentP.getForma();
@@ -364,8 +371,12 @@ public class PerguntaBuilder {
 			else
 				input = null;
 		}
+		//Se input != null então o loop passo da pergunta e entro na proxima e por isso,
+		//deve-se voltar o index para o final da pergunta
 		if(input != null)
 			--this.currentI;
+		//Se deu erro e não tem nenhuma alternativa quer dizer que o loop não
+		//completo nenhuma vez
 		if(error && this.currentP.getAlternativas().size() == 0)
 			this.currentP.setForma(null);
 	}
@@ -479,6 +490,7 @@ public class PerguntaBuilder {
 	private void extractSimpleMatrix(List<MyNode> nodes, Questionario currentQ) {
 		MyNode input = null;
 		MyNodeType lastCompType = null;
+		//Esta matriz possui componentes mistos?
 		boolean isMix = false;
 		int j = 0;
 		
