@@ -45,7 +45,10 @@ public class MyNode implements Comparable<MyNode> {
 	
 	public String getAttr(String key){
 		if(this.attrs == null) return "";
-		return this.attrs.get(key);
+		String attr = this.attrs.get(key.toLowerCase());
+		if(attr.isEmpty()) 
+			attr = this.attrs.get(key.toUpperCase());
+		return attr;
 	}
 	
 	public Dewey getDewey() {

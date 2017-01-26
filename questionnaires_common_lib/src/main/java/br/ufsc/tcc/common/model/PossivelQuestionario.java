@@ -8,18 +8,18 @@ public class PossivelQuestionario {
 	
 	private long id;
 	private String link_doc;
-	private String title_doc;
-	private Timestamp foundAt;
+	private String titulo_doc;
+	private Timestamp encontrado_em;
 	
 	// Construtor
 	public PossivelQuestionario(){
-		this.updateFoundAt();
+		this.updateEncontradoEm();
 	}
 	
-	public PossivelQuestionario(String link_doc, String title_doc){
+	public PossivelQuestionario(String link_doc, String titulo_doc){
 		this.link_doc = link_doc;
-		this.title_doc = title_doc;
-		this.updateFoundAt();
+		this.titulo_doc = titulo_doc;
+		this.updateEncontradoEm();
 	}
 	
 	// Getters e Setters
@@ -39,23 +39,23 @@ public class PossivelQuestionario {
 		this.link_doc = link_doc;
 	}
 
-	public String getTitle_doc() {
-		return title_doc;
+	public String getTitulo_doc() {
+		return titulo_doc;
 	}
 
-	public void setTitle_doc(String title_doc) {
-		this.title_doc = title_doc;
+	public void setTitulo_doc(String titulo_doc) {
+		this.titulo_doc = titulo_doc;
 	}
 
-	public Timestamp getFoundAt() {
-		return foundAt;
+	public Timestamp getEncontradoEm() {
+		return encontrado_em;
 	}
 
-	public void setFoundAt(Timestamp foundAt) {
-		this.foundAt = foundAt;
+	public void setEncontradoEm(Timestamp encontradoEm) {
+		this.encontrado_em = encontradoEm;
 	}
 	
-	public void updateFoundAt(){
-		this.foundAt = CommonUtil.getCurrentTime();
+	public void updateEncontradoEm(){
+		this.encontrado_em = CommonUtil.getCurrentTime();
 	}
 }
