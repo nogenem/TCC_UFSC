@@ -66,8 +66,9 @@ public class PerguntaBuilder {
 		
 		//Verifica se tem componentes em sequência que podem fazer parte de uma
 		//matriz ou uma pergunta de RATING
-		if(firstNode.getType() != MyNodeType.SELECT && nodes.get(this.currentI+1).isComponent() &&
-				this.distMatrix.areNear(firstNode, nodes.get(this.currentI+1))){
+		nTmp1 = (this.currentI+1) < nodes.size() ? nodes.get(this.currentI+1) : null;
+		if(nTmp1 != null && firstNode.getType() != MyNodeType.SELECT && nTmp1.isComponent() &&
+				this.distMatrix.areNear(firstNode, nTmp1)){
 			
 			if(this.lastMatrixHead != null && 
 					this.checker.isAbove(this.lastMatrixHead.last(), cStack.peek().first())){
@@ -78,8 +79,11 @@ public class PerguntaBuilder {
 					this.lastMatrixHead = cStack.pop();
 				this.extractSimpleMatrix(nodes, currentQ);
 			}else if(firstNode.getType() == MyNodeType.RADIO_INPUT && 
-					nodes.get(this.currentI+1).getType() == MyNodeType.RADIO_INPUT){
+					nTmp1.getType() == MyNodeType.RADIO_INPUT){
 				this.extractSimpleRating(nodes);
+			}else if(firstNode.getType() == nTmp1.getType()){
+				//Ex: http://lap.umd.edu/surveys/census/files/surveya1pagesbytopic/page1.html
+				this.extractMultiCompQuestion(nodes, currentQ);
 			}
 		}else{
 			switch (firstNode.getType()) {
@@ -327,15 +331,13 @@ public class PerguntaBuilder {
 	}
 
 	private void extractGenericInput(List<MyNode> nodes) {
-		String type = nodes.get(this.currentI).getAttr("type").toUpperCase();
-		
+		String type = nodes.get(this.currentI).getType().toString();
 		CommonLogger.debug("\tInput [{}].", type);
-		
-		currentP.setForma(FormaDaPerguntaManager.getForma(type + "_INPUT"));
+		currentP.setForma(FormaDaPerguntaManager.getForma(type));
 		
 		//Checagem para coisas do genêro: Hora: [ ] : [ ]
 		//	Ex: https://www.bioinfo.mpg.de/mctq/core_work_life/core/core.jsp?language=por_b
-		if(this.currentI+2 < nodes.size() && type.matches("TEXT|NUMBER")){
+		if(this.currentI+2 < nodes.size() && type.matches("(TEXT|NUMBER)_INPUT")){
 			MyNode tmp1 = nodes.get(this.currentI+1), 
 					tmp2 = nodes.get(this.currentI+2);
 			if(tmp1.isText() && tmp1.getText().equals(":") && 
@@ -343,6 +345,46 @@ public class PerguntaBuilder {
 				this.currentI += 2;
 			}
 		}
+	}
+	
+	private void extractMultiCompQuestion(List<MyNode> nodes, Questionario currentQ) {
+		MyNode input = null, lastInput = null;
+		MyNodeType multiCompType = null;
+		int i = 1;
+		boolean error = false;
+		
+		currentP.setForma(FormaDaPerguntaManager.getForma("MULTI_COMP"));
+		CommonLogger.debug("\tMulti Comp:");
+		
+		input = nodes.get(this.currentI);
+		multiCompType = input.getType();
+		while(input != null && input.getType() == multiCompType){
+			if(lastInput != null && 
+					!this.checker.areCompAndTextNear(lastInput, input)){
+				error = true;
+				break;
+			}
+
+			Pergunta tmpPerg = new Pergunta(""+ (i++));
+			tmpPerg.setForma(FormaDaPerguntaManager.getForma(multiCompType.toString()));
+			tmpPerg.setQuestionario(currentQ);
+			this.currentP.addFilha(tmpPerg);
+			CommonLogger.debug("\t\tText: {} - Comp: {}", tmpPerg.getDescricao(), input.getText());
+			
+			lastInput = input;
+			if(this.currentI+1 < nodes.size())
+				input = nodes.get(++this.currentI);
+			else
+				input = null;
+		}
+		//Se input != null então o loop passo da pergunta e entro na proxima e por isso,
+		//deve-se voltar o index para o final da pergunta
+		if(input != null)
+			--this.currentI;
+		//Se deu erro e não tem nenhuma filha/alternativa quer dizer que o loop não
+		//completo nenhuma vez
+		if(error && this.currentP.getFilhas().size() == 0)
+			this.currentP.setForma(null);
 	}
 
 	private void extractSimpleRating(List<MyNode> nodes) {

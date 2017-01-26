@@ -1,7 +1,5 @@
 package br.ufsc.tcc.extractor.main;
 
-import javax.swing.JOptionPane;
-
 import org.json.JSONArray;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -25,11 +23,12 @@ public class Main {
 	}
 	
 	//TODO remover isso ao final do desenvolvimento!
+	//TODO melhorar a parte de erros!
 	private static void test(){
 		String path = "cache/Survio_1.html";
-//		path = "https://www.survio.com/modelo-de-pesquisa/pesquisa-de-preco-do-produto";
+		path = "https://www.survio.com/modelo-de-pesquisa/pesquisa-de-preco-do-produto";
 //		path = "https://www.survio.com/modelo-de-pesquisa/avaliacao-de-um-e-shop";
-		path = "https://www.survio.com/modelo-de-pesquisa/pesquisa-sobre-empregados-sobrecarregados-e-esgotados";
+//		path = "https://www.survio.com/modelo-de-pesquisa/pesquisa-sobre-empregados-sobrecarregados-e-esgotados";
 		
 //		path = "cache/SurveyMonkey_1.html";
 //		path = "cache/SurveyMonkey_2.html";
@@ -50,9 +49,13 @@ public class Main {
 		
 		//TODO tratar do Personal+general information
 //		path = "cache/SurveyCrest_1.html";
-//		path = "https://www.surveycrest.com/template_preview/pyof1IFwp9Xa1_x430JdUeVsuHVRKuw";
+		path = "https://www.surveycrest.com/template_preview/pyof1IFwp9Xa1_x430JdUeVsuHVRKuw";
 //		path = "https://www.surveycrest.com/template_preview/pufLBGbsEEBvdJvPPxIe9hYJx0Q";
 //		path = "https://www.surveycrest.com/template_preview/pcTMgau0DnNMqRJGbCqSAknAAjJA";
+		
+		path = "http://lap.umd.edu/surveys/census/files/surveya1pagesbytopic/page1.html";
+//		path = "http://lap.umd.edu/surveys/census/files/surveya1pagesbytopic/page2.html";
+//		path = "http://lap.umd.edu/surveys/census/files/surveya1pagesbytopic/page3.html";
 		
 //		path = "https://www.surveygizmo.com/survey-examples/";
 //		path = "http://www.createsurvey.com/demo/templates.htm";
@@ -75,7 +78,6 @@ public class Main {
 			}
 			Element root = doc.select("body").get(0);
 			qBuilder.build(root);
-			JOptionPane.showMessageDialog(null, "Extração completa!");
 		}catch(Exception e){
 			CommonLogger.error(e);
 		}

@@ -81,7 +81,7 @@ public class QuestionarioBuilder {
 //		CommonLogger.debug("\nClusters:");
 //		CommonLogger.debug(cStack);
 		
-		CommonLogger.debug("\nQuestionarios:");
+		CommonLogger.debug("\t\t\t========Questionarios========");
 		CommonLogger.debug(ret);
 		return ret;
 	}
