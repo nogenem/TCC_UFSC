@@ -43,3 +43,4 @@ INSERT INTO formadapergunta(descricao) VALUES ('MIX_COMP_MATRIX');
 
 INSERT INTO FormaDaPergunta(descricao) VALUES ('RATING');
 INSERT INTO formadapergunta(descricao) VALUES ('UNKNOWN');
+INSERT INTO FormaDaPergunta(descricao) VALUES ('MULTI_COMP');
