@@ -58,6 +58,10 @@
 		"distBetweenTextsInQuestionGroup": {
 			"height": 1,
 			"width": 5
+		},
+		"distBetweenDescriptions": {
+			"deweyWeight": 1000,
+			"height": 1
 		}
 	}
 }

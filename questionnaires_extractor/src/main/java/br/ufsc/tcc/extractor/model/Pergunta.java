@@ -180,6 +180,7 @@ public class Pergunta {
 		case "TEXTAREA_MATRIX":
 		case "MIX_COMP_GROUP"://TODO deixar assim mesmo?
 		case "MIX_COMP_MATRIX":
+		case "MULTI_COMP":
 			return "ABERTO";
 		default:
 			return "";

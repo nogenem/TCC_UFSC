@@ -95,13 +95,20 @@ public class RulesChecker {
 			return desc;
 		
 		Cluster tmp = cStack.peek();
-		if(!tmp.getText().isEmpty() && this.distMatrix.areNear(tmp, desc) && 
+		if(!tmp.getText().isEmpty() && this.isDescriptionsNear(tmp, desc) &&
 				!this.distMatrix.areNear(tmp.last(), nodes.get(i+1))){
 			tmp = cStack.pop();
 			tmp = tmp.join(desc);
 			return tmp;
 		}
 		return desc;
+	}
+	
+	public boolean isDescriptionsNear(Cluster firstDesc, Cluster secondDesc){
+		JSONObject obj = CONFIGS.getJSONObject("distBetweenDescriptions");
+		Dewey dist = this.distMatrix.getDist(firstDesc.last(), secondDesc.first());
+		return dist.getHeight() == obj.getInt("height") && 
+				dist.getDeweyWeight() <= obj.getInt("deweyWeight");
 	}
 
 	public Cluster checkIfNodesShouldBeInSameCluster(Cluster c, Stack<Cluster> cStack, MyNode nextNode) {
@@ -274,7 +281,8 @@ public class RulesChecker {
 			.put("distBetweenDescAndQuestion", new JSONObject())
 			.put("distBetweenGroupAndFirstQuestion", new JSONObject())
 			.put("distBetweenNextText", new JSONObject())
-			.put("distBetweenTextsInQuestionGroup", new JSONObject());
+			.put("distBetweenTextsInQuestionGroup", new JSONObject())
+			.put("distBetweenDescriptions", new JSONObject());
 		
 		JSONObject h = ProjectConfigs.getHeuristics(), 
 				tmp1 = new JSONObject(), tmp2 = null;
@@ -313,6 +321,12 @@ public class RulesChecker {
 		CONFIGS.getJSONObject("distBetweenTextsInQuestionGroup")
 			.put("height", tmp2.optInt("height", 1))
 			.put("width", tmp2.optInt("width", 5));
+		
+		tmp2 = h!=null ? h.optJSONObject("distBetweenDescriptions") : tmp1;
+		tmp2 = tmp2!=null ? tmp2 : tmp1;
+		CONFIGS.getJSONObject("distBetweenDescriptions")
+			.put("height", tmp2.optInt("height", 1))
+			.put("deweyWeight", tmp2.optInt("deweyWeight", 1000));
 		
 		CommonLogger.debug("RULESCHECKER: {}", CONFIGS.getJSONObject("distBetweenNextText"));
 	}

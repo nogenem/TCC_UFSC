@@ -78,6 +78,7 @@ public class QuestionarioBuilder {
 		if(this.currentQ.getPerguntas().size() >= 2)
 			ret.add(this.currentQ);
 		
+//		cStack.add(cTmp);
 //		CommonLogger.debug("\nClusters:");
 //		CommonLogger.debug(cStack);
 		
