@@ -11,6 +11,7 @@ import org.jsoup.nodes.Element;
 
 import br.ufsc.tcc.common.config.ProjectConfigs;
 import br.ufsc.tcc.common.model.Cluster;
+import br.ufsc.tcc.common.model.Dewey;
 import br.ufsc.tcc.common.model.MyNode;
 import br.ufsc.tcc.common.model.MyNodeType;
 import br.ufsc.tcc.common.util.CommonLogger;
@@ -24,6 +25,7 @@ public class RulesChecker {
 	private static Pattern LOGIN_WORDS_REGEX = null;
 	private static int MIN_COMPS_IN_ONE_CLUSTER = 0;
 	private static int MIN_CLUSTERS_WITH_COMP = 0;
+	private static int HEIGHT_BETWEEN_QUESTIONS = 0;
 
 	private DistanceMatrix distMatrix;
 	
@@ -80,8 +82,7 @@ public class RulesChecker {
 		Cluster cTmp = new Cluster();
 		ArrayList<Cluster> ret = new ArrayList<>();
 		
-		for(int i = 0; i<nodes.size(); i++){
-			MyNode nTmp = nodes.get(i);
+		for(MyNode nTmp : nodes){
 			if(!cTmp.isEmpty() && !distMatrix.areNear(cTmp.last(), nTmp)){
 				ret.add(cTmp);
 				cTmp = new Cluster();
@@ -140,43 +141,65 @@ public class RulesChecker {
 	}
 
 	private boolean hasQuestionnarie(List<Cluster> clusters) {
-		double tCount, cCount, qCount = 0.0;
-		boolean isLogin = false;
+		//Contador de componentes, Contador de 'questões'
+		double cCount, qCount = 0.0;
+		Cluster lastCluster = null;
+		boolean isLogin = false, hasTextAbove = false;
+		String txtTmp = "";
 		
 		//Um questionario deve ter pelo menos 1 cluster com 4 componentes ou
 		//3 clusters com pelo menos 1 componente
 		for(Cluster c : clusters){
-			tCount = 0; cCount = 0; isLogin = false;
+			cCount = 0; isLogin = false; hasTextAbove = false;
 			
+			//Conta quantos textos e componentes tem no cluster
 			ArrayList<MyNode> nodes = c.getGroup();
 			for(int i = 0; i < nodes.size(); i++){
 				MyNode node = nodes.get(i);
 				if(node.isText()){ 
-					if(LOGIN_WORDS_REGEX.matcher(node.getText()).matches())
+					if(LOGIN_WORDS_REGEX.matcher(node.getText()).matches()){ 
 						isLogin = true;
-					tCount++;
+						break;
+					}
+					txtTmp = node.getText();
+					hasTextAbove = txtTmp.length() >= 4 || 
+							txtTmp.matches("(\\d{1,2}(\\s{1,2})?(\\.|\\:|\\)|\\-)?)");
 				}else if(node.isComponent() && node.getType() != MyNodeType.OPTION){
-					//todo componente deve ter pelo menos um texto acima dele
-					if((i-1) >= 0 && nodes.get(i-1).isImgOrText()){
+					//todo componente deve ter pelo menos um texto/img acima dele
+					if(hasTextAbove){
 						if(CommonUtil.getMultiComps().contains(node.getText()))
 							cCount += 0.5;
 						else
 							cCount++;
 					}
+					hasTextAbove = false;
 				}
 			}
-			//Todo cluster deve ter pelo menos 1 texto e não deve ser um cluster de login/registro/busca
-			if(!isLogin && tCount >= 1){
+			//Toda questão deve ter pelo menos 1 componente e não deve pertencer a 
+			//um cluster de login/registro/busca
+			if(!isLogin && cCount >= 1){
 				if(cCount >= MIN_COMPS_IN_ONE_CLUSTER){
 					CommonLogger.debug("\t\tMinimo {} componentes em um cluster!", MIN_COMPS_IN_ONE_CLUSTER);
+					CommonLogger.debug(c.toString());//TODO remover isso
 					return true;
-				}else if(cCount >= 1)
-					qCount++;
+				}else{
+					if(lastCluster != null){
+						//Os clusters com componentes devem estar 'próximo' um dos outros
+						Dewey dist = this.distMatrix.getDist(lastCluster.last(), c.first());
+						if(dist.getHeight() <= HEIGHT_BETWEEN_QUESTIONS)
+							qCount++;
+						else
+							qCount = 1;
+					}else
+						qCount++;
+				}
 			}
 			if(qCount == MIN_CLUSTERS_WITH_COMP){
 				CommonLogger.debug("\t\tMinimo {} clusters com componentes!", MIN_CLUSTERS_WITH_COMP);
+				CommonLogger.debug(c.toString());//TODO remover isso
 				return true;
 			}
+			lastCluster = c;
 		}
 		return false;
 	}
@@ -184,7 +207,7 @@ public class RulesChecker {
 	// Métodos/Blocos estáticos
 	static {
 		//Load heuristics
-		JSONObject h = ProjectConfigs.getHeuristics();
+		JSONObject h = ProjectConfigs.getHeuristics(), tmp = null;
 		if(h != null){
 			String txtTmp = h.optString("surveyWordsRegex", "");
 			if(!txtTmp.isEmpty()){
@@ -198,6 +221,10 @@ public class RulesChecker {
 			}
 			MIN_COMPS_IN_ONE_CLUSTER = h.optInt("minCompsInOneCluster");
 			MIN_CLUSTERS_WITH_COMP = h.optInt("minClustersWithComp");
+			
+			tmp = h.optJSONObject("distBetweenNearQuestions");
+			if(tmp != null)
+				HEIGHT_BETWEEN_QUESTIONS = tmp.optInt("height");
 		}
 		
 		if(SURVEY_WORDS_REGEX == null)
@@ -211,6 +238,7 @@ public class RulesChecker {
 				Pattern.CASE_INSENSITIVE);
 		if(MIN_COMPS_IN_ONE_CLUSTER <= 0) MIN_COMPS_IN_ONE_CLUSTER = 4;
 		if(MIN_CLUSTERS_WITH_COMP <= 0) MIN_CLUSTERS_WITH_COMP = 3;
+		if(HEIGHT_BETWEEN_QUESTIONS <= 0) HEIGHT_BETWEEN_QUESTIONS = 4;
 		
 		CommonLogger.debug("RULESCHECKER {} / {}", MIN_COMPS_IN_ONE_CLUSTER, MIN_CLUSTERS_WITH_COMP);
 	}

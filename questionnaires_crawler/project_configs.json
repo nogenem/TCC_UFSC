@@ -28,8 +28,11 @@
 			"deweyWeight": 1000,
 			"height": 3
 		},
+		"distBetweenNearQuestions": {
+			"height": 4
+		},
 		"surveyWordsRegex": "(.*surveys?.*|.*questionnaires?.*|.*question(a|á)rios?.*|.*pesquisas?.*|.*testes?\\s+para.*|.*b(u|ú)squedas?.*)",
-		"loginWordsRegex": "(register|login|password|forgot password\\?|keep me logged in|reset password|search:?|registre(\\-se)?|logar|entrar|esqueceu sua senha\\?|me mantenha logado|recupere sua senha|buscar:?)",
+		"loginWordsRegex": "(user(name)?|sing in|sing up|register|login|password|forgot password\\?|keep me logged in|reset password|search:?|registre(\\-se)?|logar|entrar|esqueceu sua senha\\?|me mantenha logado|recupere sua senha|buscar:?)",
 		"minCompsInOneCluster": 4,
 		"minClustersWithComp": 3
 	}

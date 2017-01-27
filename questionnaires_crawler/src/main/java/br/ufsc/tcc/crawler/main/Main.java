@@ -43,14 +43,28 @@ public class Main {
 						"\nUse o parametro --help para obter informacoes sobre esta aplicacao.");
 			}
 		}else{
-			//runCrawler();
+//			showLinks();
+//			runCrawler();
 			test();
 		}
 	}
-
+	
+	//TODO pensar em um jeito de saber que esta começando um novo questionario!!!
 	private static void test() {
 		String url = "http://www.survio.com/en/blog/tips-and-tricks/how-to-create-a-questionnaire-in-survio";
 //		url = "https://www.surveygizmo.com/survey-examples/";
+//		url = "https://www.quotev.com/surveys/Fun?v=users";
+//		url = "https://www.businessformtemplate.com/preview/Blank_Survey_Template";
+		url = "http://searchdisasterrecovery.techtarget.com/tutorial/Business-impact-analysis-questionnaire-template";
+//		url = "https://www.jotform.com/help/158-How-to-create-a-survey-form-and-customize-it";
+		
+//		url = "https://www.survio.com/modelo-de-pesquisa/avaliacao-de-um-e-shop";
+//		url = "https://www.surveymonkey.com/r/logo_testing_template";
+//		url = "http://vark-learn.com/the-vark-questionnaire/";
+//		url = "https://www.bioinfo.mpg.de/mctq/core_work_life/core/core.jsp?language=por_b";
+//		url = "http://anpei.tempsite.ws/intranet/mediaempresa";
+//		url = "https://www.surveycrest.com/template_preview/pyof1IFwp9Xa1_x430JdUeVsuHVRKuw";
+//		url = "http://lap.umd.edu/surveys/census/files/surveya1pagesbytopic/page1.html";
 		
 		RulesChecker checker = new RulesChecker();
 		Document doc = null;
@@ -97,7 +111,7 @@ public class Main {
 	private static void showLinks() {
 		JSONObject output = new JSONObject();
 		
-		BasicConnection c = new PostgreConnection(ProjectConfigs.getDatabaseConfigs());
+		BasicConnection c = new PostgreConnection(ProjectConfigs.getCrawlerDatabaseConfigs());
 		PossivelQuestionarioManager pqManager = new PossivelQuestionarioManager(c);
 		
 		try {
@@ -109,7 +123,7 @@ public class Main {
 			
 			// Transforma os dados em um JSONObject
 			for(PossivelQuestionario pq : pqs){
-				key = pq.getFoundAt().toLocalDateTime().toLocalDate().toString();
+				key = pq.getEncontradoEm().toLocalDateTime().toLocalDate().toString();
 				if(!output.has(key))
 					output.put(key, new JSONObject());
 				
