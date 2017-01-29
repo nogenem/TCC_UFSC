@@ -40,14 +40,21 @@ public class RulesChecker {
 		Dewey dist = this.distMatrix.getDist(lastDesc.last(), newNode);	
 		return dist.getHeight() > obj.getInt("height");
 	}
-
-	public boolean shouldCreateNewCluster(Cluster lastCluster, MyNode newNode) {
-		if(lastCluster == null || lastCluster.isEmpty() || newNode == null) 
+	
+	
+	public boolean shouldCreateNewCluster(Cluster lastCluster, MyNode newNode, List<MyNode> nodes, int i) {
+		if(lastCluster == null || lastCluster.isEmpty() || newNode == null || 
+				i+1 >= nodes.size()) 
 			return false;
-		//Se o ultimo Nodo do ultimo Cluster não estiver perto do novo Node
-		//encontrado, então, provavelmente, está se iniciando um novo
-		//'grupo' de informações na pagina
-		return !this.distMatrix.areNear(lastCluster.last(), newNode);
+		
+		if(!this.distMatrix.areNear(lastCluster.last(), newNode))
+			return true;
+		
+		//Todos os textos da descrição devem ter o mesmo prefixo
+		//comum ao proximo nodo encontrado
+		String tTmp1 = lastCluster.last().getDewey().getCommonPrefix(nodes.get(i+1).getDewey()), 
+				tTmp2 = newNode.getDewey().getCommonPrefix(nodes.get(i+1).getDewey());
+		return !tTmp1.equals(tTmp2);		
 	}
 
 	// Métodos usados pela classe PerguntaBuilder
@@ -109,27 +116,6 @@ public class RulesChecker {
 		Dewey dist = this.distMatrix.getDist(firstDesc.last(), secondDesc.first());
 		return dist.getHeight() == obj.getInt("height") && 
 				dist.getDeweyWeight() <= obj.getInt("deweyWeight");
-	}
-
-	public Cluster checkIfNodesShouldBeInSameCluster(Cluster c, Stack<Cluster> cStack, MyNode nextNode) {
-		//Todos os textos da descrição devem ter o mesmo prefixo
-		//comum ao proximo nodo encontrado
-		Cluster cTmp2 = new Cluster();
-		String tTmp1 = "", tTmp2 = "";
-		for(MyNode node : c.getGroup()){
-			if(tTmp1.isEmpty()){
-				tTmp1 = node.getDewey().getCommonPrefix(nextNode.getDewey());
-			}else{
-				tTmp2 = node.getDewey().getCommonPrefix(nextNode.getDewey());
-				if(!tTmp1.equals(tTmp2)){
-					tTmp1 = tTmp2;
-					cStack.add(cTmp2);
-					cTmp2 = new Cluster();
-				}
-			}
-			cTmp2.add(node);
-		}
-		return cTmp2;
 	}
 
 	public boolean areDescAndPergNear(Cluster desc, MyNode perg) {
