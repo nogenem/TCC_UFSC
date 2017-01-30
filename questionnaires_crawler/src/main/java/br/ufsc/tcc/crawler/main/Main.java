@@ -23,8 +23,13 @@ import br.ufsc.tcc.crawler.crawler.Crawler;
 public class Main {
 	
 	private static String outputJsonPath = "./possiveis_questionarios.json";
+	private static String configsPath = "./crawler_configs.json";
 	
 	public static void main(String[] args) {
+		// Carrega as configurações do projeto
+		ProjectConfigs.loadConfigs(configsPath);
+			
+		// Inicializa a aplicação
 		if(args.length >= 1){
 			if(args[0].matches("--show-links|-sl")){
 				showLinks();	
@@ -138,9 +143,15 @@ public class Main {
 				tmpObj.getJSONArray(key).put(pq.getLink_doc());
 			}
 		} catch (Exception e) {
+			//Fecha conexão com banco de dados
+			c.close();
+			
 			e.printStackTrace();
 			System.exit(-1);
 		}
+		
+		//Fecha conexão com banco de dados
+		c.close();
 		
 		// Salva o arquivo em disco e abre ele usando o editor default do sistema
 		if(CommonUtil.writeFile(outputJsonPath, output.toString(4))){
