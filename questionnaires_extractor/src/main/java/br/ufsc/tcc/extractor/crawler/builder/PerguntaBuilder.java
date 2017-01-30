@@ -80,9 +80,10 @@ public class PerguntaBuilder {
 				this.extractSimpleMatrix(nodes, currentQ);
 			}else if(firstNode.getType() == MyNodeType.RADIO_INPUT && 
 					nTmp1.getType() == MyNodeType.RADIO_INPUT){
+				//Ex: https://www.survio.com/modelo-de-pesquisa/avaliacao-de-um-e-shop [questão 9]
 				this.extractSimpleRating(nodes);
 			}else if(firstNode.getType() == nTmp1.getType()){
-				//Ex: http://lap.umd.edu/surveys/census/files/surveya1pagesbytopic/page1.html
+				//Ex: http://lap.umd.edu/surveys/census/files/surveya1pagesbytopic/page1.html [questão 2a]
 				this.extractMultiCompQuestion(nodes, currentQ);
 			}
 		}else{
@@ -217,20 +218,28 @@ public class PerguntaBuilder {
 						fig.setDono(currentQ);
 						currentQ.addFigura(fig);
 						CommonLogger.debug("Figura do questionario: {}\n", fig);
-						cTmp1 = cStack.pop();
+						if(!cStack.isEmpty())
+							cTmp1 = cStack.pop();
+						else
+							cTmp1 = null;
 					}
 					//Verifica se não é o texto de um grupo
-					if(!cStack.isEmpty() && this.checker.isGroupText(cTmp1, desc, this.firstGroupOfQuestionnaire)){
+					if(cTmp1 != null && this.checker.isGroupText(cTmp1, desc, this.firstGroupOfQuestionnaire)){
 						currentG = new Grupo(cTmp1.getText());
 						currentQ.addGrupo(currentG);
 						this.firstGroupOfQuestionnaire = cTmp1;
 						
 						CommonLogger.debug("\nGroup1: {}\n\n", cTmp1.getText());
-						cTmp1 = cStack.pop();
+						if(!cStack.isEmpty())
+							cTmp1 = cStack.pop();
+						else
+							cTmp1 = null;
 					}
-					cTmp1 = this.checker.checkIfDescIsComplete(cTmp1, cStack, nodes, this.currentI);
-					currentQ.setAssunto(cTmp1.getText());
-					CommonLogger.debug("Assunto: {}\n\n", currentQ.getAssunto());
+					if(cTmp1 != null){
+						cTmp1 = this.checker.checkIfDescIsComplete(cTmp1, cStack, nodes, this.currentI);
+						currentQ.setAssunto(cTmp1.getText());
+						CommonLogger.debug("Assunto: {}\n\n", currentQ.getAssunto());
+					}
 				}else{
 					//Verifica se não é o texto de um grupo
 					cTmp1 = cStack.peek();
@@ -287,7 +296,7 @@ public class PerguntaBuilder {
 	private void saveLastQuestionGroup(Questionario currentQ) {
 		if(this.lastQuestionGroup != null){
 			currentQ.addPergunta(this.lastQuestionGroup);
-			CommonLogger.debug("Group descricao: {}\n\n", this.lastQuestionGroup.getDescricao());
+			CommonLogger.debug("Question Group descricao: {}\n\n", this.lastQuestionGroup.getDescricao());
 			
 			this.lastQuestionGroup = null;
 			this.lastQuestionGroupDesc = null;
@@ -340,8 +349,8 @@ public class PerguntaBuilder {
 		if(this.currentI+2 < nodes.size() && type.matches("(TEXT|NUMBER)_INPUT")){
 			MyNode tmp1 = nodes.get(this.currentI+1), 
 					tmp2 = nodes.get(this.currentI+2);
-			if(tmp1.isText() && tmp1.getText().equals(":") && 
-					tmp2.isComponent() && tmp2.getType() == nodes.get(this.currentI).getType()){
+			if(tmp1.getText().equals(":") && 
+					tmp2.isComponent() && tmp2.getType().toString().equals(type)){
 				this.currentI += 2;
 			}
 		}
@@ -572,10 +581,8 @@ public class PerguntaBuilder {
 	}
 
 	public void clearData(Questionario currentQ) {
-		if(this.lastMatrix != null)
-			this.saveLastMatrix(currentQ);
-		if(this.lastQuestionGroup != null)
-			this.saveLastQuestionGroup(currentQ);
+		this.saveLastMatrix(currentQ);
+		this.saveLastQuestionGroup(currentQ);
 		
 		this.currentG = null;
 		this.currentP = null;

@@ -32,6 +32,7 @@
 		"https://www.survio.com/modelo-de-pesquisa/pesquisa-da-experiencia-de-compra"
 	],
 	"heuristics": {
+		"minQuestionsOnQuestionnaire": 2,
 		"distBetweenNearNodes": {
 			"deweyWeight": 1000,
 			"height": 3

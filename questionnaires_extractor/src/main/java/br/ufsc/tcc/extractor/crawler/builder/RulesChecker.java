@@ -30,6 +30,10 @@ public class RulesChecker {
 		return this.distMatrix;
 	}
 	
+	public static JSONObject getConfigs(){
+		return CONFIGS;
+	}
+	
 	// Demais métodos
 	
 	// Métodos usados pela classe QuestionarioBuilder
@@ -50,7 +54,7 @@ public class RulesChecker {
 		if(!this.distMatrix.areNear(lastCluster.last(), newNode))
 			return true;
 		
-		//Todos os textos da descrição devem ter o mesmo prefixo
+		//Todos os elementos do cluster devem ter o mesmo prefixo
 		//comum ao proximo nodo encontrado
 		String tTmp1 = lastCluster.last().getDewey().getCommonPrefix(nodes.get(i+1).getDewey()), 
 				tTmp2 = newNode.getDewey().getCommonPrefix(nodes.get(i+1).getDewey());
@@ -272,6 +276,10 @@ public class RulesChecker {
 		
 		JSONObject h = ProjectConfigs.getHeuristics(), 
 				tmp1 = new JSONObject(), tmp2 = null;
+		
+		int n = h!=null ? h.optInt("minQuestionsOnQuestionnaire") : 0;
+		n = n>0 ? n : 2;
+		CONFIGS.put("minQuestionsOnQuestionnaire", n);
 		
 		tmp2 = h!=null ? h.optJSONObject("distBetweenTextsInsideQuestionnaire") : tmp1;
 		tmp2 = tmp2!=null ? tmp2 : tmp1;

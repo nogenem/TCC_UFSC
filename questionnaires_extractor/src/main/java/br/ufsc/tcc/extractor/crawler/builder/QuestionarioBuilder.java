@@ -14,6 +14,8 @@ import br.ufsc.tcc.extractor.model.Questionario;
 
 public class QuestionarioBuilder {
 	
+	private static int MIN_QUESTIONS_ON_QUESTIONNAIRE = 0;
+	
 	private Questionario currentQ;
 	private PerguntaBuilder pBuilder;
 	private RulesChecker checker;
@@ -56,8 +58,8 @@ public class QuestionarioBuilder {
 						this.currentQ = new Questionario();
 					}else if(checker.shouldStartNewQuestionario(lastDesc, nTmp)){
 						this.pBuilder.clearData(this.currentQ);
-						//Um questionario deve ter no minimo 2 perguntas
-						if(this.currentQ.getPerguntas().size() >= 2)
+						//Um questionario deve ter no minimo X perguntas
+						if(this.currentQ.getPerguntas().size() >= MIN_QUESTIONS_ON_QUESTIONNAIRE)
 							ret.add(this.currentQ);
 						CommonLogger.debug("2================================================\n");
 						this.currentQ = new Questionario();
@@ -73,8 +75,8 @@ public class QuestionarioBuilder {
 			}
 		}
 		this.pBuilder.clearData(this.currentQ);
-		//Um questionario deve ter no minimo 2 perguntas
-		if(this.currentQ.getPerguntas().size() >= 2)
+		//Um questionario deve ter no minimo X perguntas
+		if(this.currentQ.getPerguntas().size() >= MIN_QUESTIONS_ON_QUESTIONNAIRE)
 			ret.add(this.currentQ);
 		
 //		cStack.add(cTmp);
@@ -84,6 +86,13 @@ public class QuestionarioBuilder {
 		CommonLogger.debug("\t\t\t========Questionarios========");
 		CommonLogger.debug(ret);
 		return ret;
+	}
+	
+	// Métodos/Blocos estáticos
+	static {
+		MIN_QUESTIONS_ON_QUESTIONNAIRE = RulesChecker.getConfigs().optInt("minQuestionsOnQuestionnaire");
+
+		CommonLogger.debug("QUESTIONARIOBUILDER: {}", MIN_QUESTIONS_ON_QUESTIONNAIRE);
 	}
 
 }
