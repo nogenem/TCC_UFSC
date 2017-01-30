@@ -1,6 +1,7 @@
 package br.ufsc.tcc.extractor.main;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -93,7 +94,13 @@ public class Main {
 	private static void start(){
 		// Cria o Controller do Crawler, adiciona as Seeds e inicia o Crawler
 		try{
-			final CrawlerController controller = new CrawlerController(ProjectConfigs.getCrawlerConfigs());
+			JSONObject configs = ProjectConfigs.getCrawlerConfigs();
+			// Para o extrator o maxDepth tem que ser igual a 0 pois a
+			// biblioteca de Crawler é usada apenas para percorrer as seeds
+			// passadas e não para explorar ainda mais as mesmas
+			configs.put("maxDepthOfCrawling", 0);
+			
+			final CrawlerController controller = new CrawlerController(configs);
 			
 			// Seeds do banco de dados
 			if(ProjectConfigs.loadUrlsFromCrawler()){
@@ -116,6 +123,9 @@ public class Main {
 			
 			// Inicia o crawling
 			controller.start(Crawler.class);
+			
+			// Fecha a conexão com o banco de dados do Crawler
+			Crawler.closePqConnection();
 		}catch(Exception e){
 			CommonLogger.error(e);
 		}

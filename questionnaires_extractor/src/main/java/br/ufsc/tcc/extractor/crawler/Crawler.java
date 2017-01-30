@@ -21,23 +21,24 @@ import edu.uci.ics.crawler4j.url.WebURL;
 
 public class Crawler extends WebCrawler {
 	
-	private BasicConnection conn;
+	private static BasicConnection pqConn;
+	private BasicConnection qConn;
 	private QuestionarioManager qManager;
 	private PossivelQuestionarioManager pqManager;
 	private QuestionarioBuilder qBuilder;
 	
 	@Override
 	public void onStart() {
-		this.conn = new PostgreConnection(ProjectConfigs.getExtractorDatabaseConfigs());
-		this.qManager = new QuestionarioManager(this.conn);
-		this.pqManager = new PossivelQuestionarioManager(this.conn);
+		this.qConn = new PostgreConnection(ProjectConfigs.getExtractorDatabaseConfigs());
+		this.qManager = new QuestionarioManager(this.qConn);
+		this.pqManager = new PossivelQuestionarioManager(pqConn);
 		this.qBuilder = new QuestionarioBuilder();
 	}
 	
 	@Override
 	public void onBeforeExit() {
-		if(this.conn != null)
-			this.conn.close();
+		if(this.qConn != null)
+			this.qConn.close();
 	}
 	
 	@Override
@@ -70,5 +71,15 @@ public class Crawler extends WebCrawler {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	// Métodos/Blocos estáticos
+	static {
+		pqConn = new PostgreConnection(ProjectConfigs.getCrawlerDatabaseConfigs());
+	}
+	
+	public static void closePqConnection(){
+		if(pqConn != null)
+			pqConn.close();
 	}
 }
