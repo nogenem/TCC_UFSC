@@ -18,7 +18,13 @@ import br.ufsc.tcc.extractor.database.manager.FormaDaPerguntaManager;
 
 public class Main {
 	
+	private static String configsPath = "./extractor_configs.json";
+	
 	public static void main(String[] args) {
+		// Carrega as configurações do projeto
+		ProjectConfigs.loadConfigs(configsPath);
+		
+		// Inicializa a aplicação
 		test();
 	}
 	
