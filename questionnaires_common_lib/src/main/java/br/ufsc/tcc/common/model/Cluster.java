@@ -53,35 +53,35 @@ public class Cluster {
 	
 	// Demais métodos
 	public Cluster add(MyNode node){
-		if(node == null) return this;
-		if(!this.group.contains(node))
+		if(node != null && !this.group.contains(node))
 			this.group.add(node);
 		return this;
 	}
 	
 	public Cluster join(Cluster other){
-		if(other == null) return this;
-		for(MyNode node : other.group)
-			this.add(node);
+		if(other != null){
+			for(MyNode node : other.group)
+				this.add(node);
+		}
 		return this;
 	}
 	
 	public MyNode first(){
-		if(this.group.isEmpty())
-			return null;
-		return this.group.get(0);
+		if(!this.group.isEmpty())
+			return this.group.get(0);
+		return null;
 	}
 	
 	public MyNode middle(){
-		if(this.group.isEmpty())
-			return null;
-		return this.group.get((group.size()-1)/2);
+		if(!this.group.isEmpty())
+			return this.group.get((group.size()-1)/2);
+		return null;
 	}
 	
 	public MyNode last(){
-		if(this.group.isEmpty())
-			return null;
-		return this.group.get(this.group.size()-1);
+		if(!this.group.isEmpty())
+			return this.group.get(this.group.size()-1);
+		return null;
 	}
 	
 	public boolean isAllText(){

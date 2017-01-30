@@ -103,6 +103,7 @@ public class CommonUtil {
 			if(cl == null)
 				cl = CommonUtil.class.getClassLoader();
 			
+			// Soh para ter certeza...
 			InputStream input = cl.getResourceAsStream(resource);
 			if(input == null)
 				input = cl.getResourceAsStream("/" +resource);

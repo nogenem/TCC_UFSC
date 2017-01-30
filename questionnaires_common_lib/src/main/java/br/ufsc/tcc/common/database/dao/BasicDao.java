@@ -3,6 +3,7 @@ package br.ufsc.tcc.common.database.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Set;
@@ -24,7 +25,7 @@ public class BasicDao {
 	
 	protected void query(String sql) throws Exception {
 		// Para arrumar bug: 'ERROR: syntax error at or near "RETURNING"'
-		if(sql.matches("SELECT.*FROM.*"))
+		if(sql.matches("(?i)^select.*"))
 			this.psmt = this.conn.prepareStatement(sql);
 		else
 			this.psmt = this.conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -46,6 +47,9 @@ public class BasicDao {
 	}
 	
 	protected void insert(HashMap<String, Object> data) throws Exception {
+		if(data == null || data.isEmpty())
+			throw new SQLException("Parametro data nao especificado.");
+		
 		StringBuilder SQL = new StringBuilder("INSERT INTO "+this.table+" (");
 		Set<String> fields = data.keySet();
 		
@@ -72,6 +76,9 @@ public class BasicDao {
 	}
 	
 	protected void update(HashMap<String, Object> data, HashMap<String, Object> where) throws Exception {
+		if(data == null || data.isEmpty() || where == null || where.isEmpty())
+			throw new SQLException("Parametro data ou where nao especificado.");
+		
 		StringBuilder SQL = new StringBuilder("UPDATE "+this.table+" SET ");
 		Set<String> fields = data.keySet();
 		
@@ -104,6 +111,11 @@ public class BasicDao {
 	}
 	
 	protected void select(String fields, HashMap<String, Object> where) throws Exception {
+		if(where == null || where.isEmpty()){
+			this.select(fields);
+			return;
+		}
+		
 		String SQL = "SELECT "+fields+" FROM "+this.table+" WHERE ";
 
 		Set<String> conditions = where.keySet();
@@ -123,6 +135,7 @@ public class BasicDao {
 	}
 	
 	protected void select(String fields) throws Exception {
+		fields = fields.isEmpty() ? "*" : fields;
 		String SQL = "SELECT "+fields+" FROM "+this.table+";";
 		
 		this.query(SQL);
@@ -130,6 +143,11 @@ public class BasicDao {
 	}
 	
 	protected void delete(HashMap<String, Object> where) throws Exception {
+		if(where == null || where.isEmpty()){
+			this.delete();
+			return;
+		}
+		
 		String SQL = "DELETE FROM "+this.table+" WHERE ";
 		Set<String> conditions = where.keySet();
 		
@@ -145,6 +163,13 @@ public class BasicDao {
 			this.psmt.setObject(count, where.get(condition));
 			count++;
 		}
+		this.psmt.execute();
+	}
+	
+	protected void delete() throws Exception {
+		String SQL = "DELETE FROM "+this.table;
+		
+		this.query(SQL);
 		this.psmt.execute();
 	}
 }

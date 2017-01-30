@@ -48,15 +48,18 @@ public class DistanceMatrix {
 	
 	// Demais métodos
 	public boolean areNear(Cluster c1, Cluster c2){
-		if(c1 == null || c2 == null) return false;
-		return this.areNear(c1.last(), c2.first());
+		if(c1 != null && c2 != null) 
+			return this.areNear(c1.last(), c2.first());
+		return false;
 	}
 	
 	public boolean areNear(MyNode n1, MyNode n2){
-		if(n1 == null || n2 == null) return false;
-		Dewey dist = this.getDist(n1, n2);
-		return dist.getDeweyWeight() <= MAX_WEIGHT && 
-				dist.getHeight() <= MAX_HEIGHT;
+		if(n1 != null && n2 != null){
+			Dewey dist = this.getDist(n1, n2);
+			return dist.getDeweyWeight() <= MAX_WEIGHT && 
+					dist.getHeight() <= MAX_HEIGHT;
+		}
+		return false;
 	}
 	
 	public void clear(){

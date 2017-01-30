@@ -24,9 +24,8 @@ public class Dewey {
 	// Getters e Setters
 	public String getValue(){
 		//Atualiza a 'cache'
-		if(this.value.isEmpty()){
+		if(this.value.isEmpty())
 			this.value = this.parseNumbersToValue(this.numbers);
-		}
 		return this.value;
 	}
 	
@@ -71,8 +70,9 @@ public class Dewey {
 	}
 	
 	public int getHeight(){
-		if(this.numbers.isEmpty()) return Integer.MAX_VALUE;
-		return Math.abs(this.numbers.get(0));
+		if(!this.numbers.isEmpty()) 
+			return Math.abs(this.numbers.get(0));
+		return Integer.MAX_VALUE;
 	}
 	
 	public int getMaxHeight(){
@@ -114,7 +114,7 @@ public class Dewey {
 		}
 		
 		// Caso um deles seja maior que o outro, é preciso 
-		// salvar o restante dos numeros do maior
+		// salvar o restante dos numeros do maior		
 		if(d1.size() < d2.size()) d3 = d2;
 		else if(d1.size() > d2.size()) d3 = d1;
 		
@@ -134,30 +134,30 @@ public class Dewey {
 	//TODO tratar possivel erro do valueOf?
 	public ArrayList<Integer> parseValueToNumbers(String value) {
 		ArrayList<Integer> numbers = new ArrayList<>();
-		if(value.isEmpty()) return numbers;
-		
-		String[] tmp = value.split("\\.");
-		for(String s : tmp){
-			numbers.add(Integer.valueOf(s));
+		if(!value.isEmpty()){
+			String[] tmp = value.split("\\.");
+			for(String s : tmp){
+				numbers.add(Integer.valueOf(s));
+			}
 		}
 		return numbers;
 	}
 	
 	public String parseNumbersToValue(ArrayList<Integer> numbers){
-		if(numbers == null || numbers.isEmpty()) return "";
-		
 		String value = "";
-		for(int n : numbers){
-			value += CommonUtil.padNumber(n) + ".";
+		if(numbers != null && !numbers.isEmpty()){
+			for(int n : numbers){
+				value += CommonUtil.padNumber(n) + ".";
+			}
+			value = value.substring(0, value.length()-1);
 		}
-		value = value.substring(0, value.length()-1);
 		return value;
 	}
 	
 	public boolean isNegative(){
-		if(this.numbers.isEmpty())
-			return false;
-		return this.numbers.get(0) < 0;
+		if(!this.numbers.isEmpty())
+			return this.numbers.get(0) < 0;
+		return false;
 	}
 	
 	@Override

@@ -57,7 +57,7 @@ public class PossivelQuestionarioManager {
 		try {
 			savedLinks = dao.getAllLinks();
 			
-			CommonLogger.debug("{} carregou os links dos questionarios do banco de dados.", 
+			CommonLogger.debug("{} carregou os links dos possiveis questionarios do banco de dados.", 
 					Thread.currentThread().getName());
 		} catch (Exception e) {
 			// Database não deve esta funcionado, então mata a aplicação
