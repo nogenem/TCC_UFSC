@@ -8,8 +8,7 @@ import br.ufsc.tcc.common.util.CommonUtil;
 
 public abstract class ProjectConfigs {
 	
-	private static String configPath = "./project_configs.json";
-	private static JSONObject configs = loadConfigs();
+	private static JSONObject configs = new JSONObject();
 	
 	// Getters e Setters
 	public static String getLogLevels() {
@@ -54,16 +53,15 @@ public abstract class ProjectConfigs {
 	}
 	
 	// Demais métodos
-	private static JSONObject loadConfigs(){
-		JSONObject obj = null;
+	public static void loadConfigs(String path){
+		configs = null;
 		try{
-			String configContent = CommonUtil.readFile(configPath);
-			obj = CommonUtil.parseJson(configContent);
+			String configContent = CommonUtil.readFile(path);
+			configs = CommonUtil.parseJson(configContent);
 		}catch(Exception e){
 			// É obrigatório fornecer o arquivo de configuração!
 			CommonLogger.error(e);
 			System.exit(-1);
 		}
-		return obj;
 	}
 }

@@ -12,8 +12,8 @@ public class CommonLogger {
 
 	protected static final String path = "./log.txt";
 	protected static final Logger logger = LoggerFactory.getLogger(CommonLogger.class);
-	//Começa como ERROR para caso de erro na leitura do arquivo de configurações
-	private static String enabledLevels = "ERROR";
+	//ERROR esta sempre ativado
+	private static String enabledLevels = "ERROR|";
 	
 	public static void debug(String format, Object ...args){
 		if(enabledLevels.contains("DEBUG")){
@@ -79,6 +79,6 @@ public class CommonLogger {
 	
 	// Bloco estático
 	static {
-		enabledLevels = ProjectConfigs.getLogLevels().toUpperCase();
+		enabledLevels += ProjectConfigs.getLogLevels().toUpperCase();
 	}
 }
