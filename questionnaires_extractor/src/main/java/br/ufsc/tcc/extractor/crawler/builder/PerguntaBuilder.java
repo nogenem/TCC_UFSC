@@ -139,7 +139,8 @@ public class PerguntaBuilder {
 			
 			if(!cStack.isEmpty()){
 				if(cTmp2 == null){
-					cTmp2 = cStack.peek();
+					if(!currentQ.getAssunto().isEmpty() || cStack.size() >= 2)
+						cTmp2 = cStack.peek();
 				}else if(this.checker.isAbove(cTmp2.last(), cStack.peek().first())){
 					//Se tiver um texto no meio quer dizer que ja termino a matriz
 					this.saveLastMatrix(currentQ);
@@ -163,7 +164,8 @@ public class PerguntaBuilder {
 			
 			if(!cStack.isEmpty()){
 				if(nTmp2 == null){
-					nTmp2 = cStack.peek().last();
+					if(!currentQ.getAssunto().isEmpty() || cStack.size() >= 2)
+						nTmp2 = cStack.peek().last();
 				}else if(this.checker.isAbove(nTmp2, cStack.peek().first())){
 					//Se tiver um texto no meio quer dizer que ja termino o grupo de pergunta
 					this.saveLastQuestionGroup(currentQ);
@@ -224,7 +226,8 @@ public class PerguntaBuilder {
 							cTmp1 = null;
 					}
 					//Verifica se não é o texto de um grupo
-					if(cTmp1 != null && this.checker.isGroupText(cTmp1, desc, this.firstGroupOfQuestionnaire)){
+					if(cTmp1 != null && this.checker.isGroupText(cTmp1, desc, this.firstGroupOfQuestionnaire) &&
+							!cStack.isEmpty()){
 						currentG = new Grupo(cTmp1.getText());
 						currentQ.addGrupo(currentG);
 						this.firstGroupOfQuestionnaire = cTmp1;
