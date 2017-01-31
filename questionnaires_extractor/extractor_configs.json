@@ -53,7 +53,7 @@
 			"width": 7
 		},
 		"distBetweenNextText": {
-			"height": 1,
+			"height": 2,
 			"width": 4
 		},
 		"distBetweenTextsInQuestionGroup": {
@@ -61,7 +61,7 @@
 			"width": 5
 		},
 		"distBetweenDescriptions": {
-			"deweyWeight": 1000,
+			"width": 4,
 			"height": 1
 		}
 	}

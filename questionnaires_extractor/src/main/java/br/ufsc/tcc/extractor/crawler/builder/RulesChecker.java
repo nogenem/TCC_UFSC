@@ -118,8 +118,8 @@ public class RulesChecker {
 	public boolean isDescriptionsNear(Cluster firstDesc, Cluster secondDesc){
 		JSONObject obj = CONFIGS.getJSONObject("distBetweenDescriptions");
 		Dewey dist = this.distMatrix.getDist(firstDesc.last(), secondDesc.first());
-		return dist.getHeight() == obj.getInt("height") && 
-				dist.getDeweyWeight() <= obj.getInt("deweyWeight");
+		return dist.getHeight() <= obj.getInt("height") && 
+				dist.getWidth() <= obj.getInt("width");
 	}
 
 	public boolean areDescAndPergNear(Cluster desc, MyNode perg) {
@@ -320,7 +320,7 @@ public class RulesChecker {
 		tmp2 = tmp2!=null ? tmp2 : tmp1;
 		CONFIGS.getJSONObject("distBetweenDescriptions")
 			.put("height", tmp2.optInt("height", 1))
-			.put("deweyWeight", tmp2.optInt("deweyWeight", 1000));
+			.put("width", tmp2.optInt("width", 4));
 		
 		CommonLogger.debug("RULESCHECKER: {}", CONFIGS.getJSONObject("distBetweenNextText"));
 	}

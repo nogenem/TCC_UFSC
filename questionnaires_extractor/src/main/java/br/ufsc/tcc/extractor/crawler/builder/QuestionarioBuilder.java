@@ -68,9 +68,11 @@ public class QuestionarioBuilder {
 				
 				cTmp.add(nTmp);
 			}else{
-				cStack.add(cTmp);				
+				if(!cTmp.isEmpty()){
+					cStack.add(cTmp);				
+					lastDesc = cTmp;
+				}
 				i = pBuilder.build(this.currentQ, nodes, i, cStack);
-				lastDesc = cTmp;
 				cTmp = new Cluster();
 			}
 		}
