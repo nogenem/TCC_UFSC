@@ -11,6 +11,7 @@ import br.ufsc.tcc.common.crawler.CrawlerController;
 import br.ufsc.tcc.common.database.connection.BasicConnection;
 import br.ufsc.tcc.common.database.connection.PostgreConnection;
 import br.ufsc.tcc.common.database.manager.PossivelQuestionarioManager;
+import br.ufsc.tcc.common.model.Dewey;
 import br.ufsc.tcc.common.util.CommonLogger;
 import br.ufsc.tcc.common.util.CommonUtil;
 import br.ufsc.tcc.extractor.crawler.Crawler;
@@ -25,7 +26,15 @@ public class Main {
 		// Carrega as configurações do projeto
 		ProjectConfigs.loadConfigs(configsPath);
 		
+		//TODO remover isso ao final do desenvolvimento!
+//		Dewey d1 = new Dewey("01.02.01.01.02.01.07.04.01.01.03"),
+//		d2 = new Dewey("01.02.01.01.02.01.07.05.01.01.01"),
+//		dist = d1.distanceOf(d2);
+//		System.out.println(dist);
+//		System.out.println(dist.getDeweyWeight());
+		
 		// Inicializa a aplicação
+//		start();
 		test();
 	}
 	
@@ -48,7 +57,7 @@ public class Main {
 //		path = "http://vark-learn.com/the-vark-questionnaire/";
 		
 //		path = "cache/Bioinfo_1.html";
-		//TODO tratar texto embaixo do Email (?)
+		//TODO tratar texto embaixo do Email / name sem grupo (?)
 //		path = "https://www.bioinfo.mpg.de/mctq/core_work_life/core/core.jsp?language=por_b";
 		
 //		path = "cache/Anpei_1.html";
@@ -65,8 +74,8 @@ public class Main {
 //		path = "http://lap.umd.edu/surveys/census/files/surveya1pagesbytopic/page2.html";
 //		path = "http://lap.umd.edu/surveys/census/files/surveya1pagesbytopic/page3.html";
 		
-//		path = "https://www.surveygizmo.com/survey-examples/";
-//		path = "http://www.createsurvey.com/demo/templates.htm";
+		//TODO arrumar Not at all likely / novo questionario
+//		path = "https://www.telstra.com.au/webforms/consumer-survey/index.cfm";
 		
 		BasicConnection conn = new PostgreConnection(ProjectConfigs.getExtractorDatabaseConfigs());;
 		FormaDaPerguntaManager.loadFormas(conn);
@@ -79,7 +88,7 @@ public class Main {
 				doc = Jsoup.parse(html);				
 			}else{
 //				System.setProperty("javax.net.debug", "all");
-				System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2");
+				System.setProperty("https.protocols", "TLSv1");//,TLSv1.1,TLSv1.2
 				doc = Jsoup.connect(path)
 					.validateTLSCertificates(false)
 					.get();
