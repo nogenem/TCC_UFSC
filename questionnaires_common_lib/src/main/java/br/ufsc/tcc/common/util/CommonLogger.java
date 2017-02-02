@@ -61,7 +61,7 @@ public class CommonLogger {
 		}
 	}
 	
-	public static void error(Exception e){
+	public static void error(Throwable e){
 		if(enabledLevels.contains("ERROR")){
 			if(logger.isErrorEnabled())
 				logger.error("Stacktrace: ", e);
@@ -71,7 +71,7 @@ public class CommonLogger {
 		}
 	}
 
-	private static boolean logToFile(Exception e) {
+	private static boolean logToFile(Throwable e) {
 		String content = CommonUtil.getCurrentTime() +" | Stacktrace: ";
 		content += "\n"+CommonUtil.exceptionStacktraceToString(e)+"\n";
 		return CommonUtil.appendToFile(path, content);
