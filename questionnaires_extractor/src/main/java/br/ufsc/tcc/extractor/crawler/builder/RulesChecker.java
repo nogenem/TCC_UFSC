@@ -11,6 +11,7 @@ import br.ufsc.tcc.common.model.Cluster;
 import br.ufsc.tcc.common.model.Dewey;
 import br.ufsc.tcc.common.model.MyNode;
 import br.ufsc.tcc.common.util.CommonLogger;
+import br.ufsc.tcc.common.util.CommonUtil;
 import br.ufsc.tcc.common.util.DistanceMatrix;
 import br.ufsc.tcc.extractor.model.Alternativa;
 import br.ufsc.tcc.extractor.model.Pergunta;
@@ -177,7 +178,8 @@ public class RulesChecker {
 					
 					//O prefixo3 deve ser maior que o prefix1, pois isso indica que nTmp1 e nTmp2 estão, 
 					//pelo menos, um elemento a mais juntos
-					if(prefix1.equals(prefix2) && prefix3.length() > prefix1.length())
+					if(prefix1.equals(prefix2) && 
+							CommonUtil.getPrefixLength(prefix3) > CommonUtil.getPrefixLength(prefix1))
 						return true;
 				}
 			}
@@ -258,7 +260,7 @@ public class RulesChecker {
 		if(checkDistForQuestionGroup(middle, bottom) && 
 				checkPrefixForQuestionGroup(bottom, groupDesc, prefix1)){
 			String prefix2 = middle.getDewey().getCommonPrefix(bottom.getDewey());
-			return prefix1.length() < prefix2.length();
+			return CommonUtil.getPrefixLength(prefix1) < CommonUtil.getPrefixLength(prefix2);
 		}
 		return false;
 	}

@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.lang.reflect.GenericArrayType;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -23,6 +24,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
+
+import com.google.common.base.CharMatcher;
 
 import br.ufsc.tcc.common.model.Cluster;
 import br.ufsc.tcc.common.model.Dewey;
@@ -229,6 +232,16 @@ public class CommonUtil {
 	    e.printStackTrace(ps);
 	    ps.close();
 	    return baos.toString();
+	}
+	
+	public static int getPrefixLenght(Dewey d1, Dewey d2){
+		return getPrefixLength(d1.getCommonPrefix(d2));
+	}
+	
+	public static int getPrefixLength(String prefix){
+		int n = prefix.length();
+		n -= CharMatcher.is('-').countIn(prefix);
+		return n;
 	}
 	
 	public static String padNumber(int i){
