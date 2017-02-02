@@ -60,8 +60,10 @@ public class Main {
 //		url = "https://www.surveygizmo.com/survey-examples/";
 //		url = "https://www.quotev.com/surveys/Fun?v=users";
 //		url = "https://www.businessformtemplate.com/preview/Blank_Survey_Template";
-		url = "http://searchdisasterrecovery.techtarget.com/tutorial/Business-impact-analysis-questionnaire-template";
+//		url = "http://searchdisasterrecovery.techtarget.com/tutorial/Business-impact-analysis-questionnaire-template";
 //		url = "https://www.jotform.com/help/158-How-to-create-a-survey-form-and-customize-it";
+//		url = "http://evaluationtoolbox.net.au/index.php?Itemid=139&id=29&option=com_rubberdoc&view=category";
+//		url = "http://www.howtogeek.com/203892/how-to-create-fillable-forms-with-ms-word-2010/";
 		
 //		url = "https://www.survio.com/modelo-de-pesquisa/avaliacao-de-um-e-shop";
 //		url = "https://www.surveymonkey.com/r/logo_testing_template";

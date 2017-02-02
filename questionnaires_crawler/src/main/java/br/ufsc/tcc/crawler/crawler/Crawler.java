@@ -41,6 +41,13 @@ public class Crawler extends WebCrawler {
 	}
 	
 	@Override
+	protected void onUnhandledException(WebURL webUrl, Throwable e){
+		String urlStr = (webUrl == null ? "NULL" : webUrl.getURL());
+		CommonLogger.info("Unhandled exception while fetching {}: {}", urlStr, e.getMessage());
+		CommonLogger.error(e);
+	}
+	
+	@Override
 	public boolean shouldVisit(Page referringPage, WebURL url) {
 		String href = url.getURL();
 				
