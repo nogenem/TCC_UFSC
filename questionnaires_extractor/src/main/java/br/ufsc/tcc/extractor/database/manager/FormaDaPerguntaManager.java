@@ -36,8 +36,7 @@ public class FormaDaPerguntaManager {
 					Thread.currentThread().getName());
 		} catch (Exception e) {
 			// Database não deve ta funcionado, então mata a aplicação
-			CommonLogger.error(e);
-			System.exit(-1);
+			CommonLogger.fatalError(e);
 		}
 	}
 
