@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.lang.reflect.GenericArrayType;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -93,8 +92,7 @@ public class CommonUtil {
 			content = new String(Files.readAllBytes(path),
 					Charset.forName("UTF-8"));
 		} catch (IOException e) {
-			CommonLogger.error(e);
-			System.exit(-1);
+			CommonLogger.fatalError(e);
 		}
 		return content;
 	}
@@ -126,8 +124,7 @@ public class CommonUtil {
 			
 			content = result.toString("UTF-8");
 		} catch (IOException e) {
-			CommonLogger.error(e);
-			System.exit(-1);
+			CommonLogger.fatalError(e);
 		}
 		return content;
 	}
@@ -203,8 +200,7 @@ public class CommonUtil {
 		try{
 			obj = new JSONObject(content);
 		}catch(JSONException e){
-			CommonLogger.error(e);
-			System.exit(-1);
+			CommonLogger.fatalError(e);
 		}
 		return obj;
 	}

@@ -2,6 +2,8 @@ package br.ufsc.tcc.common.util;
 
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import org.slf4j.helpers.MessageFormatter;
 
 import br.ufsc.tcc.common.config.ProjectConfigs;
@@ -68,6 +70,22 @@ public class CommonLogger {
 			else
 				e.printStackTrace();
 			logToFile(e);
+		}
+	}
+	
+	public static void fatalError(Throwable e){
+		if(enabledLevels.contains("ERROR")){
+			if(!logger.isErrorEnabled())
+				logger.error("Stacktrace: ", e);
+			else
+				e.printStackTrace();
+
+			logToFile(e);
+			JOptionPane.showMessageDialog(null, "Erro: "+e.getMessage()+"\n\n"
+					+ "Verifique o arquivo de log para mais detalhes.", "Ocorreu um erro!", 
+					JOptionPane.ERROR_MESSAGE);
+			
+			System.exit(-1);
 		}
 	}
 

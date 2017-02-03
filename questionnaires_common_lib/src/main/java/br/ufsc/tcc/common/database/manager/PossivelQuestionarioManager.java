@@ -61,8 +61,7 @@ public class PossivelQuestionarioManager {
 					Thread.currentThread().getName());
 		} catch (Exception e) {
 			// Database não deve esta funcionado, então mata a aplicação
-			CommonLogger.error(e);
-			System.exit(-1);
+			CommonLogger.fatalError(e);
 		}
 	}
 }

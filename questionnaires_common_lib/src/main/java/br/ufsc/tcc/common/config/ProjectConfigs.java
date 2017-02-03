@@ -60,8 +60,7 @@ public abstract class ProjectConfigs {
 			configs = CommonUtil.parseJson(configContent);
 		}catch(Exception e){
 			// É obrigatório fornecer o arquivo de configuração!
-			CommonLogger.error(e);
-			System.exit(-1);
+			CommonLogger.fatalError(e);
 		}
 	}
 }
