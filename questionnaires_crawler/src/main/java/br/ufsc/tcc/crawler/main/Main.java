@@ -16,6 +16,7 @@ import br.ufsc.tcc.common.database.connection.BasicConnection;
 import br.ufsc.tcc.common.database.connection.PostgreConnection;
 import br.ufsc.tcc.common.database.manager.PossivelQuestionarioManager;
 import br.ufsc.tcc.common.model.PossivelQuestionario;
+import br.ufsc.tcc.common.util.CommonLogger;
 import br.ufsc.tcc.common.util.CommonUtil;
 import br.ufsc.tcc.crawler.checker.RulesChecker;
 import br.ufsc.tcc.crawler.crawler.Crawler;
@@ -148,8 +149,7 @@ public class Main {
 			//Fecha conexão com banco de dados
 			c.close();
 			
-			e.printStackTrace();
-			System.exit(-1);
+			CommonLogger.fatalError(e);
 		}
 		
 		//Fecha conexão com banco de dados
