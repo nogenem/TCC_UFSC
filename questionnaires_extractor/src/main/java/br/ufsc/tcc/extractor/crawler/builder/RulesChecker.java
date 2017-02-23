@@ -103,7 +103,7 @@ public class RulesChecker {
 	}
 	
 	public Cluster checkIfDescIsComplete(Cluster desc, Stack<Cluster> cStack, List<MyNode> nodes, int i){
-		if(desc == null || desc.isEmpty() || cStack.isEmpty())
+		if(desc == null || desc.isEmpty() || cStack.isEmpty() || i+1 >= nodes.size())
 			return desc;
 		
 		Cluster tmp = cStack.peek();
@@ -254,6 +254,8 @@ public class RulesChecker {
 	// o prefixo entre middle e groupDesc e entre bottom e groupDesc deve ser o mesmo
 	// o prefixo acima deve ser menor que o prefixo entre middle e bottom
 	public boolean checkQuestionGroup(MyNode middle, MyNode groupDesc, List<MyNode> nodes, int currentI) {
+		if(currentI+1 >= nodes.size()) return false;
+		
 		String prefix1 = middle.getDewey().getCommonPrefix(groupDesc.getDewey());
 		MyNode bottom = nodes.get(currentI+1);
 		

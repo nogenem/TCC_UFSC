@@ -73,9 +73,12 @@ public class Main {
 //		path = "http://lap.umd.edu/surveys/census/files/surveya1pagesbytopic/page1.html";
 //		path = "http://lap.umd.edu/surveys/census/files/surveya1pagesbytopic/page2.html";
 //		path = "http://lap.umd.edu/surveys/census/files/surveya1pagesbytopic/page3.html";
+		path = "http://lap.umd.edu/surveys/census/files/surveya1pagesbytopic/page8.html";//TODO TESTAR ISSO
 		
 		//TODO arrumar Not at all likely / novo questionario
 //		path = "https://www.telstra.com.au/webforms/consumer-survey/index.cfm";
+		
+		path = "cache/exemplo.html";
 		
 		BasicConnection conn = new PostgreConnection(ProjectConfigs.getExtractorDatabaseConfigs());;
 		FormaDaPerguntaManager.loadFormas(conn);
