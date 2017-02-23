@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.13" icons="true" automaticImage="PNG" always-add-relationships="false" 
+  generalizations="true" realizations="true" associations="true" dependencies="false" nesting-relationships="true" 
+  router="FAN">  
+  <package id="1" language="java" name="br.ufsc.tcc.common.config" project="questionnaires_common_lib" 
+    file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/config" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="112" width="175" x="33" y="30"/>    
+    <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <class id="2" language="java" name="br.ufsc.tcc.common.config.ProjectConfigs" project="questionnaires_common_lib" 
+    file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/config/ProjectConfigs.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="121" y="107"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <package id="3" language="java" name="br.ufsc.tcc.common.crawler" project="questionnaires_common_lib" 
+    file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/crawler" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="111" width="184" x="34" y="153"/>    
+    <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <class id="4" language="java" name="br.ufsc.tcc.common.crawler.CrawlerController" project="questionnaires_common_lib" 
+    file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/crawler/CrawlerController.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="126" y="228"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <package id="5" language="java" name="br.ufsc.tcc.common.database.connection" project="questionnaires_common_lib" 
+    file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/database/connection" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="197" width="259" x="230" y="26"/>    
+    <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <class id="6" language="java" name="br.ufsc.tcc.common.database.connection.BasicConnection" 
+    project="questionnaires_common_lib" 
+    file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/database/connection/BasicConnection.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="363" y="105"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="br.ufsc.tcc.common.database.connection.PostgreConnection" 
+    project="questionnaires_common_lib" 
+    file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/database/connection/PostgreConnection.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="361" y="187"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <package id="8" language="java" name="br.ufsc.tcc.common.database.dao" project="questionnaires_common_lib" 
+    file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/database/dao" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="197" width="217" x="234" y="274"/>    
+    <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <class id="9" language="java" name="br.ufsc.tcc.common.database.dao.BasicDao" project="questionnaires_common_lib" 
+    file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/database/dao/BasicDao.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="343" y="353"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="br.ufsc.tcc.common.database.dao.PossivelQuestionarioDao" 
+    project="questionnaires_common_lib" 
+    file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/database/dao/PossivelQuestionarioDao.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="344" y="434"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <package id="11" language="java" name="br.ufsc.tcc.common.database.manager" project="questionnaires_common_lib" 
+    file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/database/manager" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="121" width="247" x="504" y="350"/>    
+    <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <class id="12" language="java" name="br.ufsc.tcc.common.database.manager.PossivelQuestionarioManager" 
+    project="questionnaires_common_lib" 
+    file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/database/manager/PossivelQuestionarioManager.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="625" y="431"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <package id="13" language="java" name="br.ufsc.tcc.common.model" project="questionnaires_common_lib" 
+    file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/model" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="258" width="291" x="503" y="23"/>    
+    <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <class id="14" language="java" name="br.ufsc.tcc.common.model.Cluster" project="questionnaires_common_lib" 
+    file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/model/Cluster.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="568" y="102"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="15" language="java" name="br.ufsc.tcc.common.model.Dewey" project="questionnaires_common_lib" 
+    file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/model/Dewey.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="700" y="99"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="16" language="java" name="br.ufsc.tcc.common.model.MyNode" project="questionnaires_common_lib" 
+    file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/model/MyNode.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="569" y="192"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <enumeration id="17" language="java" name="br.ufsc.tcc.common.model.MyNodeType" project="questionnaires_common_lib" 
+    file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/model/MyNodeType.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="729" y="191"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </enumeration>  
+  <class id="18" language="java" name="br.ufsc.tcc.common.model.PossivelQuestionario" 
+    project="questionnaires_common_lib" 
+    file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/model/PossivelQuestionario.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="657" y="249"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <package id="19" language="java" name="br.ufsc.tcc.common.util" project="questionnaires_common_lib" 
+    file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/util" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="233" width="157" x="36" y="273"/>    
+    <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <class id="20" language="java" name="br.ufsc.tcc.common.util.CommonLogger" project="questionnaires_common_lib" 
+    file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/util/CommonLogger.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="118" y="351"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="21" language="java" name="br.ufsc.tcc.common.util.CommonUtil" project="questionnaires_common_lib" 
+    file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/util/CommonUtil.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="118" y="411"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="22" language="java" name="br.ufsc.tcc.common.util.DistanceMatrix" project="questionnaires_common_lib" 
+    file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/util/DistanceMatrix.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="117" y="470"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <association id="23">    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="24" name="group"/>      
+      <multiplicity id="25" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="16" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="26">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="9"/>  
+  </generalization>  
+  <association id="27">    
+    <end type="SOURCE" refId="16" navigable="false">      
+      <attribute id="28" name="type"/>      
+      <multiplicity id="29" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="17" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="30">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="31" name="pqDao"/>      
+      <multiplicity id="32" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="33">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="6"/>  
+  </generalization>  
+  <association id="34">    
+    <end type="SOURCE" refId="16" navigable="false">      
+      <attribute id="35" name="dewey"/>      
+      <multiplicity id="36" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="15" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="false" package="false" protected="false" private="false" static="false"/>    
+    <operations public="false" package="false" protected="false" private="false" static="false"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

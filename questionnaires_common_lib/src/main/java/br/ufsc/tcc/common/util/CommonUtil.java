@@ -214,7 +214,10 @@ public class CommonUtil {
 	 */
 	public static String trim(String str){
 		return str.replaceAll("\u00a0", " ")
-				.replaceAll("&nbsp;", " ").trim();
+				.replaceAll("&nbsp;", " ")
+				.replaceAll("&#65279", "")
+				.replaceAll("\ufeff", "")
+				.trim();
 	}
 	
 	public static Timestamp getCurrentTime() {
