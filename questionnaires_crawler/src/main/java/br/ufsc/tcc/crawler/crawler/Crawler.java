@@ -2,6 +2,8 @@ package br.ufsc.tcc.crawler.crawler;
 
 import java.util.regex.Pattern;
 
+import org.json.JSONObject;
+
 import br.ufsc.tcc.common.config.ProjectConfigs;
 import br.ufsc.tcc.common.database.connection.BasicConnection;
 import br.ufsc.tcc.common.database.connection.PostgreConnection;
@@ -16,12 +18,8 @@ import edu.uci.ics.crawler4j.url.WebURL;
 
 public class Crawler extends WebCrawler {
 	
-	private static final Pattern FILTERS = Pattern.compile(
-			".*(\\.(css|js|bmp|gif|jpe?g|png|tiff?|mid|mp2|mp3|mp4|wav|"
-			+ "avi|mov|mpeg|ram|m4v|pdf|rm|smil|wmv|swf|wma|zip|rar|gz))$");
-	private static final Pattern EXCLUDED_DOMAINS = Pattern.compile(
-			"^(.*youtube\\.com.*|.*facebook\\.com.*|"
-			+ ".*twitter\\.com.*)");
+	private static Pattern EXCLUDED_EXTENSIONS;
+	private static Pattern EXCLUDED_DOMAINS;
 	
 	private BasicConnection conn;
 	private PossivelQuestionarioManager pqManager;
@@ -41,13 +39,6 @@ public class Crawler extends WebCrawler {
 	}
 	
 	@Override
-	protected void onUnhandledException(WebURL webUrl, Throwable e){
-		String urlStr = (webUrl == null ? "NULL" : webUrl.getURL());
-		CommonLogger.info("Unhandled exception while fetching {}: {}", urlStr, e.getMessage());
-		CommonLogger.error(e);
-	}
-	
-	@Override
 	public boolean shouldVisit(Page referringPage, WebURL url) {
 		String href = url.getURL();
 				
@@ -60,7 +51,7 @@ public class Crawler extends WebCrawler {
 	    	href = href.substring(0, index);
 	    
 	    // Verifica o filtro e os dominios
-		return !FILTERS.matcher(href).matches() &&
+		return !EXCLUDED_EXTENSIONS.matcher(href).matches() &&
 				!EXCLUDED_DOMAINS.matcher(href).matches();
 	}
 	
@@ -87,5 +78,49 @@ public class Crawler extends WebCrawler {
 			}else
 				CommonLogger.debug("URL: {}", url.getURL());
 		}
+	}
+	
+	@Override
+	protected void onUnhandledException(WebURL webUrl, Throwable e){
+		String urlStr = (webUrl == null ? "NULL" : webUrl.getURL());
+		CommonLogger.info("Unhandled exception while fetching {}: {}", urlStr, e.getMessage());
+		CommonLogger.error(e);
+	}
+	
+	@Override
+	protected void onPageBiggerThanMaxSize(String urlStr, long pageSize) {
+		CommonLogger.info("Skipping a URL: {} which was bigger ( {} ) than max allowed size", urlStr, pageSize);
+	}
+	
+	@Override
+	protected void onUnexpectedStatusCode(String urlStr, int statusCode, String contentType, String description) {
+		CommonLogger.info("Skipping URL: {}, StatusCode: {}, {}, {}", urlStr, statusCode, contentType, description);
+	}
+	
+	@Override
+	protected void onContentFetchError(WebURL webUrl) {
+		CommonLogger.info("Can't fetch content of: {}", webUrl.getURL());
+	}
+	
+	@Override
+	protected void onParseError(WebURL webUrl) {
+	    CommonLogger.info("Parsing error of: {}", webUrl.getURL());
+	}
+	
+	// Métodos/Blocos estáticos
+	static {
+		JSONObject tmp = ProjectConfigs.getCrawlerConfigs();
+		EXCLUDED_EXTENSIONS = Pattern.compile(
+				tmp.optString("excludedFilesExtensions", 
+					".*(\\.(css|js|bmp|gif|jpe?g|png|tiff?|mid|mp2|mp3|mp4|wav|"
+					+ "avi|mov|mpeg|ram|m4v|pdf|rm|smil|wmv|swf|wma|zip|rar|gz))$")
+		);
+		EXCLUDED_DOMAINS = Pattern.compile(
+				tmp.optString("excludedDomains", 
+					"^(.*youtube\\.com.*|.*facebook\\.com.*|"
+					+ ".*twitter\\.com.*)")
+		);
+		CommonLogger.debug("CRAWLER {}/{}", EXCLUDED_EXTENSIONS.toString().length(),
+				EXCLUDED_DOMAINS.toString().length());
 	}
 }

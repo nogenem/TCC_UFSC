@@ -147,8 +147,8 @@ public class RulesChecker {
 		boolean isLogin = false, hasTextAbove = false;
 		String txtTmp = "";
 		
-		//Um questionario deve ter pelo menos 1 cluster com 4 componentes ou
-		//3 clusters com pelo menos 1 componente
+		//Um questionario deve ter pelo menos 1 cluster com X componentes ou
+		//X clusters com pelo menos 1 componente
 		for(Cluster c : clusters){
 			cCount = 0; isLogin = false; hasTextAbove = false;
 			

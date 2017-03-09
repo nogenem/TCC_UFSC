@@ -55,6 +55,7 @@ public class Main {
 		}
 	}
 	
+	//TODO procurar outras seeds!!!!
 	//TODO pensar em um jeito de saber que esta começando um novo questionario!!!
 	private static void test() {
 		String url = "http://www.survio.com/en/blog/tips-and-tricks/how-to-create-a-questionnaire-in-survio";
@@ -66,7 +67,7 @@ public class Main {
 //		url = "http://evaluationtoolbox.net.au/index.php?Itemid=139&id=29&option=com_rubberdoc&view=category";
 //		url = "http://www.howtogeek.com/203892/how-to-create-fillable-forms-with-ms-word-2010/";
 		
-//		url = "https://www.survio.com/modelo-de-pesquisa/avaliacao-de-um-e-shop";
+		url = "https://www.survio.com/modelo-de-pesquisa/avaliacao-de-um-e-shop";
 //		url = "https://www.surveymonkey.com/r/logo_testing_template";
 //		url = "http://vark-learn.com/the-vark-questionnaire/";
 //		url = "https://www.bioinfo.mpg.de/mctq/core_work_life/core/core.jsp?language=por_b";
@@ -103,7 +104,19 @@ public class Main {
 			if(seeds != null){
 				seeds.forEach((seed) -> controller.addSeed((String)seed));	
 			}
-
+			
+			// Testar
+			//controller.addSeed("http://search.lycos.com/web/?q=survey+template&keyvol=00948a2c54764e0e566a");
+			//controller.addSeed("http://www.goodsearch.com/search-web?utf8=%E2%9C%93&keywords=survey+template&button=");
+			
+			// off?
+			//controller.addSeed("http://www.yippy.com/search?v%3Aproject=clusty-new&query=survey+template");
+			//controller.addSeed("http://www.yippy.com/search?v%3Aproject=clusty-new&query=questionnaire+template");
+			
+			// robots.txt
+			//controller.addSeed("http://www.ask.com/web?q=survey+template&qsrc=0&o=0&l=dir&qo=homepageSearchBox");
+			//controller.addSeed("http://www.ask.com/web?q=questionnaires+template&qsrc=1&o=0&l=dir&qo=serpSearchTopBox");
+			
 			// precisam de simulador
 			//controller.addSeed("http://www.contenko.com/?q=survey%20template");
 			//controller.addSeed("http://www.blackle.com/results/?cx=partner-pub-8993703457585266%3A4862972284&cof=FORID%3A10&ie=UTF-8&q=survey+template&sa=+#gsc.tab=0&gsc.q=survey%20template&gsc.page=1");

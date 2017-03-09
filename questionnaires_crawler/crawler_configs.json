@@ -9,6 +9,8 @@
 		}
 	},
 	"crawler": {
+		"excludedFilesExtensions": ".*(\\.(css|js|bmp|gif|jpe?g|png|tiff?|mid|mp2|mp3|mp4|wav|avi|mov|mpeg|ram|m4v|pdf|rm|smil|wmv|swf|wma|zip|rar|gz))$",
+		"excludedDomains": "^(.*youtube\\.com.*|.*facebook\\.com.*|.*twitter\\.com.*)",
 		"numberOfCrawlers": 5,
 		"crawlStorageFolder": "./tmp",
 		"politenessDelay": 500,
@@ -18,10 +20,6 @@
 		"resumableCrawling": false	
 	},
 	"seeds": [
-		"http://www.ask.com/web?q=survey+template&qsrc=0&o=0&l=dir&qo=homepageSearchBox",
-		"http://www.ask.com/web?q=questionnaires+template&qsrc=1&o=0&l=dir&qo=serpSearchTopBox",
-		"http://www.yippy.com/search?v%3Aproject=clusty-new&query=survey+template",
-		"http://www.yippy.com/search?v%3Aproject=clusty-new&query=questionnaire+template"
 	],
 	"heuristics": {
 		"distBetweenNearNodes": {
