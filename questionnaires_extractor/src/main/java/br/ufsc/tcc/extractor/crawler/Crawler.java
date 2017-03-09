@@ -42,13 +42,6 @@ public class Crawler extends WebCrawler {
 	}
 	
 	@Override
-	protected void onUnhandledException(WebURL webUrl, Throwable e){
-		String urlStr = (webUrl == null ? "NULL" : webUrl.getURL());
-		CommonLogger.info("Unhandled exception while fetching {}: {}", urlStr, e.getMessage());
-		CommonLogger.error(e);
-	}
-	
-	@Override
 	public boolean shouldVisit(Page referringPage, WebURL url) {
 		return true;
 	}
@@ -78,6 +71,33 @@ public class Crawler extends WebCrawler {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	@Override
+	protected void onUnhandledException(WebURL webUrl, Throwable e){
+		String urlStr = (webUrl == null ? "NULL" : webUrl.getURL());
+		CommonLogger.info("Unhandled exception while fetching {}: {}", urlStr, e.getMessage());
+		CommonLogger.error(e);
+	}
+	
+	@Override
+	protected void onPageBiggerThanMaxSize(String urlStr, long pageSize) {
+		CommonLogger.info("Skipping a URL: {} which was bigger ( {} ) than max allowed size", urlStr, pageSize);
+	}
+	
+	@Override
+	protected void onUnexpectedStatusCode(String urlStr, int statusCode, String contentType, String description) {
+		CommonLogger.info("Skipping URL: {}, StatusCode: {}, {}, {}", urlStr, statusCode, contentType, description);
+	}
+	
+	@Override
+	protected void onContentFetchError(WebURL webUrl) {
+		CommonLogger.info("Can't fetch content of: {}", webUrl.getURL());
+	}
+	
+	@Override
+	protected void onParseError(WebURL webUrl) {
+	    CommonLogger.info("Parsing error of: {}", webUrl.getURL());
 	}
 	
 	// Métodos/Blocos estáticos

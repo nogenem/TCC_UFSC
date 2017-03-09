@@ -14,11 +14,19 @@ import br.ufsc.tcc.common.database.manager.PossivelQuestionarioManager;
 import br.ufsc.tcc.common.model.Dewey;
 import br.ufsc.tcc.common.util.CommonLogger;
 import br.ufsc.tcc.common.util.CommonUtil;
+import br.ufsc.tcc.common.util.DistanceMatrix;
 import br.ufsc.tcc.extractor.crawler.Crawler;
 import br.ufsc.tcc.extractor.crawler.builder.QuestionarioBuilder;
 import br.ufsc.tcc.extractor.database.manager.FormaDaPerguntaManager;
 
 public class Main {
+	
+	/*
+		Devo remover os links dos possiveis questionarios apos a extração?
+		Botar data de extração nos questionarios?
+		Criar ferramenta para mostrar os questionarios extraidos? 
+			Ou salvar os logs de extração?
+	*/
 	
 	private static String configsPath = "./extractor_configs.json";
 	
@@ -26,12 +34,12 @@ public class Main {
 		// Carrega as configurações do projeto
 		ProjectConfigs.loadConfigs(configsPath);
 		
-		//TODO remover isso ao final do desenvolvimento!
-//		Dewey d1 = new Dewey("01.02.01.01.02.01.07.04.01.01.03"),
-//		d2 = new Dewey("01.02.01.01.02.01.07.05.01.01.01"),
-//		dist = d1.distanceOf(d2);
-//		System.out.println(dist);
-//		System.out.println(dist.getDeweyWeight());
+//		Dewey d1 = new Dewey("01.04.02.07.01.01.01"),
+//				d2 = new Dewey("01.04.02.08.01.01.01"),
+//				d3 = d1.distanceOf(d2);
+//		System.out.println(d3);
+//		System.out.println(d3.getDeweyWeight());
+//		DistanceMatrix matrix = new DistanceMatrix();
 		
 		// Inicializa a aplicação
 //		start();
@@ -73,12 +81,12 @@ public class Main {
 //		path = "http://lap.umd.edu/surveys/census/files/surveya1pagesbytopic/page1.html";
 //		path = "http://lap.umd.edu/surveys/census/files/surveya1pagesbytopic/page2.html";
 //		path = "http://lap.umd.edu/surveys/census/files/surveya1pagesbytopic/page3.html";
-		path = "http://lap.umd.edu/surveys/census/files/surveya1pagesbytopic/page8.html";//TODO TESTAR ISSO
+//		path = "http://lap.umd.edu/surveys/census/files/surveya1pagesbytopic/page8.html";//TODO TESTAR ISSO
 		
 		//TODO arrumar Not at all likely / novo questionario
 //		path = "https://www.telstra.com.au/webforms/consumer-survey/index.cfm";
 		
-		path = "cache/exemplo.html";
+//		path = "cache/exemplo.html";
 		
 		BasicConnection conn = new PostgreConnection(ProjectConfigs.getExtractorDatabaseConfigs());;
 		FormaDaPerguntaManager.loadFormas(conn);

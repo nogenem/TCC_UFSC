@@ -50,6 +50,9 @@ public class PerguntaBuilder {
 	}
 
 	public int build(Questionario currentQ, List<MyNode> nodes, int i, Stack<Cluster> cStack) {
+		if(cStack.isEmpty())
+			return i;
+		
 		this.currentP = new Pergunta();
 		this.currentI = i;
 		
@@ -425,12 +428,8 @@ public class PerguntaBuilder {
 			else
 				input = null;
 		}
-		//Se input != null então o loop passo da pergunta e entro na proxima e por isso,
-		//deve-se voltar o index para o final da pergunta
 		if(input != null)
 			--this.currentI;
-		//Se deu erro e não tem nenhuma alternativa quer dizer que o loop não
-		//completo nenhuma vez
 		if(error && this.currentP.getAlternativas().size() == 0)
 			this.currentP.setForma(null);
 	}
@@ -454,7 +453,8 @@ public class PerguntaBuilder {
 		//		img -> input -> text -> img -> input -> text ...
 		isImgQuestion = img.isImage() && tmp.isImage();
 		while(input != null && 
-				(input.getType() == MyNodeType.CHECKBOX_INPUT || input.getType() == MyNodeType.RADIO_INPUT)){
+				(input.getType() == MyNodeType.CHECKBOX_INPUT || input.getType() == MyNodeType.RADIO_INPUT) &&
+				(!isImgQuestion || (img != null && img.isImage()))){
 			if(!this.checker.areCompAndTextNear(input, text)){
 				error = true;
 				break;
@@ -507,7 +507,7 @@ public class PerguntaBuilder {
 				this.currentI += 1;
 		}
 		if(error && this.currentP.getAlternativas().size() == 0)
-			this.currentP.setForma(null);
+			this.currentP.setForma(null);		
 	}
 
 	private void extractSelect(List<MyNode> nodes) {
