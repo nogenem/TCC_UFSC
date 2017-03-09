@@ -104,7 +104,7 @@ public class CommonUtil {
 			if(cl == null)
 				cl = CommonUtil.class.getClassLoader();
 			
-			// Soh para ter certeza...
+			// Só para ter certeza...
 			InputStream input = cl.getResourceAsStream(resource);
 			if(input == null)
 				input = cl.getResourceAsStream("/" +resource);
@@ -206,8 +206,8 @@ public class CommonUtil {
 	}
 	
 	/**
-	 * Remove espaços antes e depois da String str, incluindo o caracter
-	 * '\u00a0'.
+	 * Remove espaços antes e depois da String str, incluindo os caracteres
+	 * '\u00a0' e '\ufeff'.
 	 * 
 	 * @param str	String que se quer remover os espaços em volta.
 	 * @return		A String str sem espaços em volta.

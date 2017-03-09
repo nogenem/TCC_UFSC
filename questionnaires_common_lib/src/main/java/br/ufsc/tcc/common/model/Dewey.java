@@ -76,15 +76,16 @@ public class Dewey {
 	}
 	
 	public int getMaxHeight(){
-		if(this.numbers.isEmpty()) return Integer.MAX_VALUE;
-		
-		int max = Math.abs(this.numbers.get(0)), tmp = 0;
-		for(int i = 1; i<this.numbers.size(); i++){
-			tmp = Math.abs(this.numbers.get(i));
-			if(tmp > max)
-				max = tmp;
+		if(!this.numbers.isEmpty()) {
+			int max = Math.abs(this.numbers.get(0)), tmp = 0;
+			for(int i = 1; i<this.numbers.size(); i++){
+				tmp = Math.abs(this.numbers.get(i));
+				if(tmp > max)
+					max = tmp;
+			}
+			return max;
 		}
-		return max;
+		return Integer.MAX_VALUE;
 	}
 	
 	// Demais métodos
@@ -103,32 +104,31 @@ public class Dewey {
 	public Dewey distanceOf(Dewey other){
 		if(other == null) return null;
 		
-		Dewey diff = new Dewey();
-		ArrayList<Integer> d1 = this.numbers,
-				d2 = other.numbers,
-				d3 = null;
-		int min = Math.min(d1.size(), d2.size());
+		Dewey dist = new Dewey();
+		ArrayList<Integer> n1 = this.numbers,
+				n2 = other.numbers,
+				n3 = null;
+		int min = Math.min(n1.size(), n2.size());
 		
-		for(int i = 0; i<min; i++){
-			diff.add(d1.get(i) - d2.get(i));
-		}
+		for(int i = 0; i<min; i++)
+			dist.add(n1.get(i) - n2.get(i));
 		
 		// Caso um deles seja maior que o outro, é preciso 
 		// salvar o restante dos numeros do maior		
-		if(d1.size() < d2.size()) d3 = d2;
-		else if(d1.size() > d2.size()) d3 = d1;
+		if(n1.size() < n2.size()) n3 = n2;
+		else if(n1.size() > n2.size()) n3 = n1;
 		
-		if(d3 != null){
+		if(n3 != null){
 			// Se a diferença esta vazia, e caso o maior seja o
 			// de baixo, então o 1* numero deve ser negativo
-			if(diff.numbers.isEmpty() && d3 == d2){
-				diff.add(-d3.get(min++));
+			if(dist.numbers.isEmpty() && n3 == n2){
+				dist.add(-n3.get(min++));
 			}
-			for(int i = min; i<d3.size(); i++){
-				diff.add(d3.get(i));
+			for(int i = min; i<n3.size(); i++){
+				dist.add(n3.get(i));
 			}
 		}
-		return diff;
+		return dist;
 	}
 	
 	//TODO tratar possivel erro do valueOf?
