@@ -54,7 +54,6 @@ public abstract class ProjectConfigs {
 	
 	// Demais métodos
 	public static void loadConfigs(String path){
-		configs = null;
 		try{
 			String configContent = CommonUtil.readFile(path);
 			configs = CommonUtil.parseJson(configContent);

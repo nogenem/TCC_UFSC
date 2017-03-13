@@ -15,7 +15,7 @@ public class CommonLogger {
 	protected static final String path = "./log.txt";
 	protected static final Logger logger = LoggerFactory.getLogger(CommonLogger.class);
 	//ERROR esta sempre ativado
-	private static String enabledLevels = "ERROR|";
+	private static String enabledLevels = "FATAL_ERROR|";
 	
 	public static void debug(String format, Object ...args){
 		if(enabledLevels.contains("DEBUG")){
@@ -74,7 +74,7 @@ public class CommonLogger {
 	}
 	
 	public static void fatalError(Throwable e){
-		if(enabledLevels.contains("ERROR")){
+		if(enabledLevels.contains("FATAL_ERROR")){
 			if(!logger.isErrorEnabled())
 				logger.error("Stacktrace: ", e);
 			else
