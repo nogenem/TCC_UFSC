@@ -162,7 +162,7 @@ public class RulesChecker {
 						break;
 					}
 					txtTmp = node.getText();
-					hasTextAbove = txtTmp.length() >= 4 || 
+					hasTextAbove = (txtTmp.length() >= 4 && txtTmp.contains(" ")) || 
 							txtTmp.matches("(\\d{1,2}(\\s{1,2})?(\\.|\\:|\\)|\\-)?)");
 				}else if(node.isComponent() && node.getType() != MyNodeType.OPTION){
 					//todo componente deve ter pelo menos um texto/img acima dele
