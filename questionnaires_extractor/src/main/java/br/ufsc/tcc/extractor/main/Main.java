@@ -30,8 +30,9 @@ public class Main {
 	
 	private static String configsPath = "./extractor_configs.json";
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) {		
 		// Carrega as configurações do projeto
+		System.out.println("Carregando arquivo de configuracao...");
 		ProjectConfigs.loadConfigs(configsPath);
 		
 //		Dewey d1 = new Dewey("01.04.02.07.01.01.01"),
@@ -123,6 +124,7 @@ public class Main {
 			final CrawlerController controller = new CrawlerController(configs);
 			
 			// Seeds do banco de dados
+			System.out.println("Carregando seeds do banco de dados...");
 			if(ProjectConfigs.loadUrlsFromCrawler()){
 				//TODO rever isso...
 				BasicConnection conn = new PostgreConnection(ProjectConfigs.getCrawlerDatabaseConfigs());
@@ -136,13 +138,16 @@ public class Main {
 			}
 			
 			// Seeds do arquivo de configuração
+			System.out.println("Carregando seeds do arquivo de configuracao...");
 			JSONArray seeds = ProjectConfigs.getSeeds();
 			if(seeds != null){
 				seeds.forEach((seed) -> controller.addSeed((String)seed));	
 			}
 			
 			// Inicia o crawling
+			System.out.println("Inicializando a aplicacao...");
 			controller.start(Crawler.class);
+			System.out.println("Encerrando a aplicacao...");
 			
 			// Fecha a conexão com o banco de dados do Crawler
 			Crawler.closePqConnection();
