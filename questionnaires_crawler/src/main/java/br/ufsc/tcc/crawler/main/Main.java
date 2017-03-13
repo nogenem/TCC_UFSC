@@ -28,6 +28,7 @@ public class Main {
 	
 	public static void main(String[] args) {
 		// Carrega as configurações do projeto
+		System.out.println("Carregando arquivo de configuracao...");
 		ProjectConfigs.loadConfigs(configsPath);
 			
 		// Inicializa a aplicação
@@ -100,6 +101,7 @@ public class Main {
 			final CrawlerController controller = new CrawlerController(ProjectConfigs.getCrawlerConfigs());
 			
 			// Adiciona as seeds do arquivo de configuração
+			System.out.println("Carregando seeds do arquivo de configuracao...");
 			JSONArray seeds = ProjectConfigs.getSeeds();
 			if(seeds != null){
 				seeds.forEach((seed) -> controller.addSeed((String)seed));	
@@ -123,7 +125,10 @@ public class Main {
 			//controller.addSeed("http://www.goodsearch.com/search-web?utf8=%E2%9C%93&keywords=survey+template");
 			
 			// Inicia o crawling
+			System.out.println("Inicializando a aplicacao...");
 			controller.start(Crawler.class);
+			System.out.println("Encerrando a aplicacao...");
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -137,12 +142,14 @@ public class Main {
 		
 		try {
 			// Carrega os dados do banco de dados
+			System.out.println("Carregando dados do banco de dados...");
 			ArrayList<PossivelQuestionario> pqs = pqManager.getAll();
 			String key = "", tmpTxt = "";
 			URL tmpUrl = null;
 			JSONObject tmpObj = null;
 			
 			// Transforma os dados em um JSONObject
+			System.out.println("Transformando os dados do banco de dados para o formato JSON...");
 			for(PossivelQuestionario pq : pqs){
 				key = pq.getEncontradoEm().toLocalDateTime().toLocalDate().toString();
 				if(!output.has(key))
@@ -169,6 +176,7 @@ public class Main {
 		c.close();
 		
 		// Salva o arquivo em disco e abre ele usando o editor default do sistema
+		System.out.println("Escrevendo dados no arquivo de saida...");
 		if(CommonUtil.writeFile(outputJsonPath, output.toString(4))){
 			if(!CommonUtil.openFile(outputJsonPath)){
 				JOptionPane.showMessageDialog(null, 
