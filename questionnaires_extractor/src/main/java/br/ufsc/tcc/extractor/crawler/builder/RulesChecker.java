@@ -244,23 +244,23 @@ public class RulesChecker {
 		return tmp.equals(prefix);
 	}
 	
-	public boolean checkDistForQuestionGroup(MyNode n1, MyNode n2) {
-		JSONObject obj = CONFIGS.getJSONObject("distBetweenTextsInQuestionGroup");
+	public boolean checkDistForQWithSubQs(MyNode n1, MyNode n2) {
+		JSONObject obj = CONFIGS.getJSONObject("distBetweenTextsInQuestionWithSubQuestions");
 		Dewey dist = this.distMatrix.getDist(n1, n2);
 		return dist.getHeight() == obj.getInt("height") && dist.getWidth() <= obj.getInt("width");
 	}
 	
 	// Middle e bottom devem esta perto um do outro
-	// o prefixo entre middle e groupDesc e entre bottom e groupDesc deve ser o mesmo
+	// o prefixo entre middle e qWithSubQsDesc e entre bottom e qWithSubQsDesc deve ser o mesmo
 	// o prefixo acima deve ser menor que o prefixo entre middle e bottom
-	public boolean checkQuestionGroup(MyNode middle, MyNode groupDesc, List<MyNode> nodes, int currentI) {
+	public boolean checkQWithSubQs(MyNode middle, MyNode qWithSubQsDesc, List<MyNode> nodes, int currentI) {
 		if(currentI+1 >= nodes.size()) return false;
 		
-		String prefix1 = middle.getDewey().getCommonPrefix(groupDesc.getDewey());
+		String prefix1 = middle.getDewey().getCommonPrefix(qWithSubQsDesc.getDewey());
 		MyNode bottom = nodes.get(currentI+1);
 		
-		if(checkDistForQuestionGroup(middle, bottom) && 
-				checkPrefixForQuestionGroup(bottom, groupDesc, prefix1)){
+		if(checkDistForQWithSubQs(middle, bottom) && 
+				checkPrefixForQuestionGroup(bottom, qWithSubQsDesc, prefix1)){
 			String prefix2 = middle.getDewey().getCommonPrefix(bottom.getDewey());
 			return CommonUtil.getPrefixLength(prefix1) < CommonUtil.getPrefixLength(prefix2);
 		}
@@ -275,7 +275,7 @@ public class RulesChecker {
 			.put("distBetweenDescAndQuestion", new JSONObject())
 			.put("distBetweenGroupAndFirstQuestion", new JSONObject())
 			.put("distBetweenNextText", new JSONObject())
-			.put("distBetweenTextsInQuestionGroup", new JSONObject())
+			.put("distBetweenTextsInQuestionWithSubQuestions", new JSONObject())
 			.put("distBetweenDescriptions", new JSONObject());
 		
 		JSONObject h = ProjectConfigs.getHeuristics(), 
@@ -314,9 +314,9 @@ public class RulesChecker {
 			.put("height", tmp2.optInt("height", 1))
 			.put("width", tmp2.optInt("width", 4));
 		
-		tmp2 = h!=null ? h.optJSONObject("distBetweenTextsInQuestionGroup") : tmp1;
+		tmp2 = h!=null ? h.optJSONObject("distBetweenTextsInQuestionWithSubQuestions") : tmp1;
 		tmp2 = tmp2!=null ? tmp2 : tmp1;
-		CONFIGS.getJSONObject("distBetweenTextsInQuestionGroup")
+		CONFIGS.getJSONObject("distBetweenTextsInQuestionWithSubQuestions")
 			.put("height", tmp2.optInt("height", 1))
 			.put("width", tmp2.optInt("width", 5));
 		
@@ -326,6 +326,6 @@ public class RulesChecker {
 			.put("height", tmp2.optInt("height", 1))
 			.put("width", tmp2.optInt("width", 4));
 		
-		CommonLogger.debug("RULESCHECKER: {}", CONFIGS.getJSONObject("distBetweenNextText"));
+		CommonLogger.debug("RULESCHECKER: {}", CONFIGS.getJSONObject("distBetweenTextsInQuestionWithSubQuestions"));
 	}
 }

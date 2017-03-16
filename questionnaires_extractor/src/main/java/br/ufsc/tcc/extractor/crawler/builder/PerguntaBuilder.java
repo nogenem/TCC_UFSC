@@ -29,9 +29,10 @@ public class PerguntaBuilder {
 	private Cluster lastMatrixHead;
 	private Pergunta lastMatrix;
 	
-	private Cluster lastQuestionGroupDesc;
-	private Pergunta lastQuestionGroup;
-	private String lastQuestionGroupCommonPrefix;
+	// last question with subquestions
+	private Cluster lastQWithSubQsDesc;
+	private Pergunta lastQWithSubQs;
+	private String lastQWithSubQsCommonPrefix;
 	
 	public PerguntaBuilder(RulesChecker checker) {
 		this.currentP = null;
@@ -44,9 +45,9 @@ public class PerguntaBuilder {
 		this.lastMatrixHead = null;
 		this.lastMatrix = null;
 		
-		this.lastQuestionGroup = null;
-		this.lastQuestionGroupDesc = null;
-		this.lastQuestionGroupCommonPrefix = null;
+		this.lastQWithSubQs = null;
+		this.lastQWithSubQsDesc = null;
+		this.lastQWithSubQsCommonPrefix = null;
 	}
 
 	public int build(Questionario currentQ, List<MyNode> nodes, int i, Stack<Cluster> cStack) {
@@ -158,42 +159,42 @@ public class PerguntaBuilder {
 				this.saveLastMatrix(currentQ);
 			}
 			
-			//Verifica se é um grupo de perguntas
+			//Verifica se é uma pergunta com subperguntas
 			//	Ex: https://www.surveymonkey.com/r/online-social-networking-template [questão 4]
-			boolean questionGroupFlag = false;
+			boolean qWithSubQsFlag = false;
 			nTmp1 = nodes.get(this.currentI);
-			nTmp2 = this.lastQuestionGroupDesc != null ? 
-						this.lastQuestionGroupDesc.last() : null;
+			nTmp2 = this.lastQWithSubQsDesc != null ? 
+						this.lastQWithSubQsDesc.last() : null;
 			
 			if(!cStack.isEmpty()){
 				if(nTmp2 == null){
 					if(!currentQ.getAssunto().isEmpty() || cStack.size() >= 2)
 						nTmp2 = cStack.peek().last();
 				}else if(this.checker.isAbove(nTmp2, cStack.peek().first())){
-					//Se tiver um texto no meio quer dizer que ja termino o grupo de pergunta
-					this.saveLastQuestionGroup(currentQ);
+					//Se tiver um texto no meio quer dizer que ja termino as subperguntas
+					this.saveLastQWithSubQs(currentQ);
 					nTmp2 = cStack.peek().last();
 				}
 			}
 
 			if(nTmp2 != null && nTmp2.isText()){
-				if(checker.checkDistForQuestionGroup(nTmp2, nTmp1)){
-					if(this.lastQuestionGroup == null && this.checker.checkQuestionGroup(nTmp1, nTmp2, nodes, this.currentI)){
-						this.updateLastQuestionGroup(currentQ, nodes, cStack, nTmp1);
-						questionGroupFlag = true;
-					}else if(this.lastQuestionGroup != null && 
-							this.checker.checkPrefixForQuestionGroup(nTmp1, nTmp2, this.lastQuestionGroupCommonPrefix)){
-						if(!this.lastQuestionGroup.getForma().toString().
+				if(checker.checkDistForQWithSubQs(nTmp2, nTmp1)){
+					if(this.lastQWithSubQs == null && this.checker.checkQWithSubQs(nTmp1, nTmp2, nodes, this.currentI)){
+						this.updateLastQWithSubQs(currentQ, nodes, cStack, nTmp1);
+						qWithSubQsFlag = true;
+					}else if(this.lastQWithSubQs != null && 
+							this.checker.checkPrefixForQuestionGroup(nTmp1, nTmp2, this.lastQWithSubQsCommonPrefix)){
+						if(!this.lastQWithSubQs.getForma().toString().
 								startsWith(this.currentP.getForma().toString())){
-							this.lastQuestionGroup.setForma(FormaDaPerguntaManager.getForma("MIX_COMP_GROUP"));
+							this.lastQWithSubQs.setForma(FormaDaPerguntaManager.getForma("MIX_COMP_GROUP"));
 						}
-						this.lastQuestionGroup.addFilha(this.currentP);
-						questionGroupFlag = true;
+						this.lastQWithSubQs.addFilha(this.currentP);
+						qWithSubQsFlag = true;
 					}else{
-						this.saveLastQuestionGroup(currentQ);
+						this.saveLastQWithSubQs(currentQ);
 					}
-				}else if(this.lastQuestionGroup != null){
-					this.saveLastQuestionGroup(currentQ);
+				}else if(this.lastQWithSubQs != null){
+					this.saveLastQWithSubQs(currentQ);
 				}
 			}
 			
@@ -271,42 +272,42 @@ public class PerguntaBuilder {
 				this.currentP.setGrupo(this.currentG);
 				if(this.lastMatrix != null && this.lastMatrix.getGrupo() == null)
 					this.lastMatrix.setGrupo(this.currentG);
-				if(this.lastQuestionGroup != null && this.lastQuestionGroup.getGrupo() == null)
-					this.lastQuestionGroup.setGrupo(this.currentG);
+				if(this.lastQWithSubQs != null && this.lastQWithSubQs.getGrupo() == null)
+					this.lastQWithSubQs.setGrupo(this.currentG);
 			}	
 			
 			//TODO verificar se eh login?
-			if(!matrixFlag && !questionGroupFlag && !this.currentP.getDescricao().isEmpty())
+			if(!matrixFlag && !qWithSubQsFlag && !this.currentP.getDescricao().isEmpty())
 				currentQ.addPergunta(this.currentP);
 		}
 		
 		return this.currentI;
 	}
 
-	private void updateLastQuestionGroup(Questionario currentQ, List<MyNode> nodes, Stack<Cluster> cStack, MyNode nTmp1) {
+	private void updateLastQWithSubQs(Questionario currentQ, List<MyNode> nodes, Stack<Cluster> cStack, MyNode nTmp1) {
 		if(cStack.isEmpty()) return;
 		
-		this.lastQuestionGroupDesc = cStack.pop();
-		this.lastQuestionGroupDesc = this.checker.
-				checkIfDescIsComplete(this.lastQuestionGroupDesc, cStack, nodes, this.currentI);
-		this.lastQuestionGroupCommonPrefix = nTmp1.getDewey().
-				getCommonPrefix(this.lastQuestionGroupDesc.last().getDewey());
+		this.lastQWithSubQsDesc = cStack.pop();
+		this.lastQWithSubQsDesc = this.checker.
+				checkIfDescIsComplete(this.lastQWithSubQsDesc, cStack, nodes, this.currentI);
+		this.lastQWithSubQsCommonPrefix = nTmp1.getDewey().
+				getCommonPrefix(this.lastQWithSubQsDesc.last().getDewey());
 		
-		this.lastQuestionGroup = new Pergunta();
+		this.lastQWithSubQs = new Pergunta();
 		String forma = this.currentP.getForma().toString();
-		this.lastQuestionGroup.setForma(FormaDaPerguntaManager.getForma(forma+"_GROUP"));
-		this.lastQuestionGroup.setDescricao(this.lastQuestionGroupDesc.getText());							
-		this.lastQuestionGroup.addFilha(this.currentP);
+		this.lastQWithSubQs.setForma(FormaDaPerguntaManager.getForma(forma+"_GROUP"));
+		this.lastQWithSubQs.setDescricao(this.lastQWithSubQsDesc.getText());							
+		this.lastQWithSubQs.addFilha(this.currentP);
 	}
 
-	private void saveLastQuestionGroup(Questionario currentQ) {
-		if(this.lastQuestionGroup != null){
-			currentQ.addPergunta(this.lastQuestionGroup);
-			CommonLogger.debug("Question Group descricao: {}\n\n", this.lastQuestionGroup.getDescricao());
+	private void saveLastQWithSubQs(Questionario currentQ) {
+		if(this.lastQWithSubQs != null){
+			currentQ.addPergunta(this.lastQWithSubQs);
+			CommonLogger.debug("Q with SubQs descricao: {}\n\n", this.lastQWithSubQs.getDescricao());
 			
-			this.lastQuestionGroup = null;
-			this.lastQuestionGroupDesc = null;
-			this.lastQuestionGroupCommonPrefix = "";
+			this.lastQWithSubQs = null;
+			this.lastQWithSubQsDesc = null;
+			this.lastQWithSubQsCommonPrefix = "";
 		}
 	}
 
@@ -404,7 +405,7 @@ public class PerguntaBuilder {
 
 	private void extractSimpleRating(List<MyNode> nodes) {
 		MyNode input = null, lastInput = null;
-		int i = 1;
+		int i = 1;//TODO adicionar 0 tb?
 		boolean error = false;
 				
 		currentP.setForma(FormaDaPerguntaManager.getForma("RATING"));
@@ -585,7 +586,7 @@ public class PerguntaBuilder {
 
 	public void clearData(Questionario currentQ) {
 		this.saveLastMatrix(currentQ);
-		this.saveLastQuestionGroup(currentQ);
+		this.saveLastQWithSubQs(currentQ);
 		
 		this.currentG = null;
 		this.currentP = null;

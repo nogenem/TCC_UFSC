@@ -35,12 +35,11 @@ public class Main {
 		System.out.println("Carregando arquivo de configuracao...");
 		ProjectConfigs.loadConfigs(configsPath);
 		
-//		Dewey d1 = new Dewey("01.04.02.07.01.01.01"),
-//				d2 = new Dewey("01.04.02.08.01.01.01"),
+//		Dewey d1 = new Dewey("01.03.02.01.01.04.01.01.01.01.03.01"),
+//				d2 = new Dewey("01.03.02.01.01.04.01.01.01.02.02.01.01"),
 //				d3 = d1.distanceOf(d2);
 //		System.out.println(d3);
 //		System.out.println(d3.getDeweyWeight());
-//		DistanceMatrix matrix = new DistanceMatrix();
 		
 		// Inicializa a aplicação
 //		start();
