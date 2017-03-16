@@ -22,7 +22,7 @@ public abstract class ProjectConfigs {
 	public static boolean loadUrlsFromCrawler(){
 		JSONObject tmp = getDatabaseConfigs();
 		if(tmp != null)
-			return tmp.optBoolean("loadUrlsFromCrawler", false);
+			return tmp.optBoolean("loadUrlsFromCrawler", true);
 		return false;
 	}
 	
