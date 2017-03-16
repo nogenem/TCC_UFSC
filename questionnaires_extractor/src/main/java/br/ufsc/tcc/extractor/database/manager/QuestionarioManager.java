@@ -2,6 +2,8 @@ package br.ufsc.tcc.extractor.database.manager;
 
 import java.util.ArrayList;
 
+import org.json.JSONArray;
+
 import br.ufsc.tcc.common.database.connection.BasicConnection;
 import br.ufsc.tcc.common.util.CommonLogger;
 import br.ufsc.tcc.extractor.database.dao.FiguraDao;
@@ -19,11 +21,6 @@ public class QuestionarioManager {
 	private PerguntaManager perguntaManager;
 	private FiguraDao figuraDao;
 	
-	// Pega os links dos Questionarios que ja estão
-	// no banco de dados para não extrair esses 
-	// links de novo.
-	private static ArrayList<String> extractedLinks;
-	
 	public QuestionarioManager(BasicConnection c) {
 		questionarioDao = new QuestionarioDao(c);
 		grupoDao = new GrupoDao(c);
@@ -32,7 +29,6 @@ public class QuestionarioManager {
 		
 		// Carrega os dados do banco de dados
 		FormaDaPerguntaManager.loadFormas(c);
-		QuestionarioManager.loadQuestionarioLinks(questionarioDao);
 	}
 	
 	public void save(Questionario q) throws Exception {
@@ -48,22 +44,24 @@ public class QuestionarioManager {
 		}
 	}
 	
-	// Métodos estáticos
-	public static boolean linkWasExtracted(String link){
-		return extractedLinks.contains(link);
+	public void cleanDatabase() {
+		try{
+			this.questionarioDao.clean();
+		}catch(Exception e){
+			CommonLogger.error(e);
+		}
 	}
 	
-	private static synchronized void loadQuestionarioLinks(QuestionarioDao dao) {
-		if(extractedLinks != null) return;
-		
-		try {
-			extractedLinks = dao.getAllLinks();
-			
-			CommonLogger.debug("{} carregou os links dos questionarios do banco de dados.",
-					Thread.currentThread().getName());
-		} catch (Exception e) {
-			// Database não deve ta funcionado, então mata a aplicação
-			CommonLogger.fatalError(e);
+	public void deleteLinks(JSONArray links){
+		try{
+			ArrayList<String> dbLinks = this.questionarioDao.getAllLinks();
+			for(int i = 0; i<links.length(); i++){
+				String link = (String) links.get(i);
+				if(dbLinks.contains(link))
+					this.questionarioDao.remove(link);
+			}
+		}catch(Exception e){
+			CommonLogger.error(e);
 		}
 	}
 }

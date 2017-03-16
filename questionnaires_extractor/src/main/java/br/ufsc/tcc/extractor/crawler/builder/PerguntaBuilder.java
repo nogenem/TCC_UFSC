@@ -74,7 +74,7 @@ public class PerguntaBuilder {
 		if(nTmp1 != null && firstNode.getType() != MyNodeType.SELECT && nTmp1.isComponent() &&
 				this.distMatrix.areNear(firstNode, nTmp1)){
 			
-			if(this.lastMatrixHead != null && 
+			if(this.lastMatrixHead != null && !cStack.isEmpty() &&
 					this.checker.isAbove(this.lastMatrixHead.last(), cStack.peek().first())){
 				this.saveLastMatrix(currentQ);
 			}

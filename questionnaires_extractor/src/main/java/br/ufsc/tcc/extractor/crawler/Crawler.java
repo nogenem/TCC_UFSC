@@ -9,7 +9,6 @@ import org.jsoup.nodes.Element;
 import br.ufsc.tcc.common.config.ProjectConfigs;
 import br.ufsc.tcc.common.database.connection.BasicConnection;
 import br.ufsc.tcc.common.database.connection.PostgreConnection;
-import br.ufsc.tcc.common.database.manager.PossivelQuestionarioManager;
 import br.ufsc.tcc.common.util.CommonLogger;
 import br.ufsc.tcc.extractor.crawler.builder.QuestionarioBuilder;
 import br.ufsc.tcc.extractor.database.manager.QuestionarioManager;
@@ -20,18 +19,15 @@ import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
 
 public class Crawler extends WebCrawler {
-	
-	private static BasicConnection pqConn;
+
 	private BasicConnection qConn;
 	private QuestionarioManager qManager;
-	private PossivelQuestionarioManager pqManager;
 	private QuestionarioBuilder qBuilder;
 	
 	@Override
 	public void onStart() {
 		this.qConn = new PostgreConnection(ProjectConfigs.getExtractorDatabaseConfigs());
 		this.qManager = new QuestionarioManager(this.qConn);
-		this.pqManager = new PossivelQuestionarioManager(pqConn);
 		this.qBuilder = new QuestionarioBuilder();
 	}
 	
@@ -62,13 +58,12 @@ public class Crawler extends WebCrawler {
 				for(Questionario q : questionarios){
 					q.setLink_doc(link);
 //					this.qManager.save(q);
-//					this.pqManager.remove(link);
 					
 					CommonLogger.debug("SAVE DONE!");
 				}
 				questionarios.clear();
 			}catch (Exception e) {
-				e.printStackTrace();
+				CommonLogger.error(e);
 			}
 		}
 	}
@@ -98,15 +93,5 @@ public class Crawler extends WebCrawler {
 	@Override
 	protected void onParseError(WebURL webUrl) {
 	    CommonLogger.info("Parsing error of: {}", webUrl.getURL());
-	}
-	
-	// Métodos/Blocos estáticos
-	static {
-		pqConn = new PostgreConnection(ProjectConfigs.getCrawlerDatabaseConfigs());
-	}
-	
-	public static void closePqConnection(){
-		if(pqConn != null)
-			pqConn.close();
 	}
 }

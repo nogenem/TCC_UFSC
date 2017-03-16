@@ -18,6 +18,7 @@ import br.ufsc.tcc.common.util.DistanceMatrix;
 import br.ufsc.tcc.extractor.crawler.Crawler;
 import br.ufsc.tcc.extractor.crawler.builder.QuestionarioBuilder;
 import br.ufsc.tcc.extractor.database.manager.FormaDaPerguntaManager;
+import br.ufsc.tcc.extractor.database.manager.QuestionarioManager;
 
 public class Main {
 	
@@ -112,7 +113,6 @@ public class Main {
 	}
 	
 	private static void start(){
-		// Cria o Controller do Crawler, adiciona as Seeds e inicia o Crawler
 		try{
 			JSONObject configs = ProjectConfigs.getCrawlerConfigs();
 			// Para o extrator o maxDepth tem que ser igual a 0 pois a
@@ -129,7 +129,6 @@ public class Main {
 				BasicConnection conn = new PostgreConnection(ProjectConfigs.getCrawlerDatabaseConfigs());
 				PossivelQuestionarioManager.loadPossivelQuestionarioLinks(conn);
 				conn.close();
-				conn = null;
 				
 				for(String seed : PossivelQuestionarioManager.getSavedLinks()){
 					controller.addSeed(seed);					
@@ -143,13 +142,20 @@ public class Main {
 				seeds.forEach((seed) -> controller.addSeed((String)seed));	
 			}
 			
+			//Limpando banco de dados
+			System.out.println("Limpando banco de dados do extrator...");
+			BasicConnection conn = new PostgreConnection(ProjectConfigs.getExtractorDatabaseConfigs());
+			QuestionarioManager qManager = new QuestionarioManager(conn);
+			if(ProjectConfigs.loadUrlsFromCrawler())
+				qManager.cleanDatabase();
+			else
+				qManager.deleteLinks(seeds);
+			conn.close();
+			
 			// Inicia o crawling
 			System.out.println("Inicializando a aplicacao...");
 			controller.start(Crawler.class);
 			System.out.println("Encerrando a aplicacao...");
-			
-			// Fecha a conexão com o banco de dados do Crawler
-			Crawler.closePqConnection();
 		}catch(Exception e){
 			CommonLogger.error(e);
 		}

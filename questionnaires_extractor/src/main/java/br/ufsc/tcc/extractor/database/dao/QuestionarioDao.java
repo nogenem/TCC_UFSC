@@ -35,5 +35,16 @@ public class QuestionarioDao extends BasicDao {
 		}
 		return resp;
 	}
+	
+	public void clean() throws Exception {
+		this.delete();
+	}
+	
+	public void remove(String link) throws Exception {
+		HashMap<String, Object> where = new HashMap<>();
+		where.put("LINK_DOCUMENTO", link);
+		
+		this.delete(where);
+	}
 
 }	
