@@ -475,7 +475,7 @@ public class PerguntaBuilder {
 					tmp = this.currentI+1 < nodes.size() ? nodes.get(this.currentI+1) : null;
 				}
 				
-				if(tmp != null && tmp.getType() == MyNodeType.TEL_INPUT && 
+				if(tmp != null && tmp.getType() == MyNodeType.TEXT_INPUT && 
 						this.checker.areCompAndTextNear(tmp, text)){
 					Pergunta tmpPerg = new Pergunta(txt);
 					dono = tmpPerg;
