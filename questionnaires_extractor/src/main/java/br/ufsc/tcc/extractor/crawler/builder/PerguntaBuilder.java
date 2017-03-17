@@ -438,6 +438,7 @@ public class PerguntaBuilder {
 	private void extractCheckboxOrRadioInput(Questionario currentQ, List<MyNode> nodes) {
 		MyNode img = null, input = null, text = null, tmp = null;
 		boolean isImgQuestion = false, error = false;
+		String txt = "";
 		
 		input = nodes.get(this.currentI);
 		
@@ -461,21 +462,34 @@ public class PerguntaBuilder {
 				break;
 			}
 			
-			CommonLogger.debug("\t\t{}", text.getText());
+			txt = text.getText();
+			CommonLogger.debug("\t\t{}", txt);
 			Object dono = null;
 			
-			if(tmp != null && tmp.getType() == MyNodeType.TEXT_INPUT &&
-					this.checker.areCompAndTextNear(tmp, text)){
-				Pergunta tmpPerg = new Pergunta(text.getText());
-				dono = tmpPerg;
+			if(tmp != null){
+				//Ex: https://www.surveymonkey.com/r/CAHPS-Health-Plan-Survey-40-Template [pergunta 8]
+				if(text.getType() == MyNodeType.TEXT && tmp.getType() == MyNodeType.TEXT && 
+						this.checker.checkDistForTextsOfAlternative(text, tmp)){
+					txt = txt + tmp.getText();
+					++this.currentI;
+					tmp = this.currentI+1 < nodes.size() ? nodes.get(this.currentI+1) : null;
+				}
 				
-				tmpPerg.setForma(FormaDaPerguntaManager.getForma("TEXT_INPUT"));
-				CommonLogger.debug("\t\t\tCom Text Input.");
-				
-				tmpPerg.setQuestionario(currentQ);
-				this.currentP.addFilha(tmpPerg);
-			}else{
-				Alternativa tmpAlt = new Alternativa(text.getText());
+				if(tmp != null && tmp.getType() == MyNodeType.TEL_INPUT && 
+						this.checker.areCompAndTextNear(tmp, text)){
+					Pergunta tmpPerg = new Pergunta(txt);
+					dono = tmpPerg;
+					
+					tmpPerg.setForma(FormaDaPerguntaManager.getForma("TEXT_INPUT"));
+					CommonLogger.debug("\t\t\tCom Text Input.");
+					
+					tmpPerg.setQuestionario(currentQ);
+					this.currentP.addFilha(tmpPerg);
+				} 
+			}
+			
+			if(dono == null){
+				Alternativa tmpAlt = new Alternativa(txt);
 				dono = tmpAlt;
 				this.currentP.addAlternativa(tmpAlt);
 			}

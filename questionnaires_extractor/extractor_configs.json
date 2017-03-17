@@ -63,6 +63,9 @@
 		"distBetweenDescriptions": {
 			"width": 4,
 			"height": 1
+		},
+		"distBetweenTextsOfSameAlternative": {
+			"deweyWeight": 100
 		}
 	}
 }

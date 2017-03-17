@@ -36,8 +36,8 @@ public class Main {
 		System.out.println("Carregando arquivo de configuracao...");
 		ProjectConfigs.loadConfigs(configsPath);
 		
-//		Dewey d1 = new Dewey("01.03.02.01.01.04.01.01.01.01.03.01"),
-//				d2 = new Dewey("01.03.02.01.01.04.01.01.01.02.02.01.01"),
+//		Dewey d1 = new Dewey("01.01.02.01.01.15.01.01.01.02.01.02.01.02.01.02.02.01.01"),
+//				d2 = new Dewey("01.01.02.01.01.15.01.01.01.02.01.02.01.02.01.02.02.02"),
 //				d3 = d1.distanceOf(d2);
 //		System.out.println(d3);
 //		System.out.println(d3.getDeweyWeight());
@@ -60,6 +60,7 @@ public class Main {
 //		path = "https://www.surveymonkey.com/r/General-Event-Feedback-Template";
 //		path = "https://www.surveymonkey.com/r/online-social-networking-template";
 //		path = "https://www.surveymonkey.com/r/logo_testing_template"; 
+//		path= "https://www.surveymonkey.com/r/CAHPS-Health-Plan-Survey-40-Template";
 		
 //		path = "cache/Vark-Learn_1.html";
 		//TODO tratar problema de não criar 2 questionarios / titulo ficando como group
@@ -74,7 +75,7 @@ public class Main {
 		
 		//TODO tratar do Personal+general information
 //		path = "cache/SurveyCrest_1.html";
-//		path = "https://www.surveycrest.com/template_preview/pyof1IFwp9Xa1_x430JdUeVsuHVRKuw";
+//		path = "https://www.surveycrest.com/template_preview/pyof1IFwp9Xa1_x430JdUeVsuHVRKuw";//TODO tem login junto
 //		path = "https://www.surveycrest.com/template_preview/pufLBGbsEEBvdJvPPxIe9hYJx0Q";
 //		path = "https://www.surveycrest.com/template_preview/pcTMgau0DnNMqRJGbCqSAknAAjJA";
 		

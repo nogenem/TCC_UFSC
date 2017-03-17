@@ -203,7 +203,7 @@ public class RulesChecker {
 		String txt = cTmp2.getText(), regex = "(?s).*(\nXXX|XXX\n).*";
 		boolean flag = false;
 		int count = filhas.size()+alts.size();
-
+		
 		if(count == 0 && cTmp2.size() == 1){//Ex: https://www.survio.com/modelo-de-pesquisa/pesquisa-de-preco-do-produto
 			flag = currentP.getDescricao().matches(regex.replaceAll("XXX", cTmp2.getText()));
 		}else if(count == cTmp2.size()){
@@ -267,6 +267,12 @@ public class RulesChecker {
 		return false;
 	}
 	
+	public boolean checkDistForTextsOfAlternative(MyNode n1, MyNode n2){
+		JSONObject obj = CONFIGS.getJSONObject("distBetweenTextsOfSameAlternative");
+		Dewey dist = this.distMatrix.getDist(n1, n2);
+		return dist.getDeweyWeight() <= obj.getInt("deweyWeight");
+	}
+	
 	// Métodos/Blocos estáticos
 	static {
 		CONFIGS = new JSONObject();
@@ -276,7 +282,8 @@ public class RulesChecker {
 			.put("distBetweenGroupAndFirstQuestion", new JSONObject())
 			.put("distBetweenNextText", new JSONObject())
 			.put("distBetweenTextsInQuestionWithSubQuestions", new JSONObject())
-			.put("distBetweenDescriptions", new JSONObject());
+			.put("distBetweenDescriptions", new JSONObject())
+			.put("distBetweenTextsOfSameAlternative", new JSONObject());
 		
 		JSONObject h = ProjectConfigs.getHeuristics(), 
 				tmp1 = new JSONObject(), tmp2 = null;
@@ -325,6 +332,11 @@ public class RulesChecker {
 		CONFIGS.getJSONObject("distBetweenDescriptions")
 			.put("height", tmp2.optInt("height", 1))
 			.put("width", tmp2.optInt("width", 4));
+		
+		tmp2 = h!=null ? h.optJSONObject("distBetweenTextsOfSameAlternative") : tmp1;
+		tmp2 = tmp2!=null ? tmp2 : tmp1;
+		CONFIGS.getJSONObject("distBetweenTextsOfSameAlternative")
+			.put("deweyWeight", tmp2.optInt("deweyWeight", 100));
 		
 		CommonLogger.debug("RULESCHECKER: {}", CONFIGS.getJSONObject("distBetweenTextsInQuestionWithSubQuestions"));
 	}
