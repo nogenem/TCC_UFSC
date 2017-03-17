@@ -256,7 +256,9 @@ public class CommonUtil {
 			name = CommonUtil.trim(node.toString());
 			break;
 		case "input":
-			name += "[type="+ node.attr("type") +"]";
+			// O tipo padrão de um input é 'text', caso não seja especificado
+			String type = node.attr("type");
+			name += "[type="+ (type.isEmpty() ? "text" : type) +"]";
 			break;
 		case "img":
 			name += "[alt="+ node.attr("alt") +"]";
