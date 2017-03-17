@@ -135,6 +135,7 @@ public class Dewey {
 	public ArrayList<Integer> parseValueToNumbers(String value) {
 		ArrayList<Integer> numbers = new ArrayList<>();
 		if(!value.isEmpty()){
+			value = value.trim();
 			String[] tmp = value.split("\\.");
 			for(String s : tmp){
 				numbers.add(Integer.valueOf(s));
