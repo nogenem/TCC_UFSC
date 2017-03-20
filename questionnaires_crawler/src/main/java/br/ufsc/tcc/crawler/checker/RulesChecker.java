@@ -22,7 +22,7 @@ import edu.uci.ics.crawler4j.parser.HtmlParseData;
 public class RulesChecker {
 	
 	private static Pattern SURVEY_WORDS_REGEX = null;
-	private static Pattern LOGIN_WORDS_REGEX = null;
+	private static Pattern PHRASES_TO_IGNORE_REGEX = null;
 	private static int MIN_COMPS_IN_ONE_CLUSTER = 0;
 	private static int MIN_CLUSTERS_WITH_COMP = 0;
 	private static int HEIGHT_BETWEEN_QUESTIONS = 0;
@@ -144,21 +144,21 @@ public class RulesChecker {
 		//Contador de componentes, Contador de 'questões'
 		double cCount, qCount = 0.0;
 		Cluster lastCluster = null;
-		boolean isLogin = false, hasTextAbove = false;
+		boolean toIgnore = false, hasTextAbove = false;
 		String txtTmp = "";
 		
 		//Um questionario deve ter pelo menos 1 cluster com X componentes ou
 		//X clusters com pelo menos 1 componente
 		for(Cluster c : clusters){
-			cCount = 0; isLogin = false; hasTextAbove = false;
+			cCount = 0; toIgnore = false; hasTextAbove = false;
 			
 			//Conta quantos textos e componentes tem no cluster
 			ArrayList<MyNode> nodes = c.getGroup();
 			for(int i = 0; i < nodes.size(); i++){
 				MyNode node = nodes.get(i);
 				if(node.isText()){ 
-					if(LOGIN_WORDS_REGEX.matcher(node.getText()).matches()){ 
-						isLogin = true;
+					if(PHRASES_TO_IGNORE_REGEX.matcher(node.getText()).matches()){ 
+						toIgnore = true;
 						break;
 					}
 					txtTmp = node.getText();
@@ -177,7 +177,7 @@ public class RulesChecker {
 			}
 			//Toda questão deve ter pelo menos 1 componente e não deve pertencer a 
 			//um cluster de login/registro/busca
-			if(!isLogin && cCount >= 1){
+			if(!toIgnore && cCount >= 1){
 				if(cCount >= MIN_COMPS_IN_ONE_CLUSTER){
 					CommonLogger.debug("\t\tMinimo {} componentes em um cluster!", MIN_COMPS_IN_ONE_CLUSTER);
 					CommonLogger.debug(c.toString());//TODO remover isso
@@ -214,9 +214,9 @@ public class RulesChecker {
 				SURVEY_WORDS_REGEX = Pattern.compile(txtTmp, 
 						Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
 			}
-			txtTmp = h.optString("loginWordsRegex", "");
+			txtTmp = h.optString("phrasesToIgnoreRegex", "");
 			if(!txtTmp.isEmpty()){
-				LOGIN_WORDS_REGEX = Pattern.compile(txtTmp, 
+				PHRASES_TO_IGNORE_REGEX = Pattern.compile(txtTmp, 
 						Pattern.CASE_INSENSITIVE);
 			}
 			MIN_COMPS_IN_ONE_CLUSTER = h.optInt("minCompsInOneCluster");
@@ -231,8 +231,8 @@ public class RulesChecker {
 			SURVEY_WORDS_REGEX = Pattern.compile("(.*surveys?.*|.*questionnaires?.*|"
 					+ ".*question(a|á)rios?.*|.*pesquisas?.*|.*testes?\\s+para.*|.*b(u|ú)squedas?.*)", 
 					Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
-		if(LOGIN_WORDS_REGEX == null)
-			LOGIN_WORDS_REGEX = Pattern.compile("(register|login|password|forgot password\\?|"
+		if(PHRASES_TO_IGNORE_REGEX == null)
+			PHRASES_TO_IGNORE_REGEX = Pattern.compile("(register|login|password|forgot password\\?|"
 					+ "keep me logged in|reset password|search:?|registre(\\-se)?|logar|entrar|esqueceu sua senha\\?|"
 					+ "me mantenha logado|recupere sua senha|buscar:?)", 
 				Pattern.CASE_INSENSITIVE);
