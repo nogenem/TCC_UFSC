@@ -56,7 +56,7 @@ public class DistanceMatrix {
 	public boolean areNear(MyNode n1, MyNode n2){
 		if(n1 != null && n2 != null){
 			Dewey dist = this.getDist(n1, n2);
-			return dist.getDeweyWeight() <= MAX_WEIGHT && 
+			return dist.getWeight() <= MAX_WEIGHT && 
 					dist.getHeight() <= MAX_HEIGHT;
 		}
 		return false;

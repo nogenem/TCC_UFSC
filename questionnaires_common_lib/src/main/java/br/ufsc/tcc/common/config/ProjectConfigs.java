@@ -19,10 +19,10 @@ public abstract class ProjectConfigs {
 		return configs.optJSONObject("database");
 	}
 	
-	public static boolean loadUrlsFromCrawler(){
+	public static boolean loadSeedsFromCrawler(){
 		JSONObject tmp = getDatabaseConfigs();
 		if(tmp != null)
-			return tmp.optBoolean("loadUrlsFromCrawler", true);
+			return tmp.optBoolean("loadSeedsFromCrawler", true);
 		return false;
 	}
 	

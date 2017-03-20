@@ -29,7 +29,11 @@ public class Dewey {
 		return this.value;
 	}
 	
-	public int getDeweyWeight(){
+	public ArrayList<Integer> getNumbers(){
+		return this.numbers;
+	}
+	
+	public int getWeight(){
 		//Atualiza a 'cache'
 		if(this.weight == Integer.MIN_VALUE && !this.numbers.isEmpty()){
 			int n = this.numbers.size()-1, tmp = 0;
@@ -178,6 +182,6 @@ public class Dewey {
 	
 	@Override
 	public int hashCode() {
-		return this.getDeweyWeight();
+		return this.getWeight();
 	}
 }
