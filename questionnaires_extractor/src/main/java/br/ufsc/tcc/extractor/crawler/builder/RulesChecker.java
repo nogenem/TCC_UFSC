@@ -43,7 +43,12 @@ public class RulesChecker {
 			return false;
 		JSONObject obj = CONFIGS.getJSONObject("distBetweenTextsInsideQuestionnaire");
 		Dewey dist = this.distMatrix.getDist(lastDesc.last(), newNode);	
-		return dist.getHeight() > obj.getInt("height");
+		if(dist.getHeight() > obj.getInt("height"))
+			return true;
+		
+		//Verifica se o 1* container é diferente
+		Dewey d1 = lastDesc.last().getDewey(), d2 = newNode.getDewey();
+		return d1.getNumbers().get(1) != d2.getNumbers().get(1);
 	}
 	
 	
@@ -162,12 +167,12 @@ public class RulesChecker {
 		return false;
 	}
 
-	public boolean checkNextText(List<MyNode> nodes, int i) {
+	public boolean checkComplementaryText(List<MyNode> nodes, int i) {
 		if(i+2 < nodes.size()){
 			MyNode nTmp1 = nodes.get(i),
 				nTmp2 = nodes.get(i+1),
 				nTmp3 = nodes.get(i+2);
-			JSONObject obj = CONFIGS.getJSONObject("distBetweenNextText");
+			JSONObject obj = CONFIGS.getJSONObject("distBetweenDescAndComplementaryText");
 			
 			if(nTmp2.isText() && nTmp3.isImgOrText()){
 				Dewey dist = distMatrix.getDist(nTmp1, nTmp2);
@@ -270,7 +275,7 @@ public class RulesChecker {
 	public boolean checkDistForTextsOfAlternative(MyNode n1, MyNode n2){
 		JSONObject obj = CONFIGS.getJSONObject("distBetweenTextsOfSameAlternative");
 		Dewey dist = this.distMatrix.getDist(n1, n2);
-		return dist.getDeweyWeight() <= obj.getInt("deweyWeight");
+		return dist.getWeight() <= obj.getInt("deweyWeight");
 	}
 	
 	// Métodos/Blocos estáticos
@@ -280,7 +285,7 @@ public class RulesChecker {
 			.put("distBetweenCompAndText", new JSONObject())
 			.put("distBetweenDescAndQuestion", new JSONObject())
 			.put("distBetweenGroupAndFirstQuestion", new JSONObject())
-			.put("distBetweenNextText", new JSONObject())
+			.put("distBetweenDescAndComplementaryText", new JSONObject())
 			.put("distBetweenTextsInQuestionWithSubQuestions", new JSONObject())
 			.put("distBetweenDescriptions", new JSONObject())
 			.put("distBetweenTextsOfSameAlternative", new JSONObject());
@@ -315,9 +320,9 @@ public class RulesChecker {
 			.put("height", tmp2.optInt("height", 1))
 			.put("width", tmp2.optInt("width", 7));
 		
-		tmp2 = h!=null ? h.optJSONObject("distBetweenNextText") : tmp1;
+		tmp2 = h!=null ? h.optJSONObject("distBetweenDescAndComplementaryText") : tmp1;
 		tmp2 = tmp2!=null ? tmp2 : tmp1;
-		CONFIGS.getJSONObject("distBetweenNextText")
+		CONFIGS.getJSONObject("distBetweenDescAndComplementaryText")
 			.put("height", tmp2.optInt("height", 1))
 			.put("width", tmp2.optInt("width", 4));
 		

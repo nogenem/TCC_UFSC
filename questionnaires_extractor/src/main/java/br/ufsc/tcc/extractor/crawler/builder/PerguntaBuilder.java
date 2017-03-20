@@ -261,7 +261,7 @@ public class PerguntaBuilder {
 			}
 			
 			//Verifica se o texto abaixo, se tiver, não faz parte desta pergunta (Ex: Peso: [ ] kg)
-			if(this.checker.checkNextText(nodes, this.currentI)){
+			if(this.checker.checkComplementaryText(nodes, this.currentI)){
 				nTmp1 = nodes.get(++this.currentI);
 				this.currentP.setDescricao(
 						this.currentP.getDescricao() +"\n"+ nTmp1.getText());

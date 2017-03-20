@@ -88,7 +88,10 @@ public class Main {
 		//TODO arrumar Not at all likely / novo questionario
 //		path = "https://www.telstra.com.au/webforms/consumer-survey/index.cfm";
 		
+//		path = "https://docs.google.com/forms/d/e/1FAIpQLSdKNoTd6y08to45zgcXlWxCtzVEJg3irc1FbQikSS6fnyMdtQ/viewform?c=0&w=1";
+		
 //		path = "cache/exemplo.html";
+		
 		
 		BasicConnection conn = new PostgreConnection(ProjectConfigs.getExtractorDatabaseConfigs());;
 		FormaDaPerguntaManager.loadFormas(conn);
@@ -125,7 +128,7 @@ public class Main {
 			
 			// Seeds do banco de dados
 			System.out.println("Carregando seeds do banco de dados...");
-			if(ProjectConfigs.loadUrlsFromCrawler()){
+			if(ProjectConfigs.loadSeedsFromCrawler()){
 				//TODO rever isso...
 				BasicConnection conn = new PostgreConnection(ProjectConfigs.getCrawlerDatabaseConfigs());
 				PossivelQuestionarioManager.loadPossivelQuestionarioLinks(conn);
@@ -147,7 +150,7 @@ public class Main {
 			System.out.println("Limpando banco de dados do extrator...");
 			BasicConnection conn = new PostgreConnection(ProjectConfigs.getExtractorDatabaseConfigs());
 			QuestionarioManager qManager = new QuestionarioManager(conn);
-			if(ProjectConfigs.loadUrlsFromCrawler())
+			if(ProjectConfigs.loadSeedsFromCrawler())
 				qManager.cleanDatabase();
 			else
 				qManager.deleteLinks(seeds);
