@@ -19,8 +19,9 @@ public class CommonLogger {
 	
 	public static void debug(String format, Object ...args){
 		if(enabledLevels.contains("DEBUG")){
+			format += "\n";
 			if(!logger.isDebugEnabled())
-				System.out.println(MessageFormatter.arrayFormat(format, args).getMessage());
+				System.out.print(MessageFormatter.arrayFormat(format, args).getMessage());
 			else
 				logger.debug(format, args);
 		}
@@ -42,10 +43,11 @@ public class CommonLogger {
 	
 	public static void info(String format, Object ...args){
 		if(enabledLevels.contains("INFO")){
+			format += "\n";
 			if(logger.isInfoEnabled())
 				logger.info(format, args);
 			else
-				System.err.println(MessageFormatter.arrayFormat(format, args).getMessage());
+				System.err.print(MessageFormatter.arrayFormat(format, args).getMessage());
 		}
 	}
 	
