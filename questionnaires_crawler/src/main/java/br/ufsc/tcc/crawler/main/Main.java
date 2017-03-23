@@ -68,7 +68,8 @@ public class Main {
 //		url = "http://evaluationtoolbox.net.au/index.php?Itemid=139&id=29&option=com_rubberdoc&view=category";
 //		url = "http://www.howtogeek.com/203892/how-to-create-fillable-forms-with-ms-word-2010/";
 		
-//		url = "https://www.survio.com/modelo-de-pesquisa/avaliacao-de-um-e-shop";
+//		url = "https://www.survio.com/modelo-de-pesquisa/pesquisa-de-preco-do-produto";
+//		url = "https://www.surveymonkey.com/r/General-Event-Feedback-Template";
 //		url = "https://www.surveymonkey.com/r/logo_testing_template";
 //		url = "http://vark-learn.com/the-vark-questionnaire/";
 //		url = "https://www.bioinfo.mpg.de/mctq/core_work_life/core/core.jsp?language=por_b";

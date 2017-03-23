@@ -139,18 +139,33 @@ public class RulesChecker {
 			return true;
 		return false;
 	}
+	
+	private boolean isLikelyDescription(String text){
+		return (text.length() >= 4 && text.contains(" ")) || 
+				text.matches("(\\d{1,3}(\\s{1,2})?(\\.|\\:|\\)|\\-)?)");
+	}
+	
+	public boolean isNewQuestionario(Cluster lastCluster, Cluster newCluster) {
+		Dewey dist = this.distMatrix.getDist(lastCluster.last(), newCluster.first());	
+		if(dist.getHeight() > HEIGHT_BETWEEN_QUESTIONS)
+			return true;
+		
+		//Verifica se o 1* container é diferente
+		Dewey d1 = lastCluster.last().getDewey(), d2 = newCluster.first().getDewey();
+		return d1.getNumbers().get(1) != d2.getNumbers().get(1);
+	}
 
 	private boolean hasQuestionnarie(List<Cluster> clusters) {
 		//Contador de componentes, Contador de 'questões'
-		double cCount, qCount = 0.0;
+		double cCount = 0.0, qCount = 0.0;
 		Cluster lastCluster = null;
-		boolean toIgnore = false, hasTextAbove = false;
-		String txtTmp = "";
+		boolean toIgnore = false, hasTextAbove = false, multiComp = false;
 		
 		//Um questionario deve ter pelo menos 1 cluster com X componentes ou
 		//X clusters com pelo menos 1 componente
 		for(Cluster c : clusters){
-			cCount = 0; toIgnore = false; hasTextAbove = false;
+			cCount = 0.0; toIgnore = false; 
+			hasTextAbove = false; multiComp = false;
 			
 			//Conta quantos textos e componentes tem no cluster
 			ArrayList<MyNode> nodes = c.getGroup();
@@ -161,32 +176,37 @@ public class RulesChecker {
 						toIgnore = true;
 						break;
 					}
-					txtTmp = node.getText();
-					hasTextAbove = (txtTmp.length() >= 4 && txtTmp.contains(" ")) || 
-							txtTmp.matches("(\\d{1,2}(\\s{1,2})?(\\.|\\:|\\)|\\-)?)");
+					if(multiComp){
+						hasTextAbove = true;
+						multiComp = false;
+					}else
+						hasTextAbove = isLikelyDescription(node.getText());
 				}else if(node.isComponent() && node.getType() != MyNodeType.OPTION){
 					//todo componente deve ter pelo menos um texto/img acima dele
 					if(hasTextAbove){
-						if(CommonUtil.getMultiComps().contains(node.getText()))
+						if(CommonUtil.getMultiComps().contains(node.getText())){
 							cCount += 0.5;
-						else
+							multiComp = true;
+						}else{
 							cCount++;
+							multiComp = false;
+						}
 					}
-					hasTextAbove = false;
+					hasTextAbove = (multiComp && i+1 < nodes.size()) ? 
+							nodes.get(i+1).isComponent() : false;
 				}
 			}
 			//Toda questão deve ter pelo menos 1 componente e não deve pertencer a 
 			//um cluster de login/registro/busca
+			CommonLogger.debug("cCount: " +cCount+ "; qCount: " +qCount);
 			if(!toIgnore && cCount >= 1){
 				if(cCount >= MIN_COMPS_IN_ONE_CLUSTER){
-					CommonLogger.debug("\t\tMinimo {} componentes em um cluster!", MIN_COMPS_IN_ONE_CLUSTER);
-					CommonLogger.debug(c.toString());//TODO remover isso
+					CommonLogger.debug("\n\t\t===> Minimo {} componentes em um cluster!", MIN_COMPS_IN_ONE_CLUSTER);
+					CommonLogger.debug("\nLast cluster: \n" +c.toString());//TODO remover isso
 					return true;
 				}else{
 					if(lastCluster != null){
-						//Os clusters com componentes devem estar 'próximo' um dos outros
-						Dewey dist = this.distMatrix.getDist(lastCluster.last(), c.first());
-						if(dist.getHeight() <= HEIGHT_BETWEEN_QUESTIONS)
+						if(!isNewQuestionario(lastCluster, c))
 							qCount++;
 						else
 							qCount = 1;
@@ -195,8 +215,8 @@ public class RulesChecker {
 				}
 			}
 			if(qCount == MIN_CLUSTERS_WITH_COMP){
-				CommonLogger.debug("\t\tMinimo {} clusters com componentes!", MIN_CLUSTERS_WITH_COMP);
-				CommonLogger.debug(c.toString());//TODO remover isso
+				CommonLogger.debug("\n\t\t===> Minimo {} clusters com componentes!", MIN_CLUSTERS_WITH_COMP);
+				CommonLogger.debug("\nLast cluster: \n" +c.toString());//TODO remover isso
 				return true;
 			}
 			lastCluster = c;
