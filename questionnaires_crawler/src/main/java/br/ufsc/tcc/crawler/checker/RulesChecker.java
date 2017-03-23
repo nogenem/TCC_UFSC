@@ -28,14 +28,21 @@ public class RulesChecker {
 	private static int HEIGHT_BETWEEN_QUESTIONS = 0;
 
 	private DistanceMatrix distMatrix;
+	private ClusterBuilder builder;
 	
 	// Construtores
 	public RulesChecker(){
 		this.distMatrix = new DistanceMatrix();
+		this.builder = new ClusterBuilder();
 	}
 	
 	// Demais métodos
-	//TODO remover isso ao final do desenvolvimento!
+	public boolean shouldSave(HtmlParseData htmlParseData) {
+		String html = htmlParseData.getHtml();
+		Document doc = Jsoup.parse(html);
+		return this.shouldSave(doc);
+	}
+	
 	public boolean shouldSave(Document doc){
 		Element root = doc.select("body").get(0);
 		
@@ -46,167 +53,37 @@ public class RulesChecker {
 		}
 		
 		List<MyNode> nodes = CommonUtil.findCompsImgsAndTexts(root);
-		List<Cluster> clusters = groupNearNodes(nodes, distMatrix);
-		groupClustersByHeuristics(clusters);
+		List<Cluster> clusters = this.builder.build(nodes, this.distMatrix);
 		
 		CommonLogger.debug(clusters);
 		
-		boolean ret = hasQuestionnarie(clusters);
+		boolean ret = hasQuestionnaire(clusters);
 		this.distMatrix.clear();
 		
 		return ret;
 	}
-		
-	public boolean shouldSave(HtmlParseData htmlParseData) {
-		String html = htmlParseData.getHtml();
-		Document doc = Jsoup.parse(html);
-		Element root = doc.select("body").get(0);
-		
-		if(!SURVEY_WORDS_REGEX.matcher(root.text()).matches() && 
-				!SURVEY_WORDS_REGEX.matcher(doc.title()).matches()){
-			this.distMatrix.clear();
-			return false;
-		}
-		
-		List<MyNode> nodes = CommonUtil.findCompsImgsAndTexts(root);
-		List<Cluster> clusters = groupNearNodes(nodes, distMatrix);
-		groupClustersByHeuristics(clusters);
-		
-		boolean ret = hasQuestionnarie(clusters);
-		this.distMatrix.clear();
-		
-		return ret;
-	}
-
-	private List<Cluster> groupNearNodes(List<MyNode> nodes, DistanceMatrix distMatrix2) {
-		Cluster cTmp = new Cluster();
-		ArrayList<Cluster> ret = new ArrayList<>();
-		
-		for(MyNode nTmp : nodes){
-			if(!cTmp.isEmpty() && !distMatrix.areNear(cTmp.last(), nTmp)){
-				ret.add(cTmp);
-				cTmp = new Cluster();
-			}
-			cTmp.add(nTmp);
-		}
-		if(!cTmp.isEmpty())
-			ret.add(cTmp);
-		return ret;
-	}
-
-	private void groupClustersByHeuristics(List<Cluster> clusters) {
-		Cluster tmp1, tmp2, tmp3;
-		int i, size;
-		
-		do{
-			size = clusters.size();
-			i = 0;
-			
-			while(i < clusters.size()-1){
-				int tmpSize = clusters.size();
-				
-				tmp1 = clusters.get(i);
-				tmp2 = clusters.get(i+1);
-				tmp3 = i+2 < tmpSize ? clusters.get(i+2) : null;
-				
-				if(shouldGroup(tmp1, tmp2, tmp3)){
-					tmp1.join(tmp2);
-					clusters.remove(i+1);
-					i--;
-				}
-				i++;
-			}
-		}while(size != clusters.size());
-	}
-
-	private boolean shouldGroup(Cluster c1, Cluster c2, Cluster c3) {
-		//Deve-se juntar grupos de input
-		//PS: pode ter uma img na frente
-		String starterInputRegex = "(?s)^(img\\[alt=.*\\]\\n)?"
-				+ "(input\\[type=.+\\]).*";
-		String c1Text = c1.getAllNodesText(),
-				c2Text = c2.getAllNodesText();
-		if(c1Text.matches(starterInputRegex) && c2Text.matches(starterInputRegex))
-			return true;
-		
-		//Deve-se juntar padrões de cluster texto seguidos de cluster elementos OU
-		//cluster com 1 elemento apenas (casos raros?)
-		//PS: deve-se priorizar a união de elementos a frente desta regra
-		//    -por isso o c3-
-		if((c3 == null || c3.first().isText()) &&
-				((c1.isAllText() && !c2.first().isText()) || 
-						(!c2.first().isText() && c2.size() == 1)))
-			return true;
-		return false;
-	}
 	
-	private boolean isLikelyDescription(String text){
-		return (text.length() >= 4 && text.contains(" ")) || 
-				text.matches("(\\d{1,3}(\\s{1,2})?(\\.|\\:|\\)|\\-)?)");
-	}
-	
-	public boolean isNewQuestionario(Cluster lastCluster, Cluster newCluster) {
-		Dewey dist = this.distMatrix.getDist(lastCluster.last(), newCluster.first());	
-		if(dist.getHeight() > HEIGHT_BETWEEN_QUESTIONS)
-			return true;
-		
-		//Verifica se o 1* container é diferente
-		Dewey d1 = lastCluster.last().getDewey(), d2 = newCluster.first().getDewey();
-		return d1.getNumbers().get(1) != d2.getNumbers().get(1);
-	}
-
-	private boolean hasQuestionnarie(List<Cluster> clusters) {
+	private boolean hasQuestionnaire(List<Cluster> clusters) {
 		//Contador de componentes, Contador de 'questões'
 		double cCount = 0.0, qCount = 0.0;
 		Cluster lastCluster = null;
-		boolean toIgnore = false, hasTextAbove = false, multiComp = false;
 		
 		//Um questionario deve ter pelo menos 1 cluster com X componentes ou
 		//X clusters com pelo menos 1 componente
 		for(Cluster c : clusters){
-			cCount = 0.0; toIgnore = false; 
-			hasTextAbove = false; multiComp = false;
+			cCount = getCountOfComps(c);
 			
-			//Conta quantos textos e componentes tem no cluster
-			ArrayList<MyNode> nodes = c.getGroup();
-			for(int i = 0; i < nodes.size(); i++){
-				MyNode node = nodes.get(i);
-				if(node.isText()){ 
-					if(PHRASES_TO_IGNORE_REGEX.matcher(node.getText()).matches()){ 
-						toIgnore = true;
-						break;
-					}
-					if(multiComp){
-						hasTextAbove = true;
-						multiComp = false;
-					}else
-						hasTextAbove = isLikelyDescription(node.getText());
-				}else if(node.isComponent() && node.getType() != MyNodeType.OPTION){
-					//todo componente deve ter pelo menos um texto/img acima dele
-					if(hasTextAbove){
-						if(CommonUtil.getMultiComps().contains(node.getText())){
-							cCount += 0.5;
-							multiComp = true;
-						}else{
-							cCount++;
-							multiComp = false;
-						}
-					}
-					hasTextAbove = (multiComp && i+1 < nodes.size()) ? 
-							nodes.get(i+1).isComponent() : false;
-				}
-			}
-			//Toda questão deve ter pelo menos 1 componente e não deve pertencer a 
-			//um cluster de login/registro/busca
+			//Toda questão deve ter pelo menos 1 componente e não deve possuir
+			//frases contidas no: PHRASES_TO_IGNORE_REGEX
 			CommonLogger.debug("cCount: " +cCount+ "; qCount: " +qCount);
-			if(!toIgnore && cCount >= 1){
+			if(cCount >= 1){
 				if(cCount >= MIN_COMPS_IN_ONE_CLUSTER){
 					CommonLogger.debug("\n\t\t===> Minimo {} componentes em um cluster!", MIN_COMPS_IN_ONE_CLUSTER);
 					CommonLogger.debug("\nLast cluster: \n" +c.toString());//TODO remover isso
 					return true;
 				}else{
 					if(lastCluster != null){
-						if(!isNewQuestionario(lastCluster, c))
+						if(!isStartingANewQuestionnaire(lastCluster, c))
 							qCount++;
 						else
 							qCount = 1;
@@ -222,6 +99,60 @@ public class RulesChecker {
 			lastCluster = c;
 		}
 		return false;
+	}
+	
+	private double getCountOfComps(Cluster c){
+		double count = 0.0;
+		boolean hasTextAbove = false, multiComp = false;
+		ArrayList<MyNode> nodes = c.getGroup();
+		
+		for(int i = 0; i < nodes.size(); i++){
+			MyNode node = nodes.get(i);
+			if(node.isText()){ 
+				if(PHRASES_TO_IGNORE_REGEX.matcher(node.getText()).matches()){ 
+					count = -1;
+					break;
+				}
+				if(multiComp){
+					hasTextAbove = true;
+					multiComp = false;
+				}else
+					hasTextAbove = isLikelyDescription(node.getText());
+			}else if(node.isComponent() && node.getType() != MyNodeType.OPTION){
+				//Todo componente deve ter pelo menos um texto acima dele
+				if(hasTextAbove){
+					//RADIO_INPUT e CHECKBOX sempre aparecem em 2 ou + em uma pergunta, por isso
+					//cada um conta como 0.5
+					if(CommonUtil.getMultiComps().contains(node.getText())){
+						count += 0.5;
+						multiComp = true;
+					}else{
+						count++;
+						multiComp = false;
+					}
+				}
+				//Checa se tem um componente também abaixo, para casos de RATING ou MULTI_COMP
+				//Ex: https://www.survio.com/modelo-de-pesquisa/avaliacao-de-um-e-shop [9* questão]
+				hasTextAbove = (multiComp && i+1 < nodes.size()) ? 
+						nodes.get(i+1).isComponent() : false;
+			}
+		}
+		return count;
+	}
+	
+	private boolean isLikelyDescription(String text){
+		return (text.length() >= 4 && text.contains(" ")) || 
+				text.matches("(\\d{1,3}(\\s{1,2})?(\\.|\\:|\\)|\\-)?)");
+	}
+	
+	private boolean isStartingANewQuestionnaire(Cluster lastCluster, Cluster newCluster) {
+		Dewey dist = this.distMatrix.getDist(lastCluster.last(), newCluster.first());	
+		if(dist.getHeight() > HEIGHT_BETWEEN_QUESTIONS)
+			return true;
+		
+		//Verifica se o 1* container é diferente
+		Dewey d1 = lastCluster.last().getDewey(), d2 = newCluster.first().getDewey();
+		return d1.getNumbers().get(1) != d2.getNumbers().get(1);
 	}
 	
 	// Métodos/Blocos estáticos
