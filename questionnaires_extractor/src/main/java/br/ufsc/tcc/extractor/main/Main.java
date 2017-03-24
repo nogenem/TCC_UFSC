@@ -11,12 +11,10 @@ import br.ufsc.tcc.common.crawler.CrawlerController;
 import br.ufsc.tcc.common.database.connection.BasicConnection;
 import br.ufsc.tcc.common.database.connection.PostgreConnection;
 import br.ufsc.tcc.common.database.manager.PossivelQuestionarioManager;
-import br.ufsc.tcc.common.model.Dewey;
 import br.ufsc.tcc.common.util.CommonLogger;
 import br.ufsc.tcc.common.util.CommonUtil;
-import br.ufsc.tcc.common.util.DistanceMatrix;
+import br.ufsc.tcc.extractor.builder.QuestionarioBuilder;
 import br.ufsc.tcc.extractor.crawler.Crawler;
-import br.ufsc.tcc.extractor.crawler.builder.QuestionarioBuilder;
 import br.ufsc.tcc.extractor.database.manager.FormaDaPerguntaManager;
 import br.ufsc.tcc.extractor.database.manager.QuestionarioManager;
 

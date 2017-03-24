@@ -10,7 +10,7 @@ import br.ufsc.tcc.common.config.ProjectConfigs;
 import br.ufsc.tcc.common.database.connection.BasicConnection;
 import br.ufsc.tcc.common.database.connection.PostgreConnection;
 import br.ufsc.tcc.common.util.CommonLogger;
-import br.ufsc.tcc.extractor.crawler.builder.QuestionarioBuilder;
+import br.ufsc.tcc.extractor.builder.QuestionarioBuilder;
 import br.ufsc.tcc.extractor.database.manager.QuestionarioManager;
 import br.ufsc.tcc.extractor.model.Questionario;
 import edu.uci.ics.crawler4j.crawler.Page;

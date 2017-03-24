@@ -1,4 +1,4 @@
-package br.ufsc.tcc.extractor.crawler.builder;
+package br.ufsc.tcc.extractor.builder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +10,7 @@ import br.ufsc.tcc.common.model.MyNodeType;
 import br.ufsc.tcc.common.util.CommonLogger;
 import br.ufsc.tcc.common.util.DistanceMatrix;
 import br.ufsc.tcc.extractor.database.manager.FormaDaPerguntaManager;
+import br.ufsc.tcc.extractor.extractor.PerguntaExtractor;
 import br.ufsc.tcc.extractor.model.Alternativa;
 import br.ufsc.tcc.extractor.model.Figura;
 import br.ufsc.tcc.extractor.model.FormaDaPergunta;
@@ -18,18 +19,24 @@ import br.ufsc.tcc.extractor.model.Pergunta;
 import br.ufsc.tcc.extractor.model.Questionario;
 
 public class PerguntaBuilder {
-	
+	// Current
 	private Pergunta currentP;
 	private Grupo currentG;
 	private int currentI;
+	
+	// Helpers
 	private DistanceMatrix distMatrix;
 	private RulesChecker checker;
+	private PerguntaExtractor extractor;
+	
+	// Group
 	private Cluster firstGroupOfQuestionnaire;
 	
+	// Matrix
 	private Cluster lastMatrixHead;
 	private Pergunta lastMatrix;
 	
-	// last question with subquestions
+	// Question with subquestions
 	private Cluster lastQWithSubQsDesc;
 	private Pergunta lastQWithSubQs;
 	private String lastQWithSubQsCommonPrefix;
@@ -38,8 +45,11 @@ public class PerguntaBuilder {
 		this.currentP = null;
 		this.currentG = null;
 		this.currentI = 0;
+		
 		this.checker = checker;
 		this.distMatrix = this.checker.getDistMatrix();
+		this.extractor = new PerguntaExtractor(this.checker);
+		
 		this.firstGroupOfQuestionnaire = null;
 		
 		this.lastMatrixHead = null;
@@ -55,6 +65,7 @@ public class PerguntaBuilder {
 			return i;
 		
 		this.currentP = new Pergunta();
+		this.extractor.setCurrentPergunta(this.currentP);
 		this.currentI = i;
 		
 		MyNode firstNode = nodes.get(this.currentI);
@@ -81,25 +92,29 @@ public class PerguntaBuilder {
 			if(this.lastMatrixHead != null || this.checker.isSimpleMatrix(nodes, this.currentI, cStack)){
 				if(this.lastMatrixHead == null)
 					this.lastMatrixHead = cStack.pop();
-				this.extractSimpleMatrix(nodes, currentQ);
+				
+				this.currentI = this.extractor.extractSimpleMatrix(nodes, currentQ, 
+						this.lastMatrixHead, this.currentI);
 			}else if(firstNode.getType() == MyNodeType.RADIO_INPUT && 
 					nTmp1.getType() == MyNodeType.RADIO_INPUT){
+				
 				//Ex: https://www.survio.com/modelo-de-pesquisa/avaliacao-de-um-e-shop [questão 9]
-				this.extractSimpleRating(nodes);
+				this.currentI = this.extractor.extractSimpleRating(nodes, this.currentI);
 			}else if(firstNode.getType() == nTmp1.getType()){
+				
 				//Ex: http://lap.umd.edu/surveys/census/files/surveya1pagesbytopic/page1.html [questão 2a]
-				this.extractMultiCompQuestion(nodes, currentQ);
+				this.currentI = this.extractor.extractMultiCompQuestion(nodes, currentQ, this.currentI);
 			}
 		}else{
 			switch (firstNode.getType()) {
 			case SELECT:{
-				this.extractSelect(nodes);
+				this.currentI = this.extractor.extractSelect(nodes, this.currentI);
 				break;
 			}case CHECKBOX_INPUT:{
-				this.extractCheckboxOrRadioInput(currentQ, nodes);
+				this.currentI = this.extractor.extractCheckboxOrRadioInput(currentQ, nodes, this.currentI);
 				break;
 			}case RADIO_INPUT:{
-				this.extractCheckboxOrRadioInput(currentQ, nodes);
+				this.currentI = this.extractor.extractCheckboxOrRadioInput(currentQ, nodes, this.currentI);
 				break;
 			}case TEXT_INPUT:
 			case NUMBER_INPUT:
@@ -108,10 +123,10 @@ public class PerguntaBuilder {
 			case TEL_INPUT:
 			case TIME_INPUT:
 			case URL_INPUT:{
-				this.extractGenericInput(nodes);
+				this.currentI = this.extractor.extractGenericInput(nodes, this.currentI);
 				break;
 			}case TEXTAREA:{
-				this.extractTextarea(nodes);
+				this.extractor.extractTextarea(nodes);
 				break;
 			}case RANGE_INPUT:{
 				//TODO tentar achar um exemplo?
@@ -340,270 +355,13 @@ public class PerguntaBuilder {
 		}
 	}
 
-	private void extractTextarea(List<MyNode> nodes) {
-		CommonLogger.debug("\tTextarea");
-		
-		currentP.setForma(FormaDaPerguntaManager.getForma("TEXTAREA"));
-	}
-
-	private void extractGenericInput(List<MyNode> nodes) {
-		String type = nodes.get(this.currentI).getType().toString();
-		CommonLogger.debug("\tInput [{}].", type);
-		currentP.setForma(FormaDaPerguntaManager.getForma(type));
-		
-		//Checagem para coisas do genêro: Hora: [ ] : [ ]
-		//	Ex: https://www.bioinfo.mpg.de/mctq/core_work_life/core/core.jsp?language=por_b
-		if(this.currentI+2 < nodes.size() && type.matches("(TEXT|NUMBER)_INPUT")){
-			MyNode tmp1 = nodes.get(this.currentI+1), 
-					tmp2 = nodes.get(this.currentI+2);
-			if(tmp1.getText().equals(":") && 
-					tmp2.isComponent() && tmp2.getType().toString().equals(type)){
-				this.currentI += 2;
-			}
-		}
-	}
-	
-	private void extractMultiCompQuestion(List<MyNode> nodes, Questionario currentQ) {
-		MyNode input = null, lastInput = null;
-		MyNodeType multiCompType = null;
-		int i = 1;
-		boolean error = false;
-		
-		currentP.setForma(FormaDaPerguntaManager.getForma("MULTI_COMP"));
-		CommonLogger.debug("\tMulti Comp:");
-		
-		input = nodes.get(this.currentI);
-		multiCompType = input.getType();
-		while(input != null && input.getType() == multiCompType){
-			if(lastInput != null && 
-					!this.checker.areCompAndTextNear(lastInput, input)){
-				error = true;
-				break;
-			}
-
-			Pergunta tmpPerg = new Pergunta(""+ (i++));
-			tmpPerg.setForma(FormaDaPerguntaManager.getForma(multiCompType.toString()));
-			tmpPerg.setQuestionario(currentQ);
-			this.currentP.addFilha(tmpPerg);
-			CommonLogger.debug("\t\tText: {} - Comp: {}", tmpPerg.getDescricao(), input.getText());
-			
-			lastInput = input;
-			if(this.currentI+1 < nodes.size())
-				input = nodes.get(++this.currentI);
-			else
-				input = null;
-		}
-		//Se input != null então o loop passo da pergunta e entro na proxima e por isso,
-		//deve-se voltar o index para o final da pergunta
-		if(input != null)
-			--this.currentI;
-		//Se deu erro e não tem nenhuma filha/alternativa quer dizer que o loop não
-		//completo nenhuma vez
-		if(error && this.currentP.getFilhas().size() == 0)
-			this.currentP.setForma(null);
-	}
-
-	private void extractSimpleRating(List<MyNode> nodes) {
-		MyNode input = null, lastInput = null;
-		int i = 1;//TODO adicionar 0 tb?
-		boolean error = false;
-				
-		currentP.setForma(FormaDaPerguntaManager.getForma("RATING"));
-		CommonLogger.debug("\tRating:");
-		
-		input = nodes.get(this.currentI);
-		while(input != null && input.getType() == MyNodeType.RADIO_INPUT){
-			if(lastInput != null && 
-					!this.checker.areCompAndTextNear(lastInput, input)){
-				error = true;
-				break;
-			}
-			
-			Alternativa tmpAlt = new Alternativa(""+ (i++));
-			this.currentP.addAlternativa(tmpAlt);
-			CommonLogger.debug("\t\t{}", tmpAlt.getDescricao());
-			
-			lastInput = input;
-			if(this.currentI+1 < nodes.size())
-				input = nodes.get(++this.currentI);
-			else
-				input = null;
-		}
-		if(input != null)
-			--this.currentI;
-		if(error && this.currentP.getAlternativas().size() == 0)
-			this.currentP.setForma(null);
-	}
-
-	private void extractCheckboxOrRadioInput(Questionario currentQ, List<MyNode> nodes) {
-		MyNode img = null, input = null, text = null, tmp = null;
-		boolean isImgQuestion = false, error = false;
-		String txt = "";
-		
-		input = nodes.get(this.currentI);
-		
-		this.currentP.setForma(FormaDaPerguntaManager.getForma(input.getType().toString()));
-		if(input.getType() == MyNodeType.CHECKBOX_INPUT)
-			CommonLogger.debug("\tCheckbox Input:");
-		else
-			CommonLogger.debug("\tRadio Input:");
-		
-		img = nodes.get(this.currentI-1);
-		text = nodes.get(++this.currentI);
-		tmp = nodes.get(this.currentI+1);
-		// Perguntas com imagens seguem o padrão: 
-		//		img -> input -> text -> img -> input -> text ...
-		isImgQuestion = img.isImage() && tmp.isImage();
-		while(input != null && 
-				(input.getType() == MyNodeType.CHECKBOX_INPUT || input.getType() == MyNodeType.RADIO_INPUT) &&
-				(!isImgQuestion || (img != null && img.isImage()))){
-			if(!this.checker.areCompAndTextNear(input, text)){
-				error = true;
-				break;
-			}
-			
-			txt = text.getText();
-			CommonLogger.debug("\t\t{}", txt);
-			Object dono = null;
-			
-			if(tmp != null){
-				//Ex: https://www.surveymonkey.com/r/CAHPS-Health-Plan-Survey-40-Template [pergunta 8]
-				if(text.getType() == MyNodeType.TEXT && tmp.getType() == MyNodeType.TEXT && 
-						this.checker.checkDistForTextsOfAlternative(text, tmp)){
-					txt = txt + tmp.getText();
-					++this.currentI;
-					tmp = this.currentI+1 < nodes.size() ? nodes.get(this.currentI+1) : null;
-				}
-				
-				if(tmp != null && tmp.getType() == MyNodeType.TEXT_INPUT && 
-						this.checker.areCompAndTextNear(tmp, text)){
-					Pergunta tmpPerg = new Pergunta(txt);
-					dono = tmpPerg;
-					
-					tmpPerg.setForma(FormaDaPerguntaManager.getForma("TEXT_INPUT"));
-					CommonLogger.debug("\t\t\tCom Text Input.");
-					
-					tmpPerg.setQuestionario(currentQ);
-					this.currentP.addFilha(tmpPerg);
-				} 
-			}
-			
-			if(dono == null){
-				Alternativa tmpAlt = new Alternativa(txt);
-				dono = tmpAlt;
-				this.currentP.addAlternativa(tmpAlt);
-			}
-			
-			if(isImgQuestion && img != null && img.isImage()){
-				Figura fig = new Figura(img.getAttr("src"), img.getAttr("alt"));
-				fig.setDono(dono);
-				currentQ.addFigura(fig);
-				CommonLogger.debug("\t\t\tLegenda: {}", fig.getLegenda());
-			}
-			
-			if(this.currentI+1 < nodes.size() && isImgQuestion)
-				img = nodes.get(++this.currentI);
-			else
-				img = null;
-			if(this.currentI+2 < nodes.size()){
-				input = nodes.get(++this.currentI);
-				text = nodes.get(++this.currentI);
-				if(this.currentI+1 < nodes.size())
-					tmp = nodes.get(this.currentI+1);
-			}else
-				input = null;
-		}
-		if(input != null){
-			if(isImgQuestion && img != null) --this.currentI;
-			this.currentI -= 2;
-			if(input.getType() == MyNodeType.TEXT_INPUT)
-				this.currentI += 1;
-			if(this.currentP.getAlternativas().size() == 0)
-				this.currentI += 1;
-		}
-		if(error && this.currentP.getAlternativas().size() == 0)
-			this.currentP.setForma(null);		
-	}
-
-	private void extractSelect(List<MyNode> nodes) {
-		MyNode opt = null, text = null;
-		boolean error = false;
-		
-		currentP.setForma(FormaDaPerguntaManager.getForma("SELECT"));
-		CommonLogger.debug("\tSelect:");
-		
-		opt = nodes.get(++this.currentI);
-		text = nodes.get(++this.currentI);
-		while(opt != null && opt.getType() == MyNodeType.OPTION){
-			if(!this.checker.areCompAndTextNear(opt, text)){
-				error = true;
-				break;
-			}
-			
-			Alternativa tmpAlt = new Alternativa(text.getText());
-			this.currentP.addAlternativa(tmpAlt);
-			CommonLogger.debug("\t\t{}", tmpAlt.getDescricao());
-			
-			if(this.currentI+2 < nodes.size()){
-				opt = nodes.get(++this.currentI);
-				text = nodes.get(++this.currentI);
-			}else
-				opt = null;
-		}
-		if(opt != null)
-			this.currentI -= 2;
-		if(error && this.currentP.getAlternativas().size() == 0)
-			this.currentP.setForma(null);
-	}
-	
-	private void extractSimpleMatrix(List<MyNode> nodes, Questionario currentQ) {
-		MyNode input = null;
-		MyNodeType lastCompType = null;
-		//Esta matriz possui componentes mistos?
-		boolean isMix = false;
-		int j = 0;
-		
-		CommonLogger.debug("\tSimple Matrix:");
-		input = nodes.get(this.currentI);
-		while(input != null && j < this.lastMatrixHead.size() && input.isComponent()){
-			if(!isMix && lastCompType != null && lastCompType != input.getType())
-				isMix = true;
-			lastCompType = input.getType();
-			
-			String text = this.lastMatrixHead.get(j).getText();
-			CommonLogger.debug("\t\tText: {} - Comp: {}", text, input.getText());
-			
-			if(lastCompType == MyNodeType.RADIO_INPUT || lastCompType == MyNodeType.CHECKBOX_INPUT){
-				Alternativa alt = new Alternativa(text);
-				this.currentP.addAlternativa(alt);
-			}else{
-				Pergunta tmpPerg = new Pergunta(text);
-				tmpPerg.setForma(FormaDaPerguntaManager.getForma(lastCompType.toString()));
-				tmpPerg.setQuestionario(currentQ);
-				this.currentP.addFilha(tmpPerg);
-			}
-			
-			if(this.currentI+1 < nodes.size())
-				input = nodes.get(++this.currentI);
-			else
-				input = null;
-			j++;
-		}
-		if(input != null)
-			this.currentI--;
-		
-		if(isMix)
-			this.currentP.setForma(FormaDaPerguntaManager.getForma("MIX_COMP_GROUP"));
-		else
-			this.currentP.setForma(FormaDaPerguntaManager.getForma(lastCompType.toString()));
-	}
-
 	public void clearData(Questionario currentQ) {
 		this.saveLastMatrix(currentQ);
 		this.saveLastQWithSubQs(currentQ);
 		
 		this.currentG = null;
 		this.currentP = null;
+		this.extractor.setCurrentPergunta(null);
 	}
 
 }

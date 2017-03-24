@@ -1,4 +1,4 @@
-package br.ufsc.tcc.extractor.crawler.builder;
+package br.ufsc.tcc.extractor.builder;
 
 import java.util.ArrayList;
 import java.util.List;
