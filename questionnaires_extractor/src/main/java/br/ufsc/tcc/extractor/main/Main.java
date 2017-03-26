@@ -11,6 +11,7 @@ import br.ufsc.tcc.common.crawler.CrawlerController;
 import br.ufsc.tcc.common.database.connection.BasicConnection;
 import br.ufsc.tcc.common.database.connection.PostgreConnection;
 import br.ufsc.tcc.common.database.manager.PossivelQuestionarioManager;
+import br.ufsc.tcc.common.model.Dewey;
 import br.ufsc.tcc.common.util.CommonLogger;
 import br.ufsc.tcc.common.util.CommonUtil;
 import br.ufsc.tcc.extractor.builder.QuestionarioBuilder;
@@ -34,11 +35,11 @@ public class Main {
 		System.out.println("Carregando arquivo de configuracao...");
 		ProjectConfigs.loadConfigs(configsPath);
 		
-//		Dewey d1 = new Dewey("01.01.02.01.01.15.01.01.01.02.01.02.01.02.01.02.02.01.01"),
-//				d2 = new Dewey("01.01.02.01.01.15.01.01.01.02.01.02.01.02.01.02.02.02"),
+//		Dewey d1 = new Dewey("001.009.001.002.001 "),
+//				d2 = new Dewey("001.010.001.002.001"),
 //				d3 = d1.distanceOf(d2);
 //		System.out.println(d3);
-//		System.out.println(d3.getDeweyWeight());
+//		System.out.println(d3.getWeight());
 		
 		// Inicializa a aplicação
 //		start();

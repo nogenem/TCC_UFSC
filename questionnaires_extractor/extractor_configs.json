@@ -34,7 +34,7 @@
 	"heuristics": {
 		"minQuestionsOnQuestionnaire": 2,
 		"distBetweenNearNodes": {
-			"deweyWeight": 1001,
+			"deweyWeight": 10001,
 			"height": 3
 		},
 		"distBetweenTextsInsideQuestionnaire": {
