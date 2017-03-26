@@ -244,7 +244,7 @@ public class CommonUtil {
 	}
 	
 	public static String padNumber(int i){
-		return ((i < 0) ? "-" : "") + String.format("%02d", Math.abs(i)); 
+		return ((i < 0) ? "-" : "") + String.format("%03d", Math.abs(i)); 
 	}
 	
 	public static String getNodeRepresentation(Node node){
@@ -313,7 +313,7 @@ public class CommonUtil {
 	public static List<MyNode> findCompsImgsAndTexts(Node root) {
 		List<MyNode> ret = new ArrayList<>();
 		if(root != null)
-			findCompsImgsAndTexts(root, "01", ret);
+			findCompsImgsAndTexts(root, "001", ret);
 		return ret;
 	}
 

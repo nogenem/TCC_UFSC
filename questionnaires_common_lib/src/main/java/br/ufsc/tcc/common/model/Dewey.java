@@ -39,7 +39,7 @@ public class Dewey {
 			int n = this.numbers.size()-1, tmp = 0;
 			this.weight = 0;
 			for(int i = n; i>=0; i--){
-				tmp += (n-i)*100;
+				tmp += (n-i)*1000;
 				this.weight += this.numbers.get(i) + tmp;
 			}
 		}
@@ -63,7 +63,7 @@ public class Dewey {
 	    	int i = result.lastIndexOf('.');
 	    	if(i == -1)
 	    		result = "";
-	    	else if(result.length()-i <= 2)//Ficou pela metade, ex: 01.02.01 e 01.02.02
+	    	else if(result.length()-i <= 3)//Ficou pela metade, ex: 001.002.001 e 001.002.002
 		    	result = result.substring(0, result.lastIndexOf('.'));
 	    }
 		return result;
