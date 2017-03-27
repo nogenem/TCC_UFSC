@@ -23,7 +23,7 @@
 	],
 	"heuristics": {
 		"distBetweenNearNodes": {
-			"deweyWeight": 10000,
+			"weight": 10000,
 			"height": 3
 		},
 		"distBetweenNearQuestions": {
