@@ -3,6 +3,7 @@ package br.ufsc.tcc.extractor.model;
 import java.util.ArrayList;
 
 import br.ufsc.tcc.common.util.CommonLogger;
+import br.ufsc.tcc.extractor.database.manager.FormaDaPerguntaManager;
 
 public class Pergunta {
 	
@@ -143,6 +144,11 @@ public class Pergunta {
 	}
 	
 	// Demais métodos
+	public boolean isA(String forma){
+		return this.getForma() ==
+				FormaDaPerguntaManager.getForma(forma.toUpperCase());
+	}
+	
 	private String convertFormaToTipo(){
 		if(this.getForma() == null) return "";
 		

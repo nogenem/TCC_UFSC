@@ -154,8 +154,7 @@ public class PerguntaBuilder {
 				//Se for um CHECKBOX ou RADIO INPUT, então o texto complementar deve
 				//pertencer a uma opção 'Outro' que usa um TEXT INPUT
 				//	Ex: https://www.survio.com/modelo-de-pesquisa/pesquisa-de-preco-do-produto [questão 2] 
-				if(this.currentP.getForma() == FormaDaPerguntaManager.getForma("CHECKBOX_INPUT") || 
-						this.currentP.getForma() == FormaDaPerguntaManager.getForma("RADIO_INPUT")){
+				if(this.currentP.isA("CHECKBOX_INPUT") || this.currentP.isA("RADIO_INPUT")){
 					if(this.currentP.getFilhas().size() > 0){
 						ArrayList<Pergunta> filhas = this.currentP.getFilhas();
 						Pergunta p = filhas.get(filhas.size()-1);
@@ -342,7 +341,7 @@ public class PerguntaBuilder {
 		if(!cStack.isEmpty() && lastMatrix == null){
 			this.lastMatrix = new Pergunta();
 			FormaDaPergunta forma = this.currentP.getForma();
-			if(forma == FormaDaPerguntaManager.getForma("MIX_COMP_GROUP")){
+			if(this.currentP.isA("MIX_COMP_GROUP")){
 				this.lastMatrix.setForma(FormaDaPerguntaManager.getForma("MIX_COMP_MATRIX"));
 			}else{
 				this.lastMatrix.setForma(FormaDaPerguntaManager.getForma(forma.toString()+"_MATRIX"));
