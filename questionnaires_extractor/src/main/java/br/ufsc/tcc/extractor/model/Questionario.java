@@ -20,9 +20,14 @@ public class Questionario {
 	
 	// Construtores
 	public Questionario(){
+		this("");
+	}
+	
+	public Questionario(String link_doc){
 		this.id = -1;
 		this.assunto = "";
-		this.link_doc = "";
+		this.link_doc = link_doc;
+		
 		this.perguntas = new ArrayList<>();
 		this.grupos = new ArrayList<>();
 		this.figuras = new ArrayList<>();
@@ -96,6 +101,7 @@ public class Questionario {
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Questionario: " +this.getAssunto()+ "\n");
+		builder.append("\tLink: " +this.getLink_doc() + "\n");
 		builder.append("\tFiguras:\n");		
 		for(Figura fig : this.figuras){
 			builder.append("\t\t" +fig+ "\n");

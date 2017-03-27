@@ -207,6 +207,7 @@ public class Pergunta {
 		for(Pergunta filha : this.getFilhas()){
 			builder.append("\t\t" +filha.getDescricao() +" [" +filha.getForma()+ "]\n");
 		}
+		builder.append("\n");
 		return builder.toString();
 	}
 }

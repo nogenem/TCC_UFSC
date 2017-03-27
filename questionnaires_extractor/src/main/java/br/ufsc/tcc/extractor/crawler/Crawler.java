@@ -55,9 +55,9 @@ public class Crawler extends WebCrawler {
 				doc = Jsoup.parse(htmlParseData.getHtml());
 				Element root = doc.select("body").get(0);
 				
+				qBuilder.setCurrentLink(link);
 				ArrayList<Questionario> questionarios = qBuilder.build(root);
 				for(Questionario q : questionarios){
-					q.setLink_doc(link);
 //					this.qManager.save(q);
 					
 					CommonLogger.debug(Thread.currentThread().getName()+ "> SAVE DONE!");

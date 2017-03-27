@@ -17,22 +17,35 @@ public class QuestionarioBuilder {
 	private static int MIN_QUESTIONS_ON_QUESTIONNAIRE = 0;
 	
 	private Questionario currentQ;
+	private String currentLink;
 	private PerguntaBuilder pBuilder;
 	private RulesChecker checker;
 	
+	// Construtores
 	public QuestionarioBuilder(){
 		this.currentQ = null;
+		this.currentLink = "";
 		this.checker = new RulesChecker();
 		this.pBuilder = new PerguntaBuilder(this.checker);
 	}
 	
+	// Getters e Setters
+	public String getCurrentLink(){
+		return this.currentLink;
+	}
+	
+	public void setCurrentLink(String link){
+		this.currentLink = link;
+	}
+	
+	// Demais métodos
 	public ArrayList<Questionario> build(Node root) {
 		ArrayList<Questionario> ret = new ArrayList<>();
 		List<MyNode> nodes = CommonUtil.findCompsImgsAndTexts(root);
 		
 		CommonLogger.debug(nodes);
 		
-		this.currentQ = new Questionario();
+		this.currentQ = new Questionario(this.currentLink);
 		Stack<Cluster> cStack = new Stack<>();
 		Cluster cTmp = new Cluster(), lastDesc = null;
 		
@@ -55,14 +68,14 @@ public class QuestionarioBuilder {
 					if(this.currentQ.getAssunto().isEmpty()){
 						this.pBuilder.clearData(this.currentQ);
 						CommonLogger.debug("1================================================\n");
-						this.currentQ = new Questionario();
+						this.currentQ = new Questionario(this.currentLink);
 					}else if(checker.shouldStartNewQuestionario(lastDesc, nTmp)){
 						this.pBuilder.clearData(this.currentQ);
 						//Um questionario deve ter no minimo X perguntas
 						if(this.currentQ.getPerguntas().size() >= MIN_QUESTIONS_ON_QUESTIONNAIRE)
 							ret.add(this.currentQ);
 						CommonLogger.debug("2================================================\n");
-						this.currentQ = new Questionario();
+						this.currentQ = new Questionario(this.currentLink);
 					}
 				}
 				

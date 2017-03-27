@@ -92,7 +92,6 @@ public class Main {
 		
 //		path = "cache/exemplo.html";
 		
-		
 		BasicConnection conn = new PostgreConnection(ProjectConfigs.getExtractorDatabaseConfigs());;
 		FormaDaPerguntaManager.loadFormas(conn);
 		QuestionarioBuilder qBuilder = new QuestionarioBuilder();
@@ -110,6 +109,7 @@ public class Main {
 					.get();
 			}
 			Element root = doc.select("body").get(0);
+			qBuilder.setCurrentLink(path);
 			qBuilder.build(root);
 		}catch(Exception e){
 			CommonLogger.error(e);
