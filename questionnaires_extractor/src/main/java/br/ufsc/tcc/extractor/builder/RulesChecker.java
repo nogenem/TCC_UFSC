@@ -172,6 +172,10 @@ public class RulesChecker {
 			MyNode nTmp1 = nodes.get(i),
 				nTmp2 = nodes.get(i+1),
 				nTmp3 = nodes.get(i+2);
+			//TODO e se não tiver mais nada embaixo? (i+2 = max)
+			if(i+3 < nodes.size() && distMatrix.getDist(nTmp2, nTmp3).getWeight() == 1000){
+				nTmp3 = nodes.get(i+3);
+			}
 			JSONObject obj = CONFIGS.getJSONObject("distBetweenDescAndComplementaryText");
 			
 			if(nTmp2.isText() && nTmp3.isImgOrText()){
@@ -275,7 +279,7 @@ public class RulesChecker {
 	public boolean checkDistForTextsOfAlternative(MyNode n1, MyNode n2){
 		JSONObject obj = CONFIGS.getJSONObject("distBetweenTextsOfSameAlternative");
 		Dewey dist = this.distMatrix.getDist(n1, n2);
-		return dist.getWeight() <= obj.getInt("deweyWeight");
+		return dist.getWeight() <= obj.getInt("weight");
 	}
 	
 	// Métodos/Blocos estáticos
@@ -341,7 +345,7 @@ public class RulesChecker {
 		tmp2 = h!=null ? h.optJSONObject("distBetweenTextsOfSameAlternative") : tmp1;
 		tmp2 = tmp2!=null ? tmp2 : tmp1;
 		CONFIGS.getJSONObject("distBetweenTextsOfSameAlternative")
-			.put("deweyWeight", tmp2.optInt("deweyWeight", 100));
+			.put("weight", tmp2.optInt("weight", 1000));
 		
 		CommonLogger.debug("RULESCHECKER: {}", CONFIGS.getJSONObject("distBetweenTextsInQuestionWithSubQuestions"));
 	}

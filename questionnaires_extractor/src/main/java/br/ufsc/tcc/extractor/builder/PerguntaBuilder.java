@@ -148,6 +148,24 @@ public class PerguntaBuilder {
 			if(!checker.areDescAndPergNear(desc, firstNode))
 				return this.currentI;
 			
+			//Verifica se o texto abaixo, se tiver, não faz parte desta pergunta (Ex: Peso: [ ] kg)
+			while(this.checker.checkComplementaryText(nodes, this.currentI)){
+				nTmp1 = nodes.get(++this.currentI);
+				//Se for um CHECKBOX ou RADIO INPUT, então o texto complementar deve
+				//pertencer a uma opção 'Outro' que usa um TEXT INPUT
+				//	Ex: https://www.survio.com/modelo-de-pesquisa/pesquisa-de-preco-do-produto [questão 2] 
+				if(this.currentP.getForma() == FormaDaPerguntaManager.getForma("CHECKBOX_INPUT") || 
+						this.currentP.getForma() == FormaDaPerguntaManager.getForma("RADIO_INPUT")){
+					if(this.currentP.getFilhas().size() > 0){
+						ArrayList<Pergunta> filhas = this.currentP.getFilhas();
+						Pergunta p = filhas.get(filhas.size()-1);
+						p.setDescricao(p.getDescricao()+"\n"+nTmp1.getText());
+					}else
+						desc.add(nTmp1);
+				}else
+					desc.add(nTmp1);
+			}
+			
 			this.currentP.setDescricao(desc.getText());
 			CommonLogger.debug("Descricao: {}\n\n", this.currentP.getDescricao());
 			
@@ -274,15 +292,7 @@ public class PerguntaBuilder {
 					}
 				}
 			}
-			
-			//Verifica se o texto abaixo, se tiver, não faz parte desta pergunta (Ex: Peso: [ ] kg)
-			if(this.checker.checkComplementaryText(nodes, this.currentI)){
-				nTmp1 = nodes.get(++this.currentI);
-				this.currentP.setDescricao(
-						this.currentP.getDescricao() +"\n"+ nTmp1.getText());
-				CommonLogger.debug("Descricao atualizada: {}\n\n", this.currentP.getDescricao());
-			}
-			
+
 			if(this.currentG != null){
 				this.currentP.setGrupo(this.currentG);
 				if(this.lastMatrix != null && this.lastMatrix.getGrupo() == null)

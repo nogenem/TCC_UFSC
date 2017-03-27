@@ -10,6 +10,7 @@ import br.ufsc.tcc.common.config.ProjectConfigs;
 import br.ufsc.tcc.common.database.connection.BasicConnection;
 import br.ufsc.tcc.common.database.connection.PostgreConnection;
 import br.ufsc.tcc.common.util.CommonLogger;
+import br.ufsc.tcc.common.util.CommonUtil;
 import br.ufsc.tcc.extractor.builder.QuestionarioBuilder;
 import br.ufsc.tcc.extractor.database.manager.QuestionarioManager;
 import br.ufsc.tcc.extractor.model.Questionario;
@@ -59,7 +60,7 @@ public class Crawler extends WebCrawler {
 					q.setLink_doc(link);
 //					this.qManager.save(q);
 					
-					CommonLogger.debug("SAVE DONE!");
+					CommonLogger.debug(Thread.currentThread().getName()+ "> SAVE DONE!");
 				}
 				questionarios.clear();
 			}catch (Exception e) {

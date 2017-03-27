@@ -1,7 +1,7 @@
 {
 	"logLevels": "ERROR|INFO|DEBUG",
 	"database": {
-		"loadUrlsFromCrawler": true,
+		"loadSeedsFromCrawler": false,
 		"crawler": {
 			"name": "tcc_crawler",
 			"host": "localhost:5432",
@@ -34,7 +34,7 @@
 	"heuristics": {
 		"minQuestionsOnQuestionnaire": 2,
 		"distBetweenNearNodes": {
-			"deweyWeight": 10001,
+			"weight": 10001,
 			"height": 3
 		},
 		"distBetweenTextsInsideQuestionnaire": {
@@ -65,7 +65,7 @@
 			"height": 1
 		},
 		"distBetweenTextsOfSameAlternative": {
-			"deweyWeight": 100
+			"weight": 1000
 		}
 	}
 }
