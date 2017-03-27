@@ -78,11 +78,11 @@ public class DistanceMatrix {
 		if(tmp != null){
 			tmp = tmp.optJSONObject("distBetweenNearNodes");
 			if(tmp != null){
-				MAX_WEIGHT = tmp.optInt("deweyWeight");
+				MAX_WEIGHT = tmp.optInt("weight");
 				MAX_HEIGHT = tmp.optInt("height");
 			}
 		}
-		if(MAX_WEIGHT <= 0) MAX_WEIGHT = 1000;
+		if(MAX_WEIGHT <= 0) MAX_WEIGHT = 10000;
 		if(MAX_HEIGHT <= 0) MAX_HEIGHT = 3;
 		
 		CommonLogger.debug("DISTMATRIX: {} / {}", MAX_WEIGHT, MAX_HEIGHT);
