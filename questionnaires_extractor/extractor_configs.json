@@ -60,7 +60,7 @@
 			"height": 1,
 			"width": 5
 		},
-		"distBetweenDescriptions": {
+		"distBetweenPartsOfDescription": {
 			"width": 4,
 			"height": 1
 		},
