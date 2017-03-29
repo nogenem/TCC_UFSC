@@ -172,14 +172,19 @@ public class RulesChecker {
 			MyNode nTmp1 = nodes.get(i),
 				nTmp2 = nodes.get(i+1),
 				nTmp3 = nodes.get(i+2);
+			Dewey dist = distMatrix.getDist(nTmp2, nTmp3);
+
+			//Lida com casos aonde se tem 2 textos complementares
+			//	Ex: https://www.survio.com/modelo-de-pesquisa/feedback-sobre-servico
 			//TODO e se não tiver mais nada embaixo? (i+2 = max)
-			if(i+3 < nodes.size() && distMatrix.getDist(nTmp2, nTmp3).getWeight() == 1000){
+			if(i+3 < nodes.size() && nTmp3.isImgOrText() && 
+					dist.getMaxHeight() == 1 && dist.getWidth() == 2){
 				nTmp3 = nodes.get(i+3);
 			}
 			JSONObject obj = CONFIGS.getJSONObject("distBetweenDescAndComplementaryText");
 			
 			if(nTmp2.isText() && nTmp3.isImgOrText()){
-				Dewey dist = distMatrix.getDist(nTmp1, nTmp2);
+				dist = distMatrix.getDist(nTmp1, nTmp2);
 				if(dist.getHeight() <= obj.getInt("height") && dist.getWidth() <= obj.getInt("width")){
 					String prefix1 = nTmp1.getDewey().getCommonPrefix(nTmp3.getDewey()),
 							prefix2 = nTmp2.getDewey().getCommonPrefix(nTmp3.getDewey()),
@@ -279,7 +284,9 @@ public class RulesChecker {
 	public boolean checkDistForTextsOfAlternative(MyNode n1, MyNode n2){
 		JSONObject obj = CONFIGS.getJSONObject("distBetweenTextsOfSameAlternative");
 		Dewey dist = this.distMatrix.getDist(n1, n2);
-		return dist.getWeight() <= obj.getInt("weight");
+		return dist.getHeight() <= obj.getInt("height") &&
+				dist.getMaxHeight() <= obj.getInt("maxHeight") &&
+				dist.getWidth() <= obj.getInt("width");
 	}
 	
 	// Métodos/Blocos estáticos
@@ -345,7 +352,9 @@ public class RulesChecker {
 		tmp2 = h!=null ? h.optJSONObject("distBetweenTextsOfSameAlternative") : tmp1;
 		tmp2 = tmp2!=null ? tmp2 : tmp1;
 		CONFIGS.getJSONObject("distBetweenTextsOfSameAlternative")
-			.put("weight", tmp2.optInt("weight", 1000));
+			.put("height", tmp2.optInt("height", 1))
+			.put("maxHeight", tmp2.optInt("maxHeight", 2))
+			.put("width", tmp2.optInt("width", 2));
 		
 		CommonLogger.debug("RULESCHECKER: {}", CONFIGS.getJSONObject("distBetweenTextsInQuestionWithSubQuestions"));
 	}

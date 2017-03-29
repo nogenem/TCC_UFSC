@@ -34,8 +34,8 @@
 	"heuristics": {
 		"minQuestionsOnQuestionnaire": 2,
 		"distBetweenNearNodes": {
-			"weight": 10001,
-			"height": 3
+			"maxHeight": 3,
+			"width": 3
 		},
 		"distBetweenTextsInsideQuestionnaire": {
 			"height": 4
@@ -65,7 +65,9 @@
 			"height": 1
 		},
 		"distBetweenTextsOfSameAlternative": {
-			"weight": 1000
+			"height": 1,
+			"maxHeight": 2,
+			"width": 2
 		}
 	}
 }
