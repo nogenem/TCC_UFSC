@@ -14,8 +14,20 @@ public class CommonLogger {
 
 	protected static final String path = "./log.txt";
 	protected static final Logger logger = LoggerFactory.getLogger(CommonLogger.class);
-	//ERROR esta sempre ativado
+	//FATAL_ERROR esta sempre ativado
 	private static String enabledLevels = "FATAL_ERROR|";
+	
+	// Debug level
+	public static boolean isDebugEnabled(){
+		return enabledLevels.contains("|DEBUG");
+	}
+	
+	public static void setDebugEnabled(boolean enabled){
+		if(enabled && !isDebugEnabled())
+			enabledLevels += "|DEBUG";
+		else if(!enabled && isDebugEnabled())
+			enabledLevels = enabledLevels.replace("|DEBUG", "");
+	}
 	
 	public static void debug(String format, Object ...args){
 		if(enabledLevels.contains("DEBUG")){
@@ -39,6 +51,18 @@ public class CommonLogger {
 				logger.debug(builder.toString());
 			}
 		}
+	}
+	
+	// INFO level
+	public static boolean isInfoEnabled(){
+		return enabledLevels.contains("|INFO");
+	}
+	
+	public static void setInfoEnabled(boolean enabled){
+		if(enabled && !isInfoEnabled())
+			enabledLevels += "|INFO";
+		else if(!enabled && isInfoEnabled())
+			enabledLevels = enabledLevels.replace("|INFO", "");
 	}
 	
 	public static void info(String format, Object ...args){
@@ -65,6 +89,18 @@ public class CommonLogger {
 		}
 	}
 	
+	// ERROR level
+	public static boolean isErrorEnabled(){
+		return enabledLevels.contains("|ERROR");
+	}
+	
+	public static void setErrorEnabled(boolean enabled){
+		if(enabled && !isErrorEnabled())
+			enabledLevels += "|ERROR";
+		else if(!enabled && isErrorEnabled())
+			enabledLevels = enabledLevels.replace("|ERROR", "");
+	}
+	
 	public static void error(Throwable e){
 		if(enabledLevels.contains("ERROR")){
 			if(logger.isErrorEnabled())
@@ -75,6 +111,13 @@ public class CommonLogger {
 		}
 	}
 	
+	// FATAL_ERROR level
+	
+	//PS: FATAL_ERROR esta sempre ativo e não pode ser desabilitado
+	public static boolean isFatalErrorEnabled(){
+		return true;
+	}
+		
 	public static void fatalError(Throwable e){
 		if(enabledLevels.contains("FATAL_ERROR")){
 			if(!logger.isErrorEnabled())
