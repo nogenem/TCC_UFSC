@@ -13,8 +13,8 @@ import br.ufsc.tcc.common.model.MyNode;
 
 public class DistanceMatrix {
 	
-	private static int MAX_WEIGHT = 0;
-	private static int MAX_HEIGHT = 0;
+	private static int MAX_WIDTH = 0;
+	private static int MAX_MAXHEIGHT = 0;
 	
 	private HashMap<String, HashMap<String, Dewey>> distances;
 
@@ -56,8 +56,8 @@ public class DistanceMatrix {
 	public boolean areNear(MyNode n1, MyNode n2){
 		if(n1 != null && n2 != null){
 			Dewey dist = this.getDist(n1, n2);
-			return dist.getWeight() <= MAX_WEIGHT && 
-					dist.getHeight() <= MAX_HEIGHT;
+			return dist.getMaxHeight() <= MAX_MAXHEIGHT &&
+					dist.getWidth() <= MAX_WIDTH;
 		}
 		return false;
 	}
@@ -78,13 +78,13 @@ public class DistanceMatrix {
 		if(tmp != null){
 			tmp = tmp.optJSONObject("distBetweenNearNodes");
 			if(tmp != null){
-				MAX_WEIGHT = tmp.optInt("weight");
-				MAX_HEIGHT = tmp.optInt("height");
+				MAX_WIDTH = tmp.optInt("width");
+				MAX_MAXHEIGHT = tmp.optInt("maxHeight");
 			}
 		}
-		if(MAX_WEIGHT <= 0) MAX_WEIGHT = 10000;
-		if(MAX_HEIGHT <= 0) MAX_HEIGHT = 3;
+		if(MAX_WIDTH <= 0) MAX_WIDTH = 3;
+		if(MAX_MAXHEIGHT <= 0) MAX_MAXHEIGHT = 3;
 		
-		CommonLogger.debug("DISTMATRIX: {} / {}", MAX_WEIGHT, MAX_HEIGHT);
+		CommonLogger.debug("DISTMATRIX: {} / {}", MAX_WIDTH, MAX_MAXHEIGHT);
 	}
 }

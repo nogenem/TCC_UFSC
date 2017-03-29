@@ -8,7 +8,6 @@ public class Dewey {
 	
 	private String value;
 	private ArrayList<Integer> numbers;
-	private int weight;
 
 	// Construtores
 	public Dewey(){
@@ -17,7 +16,6 @@ public class Dewey {
 	
 	public Dewey(String value){
 		this.value = value;
-		this.weight = Integer.MIN_VALUE;
 		this.numbers = this.parseValueToNumbers(value);
 	}
 	
@@ -31,19 +29,6 @@ public class Dewey {
 	
 	public ArrayList<Integer> getNumbers(){
 		return this.numbers;
-	}
-	
-	public int getWeight(){
-		//Atualiza a 'cache'
-		if(this.weight == Integer.MIN_VALUE && !this.numbers.isEmpty()){
-			int n = this.numbers.size()-1, tmp = 0;
-			this.weight = 0;
-			for(int i = n; i>=0; i--){
-				tmp += (n-i)*1000;
-				this.weight += this.numbers.get(i) + tmp;
-			}
-		}
-		return this.weight;
 	}
 	
 	public String getCommonPrefix(Dewey other){
@@ -100,7 +85,6 @@ public class Dewey {
 			this.numbers.add(n);
 			//Limpa a 'cache'
 			this.value = "";
-			this.weight = Integer.MIN_VALUE;
 		}
 		return this;
 	}
@@ -182,6 +166,6 @@ public class Dewey {
 	
 	@Override
 	public int hashCode() {
-		return this.getWeight();
+		return this.getValue().hashCode();
 	}
 }
