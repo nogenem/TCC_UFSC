@@ -1,0 +1,74 @@
+{
+	"link_doc": "https://www.survio.com/modelo-de-pesquisa/avaliacao-de-um-e-shop",
+	"questionarios": {
+		"0": { 
+			"assunto": "Avaliação de um E-shop\nPrezado Sr. / Sra., obrigado pela seu visita. Completar este breve questionário vai nos ajudar a obter os melhores resultados.",
+			"figuras": {
+				"quantidade": 27,
+				"primeira": {
+					"url": "//surviocdn.com/s1/user-img/options/37d/37d56214adbd77c8ab812dbbd622df63458fb52d.png",
+					"legenda": "Fácil"
+				}
+			},
+			"perguntas": {
+				"0": {
+					"forma": "RADIO_INPUT",
+					"descricao": "Qual foi a razão principal que você visitou \"nome-do-seu-e-shop\"?",
+					"alternativas": {
+						"quantidade": 4,
+						"primeira": {
+							"descricao": "Navegação"
+						},
+						"ultima": {
+							"descricao": "Obtenção de mais informação"
+						}
+					},
+					"filhas": {
+						"quantidade": 1,
+						"primeira": {
+							"forma": "TEXT_INPUT",
+							"descricao": "Outro (por favor, especifique):\n100\ncaracteres restantes"
+						}
+					}
+				},
+				"1": {
+					"forma": "RADIO_INPUT",
+					"descricao": "Foi fácil encontrar o \"nome-do-seu-e-shop\"?",
+					"alternativas": {
+						"quantidade": 3,
+						"primeira": {
+							"descricao": "Fácil"
+						},
+						"ultima": {
+							"descricao": "Difícil"
+						}
+					}
+				},
+				"6": {
+					"forma": "RADIO_INPUT",
+					"descricao": "Quão fácil foi modificar itens em seu carrinho de compras?\nFor instance to change quantity, color, size, etc.",
+					"alternativas": {
+						"quantidade": 3
+					}
+				},
+				"8": {
+					"forma": "RATING",
+					"descricao": "Quão satisfeito você ficou com as opções de envio disponíveis?\n0/5",
+					"alternativas": {
+						"quantidade": 5,
+						"primeira": {
+							"descricao": "1"
+						},
+						"ultima": {
+							"descricao": "5"
+						}
+					}
+				},
+				"18": {
+					"forma": "TEXTAREA",
+					"descricao": "O que podemos fazer para melhorar sua experiência com nossa loja online?",
+				}
+			}
+		}
+	}
+}
