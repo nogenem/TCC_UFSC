@@ -196,7 +196,7 @@ public class Pergunta {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append(">> " +this.getDescricao() +" ["+ this.getForma() + 
+		builder.append(this.getDescricao() +" ["+ this.getForma() + 
 				" / "+ this.getTipo()+"]\n");
 		builder.append("\tGrupo: " +this.getGrupo()+ "\n");
 		builder.append("\tAlternativas:\n");

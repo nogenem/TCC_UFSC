@@ -107,8 +107,9 @@ public class Questionario {
 			builder.append("\t\t" +fig+ "\n");
 		}
 		builder.append("\tPerguntas:\n");
-		for(Pergunta p : this.perguntas){
-			builder.append(p);
+		for(int i = 0; i<this.perguntas.size(); i++){
+			Pergunta p = this.perguntas.get(i);
+			builder.append("<<"+i+">> " +p);
 		}
 		return builder.toString();
 	}

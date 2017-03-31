@@ -327,12 +327,11 @@ public class PerguntaBuilder {
 	private void saveLastQWithSubQs(Questionario currentQ) {
 		if(this.lastQWithSubQs != null){
 			currentQ.addPergunta(this.lastQWithSubQs);
-			CommonLogger.debug("Q with SubQs descricao: {}\n\n", this.lastQWithSubQs.getDescricao());
-			
-			this.lastQWithSubQs = null;
-			this.lastQWithSubQsDesc = null;
-			this.lastQWithSubQsCommonPrefix = "";
+			CommonLogger.debug("Q with SubQs descricao: {}\n\n", this.lastQWithSubQs.getDescricao());			
 		}
+		this.lastQWithSubQs = null;
+		this.lastQWithSubQsDesc = null;
+		this.lastQWithSubQsCommonPrefix = "";
 	}
 
 	private void updateLastMatrix(List<MyNode> nodes, Stack<Cluster> cStack, Cluster cTmp2) {
@@ -357,11 +356,10 @@ public class PerguntaBuilder {
 	private void saveLastMatrix(Questionario currentQ) {
 		if(this.lastMatrix != null){
 			currentQ.addPergunta(this.lastMatrix);
-			CommonLogger.debug("Matrix descricao: {}\n\n", this.lastMatrix.getDescricao());
-		
-			this.lastMatrix = null;
-			this.lastMatrixHead = null;
+			CommonLogger.debug("Matrix descricao: {}\n\n", this.lastMatrix.getDescricao());		
 		}
+		this.lastMatrix = null;
+		this.lastMatrixHead = null;
 	}
 
 	public void clearData(Questionario currentQ) {
@@ -371,6 +369,7 @@ public class PerguntaBuilder {
 		this.currentG = null;
 		this.currentP = null;
 		this.extractor.setCurrentPergunta(null);
+		this.distMatrix.clear();
 	}
 
 }
