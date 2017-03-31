@@ -125,6 +125,7 @@ public class RulesChecker {
 		JSONObject obj = CONFIGS.getJSONObject("distBetweenPartsOfDescription");
 		Dewey dist = this.distMatrix.getDist(firstDesc.last(), secondDesc.first());
 		return dist.getHeight() <= obj.getInt("height") && 
+				dist.getMaxHeight() <= obj.getInt("maxHeight") &&
 				dist.getWidth() <= obj.getInt("width");
 	}
 
@@ -347,6 +348,7 @@ public class RulesChecker {
 		tmp2 = tmp2!=null ? tmp2 : tmp1;
 		CONFIGS.getJSONObject("distBetweenPartsOfDescription")
 			.put("height", tmp2.optInt("height", 1))
+			.put("maxHeight", tmp2.optInt("maxHeight", 1))
 			.put("width", tmp2.optInt("width", 4));
 		
 		tmp2 = h!=null ? h.optJSONObject("distBetweenTextsOfSameAlternative") : tmp1;

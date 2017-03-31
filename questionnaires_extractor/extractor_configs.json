@@ -62,7 +62,8 @@
 		},
 		"distBetweenPartsOfDescription": {
 			"width": 4,
-			"height": 1
+			"height": 1,
+			"maxHeight": 1
 		},
 		"distBetweenTextsOfSameAlternative": {
 			"height": 1,
