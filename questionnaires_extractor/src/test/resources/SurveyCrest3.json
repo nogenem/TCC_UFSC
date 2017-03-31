@@ -1,0 +1,56 @@
+{
+	"link_doc": "https://www.surveycrest.com/template_preview/pcTMgau0DnNMqRJGbCqSAknAAjJA",
+	"questionarios": {
+		"0": {
+			"assunto": "Meeting Planning",
+			"perguntas": {
+				"0": {
+					"forma": "RADIO_INPUT",
+					"grupo": "Meeting Planning Survey",
+					"descricao": "The kind of meeting that has been planned:",
+					"alternativas": {
+						"quantidade": 6,
+						"primeira": {
+							"descricao": "Standing meeting"
+						},
+						"ultima": {
+							"descricao": "Seminar (for educational/training purpose)"
+						}
+					}
+				},
+				"2": {
+					"forma": "TEXT_INPUT_GROUP",
+					"grupo": "Meeting Planning Survey",
+					"descricao": "The following agendas will be discussed (in this order)",
+					"filhas": {
+						"quantidade": 12,
+						"primeira": {
+							"forma": "TEXT_INPUT",
+							"descricao": "Agenda 1"
+						},
+						"ultima": {
+							"forma": "TEXT_INPUT",
+							"descricao": "Your queries/concerns"
+						}
+					}
+				},
+				"4": {
+					"forma": "TEXT_INPUT_GROUP",
+					"grupo": "Meeting Planning Survey",
+					"descricao": "Would you like to add any additional items to the agenda?",
+					"filhas": {
+						"quantidade": 3,
+						"primeira": {
+							"forma": "TEXT_INPUT",
+							"descricao": "1 :"
+						},
+						"ultima": {
+							"forma": "TEXT_INPUT",
+							"descricao": "3 :"
+						}
+					}
+				}
+			}
+		}
+	}
+}

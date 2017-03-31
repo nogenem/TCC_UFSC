@@ -21,6 +21,7 @@ import br.ufsc.tcc.extractor.builder.QuestionarioBuilder;
 import br.ufsc.tcc.extractor.database.manager.FormaDaPerguntaManager;
 import br.ufsc.tcc.extractor.model.Alternativa;
 import br.ufsc.tcc.extractor.model.Figura;
+import br.ufsc.tcc.extractor.model.Grupo;
 import br.ufsc.tcc.extractor.model.Pergunta;
 import br.ufsc.tcc.extractor.model.Questionario;
 
@@ -138,16 +139,22 @@ public class BasicTest {
 		assertEquals(wrap("Forma da pergunta errada!"),
 				expected.getString("forma"), p.getForma().getDescricao());
 		
+		Grupo g = p.getGrupo();
+		assertEquals(wrap("Grupo da pergunta esta errado!"),
+				expected.optString("grupo"), g == null ? "" : g.getAssunto());
+		
 		assertEquals(wrap("Descricao da pergunta errada!"),
 				expected.getString("descricao"), p.getDescricao());
 		
-		testAlternativas(p.getAlternativas(), expected.optJSONObject("alternativas"));
+		testAlternativas(p.getAlternativas(), expected.optJSONObject("alternativas"), false);
 		testFilhas(p.getFilhas(), expected.optJSONObject("filhas"));
 	}
 
-	private void testAlternativas(ArrayList<Alternativa> as, JSONObject expected) {
+	private void testAlternativas(ArrayList<Alternativa> as, JSONObject expected, boolean filha) {
+		String txtPerg = filha ? "pergunta filha" : "pergunta";
+		
 		int quantidade = expected == null ? 0 : expected.getInt("quantidade");
-		assertEquals(wrap("Quantidade errada de alternativas na pergunta!"), 
+		assertEquals(wrap("Quantidade errada de alternativas na "+txtPerg+"!"), 
 				quantidade, as.size());
 		
 		JSONObject tmpObj;
@@ -156,13 +163,13 @@ public class BasicTest {
 			tmpObj = expected.optJSONObject("primeira");
 			if(tmpObj != null){
 				tmpAlt = as.get(0);
-				assertEquals(wrap("Descricao da primeira alternativa da pergunta esta errada!"),
+				assertEquals(wrap("Descricao da primeira alternativa da "+txtPerg+" esta errada!"),
 						tmpObj.getString("descricao"), tmpAlt.getDescricao());
 			}
 			tmpObj = expected.optJSONObject("ultima");
 			if(tmpObj != null){
 				tmpAlt = as.get(as.size()-1);
-				assertEquals(wrap("Descricao da ultima alternativa da pergunta esta errada!"),
+				assertEquals(wrap("Descricao da ultima alternativa da "+txtPerg+" esta errada!"),
 						tmpObj.getString("descricao"), tmpAlt.getDescricao());
 			}
 		}
@@ -183,6 +190,9 @@ public class BasicTest {
 						tmpObj.getString("forma"), tmpPerg.getForma().toString());
 				assertEquals(wrap("Descricao da primeira filha da pergunta esta errada!"),
 						tmpObj.getString("descricao"), tmpPerg.getDescricao());
+				
+				testAlternativas(tmpPerg.getAlternativas(), tmpObj.optJSONObject("alternativas"), true);
+				testFilhas(tmpPerg.getFilhas(), tmpObj.optJSONObject("filhas"));
 			}
 			tmpObj = expected.optJSONObject("ultima");
 			if(tmpObj != null){
@@ -191,6 +201,9 @@ public class BasicTest {
 						tmpObj.getString("forma"), tmpPerg.getForma().toString());
 				assertEquals(wrap("Descricao da ultima filha da pergunta esta errada!"),
 						tmpObj.getString("descricao"), tmpPerg.getDescricao());
+				
+				testAlternativas(tmpPerg.getAlternativas(), tmpObj.optJSONObject("alternativas"), true);
+				testFilhas(tmpPerg.getFilhas(), tmpObj.optJSONObject("filhas"));
 			}
 		}
 	}

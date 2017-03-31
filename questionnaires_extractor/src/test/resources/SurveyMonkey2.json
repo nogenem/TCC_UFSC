@@ -1,0 +1,56 @@
+{
+	"link_doc": "https://www.surveymonkey.com/r/online-social-networking-template",
+	"questionarios": {
+		"0": {
+			"assunto": "Online Social Networking Template",
+			"perguntas": {
+				"0": {
+					"forma": "CHECKBOX_INPUT",
+					"descricao": "1\n.\nWhich of the following social networking websites do you currently have an account with? (Check all that apply)",
+					"alternativas": {
+						"quantidade": 6,
+						"ultima": {
+							"descricao": "Twitter"
+						}
+					},
+					"filhas": {
+						"quantidade": 1,
+						"primeira": {
+							"forma": "TEXT_INPUT",
+							"descricao": "Other (please specify)"
+						}
+					}
+				},
+				"3": {
+					"forma": "TEXT_INPUT_GROUP",
+					"descricao": "4\n.\nIn a typical week, about how much time do you spend using social networking websites?",
+					"filhas": {
+						"quantidade": 2,
+						"primeira": {
+							"forma": "TEXT_INPUT",
+							"descricao": "Hours"
+						},
+						"ultima": {
+							"forma": "TEXT_INPUT",
+							"descricao": "Minutes"
+						}
+					}
+				},
+				"4": {
+					"forma": "TEXT_INPUT",
+					"descricao": "5\n.\nAbout how many \"friends\" do you currently have on social networking websites?"
+				},
+				"6": {
+					"forma": "RADIO_INPUT",
+					"descricao": "7\n.\nIf you could use only one of the following social networking services, which would you use?",
+					"alternativas": {
+						"quantidade": 6,
+						"ultima": {
+							"descricao": "Twitter"
+						}
+					}
+				}
+			}
+		}
+	}
+}

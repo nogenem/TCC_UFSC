@@ -1,0 +1,40 @@
+{
+	"link_doc": "https://www.surveymonkey.com/r/General-Event-Feedback-Template",
+	"questionarios": {
+		"0": {
+			"assunto": "General Event Feedback Template",
+			"perguntas": {
+				"0": {
+					"forma": "RADIO_INPUT",
+					"descricao": "1\n.\nHow likely is it that you would recommend the event to a friend or colleague?",
+					"alternativas": {
+						"quantidade": 11,
+						"primeira": {
+							"descricao": "Not at all likely - 0"
+						},
+						"ultima": {
+							"descricao": "Extremely likely - 10"
+						}
+					}
+				},
+				"1": {
+					"forma": "RADIO_INPUT",
+					"descricao": "2\n.\nOverall, how would you rate the event?",
+					"alternativas": {
+						"quantidade": 5,
+						"primeira": {
+							"descricao": "Excellent"
+						},
+						"ultima": {
+							"descricao": "Poor"
+						}
+					}
+				},
+				"9": {
+					"forma": "TEXTAREA",
+					"descricao": "10\n.\nIs there anything else you’d like to share about the event?"
+				}
+			}
+		}
+	}
+}

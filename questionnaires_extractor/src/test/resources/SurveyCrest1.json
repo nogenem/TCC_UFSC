@@ -1,0 +1,106 @@
+{
+	"link_doc": "https://www.surveycrest.com/template_preview/pyof1IFwp9Xa1_x430JdUeVsuHVRKuw",
+	"questionarios": {
+		"0": {
+			"assunto": "Motivation and Buying Experience",
+			"perguntas": {
+				"0": {
+					"forma": "TEXT_INPUT_GROUP",
+					"descricao": "General Information\nPersonal information",
+					"filhas": {
+						"quantidade": 3,
+						"primeira": {
+							"forma": "TEXT_INPUT",
+							"descricao": "Name"
+						},
+						"ultima": {
+							"forma": "TEXT_INPUT",
+							"descricao": "Email address"
+						}
+					}
+				},
+				"1": {
+					"forma": "RADIO_INPUT",
+					"grupo": "Motivation",
+					"descricao": "Where did you hear about the product?",
+					"alternativas": {
+						"quantidade": 7,
+						"primeira": {
+							"descricao": "Social media sites"
+						},
+						"ultima": {
+							"descricao": "Option 7"
+						}
+					}
+				},
+				"2": {
+					"forma": "RADIO_INPUT_MATRIX",
+					"grupo": "Motivation",
+					"descricao": "How does this product compare with other similar products in the market?",
+					"filhas": {
+						"quantidade": 4,
+						"primeira": {
+							"forma": "RADIO_INPUT",
+							"descricao": "Quality",
+							"alternativas": {
+								"quantidade": 3,
+								"primeira": {
+									"descricao": "Better"
+								},
+								"ultima": {
+									"descricao": "Worse"
+								}
+							}
+						},
+						"ultima": {
+							"forma": "RADIO_INPUT",
+							"descricao": "Availability",
+							"alternativas": {
+								"quantidade": 3,
+								"primeira": {
+									"descricao": "Better"
+								},
+								"ultima": {
+									"descricao": "Worse"
+								}
+							}
+						}
+					}
+				},
+				"18": {
+					"forma": "RADIO_INPUT",
+					"grupo": "Buying Experience",
+					"descricao": "Did a service representative help you out during the purchase?",
+					"alternativas": {
+						"quantidade": 2,
+						"primeira": {
+							"descricao": "Yes"
+						},
+						"ultima": {
+							"descricao": "No"
+						}
+					}
+				},
+				"19": {
+					"forma": "TEXT_INPUT",
+					"grupo": "Buying Experience",
+					"descricao": "11. How can we improve the buying experience for you?"
+				},
+				"27": {
+					"forma": "RADIO_INPUT",
+					"grupo": "Buying Experience",
+					"descricao": "Was the sales representative helpful and knowledgeable?",
+					"alternativas": {
+						"quantidade": 2,
+						"primeira": {
+							"descricao": "Yes"
+						},
+						"ultima": {
+							"descricao": "No"
+						}
+					}
+				}
+			}
+		}
+	}
+}

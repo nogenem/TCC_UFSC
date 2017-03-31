@@ -1,0 +1,34 @@
+{
+	"link_doc": "https://www.surveymonkey.com/r/logo_testing_template",
+	"questionarios": {
+		"0": {
+			"assunto": "Please review the following logo design:",
+			"figuras": {
+				"quantidade": 1,
+				"primeira": {
+					"url": "//surveymonkey-assets.s3.amazonaws.com/survey/80043367/51fad56e-4636-4a45-8006-667a80117b20.PNG",
+					"legenda": ""
+				}
+			},		
+			"perguntas": {
+				"0": {
+					"forma": "TEXT_INPUT",
+					"descricao": "1\n.\nWhat first comes to mind when you look at the logo?",
+				},
+				"9": {
+					"forma": "RADIO_INPUT",
+					"descricao": "10\n.\nIf the product were available today, how likely would you be to buy the product based on the logo?",
+					"alternativas": {
+						"quantidade": 5,
+						"primeira": {
+							"descricao": "Extremely likely"
+						},
+						"ultima": {
+							"descricao": "Not at all likely"
+						}
+					}
+				}
+			}
+		}
+	}
+}

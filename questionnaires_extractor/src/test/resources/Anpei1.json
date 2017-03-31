@@ -1,0 +1,127 @@
+{
+	"link_doc": "http://anpei.tempsite.ws/intranet/mediaempresa",
+	"questionarios": {
+		"0": {
+			"assunto": "Nota:\nNo caso de empresas globais, os dados e informações devem se referir à subsidiária brasileira da empresa.\n¹ Há dois critérios principais de caracterização do porte da empresa no Brasil. Neste estudo, avaliamos os dois critérios. Neste caso, são médias empresas as organizações com faturamento bruto no ano fiscal anterior entre R$ 16 a 90 milhões e/ou número de funcionários entre 100 a 499 para empresas industriais ou de 50 a 99 para empresas comerciais ou de serviços.",
+			"perguntas": {
+				"0": {
+					"forma": "TEXT_INPUT",
+					"grupo": "Caracterização da organização",
+					"descricao": "Nome da Empresa"
+				},
+				"4": {
+					"forma": "RADIO_INPUT",
+					"grupo": "Caracterização da organização",
+					"descricao": "Controle societário majoritário",
+					"alternativas": {
+						"quantidade": 2,
+						"primeira": {
+							"descricao": "Nacional"
+						},
+						"ultima": {
+							"descricao": "Estrangeiro"
+						}
+					}
+				},
+				"9": {
+					"forma": "TEXTAREA",
+					"grupo": "Caracterização da organização",
+					"descricao": "Principais produtos/servicos"
+				},
+				"11": {
+					"forma": "TEXT_INPUT",
+					"grupo": "Caracterização da organização",
+					"descricao": "Participação das exportações no faturamento\n%"
+				},
+				"15": {
+					"forma": "TEXT_INPUT",
+					"grupo": "Caracterização da organização",
+					"descricao": "Site da empresa\nhttp://"
+				},
+				"16": {
+					"forma": "TEXTAREA",
+					"grupo": "Estratégia da organização",
+					"descricao": "Qual é a visão de futuro da empresa (para os próximos 5 anos)"
+				},
+				"19": {
+					"forma": "TEXT_INPUT",
+					"grupo": "Estratégia da organização",
+					"descricao": "Há quanto tempo"
+				},
+				"21": {
+					"forma": "RADIO_INPUT",
+					"grupo": "Inovação na organização",
+					"descricao": "Tem cadastro no Portal de Inovação²?",
+					"alternativas": {
+						"quantidade": 2,
+						"primeira": {
+							"descricao": "Sim"
+						},
+						"ultima": {
+							"descricao": "Não"
+						}
+					}
+				},
+				"29": {
+					"forma": "TEXT_INPUT_GROUP",
+					"grupo": "Inovação na organização",
+					"descricao": "No. total de funcionários",
+					"filhas": {
+						"quantidade": 3,
+						"primeira": {
+							"forma": "TEXT_INPUT",
+							"descricao": "Graduados"
+						},
+						"ultima": {
+							"forma": "TEXT_INPUT",
+							"descricao": "Doutores"
+						}
+					}
+				},
+				"36": {
+					"forma": "TEXT_INPUT",
+					"grupo": "Ciclos de vida da organização",
+					"descricao": "Como se originou a empresa?"
+				},
+				"37": {
+					"forma": "MIX_COMP_MATRIX",
+					"grupo": "Ciclos de vida da organização",
+					"descricao": "Na sua opinião, quais foram as principais fases/estágios vividos pela empresa até o momento",
+					"filhas": {
+						"quantidade": 10,
+						"primeira": {
+							"forma": "MIX_COMP_GROUP",
+							"descricao": "1.",
+							"filhas": {
+								"quantidade": 3,
+								"primeira": {
+									"forma": "TEXT_INPUT",
+									"descricao": "Fase/Estágio"
+								},
+								"ultima": {
+									"forma": "TEXTAREA",
+									"descricao": "Breve descrição da fase/estágio"
+								}
+							}
+						},
+						"ultima": {
+							"forma": "MIX_COMP_GROUP",
+							"descricao": "10.",
+							"filhas": {
+								"quantidade": 3,
+								"primeira": {
+									"forma": "TEXT_INPUT",
+									"descricao": "Fase/Estágio"
+								},
+								"ultima": {
+									"forma": "TEXTAREA",
+									"descricao": "Breve descrição da fase/estágio"
+								}
+							}
+						}
+					}
+				},
+			}
+		}
+	}
+}

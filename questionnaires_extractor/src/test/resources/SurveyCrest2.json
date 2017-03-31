@@ -1,0 +1,78 @@
+{
+	"link_doc": "https://www.surveycrest.com/template_preview/pufLBGbsEEBvdJvPPxIe9hYJx0Q",
+	"questionarios": {
+		"0": {
+			"assunto": "Client Service Evaluation",
+			"perguntas": {
+				"0": {
+					"forma": "TEXT_INPUT_GROUP",
+					"descricao": "General Information\nPlease give your Details",
+					"filhas": {
+						"quantidade": 3,
+						"primeira": {
+							"forma": "TEXT_INPUT",
+							"descricao": "Name"
+						},
+						"ultima": {
+							"forma": "TEXT_INPUT",
+							"descricao": "Email Address"
+						}
+					}
+				},
+				"1": {
+					"forma": "RADIO_INPUT",
+					"grupo": "(Client satisfaction/ client service evaluation)",
+					"descricao": "How satisfied are you with our company overall?",
+					"alternativas": {
+						"quantidade": 5,
+						"primeira": {
+							"descricao": "Highly Satisfied"
+						},
+						"ultima": {
+							"descricao": "Somewhat dissatisfied"
+						}
+					}
+				},
+				"2": {
+					"forma": "TEXTAREA",
+					"grupo": "(Client satisfaction/ client service evaluation)",
+					"descricao": "If you are not satisfied with our company, please tell us why?"
+				},
+				"14": {
+					"forma": "RADIO_INPUT_MATRIX",
+					"grupo": "(Client satisfaction/ client service evaluation)",
+					"descricao": "How satisfied were you with the following:",
+					"filhas": {
+						"quantidade": 8,
+						"primeira": {
+							"forma": "RADIO_INPUT",
+							"descricao": "Value for money",
+							"alternativas": {
+								"quantidade": 4,
+								"primeira": {
+									"descricao": "Not Satisfied"
+								},
+								"ultima": {
+									"descricao": "Highly Satisfied"
+								}
+							}
+						},
+						"ultima": {
+							"forma": "RADIO_INPUT",
+							"descricao": "Communication",
+							"alternativas": {
+								"quantidade": 4,
+								"primeira": {
+									"descricao": "Not Satisfied"
+								},
+								"ultima": {
+									"descricao": "Highly Satisfied"
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

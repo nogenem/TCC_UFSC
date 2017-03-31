@@ -1,0 +1,87 @@
+{
+	"link_doc": "https://www.survio.com/modelo-de-pesquisa/pesquisa-de-preco-do-produto",
+	"questionarios": {
+		"0": {
+			"assunto": "Pesquisa de Preço do Produto\nPrezado Sr. / Sra., obrigado pela seu visita. Completar este breve questionário vai nos ajudar a obter os melhores resultados.",
+			"perguntas": {
+				"0": {
+					"forma": "RADIO_INPUT",
+					"descricao": "1\nComo você está familiarizado com o \"produto\"?",
+					"alternativas": {
+						"quantidade": 4,
+						"primeira": {
+							"descricao": "Uso o produto diariamente"
+						},
+						"ultima": {
+							"descricao": "Não tinha conhecimento de tal produto"
+						}
+					}
+				},
+				"2": {
+					"forma": "RADIO_INPUT_MATRIX",
+					"descricao": "3\nSe o preço do \"produto\" fosse maior/menor, quantas unidades a mais/menos você compraria?\nConsider the next year at each price point listed.",
+					"filhas": {
+						"quantidade": 6,
+						"primeira": {
+							"forma": "RADIO_INPUT",
+							"descricao": "+20%",
+							"alternativas": {
+								"quantidade": 4,
+								"primeira": {
+									"descricao": "4 ou mais a menos"
+								},
+								"ultima": {
+									"descricao": "4 ou mais a mais"
+								}
+							}
+						},
+						"ultima": {
+							"forma": "RADIO_INPUT",
+							"descricao": "-%20",
+							"alternativas": {
+								"quantidade": 4,
+								"primeira": {
+									"descricao": "4 ou mais a menos"
+								},
+								"ultima": {
+									"descricao": "4 ou mais a mais"
+								}
+							}
+						}
+					}
+				},
+				"3": {
+					"forma": "TEXT_INPUT_MATRIX",
+					"descricao": "4\nQuanto você pensou que era o preço do \"produto\"?",
+					"filhas": {
+						"quantidade": 1,
+						"primeira": {
+							"forma": "TEXT_INPUT",
+							"descricao": "Digite o seu preço\nPreço"
+						}
+					}
+				},
+				"6": {
+					"forma": "CHECKBOX_INPUT",
+					"descricao": "7\nQual das opções seguintes, tirando o próprio produto, lhe influenciaria mais na decisão de comprá-lo?",
+					"alternativas": {
+						"quantidade": 6,
+						"primeira": {
+							"descricao": "Experiência de outros clientes"
+						},
+						"ultima": {
+							"descricao": "Tendências"
+						}
+					},
+					"filhas": {
+						"quantidade": 1,
+						"primeira": {
+							"forma": "TEXT_INPUT",
+							"descricao": "Outro (por favor, especifique):\n100\ncaracteres restantes"
+						}
+					}
+				}
+			} 
+		}
+	}
+}

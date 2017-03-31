@@ -1,0 +1,56 @@
+{
+	"link_doc": "https://www.surveymonkey.com/r/CAHPS-Health-Plan-Survey-40-Template",
+	"questionarios": {
+		"0": {
+			"assunto": "CAHPS® Health Plan Survey 4.0 Template",
+			"perguntas": {
+				"0": {
+					"forma": "RADIO_INPUT",
+					"descricao": "1\n.\nOur records show that you are now in the health plan. Is that right?",
+					"alternativas": {
+						"quantidade": 2,
+						"primeira": {
+							"descricao": "Yes"
+						},
+						"ultima": {
+							"descricao": "No"
+						}
+					}
+				},
+				"7": {
+					"forma": "RADIO_INPUT",
+					"descricao": "8\n.\nUsing any number from 0 to 10, where 0 is the worst health care possible and 10 is the best health care possible, what number would you use to rate all your health care in the last 12 months?",
+					"alternativas": {
+						"quantidade": 11,
+						"primeira": {
+							"descricao": ".10 Best health care possible"
+						},
+						"ultima": {
+							"descricao": ".0 Worst health care possible"
+						}
+					}
+				},
+				"38": {
+					"forma": "CHECKBOX_INPUT",
+					"descricao": "39\n.\nHow did that person help you? Mark all that apply.",
+					"alternativas": {
+						"quantidade": 4,
+						"primeira": {
+							"descricao": "Read the questions to me"
+						},
+						"ultima": {
+							"descricao": "Translated the questions into my language"
+						}
+					},
+					"filhas": {
+						"quantidade": 1,
+						"primeira": {
+							"forma": "TEXT_INPUT",
+							"descricao": "Helped in some other way"
+						}
+					}
+				}
+			}
+		}
+	}
+}
