@@ -3,6 +3,7 @@ package br.ufsc.tcc.extractor.builder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+import java.util.regex.Matcher;
 
 import org.json.JSONObject;
 
@@ -215,7 +216,7 @@ public class RulesChecker {
 		
 		ArrayList<Alternativa> alts = currentP.getAlternativas();
 		ArrayList<Pergunta> filhas = currentP.getFilhas();
-		String txt = cTmp2.getText(), regex = "(?s).*(\nXXX|XXX\n).*";
+		String txt = cTmp2.getText(), regex = "(?s).*(\nXXX|XXX\n).*", txtTmp = "";
 		boolean flag = false;
 		int count = filhas.size()+alts.size();
 		
@@ -224,10 +225,16 @@ public class RulesChecker {
 		}else if(count == cTmp2.size()){
 			flag = true;
 			for(int j = 0; j < alts.size(); j++){
-				flag = flag && txt.matches(regex.replaceAll("XXX", alts.get(j).getDescricao()));
+				txtTmp = alts.get(j).getDescricao();
+				//http://stackoverflow.com/questions/11913709/why-does-replaceall-fail-with-illegal-group-reference
+				txtTmp = Matcher.quoteReplacement(txtTmp);
+				flag = flag && txt.matches(regex.replaceAll("XXX", txtTmp));
 			}
 			for(int j = 0; j < filhas.size(); j++){
-				flag = flag && txt.matches(regex.replaceAll("XXX", filhas.get(j).getDescricao()));
+				txtTmp = filhas.get(j).getDescricao();
+				//http://stackoverflow.com/questions/11913709/why-does-replaceall-fail-with-illegal-group-reference
+				txtTmp = Matcher.quoteReplacement(txtTmp);
+				flag = flag && txt.matches(regex.replaceAll("XXX", txtTmp));
 			}
 		}
 		

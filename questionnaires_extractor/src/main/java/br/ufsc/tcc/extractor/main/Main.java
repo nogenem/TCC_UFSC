@@ -51,6 +51,7 @@ public class Main {
 	private static void test(){
 		String path = "cache/Survio_1.html";
 		path = "https://www.survio.com/modelo-de-pesquisa/pesquisa-de-preco-do-produto";
+		//XXX distBetweenTextsInQuestionWithSubQuestions.width = 2 arruma o problema de grouping
 //		path = "https://www.survio.com/modelo-de-pesquisa/feedback-sobre-servico";//TODO dar jeito no problema de grouping
 //		path = "https://www.survio.com/modelo-de-pesquisa/avaliacao-de-um-e-shop";
 //		path = "https://www.survio.com/modelo-de-pesquisa/pesquisa-sobre-empregados-sobrecarregados-e-esgotados";
@@ -68,6 +69,7 @@ public class Main {
 		
 //		path = "cache/Bioinfo_1.html";
 		//TODO tratar texto embaixo do Email / name sem grupo (?)
+		//XXX distBetweenTextsInQuestionWithSubQuestions.width = 4 arruma problema do 'Name'
 //		path = "https://www.bioinfo.mpg.de/mctq/core_work_life/core/core.jsp?language=por_b";
 		
 //		path = "cache/Anpei_1.html";
@@ -75,17 +77,20 @@ public class Main {
 		
 		//TODO tratar do Personal+general information
 //		path = "cache/SurveyCrest_1.html";
+		//XXX distBetweenPartsOfDescription.width = 2 arruma o problema do 1* grupo (mas estraga o assunto do Survio)
 //		path = "https://www.surveycrest.com/template_preview/pyof1IFwp9Xa1_x430JdUeVsuHVRKuw";//TODO tem login junto
 //		path = "https://www.surveycrest.com/template_preview/pufLBGbsEEBvdJvPPxIe9hYJx0Q";
 //		path = "https://www.surveycrest.com/template_preview/pcTMgau0DnNMqRJGbCqSAknAAjJA";
 		
 		//TODO fazer mais testes com esse site
+		//XXX distBetweenTextsInQuestionWithSubQuestions.width = 2 arruma os problemas
 //		path = "http://lap.umd.edu/surveys/census/files/surveya1pagesbytopic/page1.html";
 //		path = "http://lap.umd.edu/surveys/census/files/surveya1pagesbytopic/page2.html";
 //		path = "http://lap.umd.edu/surveys/census/files/surveya1pagesbytopic/page3.html";
-//		path = "http://lap.umd.edu/surveys/census/files/surveya1pagesbytopic/page8.html";//TODO TESTAR ISSO
+//		path = "http://lap.umd.edu/surveys/census/files/surveya1pagesbytopic/page8.html";//TODO COISA BUGADA!!!
 		
 		//TODO arrumar Not at all likely / novo questionario
+		//XXX distBetweenPartsOfDescription.width = 4 e .maxHeight = 2 arruma problema do 'Not at...'
 //		path = "https://www.telstra.com.au/webforms/consumer-survey/index.cfm";
 		
 //		path = "https://docs.google.com/forms/d/e/1FAIpQLSdKNoTd6y08to45zgcXlWxCtzVEJg3irc1FbQikSS6fnyMdtQ/viewform?c=0&w=1";

@@ -156,7 +156,6 @@ public class PerguntaExtractor {
 			}
 			
 			txt = text.getText();
-			CommonLogger.debug("\t\t{}", txt);
 			Object dono = null;
 			
 			if(tmp != null){
@@ -168,6 +167,8 @@ public class PerguntaExtractor {
 					tmp = currentI+1 < nodes.size() ? nodes.get(currentI+1) : null;
 				}
 				
+				CommonLogger.debug("\t\t{}", txt);
+				
 				if(tmp != null && tmp.getType() == MyNodeType.TEXT_INPUT && 
 						this.checker.areCompAndTextNear(tmp, text)){
 					Pergunta tmpPerg = new Pergunta(txt);
@@ -178,8 +179,10 @@ public class PerguntaExtractor {
 					
 					tmpPerg.setQuestionario(currentQ);
 					this.currentP.addFilha(tmpPerg);
+					++currentI;
 				} 
-			}
+			}else
+				CommonLogger.debug("\t\t{}", txt);
 			
 			if(dono == null){
 				Alternativa tmpAlt = new Alternativa(txt);
@@ -209,8 +212,6 @@ public class PerguntaExtractor {
 		if(input != null){
 			if(isImgQuestion && img != null) --currentI;
 			currentI -= 2;
-			if(input.getType() == MyNodeType.TEXT_INPUT)
-				currentI += 1;
 			if(this.currentP.getAlternativas().size() == 0)
 				currentI += 1;
 		}
