@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -308,6 +309,16 @@ public class CommonUtil {
 				count += 0.5;
 		}
 		return (int) count;
+	}
+	
+	public static boolean matchesWithLineBreak(String txt, String regex){
+		String [] lines = txt.split("\n");
+		Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+		for(String line : lines){
+			if(p.matcher(line).matches())
+				return true;
+		}
+		return false;
 	}
 	
 	public static List<MyNode> findCompsImgsAndTexts(Node root) {
