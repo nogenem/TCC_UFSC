@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.json.JSONObject;
 
@@ -16,6 +17,7 @@ import br.ufsc.tcc.common.util.CommonUtil;
 import br.ufsc.tcc.common.util.DistanceMatrix;
 import br.ufsc.tcc.extractor.model.Alternativa;
 import br.ufsc.tcc.extractor.model.Pergunta;
+import br.ufsc.tcc.extractor.model.Questionario;
 
 public class RulesChecker {
 	
@@ -47,7 +49,7 @@ public class RulesChecker {
 		if(dist.getHeight() > obj.getInt("height"))
 			return true;
 		
-		//Verifica se o 1* container é diferente
+		//Verifica se o 1* container, depois do Body, é diferente
 		Dewey d1 = lastDesc.last().getDewey(), d2 = newNode.getDewey();
 		return d1.getNumbers().get(1) != d2.getNumbers().get(1);
 	}
@@ -66,6 +68,20 @@ public class RulesChecker {
 		String tTmp1 = lastCluster.last().getDewey().getCommonPrefix(nodes.get(i+1).getDewey()), 
 				tTmp2 = newNode.getDewey().getCommonPrefix(nodes.get(i+1).getDewey());
 		return !tTmp1.equals(tTmp2);		
+	}
+	
+	public boolean isValidQuestionnaire(Questionario q){
+		if(q.getPerguntas().size() < CONFIGS.getInt("minQuestionsOnQuestionnaire"))
+			return false;
+		if(CommonUtil.matchesWithLineBreak(q.getAssunto(), 
+				CONFIGS.getString("phrasesToIgnoreRegex")))
+			return false;
+		for(Pergunta p : q.getPerguntas()){
+			if(CommonUtil.matchesWithLineBreak(p.getDescricao(), 
+					CONFIGS.getString("phrasesToIgnoreRegex")))
+				return false;
+		}
+		return true;
 	}
 
 	// Métodos usados pela classe PerguntaBuilder
@@ -315,6 +331,9 @@ public class RulesChecker {
 		int n = h!=null ? h.optInt("minQuestionsOnQuestionnaire") : 0;
 		n = n>0 ? n : 2;
 		CONFIGS.put("minQuestionsOnQuestionnaire", n);
+		
+		String s = h!=null ? h.getString("phrasesToIgnoreRegex") : "";
+		CONFIGS.put("phrasesToIgnoreRegex", s);
 		
 		tmp2 = h!=null ? h.optJSONObject("distBetweenTextsInsideQuestionnaire") : tmp1;
 		tmp2 = tmp2!=null ? tmp2 : tmp1;

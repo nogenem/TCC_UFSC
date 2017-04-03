@@ -33,6 +33,7 @@
 	],
 	"heuristics": {
 		"minQuestionsOnQuestionnaire": 2,
+		"phrasesToIgnoreRegex": "^(contact us( now)?!?|enter your email.*|(send (a )?)?comments?:?|user(name)?:?|sign( )?in|sign( )?up|register|login:?|password:?|forgot (your)? password\\?|confirm password:?|keep me logged in|reset password|search:?|^entre com seu email.*|comente:?|(envie ((um|seu) )?)?coment(a|á)rio:?|usu(a|á)rio|entr(e|ar)|inscrev(a|er)-se|registr(ar|e-se)|logar|entrar|esqueceu sua senha\\?|me mantenha logado|mantenha-me logado|recupere sua senha|buscar:?)",
 		"distBetweenNearNodes": {
 			"maxHeight": 3,
 			"width": 3
