@@ -1,6 +1,7 @@
 package br.ufsc.tcc.common.config;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import br.ufsc.tcc.common.util.CommonLogger;
@@ -16,28 +17,38 @@ public abstract class ProjectConfigs {
 	}
 	
 	public static JSONObject getDatabaseConfigs(){
-		return configs.optJSONObject("database");
+		try{
+			return configs.getJSONObject("database");
+		}catch(JSONException exp){
+			CommonLogger.fatalError(
+					new JSONException("Objeto 'database' não encontrado no arquivo de configuração!"));
+			return null;
+		}
 	}
 	
 	public static boolean loadSeedsFromCrawler(){
 		JSONObject tmp = getDatabaseConfigs();
-		if(tmp != null)
-			return tmp.optBoolean("loadSeedsFromCrawler", true);
-		return false;
+		return tmp.optBoolean("loadSeedsFromCrawler", true);
 	}
 	
 	public static JSONObject getCrawlerDatabaseConfigs(){
-		JSONObject tmp = getDatabaseConfigs();
-		if(tmp != null)
-			return tmp.optJSONObject("crawler");
-		return null;
+		try{
+			return getDatabaseConfigs().getJSONObject("crawler");
+		}catch(JSONException exp){
+			CommonLogger.fatalError(
+					new JSONException("Objeto 'database.crawler' não encontrado no arquivo de configuração!"));
+			return null;
+		}
 	}
 	
 	public static JSONObject getExtractorDatabaseConfigs(){
-		JSONObject tmp = getDatabaseConfigs();
-		if(tmp != null)
-			return tmp.optJSONObject("extractor");
-		return null;
+		try{
+			return getDatabaseConfigs().getJSONObject("extractor");
+		}catch(JSONException exp){
+			CommonLogger.fatalError(
+					new JSONException("Objeto 'database.extractor' não encontrado no arquivo de configuração!"));
+			return null;
+		}
 	}
 	
 	public static JSONObject getCrawlerConfigs(){
@@ -45,11 +56,23 @@ public abstract class ProjectConfigs {
 	}
 	
 	public static JSONObject getHeuristics(){
-		return configs.optJSONObject("heuristics");
+		try{
+			return configs.getJSONObject("heuristics");
+		}catch(JSONException exp){
+			CommonLogger.fatalError(
+					new JSONException("Objeto 'heuristics' não encontrado no arquivo de configuração!"));
+			return null;
+		}
 	}
 	
 	public static JSONArray getSeeds(){
-		return configs.optJSONArray("seeds");
+		try{
+			return configs.getJSONArray("seeds");
+		}catch(JSONException exp){
+			CommonLogger.fatalError(
+					new JSONException("Arranjo 'seeds' não encontrado no arquivo de configuração!"));
+			return null;
+		}
 	}
 	
 	// Demais métodos

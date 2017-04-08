@@ -22,7 +22,7 @@ public class BasicConnection {
 			this.conn = DriverManager.getConnection("jdbc:"+this.dbms+"://"+this.host+"/"+this.database, 
 					this.login, this.password);
 		}catch(Exception e){
-			CommonLogger.error(e);
+			CommonLogger.fatalError(e);
 		}
 		return this.conn;
 	}
