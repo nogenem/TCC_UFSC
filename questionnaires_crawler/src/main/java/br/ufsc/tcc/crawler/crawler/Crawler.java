@@ -18,8 +18,8 @@ import edu.uci.ics.crawler4j.url.WebURL;
 
 public class Crawler extends WebCrawler {
 	
-	private static Pattern EXCLUDED_EXTENSIONS;
-	private static Pattern EXCLUDED_DOMAINS;
+	private static Pattern EXCLUDED_EXTENSIONS_REGEX;
+	private static Pattern EXCLUDED_DOMAINS_REGEX;
 	
 	private BasicConnection conn;
 	private PossivelQuestionarioManager pqManager;
@@ -51,8 +51,8 @@ public class Crawler extends WebCrawler {
 	    	href = href.substring(0, index);
 	    
 	    // Verifica o filtro e os dominios
-		return !EXCLUDED_EXTENSIONS.matcher(href).matches() &&
-				!EXCLUDED_DOMAINS.matcher(href).matches();
+		return !EXCLUDED_EXTENSIONS_REGEX.matcher(href).matches() &&
+				!EXCLUDED_DOMAINS_REGEX.matcher(href).matches();
 	}
 	
 	@Override
@@ -61,8 +61,9 @@ public class Crawler extends WebCrawler {
 		
 		// Verifica se o link ja foi extraido
 		if(PossivelQuestionarioManager.linkWasSaved(url.getURL())) return;
-				
-		if(page.getContentType().contains("html") &&
+		
+		String contentType = page.getContentType();
+		if(contentType != null && contentType.contains("html") &&
 				page.getParseData() instanceof HtmlParseData){
 			
 			HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();			
@@ -110,17 +111,8 @@ public class Crawler extends WebCrawler {
 	// Métodos/Blocos estáticos
 	static {
 		JSONObject tmp = ProjectConfigs.getCrawlerConfigs();
-		EXCLUDED_EXTENSIONS = Pattern.compile(
-				tmp.optString("excludedFilesExtensions", 
-					".*(\\.(css|js|bmp|gif|jpe?g|png|tiff?|mid|mp2|mp3|mp4|wav|"
-					+ "avi|mov|mpeg|ram|m4v|pdf|rm|smil|wmv|swf|wma|zip|rar|gz))$")
-		);
-		EXCLUDED_DOMAINS = Pattern.compile(
-				tmp.optString("excludedDomains", 
-					"^(.*youtube\\.com.*|.*facebook\\.com.*|"
-					+ ".*twitter\\.com.*)")
-		);
-		CommonLogger.debug("CRAWLER {}/{}", EXCLUDED_EXTENSIONS.toString().length(),
-				EXCLUDED_DOMAINS.toString().length());
+		EXCLUDED_EXTENSIONS_REGEX = Pattern.compile(tmp.optString("excludedFilesExtensions"));
+		EXCLUDED_DOMAINS_REGEX = Pattern.compile(tmp.optString("excludedDomains"));
+		CommonLogger.debug("Crawler:> Static block executed!");
 	}
 }

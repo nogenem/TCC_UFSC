@@ -67,6 +67,9 @@ public class Main {
 //		url = "https://www.jotform.com/help/158-How-to-create-a-survey-form-and-customize-it";
 //		url = "http://evaluationtoolbox.net.au/index.php?Itemid=139&id=29&option=com_rubberdoc&view=category";
 //		url = "http://www.howtogeek.com/203892/how-to-create-fillable-forms-with-ms-word-2010/";
+		//TODO verificar esse site!!!
+//		url = "http://www.webcrawler.com/support/privacypolicy?aid=271b9f5c-942b-4c4b-befc-cb06bc0b1f49&qc=web&ridx=1";
+		
 		
 //		url = "https://www.survio.com/modelo-de-pesquisa/pesquisa-de-preco-do-produto";
 //		url = "https://www.surveymonkey.com/r/General-Event-Feedback-Template";
@@ -110,7 +113,6 @@ public class Main {
 			
 			// Testar
 			//controller.addSeed("http://search.lycos.com/web/?q=survey+template&keyvol=00948a2c54764e0e566a");
-			//controller.addSeed("http://www.goodsearch.com/search-web?utf8=%E2%9C%93&keywords=survey+template&button=");
 			
 			// off?
 			//controller.addSeed("http://www.yippy.com/search?v%3Aproject=clusty-new&query=survey+template");

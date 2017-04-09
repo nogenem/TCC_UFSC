@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<class-diagram version="1.1.13" icons="true" automaticImage="PNG" always-add-relationships="false" 
-  generalizations="true" realizations="true" associations="true" dependencies="false" nesting-relationships="true" 
-  router="FAN">  
-  <package id="1" language="java" name="br.ufsc.tcc.crawler.checker" project="questionnaires_crawler" 
-    file="/questionnaires_crawler/src/main/java/br/ufsc/tcc/crawler/checker" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="126" width="180" x="233" y="163"/>    
-    <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
-  </package>  
+<class-diagram version="1.1.14" icons="true" automaticImage="PNG" always-add-relationships="true" generalizations="true" 
+  realizations="true" associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+  <class id="1" language="java" name="br.ufsc.tcc.crawler.checker.ClusterBuilder" project="questionnaires_crawler" 
+    file="/questionnaires_crawler/src/main/java/br/ufsc/tcc/crawler/checker/ClusterBuilder.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="84" y="77"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
   <class id="2" language="java" name="br.ufsc.tcc.crawler.checker.RulesChecker" project="questionnaires_crawler" 
     file="/questionnaires_crawler/src/main/java/br/ufsc/tcc/crawler/checker/RulesChecker.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="326" y="250"/>    
+    <position height="-1" width="-1" x="235" y="78"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
@@ -19,13 +23,13 @@
   </class>  
   <package id="3" language="java" name="br.ufsc.tcc.crawler.crawler" project="questionnaires_crawler" 
     file="/questionnaires_crawler/src/main/java/br/ufsc/tcc/crawler/crawler" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="120" width="177" x="454" y="172"/>    
+    <position height="108" width="177" x="325" y="3"/>    
     <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
   </package>  
   <class id="4" language="java" name="br.ufsc.tcc.crawler.crawler.Crawler" project="questionnaires_crawler" 
     file="/questionnaires_crawler/src/main/java/br/ufsc/tcc/crawler/crawler/Crawler.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="546" y="251"/>    
+    <position height="-1" width="-1" x="413" y="77"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
@@ -34,12 +38,12 @@
   </class>  
   <package id="5" language="java" name="br.ufsc.tcc.crawler.main" project="questionnaires_crawler" 
     file="/questionnaires_crawler/src/main/java/br/ufsc/tcc/crawler/main" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="113" width="161" x="356" y="304"/>    
+    <position height="111" width="161" x="195" y="125"/>    
     <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
   </package>  
   <class id="6" language="java" name="br.ufsc.tcc.crawler.main.Main" project="questionnaires_crawler" 
     file="/questionnaires_crawler/src/main/java/br/ufsc/tcc/crawler/main/Main.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="440" y="381"/>    
+    <position height="-1" width="-1" x="277" y="201"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
@@ -56,12 +60,24 @@
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="2" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="10">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="11" name="builder">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="12" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
   </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="false" package="false" protected="false" private="false" static="false"/>    
     <operations public="false" package="false" protected="false" private="false" static="false"/>  
   </classifier-display>  
-  <association-display labels="true" multiplicity="true"/>
+  <association-display labels="false" multiplicity="false"/>
 </class-diagram>

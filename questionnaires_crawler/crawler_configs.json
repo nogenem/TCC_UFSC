@@ -23,8 +23,8 @@
 	],
 	"heuristics": {
 		"distBetweenNearNodes": {
-			"weight": 10000,
-			"height": 3
+			"maxHeight": 3,
+			"width": 3
 		},
 		"distBetweenNearQuestions": {
 			"height": 4

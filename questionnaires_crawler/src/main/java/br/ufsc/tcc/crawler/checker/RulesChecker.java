@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -46,6 +47,7 @@ public class RulesChecker {
 	public boolean shouldSave(Document doc){
 		Element root = doc.select("body").get(0);
 		
+		//TODO realmente deixar assim? [tentar encontrar um questionario que quebre essa regra]
 		if(!SURVEY_WORDS_REGEX.matcher(root.text()).matches() && 
 				!SURVEY_WORDS_REGEX.matcher(doc.title()).matches()){
 			this.distMatrix.clear();
@@ -103,7 +105,7 @@ public class RulesChecker {
 	
 	private double getCountOfComps(Cluster c){
 		double count = 0.0;
-		boolean hasTextAbove = false, multiComp = false;
+		boolean hasDescriptionAbove = false, multiComp = false;
 		ArrayList<MyNode> nodes = c.getGroup();
 		
 		for(int i = 0; i < nodes.size(); i++){
@@ -114,13 +116,13 @@ public class RulesChecker {
 					break;
 				}
 				if(multiComp){
-					hasTextAbove = true;
+					hasDescriptionAbove = true;
 					multiComp = false;
 				}else
-					hasTextAbove = isLikelyDescription(node.getText());
+					hasDescriptionAbove = isLikelyADescription(node.getText());
 			}else if(node.isComponent() && node.getType() != MyNodeType.OPTION){
-				//Todo componente deve ter pelo menos um texto acima dele
-				if(hasTextAbove){
+				//Toda pergunta deve ter pelo menos uma descricao acima dela
+				if(hasDescriptionAbove){
 					//RADIO_INPUT e CHECKBOX sempre aparecem em 2 ou + em uma pergunta, por isso
 					//cada um conta como 0.5
 					if(CommonUtil.getMultiComps().contains(node.getText())){
@@ -133,14 +135,14 @@ public class RulesChecker {
 				}
 				//Checa se tem um componente também abaixo, para casos de RATING ou MULTI_COMP
 				//Ex: https://www.survio.com/modelo-de-pesquisa/avaliacao-de-um-e-shop [9* questão]
-				hasTextAbove = (multiComp && i+1 < nodes.size()) ? 
+				hasDescriptionAbove = (multiComp && i+1 < nodes.size()) ? 
 						nodes.get(i+1).isComponent() : false;
 			}
 		}
 		return count;
 	}
 	
-	private boolean isLikelyDescription(String text){
+	private boolean isLikelyADescription(String text){
 		return (text.length() >= 4 && text.contains(" ")) || 
 				text.matches("(\\d{1,3}(\\s{1,2})?(\\.|\\:|\\)|\\-)?)");
 	}
@@ -150,7 +152,7 @@ public class RulesChecker {
 		if(dist.getHeight() > HEIGHT_BETWEEN_QUESTIONS)
 			return true;
 		
-		//Verifica se o 1* container é diferente
+		//Verifica se o 1* container, depois do BODY, é diferente
 		Dewey d1 = lastCluster.last().getDewey(), d2 = newCluster.first().getDewey();
 		return d1.getNumbers().get(1) != d2.getNumbers().get(1);
 	}
@@ -159,39 +161,29 @@ public class RulesChecker {
 	static {
 		//Load heuristics
 		JSONObject h = ProjectConfigs.getHeuristics(), tmp = null;
-		if(h != null){
-			String txtTmp = h.optString("surveyWordsRegex", "");
-			if(!txtTmp.isEmpty()){
-				SURVEY_WORDS_REGEX = Pattern.compile(txtTmp, 
-						Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
-			}
-			txtTmp = h.optString("phrasesToIgnoreRegex", "");
-			if(!txtTmp.isEmpty()){
-				PHRASES_TO_IGNORE_REGEX = Pattern.compile(txtTmp, 
-						Pattern.CASE_INSENSITIVE);
-			}
-			MIN_COMPS_IN_ONE_CLUSTER = h.optInt("minCompsInOneCluster");
-			MIN_CLUSTERS_WITH_COMP = h.optInt("minClustersWithComp");
-			
-			tmp = h.optJSONObject("distBetweenNearQuestions");
-			if(tmp != null)
-				HEIGHT_BETWEEN_QUESTIONS = tmp.optInt("height");
-		}
 		
-		if(SURVEY_WORDS_REGEX == null)
-			SURVEY_WORDS_REGEX = Pattern.compile("(.*surveys?.*|.*questionnaires?.*|"
-					+ ".*question(a|á)rios?.*|.*pesquisas?.*|.*testes?\\s+para.*|.*b(u|ú)squedas?.*)", 
+		try{
+			String txtTmp = h.getString("surveyWordsRegex");
+			SURVEY_WORDS_REGEX = Pattern.compile(txtTmp, 
 					Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
-		if(PHRASES_TO_IGNORE_REGEX == null)
-			PHRASES_TO_IGNORE_REGEX = Pattern.compile("(register|login|password|forgot password\\?|"
-					+ "keep me logged in|reset password|search:?|registre(\\-se)?|logar|entrar|esqueceu sua senha\\?|"
-					+ "me mantenha logado|recupere sua senha|buscar:?)", 
-				Pattern.CASE_INSENSITIVE);
-		if(MIN_COMPS_IN_ONE_CLUSTER <= 0) MIN_COMPS_IN_ONE_CLUSTER = 4;
-		if(MIN_CLUSTERS_WITH_COMP <= 0) MIN_CLUSTERS_WITH_COMP = 3;
-		if(HEIGHT_BETWEEN_QUESTIONS <= 0) HEIGHT_BETWEEN_QUESTIONS = 4;
-		
-		CommonLogger.debug("RULESCHECKER {} / {}", MIN_COMPS_IN_ONE_CLUSTER, MIN_CLUSTERS_WITH_COMP);
+			
+			txtTmp = h.getString("phrasesToIgnoreRegex");
+			PHRASES_TO_IGNORE_REGEX = Pattern.compile(txtTmp, 
+					Pattern.CASE_INSENSITIVE);
+			
+			MIN_COMPS_IN_ONE_CLUSTER = h.getInt("minCompsInOneCluster");
+			if(MIN_COMPS_IN_ONE_CLUSTER <= 0) MIN_COMPS_IN_ONE_CLUSTER = 4;
+			
+			MIN_CLUSTERS_WITH_COMP = h.getInt("minClustersWithComp");
+			if(MIN_CLUSTERS_WITH_COMP <= 0) MIN_CLUSTERS_WITH_COMP = 3;
+	
+			tmp = h.getJSONObject("distBetweenNearQuestions");
+			HEIGHT_BETWEEN_QUESTIONS = tmp.optInt("height");
+			if(HEIGHT_BETWEEN_QUESTIONS <= 0) HEIGHT_BETWEEN_QUESTIONS = 4;
+		}catch(JSONException exp){
+			CommonLogger.fatalError(exp);
+		}
+		CommonLogger.debug("RulesChecker:> Static block executed!");
 	}
 
 }
