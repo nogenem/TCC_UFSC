@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import br.ufsc.tcc.common.config.ProjectConfigs;
@@ -22,7 +22,6 @@ import br.ufsc.tcc.extractor.model.Questionario;
 public class RulesChecker {
 	
 	private static JSONObject CONFIGS = null;
-	
 	private DistanceMatrix distMatrix;
 	
 	public RulesChecker() {
@@ -315,75 +314,65 @@ public class RulesChecker {
 	
 	// Métodos/Blocos estáticos
 	static {
-		CONFIGS = new JSONObject();
-		CONFIGS.put("distBetweenTextsInsideQuestionnaire", new JSONObject())
-			.put("distBetweenCompAndText", new JSONObject())
-			.put("distBetweenDescAndQuestion", new JSONObject())
-			.put("distBetweenGroupAndFirstQuestion", new JSONObject())
-			.put("distBetweenDescAndComplementaryText", new JSONObject())
-			.put("distBetweenTextsInQuestionWithSubQuestions", new JSONObject())
-			.put("distBetweenPartsOfDescription", new JSONObject())
-			.put("distBetweenTextsOfSameAlternative", new JSONObject());
+		//Load heuristics
+		JSONObject h = ProjectConfigs.getHeuristics(), tmp = null;
+		String lastObj = "";
 		
-		JSONObject h = ProjectConfigs.getHeuristics(), 
-				tmp1 = new JSONObject(), tmp2 = null;
+		// Verifica se todas as heurísticas foram declaradas
+		try{
+			h.getInt("minQuestionsOnQuestionnaire");
+			h.getString("phrasesToIgnoreRegex");
+			
+			lastObj = "distBetweenTextsInsideQuestionnaire";
+			tmp = h.getJSONObject(lastObj);
+				tmp.getInt("height");
+				
+			lastObj = "distBetweenCompAndText";
+			tmp = h.getJSONObject(lastObj);
+				tmp.getInt("height");
+				tmp.getInt("maxHeight");
+			
+			lastObj = "distBetweenDescAndQuestion";
+			tmp = h.getJSONObject(lastObj);	
+				tmp.getInt("height");
+				tmp.getInt("maxHeight");
+				
+			lastObj = "distBetweenGroupAndFirstQuestion";
+			tmp = h.getJSONObject(lastObj);	
+				tmp.getInt("height");
+				tmp.getInt("width");
+				
+			lastObj = "distBetweenDescAndComplementaryText";
+			tmp = h.getJSONObject(lastObj);	
+				tmp.getInt("height");
+				tmp.getInt("width");
+				
+			lastObj = "distBetweenTextsInQuestionWithSubQuestions";
+			tmp = h.getJSONObject(lastObj);	
+				tmp.getInt("height");
+				tmp.getInt("width");
+				
+			lastObj = "distBetweenPartsOfDescription";
+			tmp = h.getJSONObject(lastObj);	
+				tmp.getInt("height");
+				tmp.getInt("width");
+				tmp.getInt("maxHeight");
+				
+			lastObj = "distBetweenTextsOfSameAlternative";
+			tmp = h.getJSONObject(lastObj);	
+				tmp.getInt("height");
+				tmp.getInt("width");
+				tmp.getInt("maxHeight");
+		}catch(JSONException exp){
+			String msg = exp.getMessage();
+			String value = msg.substring(msg.indexOf('[')+2, msg.lastIndexOf(']')-1);
+			lastObj += lastObj.equals("") ? "" : ".";
+			msg = "Valor '"+(lastObj+value)+
+					"' não encontrado no arquivo de configuração!";
+			CommonLogger.fatalError(new JSONException(msg));
+		}
+		CONFIGS = h;
 		
-		int n = h!=null ? h.optInt("minQuestionsOnQuestionnaire") : 0;
-		n = n>0 ? n : 2;
-		CONFIGS.put("minQuestionsOnQuestionnaire", n);
-		
-		String s = h!=null ? h.getString("phrasesToIgnoreRegex") : "";
-		CONFIGS.put("phrasesToIgnoreRegex", s);
-		
-		tmp2 = h!=null ? h.optJSONObject("distBetweenTextsInsideQuestionnaire") : tmp1;
-		tmp2 = tmp2!=null ? tmp2 : tmp1;
-		CONFIGS.getJSONObject("distBetweenTextsInsideQuestionnaire")
-			.put("height", tmp2.optInt("height", 4));
-		
-		tmp2 = h!=null ? h.optJSONObject("distBetweenCompAndText") : tmp1;
-		tmp2 = tmp2!=null ? tmp2 : tmp1;
-		CONFIGS.getJSONObject("distBetweenCompAndText")
-			.put("height", tmp2.optInt("height", 2))
-			.put("maxHeight", tmp2.optInt("maxHeight", 3));
-		
-		tmp2 = h!=null ? h.optJSONObject("distBetweenDescAndQuestion") : tmp1;
-		tmp2 = tmp2!=null ? tmp2 : tmp1;
-		CONFIGS.getJSONObject("distBetweenDescAndQuestion")
-			.put("height", tmp2.optInt("height", 2))
-			.put("maxHeight", tmp2.optInt("maxHeight", 4));
-		
-		tmp2 = h!=null ? h.optJSONObject("distBetweenGroupAndFirstQuestion") : tmp1;
-		tmp2 = tmp2!=null ? tmp2 : tmp1;
-		CONFIGS.getJSONObject("distBetweenGroupAndFirstQuestion")
-			.put("height", tmp2.optInt("height", 1))
-			.put("width", tmp2.optInt("width", 7));
-		
-		tmp2 = h!=null ? h.optJSONObject("distBetweenDescAndComplementaryText") : tmp1;
-		tmp2 = tmp2!=null ? tmp2 : tmp1;
-		CONFIGS.getJSONObject("distBetweenDescAndComplementaryText")
-			.put("height", tmp2.optInt("height", 1))
-			.put("width", tmp2.optInt("width", 4));
-		
-		tmp2 = h!=null ? h.optJSONObject("distBetweenTextsInQuestionWithSubQuestions") : tmp1;
-		tmp2 = tmp2!=null ? tmp2 : tmp1;
-		CONFIGS.getJSONObject("distBetweenTextsInQuestionWithSubQuestions")
-			.put("height", tmp2.optInt("height", 1))
-			.put("width", tmp2.optInt("width", 5));
-		
-		tmp2 = h!=null ? h.optJSONObject("distBetweenPartsOfDescription") : tmp1;
-		tmp2 = tmp2!=null ? tmp2 : tmp1;
-		CONFIGS.getJSONObject("distBetweenPartsOfDescription")
-			.put("height", tmp2.optInt("height", 1))
-			.put("maxHeight", tmp2.optInt("maxHeight", 1))
-			.put("width", tmp2.optInt("width", 4));
-		
-		tmp2 = h!=null ? h.optJSONObject("distBetweenTextsOfSameAlternative") : tmp1;
-		tmp2 = tmp2!=null ? tmp2 : tmp1;
-		CONFIGS.getJSONObject("distBetweenTextsOfSameAlternative")
-			.put("height", tmp2.optInt("height", 1))
-			.put("maxHeight", tmp2.optInt("maxHeight", 2))
-			.put("width", tmp2.optInt("width", 2));
-		
-		CommonLogger.debug("RULESCHECKER: {}", CONFIGS.getJSONObject("distBetweenTextsInQuestionWithSubQuestions"));
+		CommonLogger.debug("RulesChecker:> Static block executed!");
 	}
 }

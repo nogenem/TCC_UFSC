@@ -97,7 +97,4 @@ public class QuestionarioBuilder {
 		CommonLogger.debug(ret);
 		return ret;
 	}
-	
-	// Métodos/Blocos estáticos
-
 }
