@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import br.ufsc.tcc.common.config.ProjectConfigs;
@@ -74,17 +75,18 @@ public class DistanceMatrix {
 	// Métodos/Blocos estáticos
 	static {
 		//Load heuristics
-		JSONObject tmp = ProjectConfigs.getHeuristics();
-		if(tmp != null){
-			tmp = tmp.optJSONObject("distBetweenNearNodes");
-			if(tmp != null){
-				MAX_WIDTH = tmp.optInt("width");
-				MAX_MAXHEIGHT = tmp.optInt("maxHeight");
-			}
-		}
-		if(MAX_WIDTH <= 0) MAX_WIDTH = 3;
-		if(MAX_MAXHEIGHT <= 0) MAX_MAXHEIGHT = 3;
+		JSONObject h = ProjectConfigs.getHeuristics(), tmp = null;
 		
-		CommonLogger.debug("DISTMATRIX: {} / {}", MAX_WIDTH, MAX_MAXHEIGHT);
+		try{
+			tmp = h.getJSONObject("distBetweenNearNodes");	
+			MAX_WIDTH = tmp.getInt("width");
+			if(MAX_WIDTH <= 0) MAX_WIDTH = 3;
+			
+			MAX_MAXHEIGHT = tmp.getInt("maxHeight");
+			if(MAX_MAXHEIGHT <= 0) MAX_MAXHEIGHT = 3;
+		}catch(JSONException exp){
+			CommonLogger.fatalError(exp);
+		}
+		CommonLogger.debug("DistMatrix:> Static block executed!");
 	}
 }
