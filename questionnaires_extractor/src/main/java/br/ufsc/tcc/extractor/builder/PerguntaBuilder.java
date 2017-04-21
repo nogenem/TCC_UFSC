@@ -300,7 +300,6 @@ public class PerguntaBuilder {
 					this.lastQWithSubQs.setGrupo(this.currentG);
 			}	
 			
-			//TODO verificar se eh login?
 			if(!matrixFlag && !qWithSubQsFlag && !this.currentP.getDescricao().isEmpty())
 				currentQ.addPergunta(this.currentP);
 		}

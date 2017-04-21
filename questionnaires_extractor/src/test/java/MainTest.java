@@ -6,9 +6,6 @@ import br.ufsc.tcc.common.util.CommonLogger;
 
 public class MainTest extends BasicTest {
 
-	//TODO dar jeito no Survio/feedback-sobre-servico
-	//TODO dar jeito no Bioinfo, mesmo problema /\
-	//TODO dar jeito no vark
 	@Test
 	public void allTests() {
 		CommonLogger.setDebugEnabled(false);

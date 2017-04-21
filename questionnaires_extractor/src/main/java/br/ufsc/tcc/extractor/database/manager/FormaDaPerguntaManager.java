@@ -19,7 +19,10 @@ public class FormaDaPerguntaManager {
 			return null;
 		}
 		forma = forma.toUpperCase();
-		if(!formas.containsKey(forma)) return null;
+		if(!formas.containsKey(forma)){ 
+			CommonLogger.info("FormaDaPerguntaManager:getForma()> forma não encontrada: " +forma);
+			return null;
+		}
 		return formas.get(forma);
 	}
 	

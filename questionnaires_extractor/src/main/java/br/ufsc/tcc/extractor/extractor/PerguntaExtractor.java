@@ -23,11 +23,12 @@ public class PerguntaExtractor {
 		this.checker = checker;
 	}
 	
-	// Demais métodos
+	// Getters e Setters
 	public void setCurrentPergunta(Pergunta current){
 		this.currentP = current;
 	}
 	
+	// Demais métodos	
 	public void extractTextarea(List<MyNode> nodes) {
 		CommonLogger.debug("\tTextarea");
 		
@@ -231,6 +232,17 @@ public class PerguntaExtractor {
 		opt = nodes.get(++currentI);
 		text = nodes.get(++currentI);
 		while(opt != null && opt.getType() == MyNodeType.OPTION){
+			if(text.isA("OPTION")){
+				if(currentI+1 < nodes.size()){
+					opt = text;
+					text = nodes.get(++currentI);
+					continue;
+				}else{
+					opt = null;
+					break;
+				}
+			}
+				
 			if(!this.checker.areCompAndTextNear(opt, text)){
 				error = true;
 				break;

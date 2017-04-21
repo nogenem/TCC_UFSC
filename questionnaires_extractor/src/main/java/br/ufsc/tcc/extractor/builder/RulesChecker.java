@@ -155,7 +155,6 @@ public class RulesChecker {
 	}
 
 	public boolean isGroupText(Cluster cTmp, Cluster desc, Cluster firstGroupOfQuestionnaire) {
-		//TODO Todos os group text tem a mesma tag pai (?)
 		if(cTmp == null || cTmp.isEmpty() || desc == null || desc.isEmpty())
 			return false;
 		
@@ -168,8 +167,8 @@ public class RulesChecker {
 		Dewey dist = distMatrix.getDist(cTmp.last(), desc.first());
 		
 		if(dist.getHeight() <= obj.getInt("height") && dist.getWidth() <= obj.getInt("width")){
-			//O texto do grupo deve ter no maximo 5 palavras (?)
-			if(txt.split(" ").length <= 5){
+			//O texto do grupo deve ter no maximo X palavras 
+			if(txt.split(" ").length <= CONFIGS.getInt("maxWordsInAGroupDescription")){
 				if(firstGroupOfQuestionnaire != null){
 					//O tamanho do Dewey dos grupos de um questionario, geralmente,
 					//é o mesmo
@@ -202,7 +201,9 @@ public class RulesChecker {
 			
 			if(nTmp2.isText() && nTmp3.isImgOrText()){
 				dist = distMatrix.getDist(nTmp1, nTmp2);
-				if(dist.getHeight() <= obj.getInt("height") && dist.getWidth() <= obj.getInt("width")){
+				if(dist.getHeight() <= obj.getInt("height") && dist.getMaxHeight() <= obj.getInt("maxHeight") && 
+						dist.getWidth() <= obj.getInt("width")){
+					
 					String prefix1 = nTmp1.getDewey().getCommonPrefix(nTmp3.getDewey()),
 							prefix2 = nTmp2.getDewey().getCommonPrefix(nTmp3.getDewey()),
 							prefix3 = nTmp1.getDewey().getCommonPrefix(nTmp2.getDewey());
@@ -321,6 +322,7 @@ public class RulesChecker {
 		// Verifica se todas as heurísticas foram declaradas
 		try{
 			h.getInt("minQuestionsOnQuestionnaire");
+			h.getInt("maxWordsInAGroupDescription");
 			h.getString("phrasesToIgnoreRegex");
 			
 			lastObj = "distBetweenTextsInsideQuestionnaire";
@@ -345,6 +347,7 @@ public class RulesChecker {
 			lastObj = "distBetweenDescAndComplementaryText";
 			tmp = h.getJSONObject(lastObj);	
 				tmp.getInt("height");
+				tmp.getInt("maxHeight");
 				tmp.getInt("width");
 				
 			lastObj = "distBetweenTextsInQuestionWithSubQuestions";

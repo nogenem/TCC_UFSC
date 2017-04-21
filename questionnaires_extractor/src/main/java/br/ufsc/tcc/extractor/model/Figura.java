@@ -12,7 +12,7 @@ public class Figura {
 
 	/////////////////// Dono da figura \\\\\\\\\\\\\\\\\\
 	// Irá guardar uma Pergunta, P, uma Alternativa, A, ou
-	// um Questionario, Q, que será usada para setar os campos
+	// um Questionario, Q, que será usado para setar os campos
 	// dono e idDono do banco de dados.
 	private Object dono;
 	
@@ -59,7 +59,7 @@ public class Figura {
 	
 	/**
 	 * Seta o dono da Figura. </br>
-	 * Este dono deve ser uma Pergunta ou uma Alternativa.
+	 * Este dono pode ser uma Pergunta, uma Alternativa ou um Questionário.
 	 * 
 	 * @param dono	O dono desta Figura.
 	 */

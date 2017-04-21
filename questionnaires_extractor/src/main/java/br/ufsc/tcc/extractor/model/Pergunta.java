@@ -160,6 +160,7 @@ public class Pergunta {
 		case "RANGE_INPUT":
 		case "RANGE_INPUT_GROUP":
 		case "RATING":
+		case "RATING_GROUP":
 			return "FECHADO";
 		case "CHECKBOX_INPUT":
 		case "CHECKBOX_INPUT_GROUP":
@@ -171,22 +172,29 @@ public class Pergunta {
 		case "TEXT_INPUT_MATRIX":
 		case "NUMBER_INPUT":
 		case "NUMBER_INPUT_GROUP":
+		case "NUMBER_INPUT_MATRIX":
 		case "EMAIL_INPUT":
 		case "EMAIL_INPUT_GROUP":
+		case "EMAIL_INPUT_MATRIX":
 		case "DATE_INPUT":
 		case "DATE_INPUT_GROUP":
+		case "DATE_INPUT_MATRIX":
 		case "TEL_INPUT":
 		case "TEL_INPUT_GROUP":
+		case "TEL_INPUT_MATRIX":
 		case "TIME_INPUT":
 		case "TIME_INPUT_GROUP":
+		case "TIME_INPUT_MATRIX":
 		case "URL_INPUT":
 		case "URL_INPUT_GROUP":
+		case "URL_INPUT_MATRIX":
 		case "TEXTAREA":
 		case "TEXTAREA_GROUP":
 		case "TEXTAREA_MATRIX":
 		case "MIX_COMP_GROUP"://TODO deixar assim mesmo?
 		case "MIX_COMP_MATRIX":
 		case "MULTI_COMP":
+		case "MULTI_COMP_GROUP":
 			return "ABERTO";
 		default:
 			return "";
