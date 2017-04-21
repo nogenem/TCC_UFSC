@@ -17,12 +17,13 @@
 		"maxDepthOfCrawling": -1,
 		"maxPagesToFetch": -1,
 		"includeBinaryContentInCrawling": false,
-		"resumableCrawling": false	
+		"resumableCrawling": true	
 	},
 	"seeds": [
 	],
 	"heuristics": {
 		"distBetweenNearNodes": {
+			"height": 3,
 			"maxHeight": 3,
 			"width": 3
 		},
@@ -30,7 +31,7 @@
 			"height": 4
 		},
 		"surveyWordsRegex": "(.*surveys?.*|.*questionnaires?.*|.*question(a|á)rios?.*|.*pesquisas?.*|.*testes?\\s+para.*|.*b(u|ú)squedas?.*)",
-		"phrasesToIgnoreRegex": "^(contact us( now)?!?|enter your email.*|(send (a )?)?comments?:?|user(name)?:?|sign( )?in|sign( )?up|register|login:?|password:?|forgot (your)? password\\?|confirm password:?|keep me logged in|reset password|search:?|^entre com seu email.*|comente:?|(envie ((um|seu) )?)?coment(a|á)rio:?|usu(a|á)rio|entr(e|ar)|inscrev(a|er)-se|registr(ar|e-se)|logar|entrar|esqueceu sua senha\\?|me mantenha logado|mantenha-me logado|recupere sua senha|buscar:?)",
+		"phrasesToIgnoreRegex": "^(account id|subscribe|create (an )?account|contact us( now)?!?|enter your email.*|(send (a )?)?comments?:?|user(name)?:?|sign( )?in.*|sign( )?up.*|register|login:?|password:?|retrieve password|forgot (your )?password\\??|confirm password:?|keep me logged in|reset password|search:?|entre com seu email.*|comente:?|coment(á|a)rios?:?|(envie ((um|seu) )?)?coment(a|á)rio:?|usu(a|á)rio|entr(e|ar)|inscrev(a|er)-se|registr(ar|e-se)|logar|entrar|senha|repita (a|sua) senha:?|esqueceu sua senha\\?|me mantenha logado|mantenha-me logado|recupere sua senha|buscar:?)",
 		"minCompsInOneCluster": 4,
 		"minClustersWithComp": 3
 	}

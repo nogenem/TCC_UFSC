@@ -105,8 +105,12 @@ public class RulesChecker {
 	
 	private double getCountOfComps(Cluster c){
 		double count = 0.0;
-		boolean hasDescriptionAbove = false, multiComp = false;
+		boolean hasDescriptionAbove = false;
 		ArrayList<MyNode> nodes = c.getGroup();
+		
+		// Os clusters de perguntas sempre começam com um texto ou imagem !?
+		if(c.first().isComponent())
+			return count;
 		
 		for(int i = 0; i < nodes.size(); i++){
 			MyNode node = nodes.get(i);
@@ -115,34 +119,26 @@ public class RulesChecker {
 					count = -1;
 					break;
 				}
-				if(multiComp){
-					hasDescriptionAbove = true;
-					multiComp = false;
-				}else
-					hasDescriptionAbove = isLikelyADescription(node.getText());
+				hasDescriptionAbove = isLikelyADescription(node.getText());
 			}else if(node.isComponent() && node.getType() != MyNodeType.OPTION){
 				//Toda pergunta deve ter pelo menos uma descricao acima dela
 				if(hasDescriptionAbove){
 					//RADIO_INPUT e CHECKBOX sempre aparecem em 2 ou + em uma pergunta, por isso
 					//cada um conta como 0.5
-					if(CommonUtil.getMultiComps().contains(node.getText())){
+					if(CommonUtil.getMultiComps().contains(node.getText()))
 						count += 0.5;
-						multiComp = true;
-					}else{
+					else
 						count++;
-						multiComp = false;
-					}
 				}
-				//Checa se tem um componente também abaixo, para casos de RATING ou MULTI_COMP
-				//Ex: https://www.survio.com/modelo-de-pesquisa/avaliacao-de-um-e-shop [9* questão]
-				hasDescriptionAbove = (multiComp && i+1 < nodes.size()) ? 
-						nodes.get(i+1).isComponent() : false;
+				hasDescriptionAbove = false;
 			}
 		}
 		return count;
 	}
 	
 	private boolean isLikelyADescription(String text){
+		if(text.endsWith(" :"))
+			text = text.substring(0, text.length()-2) + ":";
 		return (text.length() >= 4 && text.contains(" ")) || 
 				text.matches("(\\d{1,3}(\\s{1,2})?(\\.|\\:|\\)|\\-)?)");
 	}

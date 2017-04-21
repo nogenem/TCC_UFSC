@@ -72,12 +72,13 @@ public class Crawler extends WebCrawler {
 				PossivelQuestionario pq = new PossivelQuestionario(
 						url.getURL(), htmlParseData.getTitle());
 				try {
-					//pqManager.save(pq);
+//					pqManager.save(pq);
 				} catch (Exception e) {
 					CommonLogger.error(e);
 				}
-			}else
+			}else{
 				CommonLogger.debug("URL: {}", url.getURL());
+			}
 		}
 	}
 	

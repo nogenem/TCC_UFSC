@@ -78,7 +78,9 @@ public class Main {
 //		url = "https://www.bioinfo.mpg.de/mctq/core_work_life/core/core.jsp?language=por_b";
 //		url = "http://anpei.tempsite.ws/intranet/mediaempresa";
 //		url = "https://www.surveycrest.com/template_preview/pyof1IFwp9Xa1_x430JdUeVsuHVRKuw";
-//		url = "http://lap.umd.edu/surveys/census/files/surveya1pagesbytopic/page1.html";
+//		url = "http://lap.umd.edu/surveys/census/files/surveya1pagesbytopic/page8.html";
+		
+		url = "https://www.surveyforbusiness.com/survey-industry/market-research.html";
 		
 		RulesChecker checker = new RulesChecker();
 		Document doc = null;
@@ -112,7 +114,9 @@ public class Main {
 			}
 			
 			// Testar
-			//controller.addSeed("http://search.lycos.com/web/?q=survey+template&keyvol=00948a2c54764e0e566a");
+			controller.addSeed("http://search.lycos.com/web/?q=survey+template&keyvol=00948a2c54764e0e566a");
+			controller.addSeed("http://search.lycos.com/web/?q=questionnaire+template&keyvol=008b07d47969f38be4a4");
+			controller.addSeed("https://www.webcrawler.com/serp?q=survey+template");
 			
 			// off?
 			//controller.addSeed("http://www.yippy.com/search?v%3Aproject=clusty-new&query=survey+template");

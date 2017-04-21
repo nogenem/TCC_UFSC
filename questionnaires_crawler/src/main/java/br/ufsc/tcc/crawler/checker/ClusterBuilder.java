@@ -70,13 +70,20 @@ public class ClusterBuilder {
 		if(c1Text.matches(starterInputRegex) && c2Text.matches(starterInputRegex))
 			return true;
 		
+		//Deve-se juntar grupos de options seguidos
+		if(c1.size() >= 2){
+			MyNode opt1 = c1.get(c1.size()-2), opt2 = c2.first();
+			if(opt1.isA("OPTION") && opt2.isA("OPTION"))
+				return true;
+		}
+		
 		//Deve-se juntar padrões de cluster texto seguidos de cluster elementos OU
 		//cluster com 1 elemento apenas (casos raros?)
 		//PS: deve-se priorizar a união de elementos a frente desta regra
 		//    -por isso o c3-
 		if((c3 == null || c3.first().isText()) &&
 				((c1.isAllText() && !c2.first().isText()) || 
-						(!c2.first().isText() && c2.size() == 1)))
+						(!c2.first().isText() && c2.size() == 1)))//TODO rever essa ultima parte?
 			return true;
 		return false;
 	}
