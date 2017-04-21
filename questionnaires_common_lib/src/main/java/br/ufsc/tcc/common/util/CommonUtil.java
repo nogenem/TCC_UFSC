@@ -61,7 +61,7 @@ public class CommonUtil {
 					"option");
 	
 	private final static String REQUIRED_REGEX = 
-			"(required|resposta exigida|requirido|\\*)";
+			"\\(?(required|resposta exigida|requerido|\\*)\\)?";
 	
 	// Getters e Setters
 	public static List<String> getSingleComps(){
@@ -259,7 +259,7 @@ public class CommonUtil {
 		case "input":
 			// O tipo padrão de um input é 'text', caso não seja especificado
 			String type = node.attr("type");
-			name += "[type="+ (type.isEmpty() ? "text" : type) +"]";
+			name += "[type="+ (type.isEmpty() ? "text" : type.toLowerCase()) +"]";
 			break;
 		case "img":
 			name += "[alt="+ node.attr("alt") +"]";

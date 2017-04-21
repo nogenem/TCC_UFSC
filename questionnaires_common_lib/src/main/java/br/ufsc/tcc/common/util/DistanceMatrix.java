@@ -15,6 +15,7 @@ import br.ufsc.tcc.common.model.MyNode;
 public class DistanceMatrix {
 	
 	private static int MAX_WIDTH = 0;
+	private static int MAX_HEIGHT = 0;
 	private static int MAX_MAXHEIGHT = 0;
 	
 	private HashMap<String, HashMap<String, Dewey>> distances;
@@ -57,7 +58,8 @@ public class DistanceMatrix {
 	public boolean areNear(MyNode n1, MyNode n2){
 		if(n1 != null && n2 != null){
 			Dewey dist = this.getDist(n1, n2);
-			return dist.getMaxHeight() <= MAX_MAXHEIGHT &&
+			return dist.getHeight() <= MAX_HEIGHT &&
+					dist.getMaxHeight() <= MAX_MAXHEIGHT &&
 					dist.getWidth() <= MAX_WIDTH;
 		}
 		return false;
@@ -81,6 +83,9 @@ public class DistanceMatrix {
 			tmp = h.getJSONObject("distBetweenNearNodes");	
 			MAX_WIDTH = tmp.getInt("width");
 			if(MAX_WIDTH <= 0) MAX_WIDTH = 3;
+			
+			MAX_HEIGHT = tmp.getInt("height");
+			if(MAX_HEIGHT <= 0) MAX_HEIGHT = 3;
 			
 			MAX_MAXHEIGHT = tmp.getInt("maxHeight");
 			if(MAX_MAXHEIGHT <= 0) MAX_MAXHEIGHT = 3;

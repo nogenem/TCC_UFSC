@@ -56,6 +56,11 @@ public class MyNode implements Comparable<MyNode> {
 	}
 	
 	// Demais métodos
+	public boolean isA(String type){
+		return this.getType().toString()
+				.equals(type.toUpperCase());
+	}
+	
 	public boolean isImage(){
 		return this.type == MyNodeType.IMG;
 	}
