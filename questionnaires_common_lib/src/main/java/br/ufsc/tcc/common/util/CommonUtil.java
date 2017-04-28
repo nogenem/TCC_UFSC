@@ -28,7 +28,7 @@ import org.jsoup.nodes.Node;
 import com.google.common.base.CharMatcher;
 
 import br.ufsc.tcc.common.model.Cluster;
-import br.ufsc.tcc.common.model.Dewey;
+import br.ufsc.tcc.common.model.DeweyExt;
 import br.ufsc.tcc.common.model.MyNode;
 
 public class CommonUtil {
@@ -107,14 +107,17 @@ public class CommonUtil {
 			
 			// Só para ter certeza...
 			InputStream input = cl.getResourceAsStream(resource);
-			if(input == null)
+			if(input == null){
 				input = cl.getResourceAsStream("/" +resource);
-			if(input == null)
-				input = cl.getResourceAsStream("resources/" +resource);
-			if(input == null)
-				input = cl.getResourceAsStream("/resources/" +resource);
-			if(input == null)
-				throw new IOException("Resource not found ("+resource+").");
+				if(input == null){
+					input = cl.getResourceAsStream("resources/" +resource);
+					if(input == null){
+						input = cl.getResourceAsStream("/resources/" +resource);
+						if(input == null)
+							throw new IOException("Resource not found ("+resource+").");
+					}
+				}
+			}
 
 			ByteArrayOutputStream result = new ByteArrayOutputStream();
 			byte[] buffer = new byte[1024];
@@ -234,7 +237,7 @@ public class CommonUtil {
 	    return baos.toString();
 	}
 	
-	public static int getPrefixLenght(Dewey d1, Dewey d2){
+	public static int getPrefixLenght(DeweyExt d1, DeweyExt d2){
 		return getPrefixLength(d1.getCommonPrefix(d2));
 	}
 	
@@ -330,7 +333,7 @@ public class CommonUtil {
 
 	private static void findCompsImgsAndTexts(Node root, String dewey, List<MyNode> ret) {
 		if(isCompImgOrTextNode(root)){
-			MyNode node = new MyNode(root, new Dewey(dewey));
+			MyNode node = new MyNode(root, new DeweyExt(dewey));
 			ret.add(node);
 		}
 		

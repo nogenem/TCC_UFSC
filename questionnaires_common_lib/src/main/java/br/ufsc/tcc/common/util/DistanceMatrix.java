@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 import br.ufsc.tcc.common.config.ProjectConfigs;
 import br.ufsc.tcc.common.model.Cluster;
-import br.ufsc.tcc.common.model.Dewey;
+import br.ufsc.tcc.common.model.DeweyExt;
 import br.ufsc.tcc.common.model.MyNode;
 
 public class DistanceMatrix {
@@ -18,7 +18,7 @@ public class DistanceMatrix {
 	private static int MAX_HEIGHT = 0;
 	private static int MAX_MAXHEIGHT = 0;
 	
-	private HashMap<String, HashMap<String, Dewey>> distances;
+	private HashMap<String, HashMap<String, DeweyExt>> distances;
 
 	// Construtores
 	public DistanceMatrix(){
@@ -26,7 +26,7 @@ public class DistanceMatrix {
 	}
 	
 	// Getters e Setters
-	public Dewey getDist(MyNode n1, MyNode n2){
+	public DeweyExt getDist(MyNode n1, MyNode n2){
 		if(n1 == null || n2 == null) return null;
 		
 		String v1 = n1.getDewey().getValue(), 
@@ -57,7 +57,7 @@ public class DistanceMatrix {
 	
 	public boolean areNear(MyNode n1, MyNode n2){
 		if(n1 != null && n2 != null){
-			Dewey dist = this.getDist(n1, n2);
+			DeweyExt dist = this.getDist(n1, n2);
 			return dist.getHeight() <= MAX_HEIGHT &&
 					dist.getMaxHeight() <= MAX_MAXHEIGHT &&
 					dist.getWidth() <= MAX_WIDTH;
@@ -69,8 +69,8 @@ public class DistanceMatrix {
 		this.distances.clear();
 	}
 
-	private void calculateDist(Dewey d1, Dewey d2) {
-		Dewey dist = d1.distanceOf(d2);
+	private void calculateDist(DeweyExt d1, DeweyExt d2) {
+		DeweyExt dist = d1.distanceOf(d2);
 		this.distances.get(d1.getValue()).put(d2.getValue(), dist);
 	}
 	

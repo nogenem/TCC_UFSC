@@ -4,17 +4,17 @@ import java.util.ArrayList;
 
 import br.ufsc.tcc.common.util.CommonUtil;
 
-public class Dewey {
+public class DeweyExt {
 	
 	private String value;
 	private ArrayList<Integer> numbers;
 
 	// Construtores
-	public Dewey(){
+	public DeweyExt(){
 		this("");
 	}
 	
-	public Dewey(String value){
+	public DeweyExt(String value){
 		this.value = value;
 		this.numbers = this.parseValueToNumbers(value);
 	}
@@ -31,7 +31,7 @@ public class Dewey {
 		return this.numbers;
 	}
 	
-	public String getCommonPrefix(Dewey other){
+	public String getCommonPrefix(DeweyExt other){
 		if(other == null) return "";
 		
 		String str1 = this.getValue(), 
@@ -78,7 +78,7 @@ public class Dewey {
 	}
 	
 	// Demais métodos
-	private Dewey add(int n){
+	private DeweyExt add(int n){
 		// Se o 'numbers' estiver vazio não se deve adicionar
 		// o valor zero, para evitar coisas como: 00.01 ...
 		if(!this.numbers.isEmpty() || n != 0){
@@ -89,10 +89,10 @@ public class Dewey {
 		return this;
 	}
 	
-	public Dewey distanceOf(Dewey other){
+	public DeweyExt distanceOf(DeweyExt other){
 		if(other == null) return null;
 		
-		Dewey dist = new Dewey();
+		DeweyExt dist = new DeweyExt();
 		ArrayList<Integer> n1 = this.numbers,
 				n2 = other.numbers,
 				n3 = null;
@@ -160,7 +160,7 @@ public class Dewey {
 			return true;
 		if (obj == null || getClass() != obj.getClass())
 			return false;
-		Dewey other = (Dewey) obj;
+		DeweyExt other = (DeweyExt) obj;
 		return this.getValue().equals(other.getValue());
 	}
 	

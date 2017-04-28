@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.1.14" icons="true" automaticImage="PNG" always-add-relationships="true" generalizations="true" 
   realizations="true" associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
-  <package id="1" language="java" name="br.ufsc.tcc.common.config" project="questionnaires_common_lib" 
-    file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/config" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="109" width="175" x="6" y="14"/>    
-    <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
-  </package>  
-  <class id="2" language="java" name="br.ufsc.tcc.common.config.ProjectConfigs" project="questionnaires_common_lib" 
+  <class id="1" language="java" name="br.ufsc.tcc.common.config.ProjectConfigs" project="questionnaires_common_lib" 
     file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/config/ProjectConfigs.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="94" y="90"/>    
@@ -16,12 +11,12 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <package id="3" language="java" name="br.ufsc.tcc.common.crawler" project="questionnaires_common_lib" 
+  <package id="2" language="java" name="br.ufsc.tcc.common.crawler" project="questionnaires_common_lib" 
     file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/crawler" binary="false" corner="BOTTOM_RIGHT">    
     <position height="108" width="184" x="5" y="139"/>    
     <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
   </package>  
-  <class id="4" language="java" name="br.ufsc.tcc.common.crawler.CrawlerController" project="questionnaires_common_lib" 
+  <class id="3" language="java" name="br.ufsc.tcc.common.crawler.CrawlerController" project="questionnaires_common_lib" 
     file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/crawler/CrawlerController.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="98" y="213"/>    
@@ -31,12 +26,12 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <package id="5" language="java" name="br.ufsc.tcc.common.util" project="questionnaires_common_lib" 
+  <package id="4" language="java" name="br.ufsc.tcc.common.util" project="questionnaires_common_lib" 
     file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/util" binary="false" corner="BOTTOM_RIGHT">    
     <position height="245" width="157" x="7" y="261"/>    
     <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
   </package>  
-  <class id="6" language="java" name="br.ufsc.tcc.common.util.CommonLogger" project="questionnaires_common_lib" 
+  <class id="5" language="java" name="br.ufsc.tcc.common.util.CommonLogger" project="questionnaires_common_lib" 
     file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/util/CommonLogger.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="84" y="340"/>    
@@ -46,7 +41,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="7" language="java" name="br.ufsc.tcc.common.util.CommonUtil" project="questionnaires_common_lib" 
+  <class id="6" language="java" name="br.ufsc.tcc.common.util.CommonUtil" project="questionnaires_common_lib" 
     file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/util/CommonUtil.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="85" y="405"/>    
@@ -56,7 +51,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="8" language="java" name="br.ufsc.tcc.common.util.DistanceMatrix" project="questionnaires_common_lib" 
+  <class id="7" language="java" name="br.ufsc.tcc.common.util.DistanceMatrix" project="questionnaires_common_lib" 
     file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/util/DistanceMatrix.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="86" y="469"/>    
@@ -66,13 +61,13 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <package id="9" language="java" name="br.ufsc.tcc.common.database.connection" project="questionnaires_common_lib" 
+  <package id="8" language="java" name="br.ufsc.tcc.common.database.connection" project="questionnaires_common_lib" 
     file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/database/connection" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="195" width="259" x="207" y="25"/>    
     <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
   </package>  
-  <class id="10" language="java" name="br.ufsc.tcc.common.database.connection.BasicConnection" 
+  <class id="9" language="java" name="br.ufsc.tcc.common.database.connection.BasicConnection" 
     project="questionnaires_common_lib" 
     file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/database/connection/BasicConnection.java" 
     binary="false" corner="BOTTOM_RIGHT">    
@@ -83,7 +78,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="11" language="java" name="br.ufsc.tcc.common.database.connection.PostgreConnection" 
+  <class id="10" language="java" name="br.ufsc.tcc.common.database.connection.PostgreConnection" 
     project="questionnaires_common_lib" 
     file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/database/connection/PostgreConnection.java" 
     binary="false" corner="BOTTOM_RIGHT">    
@@ -94,12 +89,12 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <package id="12" language="java" name="br.ufsc.tcc.common.database.dao" project="questionnaires_common_lib" 
+  <package id="11" language="java" name="br.ufsc.tcc.common.database.dao" project="questionnaires_common_lib" 
     file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/database/dao" binary="false" corner="BOTTOM_RIGHT">    
     <position height="203" width="217" x="207" y="300"/>    
     <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
   </package>  
-  <class id="13" language="java" name="br.ufsc.tcc.common.database.dao.BasicDao" project="questionnaires_common_lib" 
+  <class id="12" language="java" name="br.ufsc.tcc.common.database.dao.BasicDao" project="questionnaires_common_lib" 
     file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/database/dao/BasicDao.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="318" y="383"/>    
@@ -109,7 +104,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="14" language="java" name="br.ufsc.tcc.common.database.dao.PossivelQuestionarioDao" 
+  <class id="13" language="java" name="br.ufsc.tcc.common.database.dao.PossivelQuestionarioDao" 
     project="questionnaires_common_lib" 
     file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/database/dao/PossivelQuestionarioDao.java" 
     binary="false" corner="BOTTOM_RIGHT">    
@@ -120,12 +115,12 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <package id="15" language="java" name="br.ufsc.tcc.common.model" project="questionnaires_common_lib" 
+  <package id="14" language="java" name="br.ufsc.tcc.common.model" project="questionnaires_common_lib" 
     file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/model" binary="false" corner="BOTTOM_RIGHT">    
     <position height="261" width="282" x="480" y="23"/>    
     <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
   </package>  
-  <class id="16" language="java" name="br.ufsc.tcc.common.model.Cluster" project="questionnaires_common_lib" 
+  <class id="15" language="java" name="br.ufsc.tcc.common.model.Cluster" project="questionnaires_common_lib" 
     file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/model/Cluster.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="548" y="108"/>    
@@ -135,7 +130,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="17" language="java" name="br.ufsc.tcc.common.model.MyNode" project="questionnaires_common_lib" 
+  <class id="16" language="java" name="br.ufsc.tcc.common.model.MyNode" project="questionnaires_common_lib" 
     file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/model/MyNode.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="550" y="187"/>    
@@ -145,8 +140,8 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="18" language="java" name="br.ufsc.tcc.common.model.Dewey" project="questionnaires_common_lib" 
-    file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/model/Dewey.java" binary="false" 
+  <class id="17" language="java" name="br.ufsc.tcc.common.model.DeweyExt" project="questionnaires_common_lib" 
+    file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/model/DeweyExt.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="693" y="107"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -155,7 +150,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <enumeration id="19" language="java" name="br.ufsc.tcc.common.model.MyNodeType" project="questionnaires_common_lib" 
+  <enumeration id="18" language="java" name="br.ufsc.tcc.common.model.MyNodeType" project="questionnaires_common_lib" 
     file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/model/MyNodeType.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="693" y="188"/>    
@@ -165,7 +160,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </enumeration>  
-  <class id="20" language="java" name="br.ufsc.tcc.common.model.PossivelQuestionario" 
+  <class id="19" language="java" name="br.ufsc.tcc.common.model.PossivelQuestionario" 
     project="questionnaires_common_lib" 
     file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/model/PossivelQuestionario.java" binary="false" 
     corner="BOTTOM_RIGHT">    
@@ -176,13 +171,13 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <package id="21" language="java" name="br.ufsc.tcc.common.database.manager" project="questionnaires_common_lib" 
+  <package id="20" language="java" name="br.ufsc.tcc.common.database.manager" project="questionnaires_common_lib" 
     file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/database/manager" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="112" width="247" x="479" y="387"/>    
     <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
   </package>  
-  <class id="22" language="java" name="br.ufsc.tcc.common.database.manager.PossivelQuestionarioManager" 
+  <class id="21" language="java" name="br.ufsc.tcc.common.database.manager.PossivelQuestionarioManager" 
     project="questionnaires_common_lib" 
     file="/questionnaires_common_lib/src/main/java/br/ufsc/tcc/common/database/manager/PossivelQuestionarioManager.java" 
     binary="false" corner="BOTTOM_RIGHT">    
@@ -193,46 +188,62 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <association id="23">    
-    <end type="SOURCE" refId="22" navigable="false">      
-      <attribute id="24" name="pqDao"/>      
-      <multiplicity id="25" minimum="0" maximum="1"/>    
+  <association id="22">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="23" name="group">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="24" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="14" navigable="true"/>    
+    <end type="TARGET" refId="16" navigable="true"/>    
     <display labels="false" multiplicity="false"/>  
   </association>  
-  <association id="26">    
-    <end type="SOURCE" refId="17" navigable="false">      
-      <attribute id="27" name="type"/>      
-      <multiplicity id="28" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="19" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <association id="29">    
+  <association id="25">    
     <end type="SOURCE" refId="16" navigable="false">      
-      <attribute id="30" name="group"/>      
-      <multiplicity id="31" minimum="0" maximum="2147483647"/>    
+      <attribute id="26" name="dewey">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="27" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="17" navigable="true"/>    
     <display labels="false" multiplicity="false"/>  
   </association>  
-  <association id="32">    
-    <end type="SOURCE" refId="17" navigable="false">      
-      <attribute id="33" name="dewey"/>      
-      <multiplicity id="34" minimum="0" maximum="1"/>    
+  <association id="28">    
+    <end type="SOURCE" refId="16" navigable="false">      
+      <attribute id="29" name="type">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="30" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="18" navigable="true"/>    
     <display labels="false" multiplicity="false"/>  
   </association>  
-  <generalization id="35">    
-    <end type="SOURCE" refId="14"/>    
-    <end type="TARGET" refId="13"/>  
+  <generalization id="31">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="12"/>  
   </generalization>  
-  <generalization id="36">    
-    <end type="SOURCE" refId="11"/>    
-    <end type="TARGET" refId="10"/>  
+  <generalization id="32">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="9"/>  
   </generalization>  
+  <association id="33">    
+    <end type="SOURCE" refId="21" navigable="false">      
+      <attribute id="34" name="pqDao">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="35" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="false" package="false" protected="false" private="false" static="false"/>    

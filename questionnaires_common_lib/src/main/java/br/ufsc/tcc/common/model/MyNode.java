@@ -10,14 +10,14 @@ public class MyNode implements Comparable<MyNode> {
 	private String text;
 	private MyNodeType type;
 	private Attributes attrs;
-	private Dewey dewey;
+	private DeweyExt dewey;
 	
 	// Construtores
 	public MyNode() {
 		this(null, null);
 	}
 	
-	public MyNode(Node node, Dewey dewey) {
+	public MyNode(Node node, DeweyExt dewey) {
 		if(node != null){
 			this.text = CommonUtil.getNodeRepresentation(node);
 			this.attrs = node.attributes();
@@ -51,7 +51,7 @@ public class MyNode implements Comparable<MyNode> {
 		return attr;
 	}
 	
-	public Dewey getDewey() {
+	public DeweyExt getDewey() {
 		return dewey;
 	}
 	
