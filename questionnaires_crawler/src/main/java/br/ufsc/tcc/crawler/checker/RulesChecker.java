@@ -12,7 +12,7 @@ import org.jsoup.nodes.Element;
 
 import br.ufsc.tcc.common.config.ProjectConfigs;
 import br.ufsc.tcc.common.model.Cluster;
-import br.ufsc.tcc.common.model.Dewey;
+import br.ufsc.tcc.common.model.DeweyExt;
 import br.ufsc.tcc.common.model.MyNode;
 import br.ufsc.tcc.common.model.MyNodeType;
 import br.ufsc.tcc.common.util.CommonLogger;
@@ -144,12 +144,12 @@ public class RulesChecker {
 	}
 	
 	private boolean isStartingANewQuestionnaire(Cluster lastCluster, Cluster newCluster) {
-		Dewey dist = this.distMatrix.getDist(lastCluster.last(), newCluster.first());	
+		DeweyExt dist = this.distMatrix.getDist(lastCluster.last(), newCluster.first());	
 		if(dist.getHeight() > HEIGHT_BETWEEN_QUESTIONS)
 			return true;
 		
 		//Verifica se o 1* container, depois do BODY, é diferente
-		Dewey d1 = lastCluster.last().getDewey(), d2 = newCluster.first().getDewey();
+		DeweyExt d1 = lastCluster.last().getDewey(), d2 = newCluster.first().getDewey();
 		return d1.getNumbers().get(1) != d2.getNumbers().get(1);
 	}
 	
