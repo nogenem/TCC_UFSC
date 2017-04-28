@@ -10,7 +10,7 @@ import org.json.JSONObject;
 
 import br.ufsc.tcc.common.config.ProjectConfigs;
 import br.ufsc.tcc.common.model.Cluster;
-import br.ufsc.tcc.common.model.Dewey;
+import br.ufsc.tcc.common.model.DeweyExt;
 import br.ufsc.tcc.common.model.MyNode;
 import br.ufsc.tcc.common.util.CommonLogger;
 import br.ufsc.tcc.common.util.CommonUtil;
@@ -44,12 +44,12 @@ public class RulesChecker {
 		if(lastDesc == null || lastDesc.isEmpty() || newNode == null) 
 			return false;
 		JSONObject obj = CONFIGS.getJSONObject("distBetweenTextsInsideQuestionnaire");
-		Dewey dist = this.distMatrix.getDist(lastDesc.last(), newNode);	
+		DeweyExt dist = this.distMatrix.getDist(lastDesc.last(), newNode);	
 		if(dist.getHeight() > obj.getInt("height"))
 			return true;
 		
 		//Verifica se o 1* container, depois do Body, é diferente
-		Dewey d1 = lastDesc.last().getDewey(), d2 = newNode.getDewey();
+		DeweyExt d1 = lastDesc.last().getDewey(), d2 = newNode.getDewey();
 		return d1.getNumbers().get(1) != d2.getNumbers().get(1);
 	}
 	
@@ -92,7 +92,7 @@ public class RulesChecker {
 		if(comp == null || text == null) 
 			return false;
 		JSONObject obj = CONFIGS.getJSONObject("distBetweenCompAndText");
-		Dewey dist = this.distMatrix.getDist(comp, text);
+		DeweyExt dist = this.distMatrix.getDist(comp, text);
 		return dist.getHeight() <= obj.getInt("height") && 
 				dist.getMaxHeight() <= obj.getInt("maxHeight");
 	}
@@ -139,7 +139,7 @@ public class RulesChecker {
 	
 	public boolean isDescriptionsNear(Cluster firstDesc, Cluster secondDesc){
 		JSONObject obj = CONFIGS.getJSONObject("distBetweenPartsOfDescription");
-		Dewey dist = this.distMatrix.getDist(firstDesc.last(), secondDesc.first());
+		DeweyExt dist = this.distMatrix.getDist(firstDesc.last(), secondDesc.first());
 		return dist.getHeight() <= obj.getInt("height") && 
 				dist.getMaxHeight() <= obj.getInt("maxHeight") &&
 				dist.getWidth() <= obj.getInt("width");
@@ -149,7 +149,7 @@ public class RulesChecker {
 		if(desc == null || desc.isEmpty() || perg == null)
 			return false;
 		JSONObject obj = CONFIGS.getJSONObject("distBetweenDescAndQuestion");
-		Dewey dist = this.distMatrix.getDist(desc.last(), perg);
+		DeweyExt dist = this.distMatrix.getDist(desc.last(), perg);
 		return dist.getHeight() <= obj.getInt("height") && 
 				dist.getMaxHeight() <= obj.getInt("maxHeight");
 	}
@@ -164,7 +164,7 @@ public class RulesChecker {
 			return false;
 		
 		JSONObject obj = CONFIGS.getJSONObject("distBetweenGroupAndFirstQuestion");
-		Dewey dist = distMatrix.getDist(cTmp.last(), desc.first());
+		DeweyExt dist = distMatrix.getDist(cTmp.last(), desc.first());
 		
 		if(dist.getHeight() <= obj.getInt("height") && dist.getWidth() <= obj.getInt("width")){
 			//O texto do grupo deve ter no maximo X palavras 
@@ -188,7 +188,7 @@ public class RulesChecker {
 			MyNode nTmp1 = nodes.get(i),
 				nTmp2 = nodes.get(i+1),
 				nTmp3 = nodes.get(i+2);
-			Dewey dist = distMatrix.getDist(nTmp2, nTmp3);
+			DeweyExt dist = distMatrix.getDist(nTmp2, nTmp3);
 
 			//Lida com casos aonde se tem 2 textos complementares
 			//	Ex: https://www.survio.com/modelo-de-pesquisa/feedback-sobre-servico
@@ -221,7 +221,7 @@ public class RulesChecker {
 
 	public boolean isAbove(MyNode n1, MyNode n2) {
 		//Verifica se n1 esta acima de n2
-		Dewey dist = this.distMatrix.getDist(n1, n2);
+		DeweyExt dist = this.distMatrix.getDist(n1, n2);
 		return dist.isNegative();
 	}
 
@@ -284,7 +284,7 @@ public class RulesChecker {
 	
 	public boolean checkDistForQWithSubQs(MyNode n1, MyNode n2) {
 		JSONObject obj = CONFIGS.getJSONObject("distBetweenTextsInQuestionWithSubQuestions");
-		Dewey dist = this.distMatrix.getDist(n1, n2);
+		DeweyExt dist = this.distMatrix.getDist(n1, n2);
 		return dist.getHeight() == obj.getInt("height") && dist.getWidth() <= obj.getInt("width");
 	}
 	
@@ -307,7 +307,7 @@ public class RulesChecker {
 	
 	public boolean checkDistForTextsOfAlternative(MyNode n1, MyNode n2){
 		JSONObject obj = CONFIGS.getJSONObject("distBetweenTextsOfSameAlternative");
-		Dewey dist = this.distMatrix.getDist(n1, n2);
+		DeweyExt dist = this.distMatrix.getDist(n1, n2);
 		return dist.getHeight() <= obj.getInt("height") &&
 				dist.getMaxHeight() <= obj.getInt("maxHeight") &&
 				dist.getWidth() <= obj.getInt("width");
