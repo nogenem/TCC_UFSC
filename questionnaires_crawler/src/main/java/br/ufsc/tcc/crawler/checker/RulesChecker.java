@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import br.ufsc.tcc.common.config.ProjectConfigs;
 import br.ufsc.tcc.common.model.Cluster;
@@ -45,7 +46,10 @@ public class RulesChecker {
 	}
 	
 	public boolean shouldSave(Document doc){
-		Element root = doc.select("body").get(0);
+		Elements tmp = doc.select("body");
+		if(tmp.isEmpty()) return false;
+		
+		Element root = tmp.get(0);
 		
 		//TODO realmente deixar assim? [tentar encontrar um questionario que quebre essa regra]
 		if(!SURVEY_WORDS_REGEX.matcher(root.text()).matches() && 

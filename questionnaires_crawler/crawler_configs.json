@@ -10,8 +10,8 @@
 	},
 	"crawler": {
 		"excludedFilesExtensions": ".*(\\.(css|js|bmp|gif|jpe?g|png|tiff?|mid|mp2|mp3|mp4|wav|avi|mov|mpeg|ram|m4v|pdf|rm|smil|wmv|swf|wma|zip|rar|gz))$",
-		"excludedDomains": "(.*youtube\\.com.*|.*facebook\\.com.*|.*twitter\\.com.*|.+\\/(news|noticias|images?|image(m|ns)|videos?|support|suporte|help(\\-center)?|ajuda|about|sobre|signup|signin|register|contacts?(\\-us)?|contatos?|products?|produtos?)((\\.html?)?$|\\/.*))",
-		"numberOfCrawlers": 5,
+		"excludedDomains": "(.*youtube\\.com.*|.*facebook\\.com.*|.*twitter\\.com.*|plus\\.google\\.com.*|.*r\\.bat\\.bing\\.com.*|^(cshelp|help|news|support|weather|jobs|chat|registration|corp)\\..+|.+\\/(news|noticias|images?|image(m|ns)|videos?|support|suporte|help(\\-center)?|ajuda|about|sobre|signup|signin|register|contacts?(\\-us)?|contatos?|products?|produtos?|maps)((\\.html?)?$|\\/.*))",
+		"numberOfCrawlers": 7,
 		"crawlStorageFolder": "./tmp",
 		"politenessDelay": 500,
 		"maxDepthOfCrawling": -1,

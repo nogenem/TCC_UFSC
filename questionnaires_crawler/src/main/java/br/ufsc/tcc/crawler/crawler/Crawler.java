@@ -68,16 +68,17 @@ public class Crawler extends WebCrawler {
 			
 			HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();			
 			if(checker.shouldSave(htmlParseData)){
-				CommonLogger.debug("\tPossivelQuestionario: {}", url.getURL());
+				System.out.println("\t<"+Thread.currentThread().getName()+">PossivelQuestionario: " +url.getURL());
+				
 				PossivelQuestionario pq = new PossivelQuestionario(
 						url.getURL(), htmlParseData.getTitle());
 				try {
-//					pqManager.save(pq);
+					pqManager.save(pq);
 				} catch (Exception e) {
 					CommonLogger.error(e);
 				}
 			}else{
-				CommonLogger.debug("URL: {}", url.getURL());
+				System.out.println("<"+Thread.currentThread().getName()+">URL: " +url.getURL());
 			}
 		}
 	}
