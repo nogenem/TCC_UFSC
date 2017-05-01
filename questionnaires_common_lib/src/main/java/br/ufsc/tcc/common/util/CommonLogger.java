@@ -4,11 +4,12 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.slf4j.helpers.MessageFormatter;
 
 import br.ufsc.tcc.common.config.ProjectConfigs;
-import uk.org.lidalia.slf4jext.Logger;
-import uk.org.lidalia.slf4jext.LoggerFactory;
+
 
 public class CommonLogger {
 
@@ -31,25 +32,14 @@ public class CommonLogger {
 	
 	public static void debug(String format, Object ...args){
 		if(enabledLevels.contains("DEBUG")){
-			format += "\n";
-			if(!logger.isDebugEnabled())
-				System.out.print(MessageFormatter.arrayFormat(format, args).getMessage());
-			else
-				logger.debug(format, args);
+			System.out.println(MessageFormatter.arrayFormat(format, args).getMessage());
 		}
 	}
 	
 	public static void debug(List<? extends Object> arr){
 		if(enabledLevels.contains("DEBUG")){
-			if(!logger.isDebugEnabled()){
-				arr.forEach(System.out::println);
-				System.out.println();
-			}else{
-				final StringBuilder builder = new StringBuilder();
-				builder.append("\n");
-				arr.forEach(e -> builder.append(e.toString()+"\n"));
-				logger.debug(builder.toString());
-			}
+			arr.forEach(System.out::println);
+			System.out.println();
 		}
 	}
 	
@@ -67,11 +57,10 @@ public class CommonLogger {
 	
 	public static void info(String format, Object ...args){
 		if(enabledLevels.contains("INFO")){
-			format += "\n";
 			if(logger.isInfoEnabled())
 				logger.info(format, args);
 			else
-				System.err.print(MessageFormatter.arrayFormat(format, args).getMessage());
+				System.err.println(MessageFormatter.arrayFormat(format, args).getMessage());
 		}
 	}
 	
