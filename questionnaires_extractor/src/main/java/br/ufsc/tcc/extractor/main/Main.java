@@ -11,7 +11,6 @@ import br.ufsc.tcc.common.crawler.CrawlerController;
 import br.ufsc.tcc.common.database.connection.BasicConnection;
 import br.ufsc.tcc.common.database.connection.PostgreConnection;
 import br.ufsc.tcc.common.database.manager.PossivelQuestionarioManager;
-import br.ufsc.tcc.common.model.Dewey;
 import br.ufsc.tcc.common.util.CommonLogger;
 import br.ufsc.tcc.common.util.CommonUtil;
 import br.ufsc.tcc.extractor.builder.QuestionarioBuilder;
@@ -31,7 +30,7 @@ public class Main {
 //				d2 = new Dewey("001.002.001.001.001.001.010.008.001.003.001.001.001"),
 //				d3 = d1.distanceOf(d2);
 //		System.out.println(d3);
-		
+				
 		// Inicializa a aplicação
 //		start();
 		test();
@@ -61,7 +60,6 @@ public class Main {
 //		path = "cache/Anpei_1.html";
 //		path = "http://anpei.tempsite.ws/intranet/mediaempresa";
 		
-		
 //		path = "cache/SurveyCrest_1.html";
 //		path = "https://www.surveycrest.com/template_preview/pyof1IFwp9Xa1_x430JdUeVsuHVRKuw";
 //		path = "https://www.surveycrest.com/template_preview/pufLBGbsEEBvdJvPPxIe9hYJx0Q";
@@ -73,13 +71,16 @@ public class Main {
 //		path = "http://lap.umd.edu/surveys/census/files/surveya1pagesbytopic/page8.html";
 		
 //		path = "https://www.telstra.com.au/webforms/consumer-survey/index.cfm";
-		
 //		path = "https://docs.google.com/forms/d/e/1FAIpQLSdKNoTd6y08to45zgcXlWxCtzVEJg3irc1FbQikSS6fnyMdtQ/viewform?c=0&w=1";
-		
 //		path = "cache/exemplo.html";
 		
-		path = "https://www.surveyshare.com/template/380/ELearning-Student-Tracking";
-		
+//		path = "https://www.telstra.com.au/webforms/consumer-survey/index.cfm";
+//		path = "http://lap.umd.edu/surveys/census/files/surveya1pagesbytopic/page2.html";
+//		path = "cache/SurveyForBusiness1.html";
+//		path = "https://www.surveyshare.com/template/380/ELearning-Student-Tracking";
+
+		path = "https://www.jotform.com/form-templates/preview/21014328614342?preview=true";
+
 		BasicConnection conn = new PostgreConnection(ProjectConfigs.getExtractorDatabaseConfigs());;
 		FormaDaPerguntaManager.loadFormas(conn);
 		QuestionarioBuilder qBuilder = new QuestionarioBuilder();

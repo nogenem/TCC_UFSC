@@ -64,13 +64,13 @@ public class QuestionarioBuilder {
 					//ou deu alguma coisa errada
 					if(this.currentQ.getAssunto().isEmpty()){
 						this.pBuilder.clearData(this.currentQ);
-						CommonLogger.debug("1================================================\n");
+						CommonLogger.debug("==================getAssunto().isEmpty()==================\n");
 						this.currentQ = new Questionario(this.currentLink);
 					}else if(checker.shouldStartNewQuestionario(lastDesc, nTmp)){
 						this.pBuilder.clearData(this.currentQ);
 						if(this.checker.isValidQuestionnaire(this.currentQ))	
 							ret.add(this.currentQ);
-						CommonLogger.debug("2================================================\n");
+						CommonLogger.debug("==================shouldStartNewQuestionario()==================\n");
 						this.currentQ = new Questionario(this.currentLink);
 					}
 				}

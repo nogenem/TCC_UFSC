@@ -3,7 +3,7 @@ package br.ufsc.tcc.extractor.builder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
-import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -232,25 +232,24 @@ public class RulesChecker {
 		
 		ArrayList<Alternativa> alts = currentP.getAlternativas();
 		ArrayList<Pergunta> filhas = currentP.getFilhas();
-		String txt = cTmp2.getText(), regex = "(?s).*(\nXXX|XXX\n).*", txtTmp = "";
+		String txt = cTmp2.getText(), txtTmp = "";
 		boolean flag = false;
 		int count = filhas.size()+alts.size();
 		
 		if(count == 0 && cTmp2.size() == 1){//Ex: https://www.survio.com/modelo-de-pesquisa/pesquisa-de-preco-do-produto
-			flag = currentP.getDescricao().matches(regex.replaceAll("XXX", cTmp2.getText()));
+			txtTmp = Pattern.quote(cTmp2.getText());
+			flag = CommonUtil.matchesWithLineBreak(currentP.getDescricao(), txtTmp);
 		}else if(count == cTmp2.size()){
 			flag = true;
 			for(int j = 0; j < alts.size(); j++){
 				txtTmp = alts.get(j).getDescricao();
-				//http://stackoverflow.com/questions/11913709/why-does-replaceall-fail-with-illegal-group-reference
-				txtTmp = Matcher.quoteReplacement(txtTmp);
-				flag = flag && txt.matches(regex.replaceAll("XXX", txtTmp));
+				txtTmp = Pattern.quote(txtTmp);
+				flag = flag && CommonUtil.matchesWithLineBreak(txt, txtTmp);
 			}
 			for(int j = 0; j < filhas.size(); j++){
 				txtTmp = filhas.get(j).getDescricao();
-				//http://stackoverflow.com/questions/11913709/why-does-replaceall-fail-with-illegal-group-reference
-				txtTmp = Matcher.quoteReplacement(txtTmp);
-				flag = flag && txt.matches(regex.replaceAll("XXX", txtTmp));
+				txtTmp = Pattern.quote(txtTmp);
+				flag = flag && CommonUtil.matchesWithLineBreak(txt, txtTmp);
 			}
 		}
 		
