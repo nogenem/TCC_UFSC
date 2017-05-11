@@ -15,7 +15,9 @@ import br.ufsc.tcc.common.model.MyNode;
 import br.ufsc.tcc.common.util.CommonLogger;
 import br.ufsc.tcc.common.util.CommonUtil;
 import br.ufsc.tcc.common.util.DistanceMatrix;
+import br.ufsc.tcc.extractor.database.manager.FormaDaPerguntaManager;
 import br.ufsc.tcc.extractor.model.Alternativa;
+import br.ufsc.tcc.extractor.model.FormaDaPergunta;
 import br.ufsc.tcc.extractor.model.Pergunta;
 import br.ufsc.tcc.extractor.model.Questionario;
 
@@ -376,5 +378,66 @@ public class RulesChecker {
 		CONFIGS = h;
 		
 		CommonLogger.debug("RulesChecker:> Static block executed!");
+	}
+	
+	//Checagem para coisas do genêro: Hora: [ ] : [ ] ou Data: [ ] / [ ] / [ ] ou Telefone: ( [ ] ) [ ]
+	public int checkCompositeInput(Pergunta currentP, List<MyNode> nodes, String type, int currentI) {
+		if(type.matches("(TEXT|NUMBER|TEL|DATE|TIME)_INPUT")){
+			Cluster c = new Cluster();
+			//Cria um cluster com no max os próximos 7 nodes
+			for(int i = 1; i<=7; i++){
+				int j = currentI+i;
+				if(j < nodes.size())
+					c.add(nodes.get(j));
+			}
+			
+			String tmpType = type.replace("_INPUT", "").toLowerCase(),
+					inputTxt = "input\\[type="+tmpType+"\\]",
+					txt = c.getAllNodesText();
+			String r1 = "(/|-)",
+					r2 = "(month|day|year|m(ê|e)s|dia|ano)";
+			
+			
+			//Check [ ] : [ ] (: [ ])?
+			//	Ex: https://www.bioinfo.mpg.de/mctq/core_work_life/core/core.jsp?language=por_b
+			String regex = ":\n"+inputTxt+"(\n:"+inputTxt+")?.*";
+			if(txt.matches("(?ism)"+regex)){
+				currentI += 2;
+			}
+			//Check ( [ ] ) [ ]
+			//	Ex: http://www.almaderma.com.br/formulario/florais/infantil/contato.php
+			regex = "\\)\n"+inputTxt+".*";
+			if(txt.matches("(?ism)"+regex)){
+				currentI += 2;
+			}
+			//Check [ ] (/|-) [ ] (/|-) [ ]
+			regex = r1+"\n"+inputTxt+"\n"+r1+"\n"+inputTxt+".*";
+			if(txt.matches("(?ism)"+regex)){
+				currentI += 4;
+			}
+			//Check [ ] (/|-) Month [ ] (/|-) Day [ ] Year
+			//	Ex: https://www.jotform.com/form-templates/preview/21014328614342?preview=true
+			regex = r1+"\n"+r2+"\n"+inputTxt+"\n"+r1+"\n"+r2+"\n"+inputTxt+"\n"+r2+".*";
+			if(txt.matches("(?ism)"+regex)){
+				FormaDaPergunta forma = FormaDaPerguntaManager.getForma(type);
+				CommonLogger.debug("\tInput [{}].", type+"_GROUP");
+				currentP.setForma(FormaDaPerguntaManager.getForma(type+"_GROUP"));
+				
+				Pergunta p = new Pergunta(c.get(1).getText(), forma);
+				p.setPai(currentP);
+				currentP.addFilha(p);
+				
+				p = new Pergunta(c.get(4).getText(), forma);
+				p.setPai(currentP);
+				currentP.addFilha(p);
+				
+				p = new Pergunta(c.get(6).getText(), forma);
+				p.setPai(currentP);
+				currentP.addFilha(p);
+				currentI += 7;
+			}
+		}
+		
+		return currentI;
 	}
 }

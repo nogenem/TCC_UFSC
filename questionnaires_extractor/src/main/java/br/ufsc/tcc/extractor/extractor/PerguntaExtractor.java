@@ -40,16 +40,7 @@ public class PerguntaExtractor {
 		CommonLogger.debug("\tInput [{}].", type);
 		currentP.setForma(FormaDaPerguntaManager.getForma(type));
 		
-		//Checagem para coisas do genêro: Hora: [ ] : [ ]
-		//	Ex: https://www.bioinfo.mpg.de/mctq/core_work_life/core/core.jsp?language=por_b
-		if(currentI+2 < nodes.size() && type.matches("(TEXT|NUMBER)_INPUT")){
-			MyNode tmp1 = nodes.get(currentI+1), 
-					tmp2 = nodes.get(currentI+2);
-			if(tmp1.getText().equals(":") && 
-					tmp2.isComponent() && tmp2.getType().toString().equals(type)){
-				currentI += 2;
-			}
-		}
+		currentI = checker.checkCompositeInput(currentP, nodes, type, currentI);
 		return currentI;
 	}
 	

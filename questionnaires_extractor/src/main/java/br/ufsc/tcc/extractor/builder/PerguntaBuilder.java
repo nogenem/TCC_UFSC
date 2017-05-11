@@ -69,19 +69,23 @@ public class PerguntaBuilder {
 		this.currentI = i;
 		
 		MyNode firstNode = nodes.get(this.currentI);
-		MyNode nTmp1 = null, nTmp2 = null;
+		MyNode nTmp1 = (this.currentI+1) < nodes.size() ? nodes.get(this.currentI+1) : null, 
+				nTmp2 = null;
 		Cluster desc = cStack.pop();
 		Cluster cTmp1 = null, cTmp2 = null;
 		
 		//Se a desc for apenas uma imagem então ela é provavelmente a imagem
-		//da 1* alternativa da pergunta
+		//da 1* alternativa da pergunta; e se a desc for igual a '('e o próximo nodo 
+		//for igual a ')' então provavelmente deve ser uma pergunta de telefone: ( [ ] ) [ ]
 		//		Ex: https://www.survio.com/modelo-de-pesquisa/avaliacao-de-um-e-shop
-		if(this.checker.isOnlyOneImg(desc) && !cStack.isEmpty())
+		//		Ex: http://www.almaderma.com.br/formulario/florais/infantil/contato.php
+		if((this.checker.isOnlyOneImg(desc) || 
+				(desc.getText().equals("(") && nTmp1 != null && nTmp1.getText().equals(")"))) && 
+				!cStack.isEmpty())
 			desc = cStack.pop();
 		
 		//Verifica se tem componentes em sequência que podem fazer parte de uma
 		//matriz ou uma pergunta de RATING
-		nTmp1 = (this.currentI+1) < nodes.size() ? nodes.get(this.currentI+1) : null;
 		if(nTmp1 != null && firstNode.getType() != MyNodeType.SELECT && nTmp1.isComponent() &&
 				this.distMatrix.areNear(firstNode, nTmp1)){
 			
