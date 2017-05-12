@@ -1,7 +1,6 @@
 package br.ufsc.tcc.extractor.extractor;
 
 import java.util.List;
-import java.util.Stack;
 
 import br.ufsc.tcc.common.model.Cluster;
 import br.ufsc.tcc.common.model.MyNode;
@@ -463,6 +462,36 @@ public class PerguntaExtractor {
 		else
 			this.currentP.setForma(FormaDaPerguntaManager.getForma(lastCompType.toString()));
 		
+		return currentI;
+	}
+
+	public int extractCheckboxOrRadioInputWithHeader(List<MyNode> nodes, Cluster head, int currentI) {
+		MyNode input = nodes.get(currentI);
+		String type = input.getType().toString();
+		int j = 0;
+
+		this.currentP.setForma(FormaDaPerguntaManager.getForma(type));
+		if(input.getType() == MyNodeType.CHECKBOX_INPUT)
+			CommonLogger.debug("\tCheckbox Input:");
+		else
+			CommonLogger.debug("\tRadio Input:");
+		
+		while(input != null && input.isA(type) && j < head.size()){
+			
+			String text = head.get(j).getText();
+			CommonLogger.debug("\t\t{}", text);
+			
+			Alternativa alt = new Alternativa(text);
+			this.currentP.addAlternativa(alt);
+			
+			if(currentI+1 < nodes.size())
+				input = nodes.get(++currentI);
+			else
+				input = null;
+			j++;
+		}
+		if(input != null)
+			currentI--;
 		return currentI;
 	}
 }

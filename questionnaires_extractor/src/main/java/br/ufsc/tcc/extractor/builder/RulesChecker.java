@@ -16,9 +16,7 @@ import br.ufsc.tcc.common.model.MyNodeType;
 import br.ufsc.tcc.common.util.CommonLogger;
 import br.ufsc.tcc.common.util.CommonUtil;
 import br.ufsc.tcc.common.util.DistanceMatrix;
-import br.ufsc.tcc.extractor.database.manager.FormaDaPerguntaManager;
 import br.ufsc.tcc.extractor.model.Alternativa;
-import br.ufsc.tcc.extractor.model.FormaDaPergunta;
 import br.ufsc.tcc.extractor.model.Pergunta;
 import br.ufsc.tcc.extractor.model.Questionario;
 
@@ -92,7 +90,7 @@ public class RulesChecker {
 		return true;
 	}
 
-	// Métodos usados pela classe PerguntaBuilder
+	// Métodos usados pela classe PerguntaBuilder e Pergunta Extractor
 	public boolean isOnlyOneImg(Cluster c) {
 		return c.size() == 1 && c.first().isImage();
 	}
@@ -174,6 +172,7 @@ public class RulesChecker {
 			return false;
 		
 		String txt = cTmp.getText();
+		txt = CommonUtil.trim(txt);
 		//Cluster deve ter um e APENAS um texto
 		if(txt.isEmpty() || txt.contains("\n"))
 			return false;
@@ -277,13 +276,35 @@ public class RulesChecker {
 		MyNode nTmp = nodes.get(i);
 		
 		//Conta a quantidade de componentes em sequência
-		while(nTmp != null && nTmp.isComponent()){ 
+		do{ 
 			count++;
 			if(i+count < nodes.size())
 				nTmp = nodes.get(i+count);
 			else
 				nTmp = null;
-		}
+		}while(nTmp != null && nTmp.isComponent());
+		
+		//A quantidade encontrada acima deve ser a mesma de textos no head da matriz
+		return head != null && head.isAllText() && head.size() == count;
+	}
+	
+	public boolean isRadioInputOrCheckboxWithHeader(List<MyNode> nodes, Stack<Cluster> cStack, int i, Cluster desc){
+		int count = 0;
+		MyNode nTmp = nodes.get(i);
+		String type = nTmp.getType().toString();
+		Cluster head = desc;
+		
+		if(!type.matches("RADIO_INPUT|CHECKBOX_INPUT"))
+			return false;
+		
+		//Conta a quantidade de componentes em sequência
+		do{ 
+			count++;
+			if(i+count < nodes.size())
+				nTmp = nodes.get(i+count);
+			else
+				nTmp = null;
+		}while(nTmp != null && nTmp.isA(type));
 		
 		//A quantidade encontrada acima deve ser a mesma de textos no head da matriz
 		return head != null && head.isAllText() && head.size() == count;
@@ -403,6 +424,52 @@ public class RulesChecker {
 		return text.isA("SELECT") || (text.isText() && text.getText().matches(DATE_REGEX1));
 	}
 	
+	public boolean checkIfTextIsAbove(List<MyNode> nodes, int currentI) {
+		MyNode input = null, text = null, img = null;
+		int i = currentI;
+		boolean hasImgAbove = false;
+		
+		input = nodes.get(i);
+		
+		// Verifica se os elementos acima podem ser considerado
+		// a descrição da alternativa e da pergunta
+		text = i-1 <= nodes.size()-1 ? nodes.get(i-1) : null;
+		if((text == null || !text.isA("text")) || !areCompAndTextNear(input, text))
+			return false;
+		text = i-2 <= nodes.size()-1 ? nodes.get(i-2) : null;
+		if(text != null && text.isA("img")){
+			text = i-3 <= nodes.size()-1 ? nodes.get(i-3) : null;
+			hasImgAbove = true;
+		}
+		if((text == null || !text.isA("text")) || !areDescAndPergNear(text, input))
+			return false;
+		
+		// Verifica se segue o padrão: img -> text -> input -> img,
+		// se sim, então deve ser seguro retornar true
+		img = i+1 < nodes.size() ? nodes.get(i+1) : null;
+		if(hasImgAbove && img != null && img.isA("img"))
+			return true;
+		
+		// Só para garantir, verifica se seguindo o padrão:
+		//		input -> text -> input -> text
+		// da erro no final
+		text = nodes.get(++i);
+		while(input != null && 
+				(input.getType() == MyNodeType.CHECKBOX_INPUT || input.getType() == MyNodeType.RADIO_INPUT) &&
+				text.getType() == MyNodeType.TEXT){
+			if(!areCompAndTextNear(input, text))
+				return true;
+			
+			if(i+2 < nodes.size()){
+				input = nodes.get(++i);
+				text = nodes.get(++i);
+			}else
+				input = null;
+		}
+
+		return false;
+	}
+	
 	// Métodos/Blocos estáticos
 	static {
 		//Load heuristics
@@ -467,51 +534,5 @@ public class RulesChecker {
 		CONFIGS = h;
 		
 		CommonLogger.debug("RulesChecker:> Static block executed!");
-	}
-
-	public boolean checkIfTextIsAbove(List<MyNode> nodes, int currentI) {
-		MyNode input = null, text = null, img = null;
-		int i = currentI;
-		boolean hasImgAbove = false;
-		
-		input = nodes.get(i);
-		
-		// Verifica se os elementos acima podem ser considerado
-		// a descrição da alternativa e da pergunta
-		text = i-1 <= nodes.size()-1 ? nodes.get(i-1) : null;
-		if((text == null || !text.isA("text")) || !areCompAndTextNear(input, text))
-			return false;
-		text = i-2 <= nodes.size()-1 ? nodes.get(i-2) : null;
-		if(text != null && text.isA("img")){
-			text = i-3 <= nodes.size()-1 ? nodes.get(i-3) : null;
-			hasImgAbove = true;
-		}
-		if((text == null || !text.isA("text")) || !areDescAndPergNear(text, input))
-			return false;
-		
-		// Verifica se segue o padrão: img -> text -> input -> img,
-		// se sim, então deve ser seguro retornar true
-		img = i+1 < nodes.size() ? nodes.get(i+1) : null;
-		if(hasImgAbove && img != null && img.isA("img"))
-			return true;
-		
-		// Só para garantir, verifica se seguindo o padrão:
-		//		input -> text -> input -> text
-		// da erro no final
-		text = nodes.get(++i);
-		while(input != null && 
-				(input.getType() == MyNodeType.CHECKBOX_INPUT || input.getType() == MyNodeType.RADIO_INPUT) &&
-				text.getType() == MyNodeType.TEXT){
-			if(!areCompAndTextNear(input, text))
-				return true;
-			
-			if(i+2 < nodes.size()){
-				input = nodes.get(++i);
-				text = nodes.get(++i);
-			}else
-				input = null;
-		}
-
-		return false;
 	}
 }

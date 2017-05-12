@@ -97,8 +97,15 @@ public class PerguntaBuilder {
 				if(this.lastMatrixHead == null)
 					this.lastMatrixHead = cStack.pop();
 				
+				//Ex: http://anpei.tempsite.ws/intranet/mediaempresa/
+				//Ex: https://www.surveycrest.com/template_preview/pyof1IFwp9Xa1_x430JdUeVsuHVRKuw
 				this.currentI = this.extractor.extractSimpleMatrix(nodes, currentQ, 
 						this.lastMatrixHead, this.currentI);
+			}else if(this.checker.isRadioInputOrCheckboxWithHeader(nodes, cStack, currentI, desc)){
+				
+				//Ex: http://infopoll.net/live/surveys/s32805.htm
+				this.currentI = this.extractor.extractCheckboxOrRadioInputWithHeader(nodes, desc, currentI);
+				desc = !cStack.isEmpty() ? cStack.pop() : null;
 			}else if(firstNode.getType() == MyNodeType.RADIO_INPUT && 
 					nTmp1.getType() == MyNodeType.RADIO_INPUT){
 				
