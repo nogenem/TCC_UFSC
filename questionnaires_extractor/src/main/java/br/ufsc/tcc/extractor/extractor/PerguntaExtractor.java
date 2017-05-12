@@ -1,6 +1,7 @@
 package br.ufsc.tcc.extractor.extractor;
 
 import java.util.List;
+import java.util.Stack;
 
 import br.ufsc.tcc.common.model.Cluster;
 import br.ufsc.tcc.common.model.MyNode;
@@ -245,6 +246,51 @@ public class PerguntaExtractor {
 			currentI -= 2;
 			if(this.currentP.getAlternativas().size() == 0)
 				currentI += 1;
+		}
+		if(error && this.currentP.getAlternativas().size() == 0)
+			this.currentP.setForma(null);
+		
+		return currentI;
+	}
+
+	public int extractCheckboxOrRadioInputWithTextAbove(List<MyNode> nodes, int currentI) {
+		// A principio faz apenas uma extração simples, sem se preocupar com imgs e input text
+		MyNode input = null, text = null;
+		boolean error = false;
+		String txt = "";
+		
+		input = nodes.get(currentI);
+		
+		this.currentP.setForma(FormaDaPerguntaManager.getForma(input.getType().toString()));
+		if(input.getType() == MyNodeType.CHECKBOX_INPUT)
+			CommonLogger.debug("\tCheckbox Input:");
+		else
+			CommonLogger.debug("\tRadio Input:");
+		
+		text = nodes.get(currentI-1);
+		while(input != null && 
+				(input.getType() == MyNodeType.CHECKBOX_INPUT || input.getType() == MyNodeType.RADIO_INPUT) &&
+				text.getType() == MyNodeType.TEXT){
+			
+			if(!this.checker.areCompAndTextNear(input, text)){
+				error = true;
+				break;
+			}
+			
+			txt = text.getText();
+			CommonLogger.debug("\t\t{}", txt);
+			Alternativa tmpAlt = new Alternativa(txt);
+			this.currentP.addAlternativa(tmpAlt);
+			
+			if(currentI+2 < nodes.size()){
+				text = nodes.get(++currentI);
+				input = nodes.get(++currentI);
+			}else
+				input = null;
+		}
+		
+		if(input != null){
+			currentI -= 2;
 		}
 		if(error && this.currentP.getAlternativas().size() == 0)
 			this.currentP.setForma(null);

@@ -153,16 +153,22 @@ public class RulesChecker {
 				dist.getMaxHeight() <= obj.getInt("maxHeight") &&
 				dist.getWidth() <= obj.getInt("width");
 	}
-
+	
 	public boolean areDescAndPergNear(Cluster desc, MyNode perg) {
-		if(desc == null || desc.isEmpty() || perg == null)
+		if(desc == null || desc.isEmpty())
+			return false;
+		return areDescAndPergNear(desc.last(), perg);
+	}
+	
+	public boolean areDescAndPergNear(MyNode desc, MyNode perg){
+		if(desc == null || perg == null)
 			return false;
 		JSONObject obj = CONFIGS.getJSONObject("distBetweenDescAndQuestion");
-		DeweyExt dist = this.distMatrix.getDist(desc.last(), perg);
+		DeweyExt dist = this.distMatrix.getDist(desc, perg);
 		return dist.getHeight() <= obj.getInt("height") && 
 				dist.getMaxHeight() <= obj.getInt("maxHeight");
 	}
-
+	
 	public boolean isGroupText(Cluster cTmp, Cluster desc, Cluster firstGroupOfQuestionnaire) {
 		if(cTmp == null || cTmp.isEmpty() || desc == null || desc.isEmpty())
 			return false;
@@ -461,5 +467,41 @@ public class RulesChecker {
 		CONFIGS = h;
 		
 		CommonLogger.debug("RulesChecker:> Static block executed!");
+	}
+
+	public boolean checkIfTextIsAbove(List<MyNode> nodes, int currentI) {
+		// A principio faz apenas uma checagem simples, sem se preocupar com imgs e input text
+		MyNode input = null, text = null;
+		int i = currentI;
+		
+		input = nodes.get(i);
+		
+		// Verifica se os elementos acima podem ser considerado
+		// a descrição da alternativa e da pergunta
+		text = i-1 <= nodes.size()-1 ? nodes.get(i-1) : null;
+		if(text == null || !areCompAndTextNear(input, text))
+			return false;
+		text = i-2 <= nodes.size()-1 ? nodes.get(i-2) : null;
+		if(text == null || !areDescAndPergNear(text, input))
+			return false;
+		
+		// Só para garantir, verifica se seguindo o padrão:
+		//		input -> text -> input -> text
+		// da erro no final
+		text = nodes.get(++i);
+		while(input != null && 
+				(input.getType() == MyNodeType.CHECKBOX_INPUT || input.getType() == MyNodeType.RADIO_INPUT) &&
+				text.getType() == MyNodeType.TEXT){
+			if(!areCompAndTextNear(input, text))
+				return true;
+			
+			if(i+2 < nodes.size()){
+				input = nodes.get(++i);
+				text = nodes.get(++i);
+			}else
+				input = null;
+		}
+
+		return false;
 	}
 }

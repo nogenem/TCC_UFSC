@@ -115,10 +115,18 @@ public class PerguntaBuilder {
 				this.currentI = this.extractor.extractSelect(nodes, this.currentI);
 				break;
 			}case CHECKBOX_INPUT:{
-				this.currentI = this.extractor.extractCheckboxOrRadioInput(currentQ, nodes, this.currentI);
+				if(checker.checkIfTextIsAbove(nodes, currentI)){
+					desc = cStack.pop();
+					this.currentI = this.extractor.extractCheckboxOrRadioInputWithTextAbove(nodes, this.currentI);
+				}else
+					this.currentI = this.extractor.extractCheckboxOrRadioInput(currentQ, nodes, this.currentI);
 				break;
 			}case RADIO_INPUT:{
-				this.currentI = this.extractor.extractCheckboxOrRadioInput(currentQ, nodes, this.currentI);
+				if(checker.checkIfTextIsAbove(nodes, currentI)){
+					desc = cStack.pop();
+					this.currentI = this.extractor.extractCheckboxOrRadioInputWithTextAbove(nodes, this.currentI);
+				}else
+					this.currentI = this.extractor.extractCheckboxOrRadioInput(currentQ, nodes, this.currentI);
 				break;
 			}case TEXT_INPUT:
 			case NUMBER_INPUT:
