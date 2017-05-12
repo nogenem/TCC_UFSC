@@ -59,14 +59,7 @@ public class QuestionarioBuilder {
 				
 				//Verifica se esta começando um novo questinario
 				if(!this.currentQ.getPerguntas().isEmpty()){ 
-					//Se ja tiver uma pergunta, mas não tiver um assunto do questionario,
-					//provavelmente este componente encontrado não faz parte de um questionario
-					//ou deu alguma coisa errada
-					if(this.currentQ.getAssunto().isEmpty()){
-						this.pBuilder.clearData(this.currentQ);
-						CommonLogger.debug("==================getAssunto().isEmpty()==================\n");
-						this.currentQ = new Questionario(this.currentLink);
-					}else if(checker.shouldStartNewQuestionario(lastDesc, nTmp)){
+					if(checker.shouldStartNewQuestionario(lastDesc, nTmp)){
 						this.pBuilder.clearData(this.currentQ);
 						if(this.checker.isValidQuestionnaire(this.currentQ))	
 							ret.add(this.currentQ);

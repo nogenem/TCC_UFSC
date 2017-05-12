@@ -78,7 +78,8 @@ public class RulesChecker {
 	}
 	
 	public boolean isValidQuestionnaire(Questionario q){
-		if(q.getPerguntas().size() < CONFIGS.getInt("minQuestionsOnQuestionnaire"))
+		if(q.getAssunto().isEmpty() || 
+				q.getPerguntas().size() < CONFIGS.getInt("minQuestionsOnQuestionnaire"))
 			return false;
 		if(CommonUtil.matchesWithLineBreak(q.getAssunto(), 
 				CONFIGS.getString("phrasesToIgnoreRegex")))
@@ -321,7 +322,7 @@ public class RulesChecker {
 	}
 	
 	//Checagem para coisas do genêro: Hora: [ ] : [ ] ou Data: [ ] / [ ] / [ ] ou Telefone: ( [ ] ) [ ]
-	public int checkCompositeInput(Pergunta currentP, List<MyNode> nodes, String type, int currentI) {
+	public int checkCompositeInput(List<MyNode> nodes, String type, int currentI) {
 		if(type.matches("(TEXT|NUMBER|TEL|DATE|TIME)_INPUT")){
 			Cluster c = new Cluster();
 			//Cria um cluster com no max os próximos 7 nodes
@@ -340,51 +341,28 @@ public class RulesChecker {
 			//Check [ ] : [ ] (: [ ])?
 			//	Ex: https://www.bioinfo.mpg.de/mctq/core_work_life/core/core.jsp?language=por_b
 			String regex = ":\n"+inputTxt+"(\n:"+inputTxt+")?.*";
-			if(txt.matches("(?ism)"+regex)){
-				currentI += 2;
-			}
+			if(txt.matches("(?ism)"+regex))
+				return 0;
+
 			//Check ( [ ] ) [ ]
 			//	Ex: http://www.almaderma.com.br/formulario/florais/infantil/contato.php
 			regex = "\\)\n"+inputTxt+".*";
-			if(txt.matches("(?ism)"+regex)){
-				currentI += 2;
-			}
+			if(txt.matches("(?ism)"+regex))
+				return 1;
+
 			//Check [ ] (/|-) [ ] (/|-) [ ]
 			regex = r1+"\n"+inputTxt+"\n"+r1+"\n"+inputTxt+".*";
-			if(txt.matches("(?ism)"+regex)){
-				currentI += 4;
-			}
+			if(txt.matches("(?ism)"+regex))
+				return 2;
+
 			//Check [ ] (/|-) Month [ ] (/|-) Day [ ] Year
 			//	Ex: https://www.jotform.com/form-templates/preview/21014328614342?preview=true
 			regex = r1+"\n"+r2+"\n"+inputTxt+"\n"+r1+"\n"+r2+"\n"+inputTxt+"\n"+r2+".*";
-			if(txt.matches("(?ism)"+regex)){
-				FormaDaPergunta forma = FormaDaPerguntaManager.getForma(type);
-				CommonLogger.debug("\tInput [{}].", type+"_GROUP");
-				currentP.setForma(FormaDaPerguntaManager.getForma(type+"_GROUP"));
-				
-				txt = c.get(1).getText();
-				Pergunta p = new Pergunta(txt, forma);
-				p.setPai(currentP);
-				currentP.addFilha(p);
-				CommonLogger.debug("\t\t{}", txt);
-				
-				txt = c.get(4).getText();
-				p = new Pergunta(txt, forma);
-				p.setPai(currentP);
-				currentP.addFilha(p);
-				CommonLogger.debug("\t\t{}", txt);
-				
-				txt = c.get(6).getText();
-				p = new Pergunta(txt, forma);
-				p.setPai(currentP);
-				currentP.addFilha(p);
-				CommonLogger.debug("\t\t{}", txt);
-				
-				currentI += 7;
-			}
+			if(txt.matches("(?ism)"+regex))
+				return 3;
 		}
 		
-		return currentI;
+		return -1;
 	}
 
 	public boolean isSelectGroup(List<MyNode> nodes, int currentI) {

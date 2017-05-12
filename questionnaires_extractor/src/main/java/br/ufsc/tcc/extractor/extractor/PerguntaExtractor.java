@@ -10,6 +10,7 @@ import br.ufsc.tcc.extractor.builder.RulesChecker;
 import br.ufsc.tcc.extractor.database.manager.FormaDaPerguntaManager;
 import br.ufsc.tcc.extractor.model.Alternativa;
 import br.ufsc.tcc.extractor.model.Figura;
+import br.ufsc.tcc.extractor.model.FormaDaPergunta;
 import br.ufsc.tcc.extractor.model.Pergunta;
 import br.ufsc.tcc.extractor.model.Questionario;
 
@@ -40,7 +41,45 @@ public class PerguntaExtractor {
 		CommonLogger.debug("\tInput [{}].", type);
 		currentP.setForma(FormaDaPerguntaManager.getForma(type));
 		
-		currentI = checker.checkCompositeInput(currentP, nodes, type, currentI);
+		int ret = checker.checkCompositeInput(nodes, type, currentI);
+		switch(ret){
+		case 0:
+			currentI += 2;
+			break;
+		case 1:
+			currentI += 2;
+			break;
+		case 2:
+			currentI += 4;
+			break;
+		case 3:{
+			FormaDaPergunta forma = FormaDaPerguntaManager.getForma(type);
+			CommonLogger.debug("\tInput [{}].", type+"_GROUP");
+			currentP.setForma(FormaDaPerguntaManager.getForma(type+"_GROUP"));
+			
+			String txt = nodes.get(currentI+2).getText();
+			Pergunta p = new Pergunta(txt, forma);
+			p.setPai(currentP);
+			currentP.addFilha(p);
+			CommonLogger.debug("\t\t{}", txt);
+			
+			txt = nodes.get(currentI+5).getText();
+			p = new Pergunta(txt, forma);
+			p.setPai(currentP);
+			currentP.addFilha(p);
+			CommonLogger.debug("\t\t{}", txt);
+			
+			txt = nodes.get(currentI+7).getText();
+			p = new Pergunta(txt, forma);
+			p.setPai(currentP);
+			currentP.addFilha(p);
+			CommonLogger.debug("\t\t{}", txt);
+			
+			currentI += 7;
+		}
+		default:
+			break;
+		}
 		return currentI;
 	}
 	
