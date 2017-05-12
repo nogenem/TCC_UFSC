@@ -470,20 +470,30 @@ public class RulesChecker {
 	}
 
 	public boolean checkIfTextIsAbove(List<MyNode> nodes, int currentI) {
-		// A principio faz apenas uma checagem simples, sem se preocupar com imgs e input text
-		MyNode input = null, text = null;
+		MyNode input = null, text = null, img = null;
 		int i = currentI;
+		boolean hasImgAbove = false;
 		
 		input = nodes.get(i);
 		
 		// Verifica se os elementos acima podem ser considerado
 		// a descrição da alternativa e da pergunta
 		text = i-1 <= nodes.size()-1 ? nodes.get(i-1) : null;
-		if(text == null || !areCompAndTextNear(input, text))
+		if((text == null || !text.isA("text")) || !areCompAndTextNear(input, text))
 			return false;
 		text = i-2 <= nodes.size()-1 ? nodes.get(i-2) : null;
-		if(text == null || !areDescAndPergNear(text, input))
+		if(text != null && text.isA("img")){
+			text = i-3 <= nodes.size()-1 ? nodes.get(i-3) : null;
+			hasImgAbove = true;
+		}
+		if((text == null || !text.isA("text")) || !areDescAndPergNear(text, input))
 			return false;
+		
+		// Verifica se segue o padrão: img -> text -> input -> img,
+		// se sim, então deve ser seguro retornar true
+		img = i+1 < nodes.size() ? nodes.get(i+1) : null;
+		if(hasImgAbove && img != null && img.isA("img"))
+			return true;
 		
 		// Só para garantir, verifica se seguindo o padrão:
 		//		input -> text -> input -> text

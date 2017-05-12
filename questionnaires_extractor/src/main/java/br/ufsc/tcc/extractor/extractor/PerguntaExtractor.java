@@ -253,10 +253,10 @@ public class PerguntaExtractor {
 		return currentI;
 	}
 
-	public int extractCheckboxOrRadioInputWithTextAbove(List<MyNode> nodes, int currentI) {
+	public int extractCheckboxOrRadioInputWithTextAbove(Questionario currentQ, List<MyNode> nodes, int currentI) {
 		// A principio faz apenas uma extração simples, sem se preocupar com imgs e input text
-		MyNode input = null, text = null;
-		boolean error = false;
+		MyNode input = null, text = null, img = null;
+		boolean isImgQuestion = false, error = false;
 		String txt = "";
 		
 		input = nodes.get(currentI);
@@ -268,9 +268,14 @@ public class PerguntaExtractor {
 			CommonLogger.debug("\tRadio Input:");
 		
 		text = nodes.get(currentI-1);
+		img = nodes.get(currentI-2);
+		// Perguntas com imagens seguem o padrão: 
+		//		img -> text -> input -> img -> text -> input ...
+		isImgQuestion = img.isImage() && (nodes.get(currentI+1).isImage());
 		while(input != null && 
 				(input.getType() == MyNodeType.CHECKBOX_INPUT || input.getType() == MyNodeType.RADIO_INPUT) &&
-				text.getType() == MyNodeType.TEXT){
+				text.getType() == MyNodeType.TEXT &&
+				(!isImgQuestion || (img != null && img.isImage()))){
 			
 			if(!this.checker.areCompAndTextNear(input, text)){
 				error = true;
@@ -282,6 +287,17 @@ public class PerguntaExtractor {
 			Alternativa tmpAlt = new Alternativa(txt);
 			this.currentP.addAlternativa(tmpAlt);
 			
+			if(isImgQuestion){
+				Figura fig = new Figura(img.getAttr("src"), img.getAttr("alt"));
+				fig.setDono(tmpAlt);
+				currentQ.addFigura(fig);
+				CommonLogger.debug("\t\t\tLegenda: {}", fig.getLegenda());
+			}
+			
+			if(currentI+1 < nodes.size() && isImgQuestion)
+				img = nodes.get(++currentI);
+			else
+				img = null;
 			if(currentI+2 < nodes.size()){
 				text = nodes.get(++currentI);
 				input = nodes.get(++currentI);
@@ -290,6 +306,7 @@ public class PerguntaExtractor {
 		}
 		
 		if(input != null){
+			if(isImgQuestion && img != null) --currentI;
 			currentI -= 2;
 		}
 		if(error && this.currentP.getAlternativas().size() == 0)

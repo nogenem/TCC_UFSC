@@ -117,14 +117,14 @@ public class PerguntaBuilder {
 			}case CHECKBOX_INPUT:{
 				if(checker.checkIfTextIsAbove(nodes, currentI)){
 					desc = cStack.pop();
-					this.currentI = this.extractor.extractCheckboxOrRadioInputWithTextAbove(nodes, this.currentI);
+					this.currentI = this.extractor.extractCheckboxOrRadioInputWithTextAbove(currentQ, nodes, this.currentI);
 				}else
 					this.currentI = this.extractor.extractCheckboxOrRadioInput(currentQ, nodes, this.currentI);
 				break;
 			}case RADIO_INPUT:{
 				if(checker.checkIfTextIsAbove(nodes, currentI)){
 					desc = cStack.pop();
-					this.currentI = this.extractor.extractCheckboxOrRadioInputWithTextAbove(nodes, this.currentI);
+					this.currentI = this.extractor.extractCheckboxOrRadioInputWithTextAbove(currentQ, nodes, this.currentI);
 				}else
 					this.currentI = this.extractor.extractCheckboxOrRadioInput(currentQ, nodes, this.currentI);
 				break;
