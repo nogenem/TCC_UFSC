@@ -217,6 +217,12 @@ public class PerguntaExtractor {
 		MyNode opt = null, text = null;
 		boolean error = false;
 		
+		if(checker.isSelectGroup(nodes, currentI)){
+			currentP.setForma(FormaDaPerguntaManager.getForma("SELECT_GROUP"));
+			CommonLogger.debug("\tSelect Group:");
+			return this.extractSelectGroup(nodes, currentI);
+		}
+		
 		currentP.setForma(FormaDaPerguntaManager.getForma("SELECT"));
 		CommonLogger.debug("\tSelect:");
 		
@@ -257,6 +263,63 @@ public class PerguntaExtractor {
 		return currentI;
 	}
 	
+	private int extractSelectGroup(List<MyNode> nodes, int currentI) {
+		MyNode opt = null, text = null;
+		boolean error = false;
+		Pergunta p = new Pergunta((currentP.getFilhas().size()+1) +"");
+		p.setPai(currentP);
+		
+		p.setForma(FormaDaPerguntaManager.getForma("SELECT"));
+		CommonLogger.debug("\t\tSelect:");
+		
+		opt = nodes.get(++currentI);
+		text = nodes.get(++currentI);
+		while(opt != null && opt.getType() == MyNodeType.OPTION){
+			if(text.isA("OPTION")){
+				if(currentI+1 < nodes.size()){
+					opt = text;
+					text = nodes.get(++currentI);
+					continue;
+				}else{
+					opt = null;
+					break;
+				}
+			}
+				
+			if(!this.checker.areCompAndTextNear(opt, text)){
+				error = true;
+				break;
+			}
+			
+			Alternativa tmpAlt = new Alternativa(text.getText());
+			p.addAlternativa(tmpAlt);
+			CommonLogger.debug("\t\t\t{}", tmpAlt.getDescricao());
+			
+			if(currentI+2 < nodes.size()){
+				opt = nodes.get(++currentI);
+				text = nodes.get(++currentI);
+			}else
+				opt = null;
+		}
+		if(opt != null)
+			currentI -= 2;
+		if(!error || p.getAlternativas().size() > 0)
+			this.currentP.addFilha(p);
+		
+		if(currentI+2 < nodes.size()){
+			text = nodes.get(currentI+1);
+			if(text.isText() && text.getText().matches(RulesChecker.DATE_REGEX1))
+				currentI++;
+			opt = nodes.get(currentI+1);
+			if(opt.isA("SELECT")){
+				currentI++;
+				return this.extractSelectGroup(nodes, currentI);
+			}
+		}
+		
+		return currentI;
+	}
+
 	public int extractSimpleMatrix(List<MyNode> nodes, Questionario currentQ, Cluster lastMatrixHead, int currentI) {
 		MyNode input = null;
 		MyNodeType lastCompType = null;
