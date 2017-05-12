@@ -353,7 +353,7 @@ public class CommonUtil {
 	
 	private static boolean isEmptyAorP(Node el){
 		String txt = el.nodeName();
-		return el.childNodeSize() == 0 && txt.equals("p") || 
-				(txt.equals("a") && !el.hasAttr("href"));
+		return el.childNodeSize() == 0 && (txt.equals("p") || 
+				(txt.equals("a") && !el.hasAttr("href"))); 
 	}
 }
