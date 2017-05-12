@@ -60,8 +60,8 @@ public class CommonUtil {
 					"select",
 					"option");
 	
-	private final static String REQUIRED_REGEX = 
-			"\\(?(required|resposta exigida|requerido|\\*)\\)?";
+	public final static String REQUIRED_REGEX = 
+			"\\(?(required|resposta exigida|requerido|\\*obrigat(ó|o)rio|\\*)\\)?";
 	
 	// Getters e Setters
 	public static List<String> getSingleComps(){
@@ -278,7 +278,7 @@ public class CommonUtil {
 		
 		text = CommonUtil.trim(text);
 		return CommonUtil.trim(text.replaceAll(
-				String.format("(?i)(^%s|%s$)", 
+				String.format("(?ism)(^%s|%s$)", 
 						REQUIRED_REGEX, REQUIRED_REGEX), ""));
 	}
 	
@@ -341,12 +341,19 @@ public class CommonUtil {
 		List<Node> children = root.childNodes();
 		for(int i = 0; i < children.size(); i++){
 			Node child = children.get(i);
-			// Ignora comentarios, tags 'br' e nodos vazios
+			
+			// Ignora comentarios, tags 'br', tags <p>/<a> sem texto e href e textos vazios
 			if(!child.nodeName().matches("#comment|br") && 
-				!trim(child.toString()).isEmpty())
+				!trim(child.toString()).isEmpty() && !CommonUtil.isEmptyAorP(child))
 					findCompsImgsAndTexts(children.get(i), 
 							dewey +"."+ padNumber(n++), 
 							ret);
 		}
+	}
+	
+	private static boolean isEmptyAorP(Node el){
+		String txt = el.nodeName();
+		return el.childNodeSize() == 0 && txt.equals("p") || 
+				(txt.equals("a") && !el.hasAttr("href"));
 	}
 }
