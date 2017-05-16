@@ -37,11 +37,13 @@ public class CommonUtil {
 			Arrays.asList("textarea", 
 					"select",
 					"input[type=text]",
-					"input[type=date]",
 					"input[type=number]",
+					"input[type=date]",
 					"input[type=email]",
-					"input[type=range]",
-					"input[type=tel]");
+					"input[type=tel]",
+					"input[type=time]",
+					"input[type=url]",
+					"input[type=range]");
 	
 	private static final List<String> multiComps =
 			Arrays.asList("input[type=radio]",
@@ -49,13 +51,15 @@ public class CommonUtil {
 	
 	private static final List<String> allComps = 
 			Arrays.asList("input[type=text]",
-					"input[type=date]",
 					"input[type=number]",
+					"input[type=date]",
+					"input[type=email]",
+					"input[type=tel]",
+					"input[type=time]",
+					"input[type=url]",
+					"input[type=range]",
 					"input[type=radio]",
 					"input[type=checkbox]",
-					"input[type=email]",
-					"input[type=range]",
-					"input[type=tel]",
 					"textarea",
 					"select",
 					"option");
