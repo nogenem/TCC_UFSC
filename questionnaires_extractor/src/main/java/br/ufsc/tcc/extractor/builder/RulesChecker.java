@@ -348,7 +348,7 @@ public class RulesChecker {
 				dist.getWidth() <= obj.getInt("width");
 	}
 	
-	//Checagem para coisas do genêro: Hora: [ ] : [ ] ou Data: [ ] / [ ] / [ ] ou Telefone: ( [ ] ) [ ]
+	//Checagem para coisas do tipo: Hora: [ ] : [ ] ou Data: [ ] / [ ] / [ ] ou Telefone: ( [ ] ) [ ]
 	public int checkCompositeInput(List<MyNode> nodes, String type, int currentI) {
 		if(type.matches("(TEXT|NUMBER|TEL|DATE|TIME)_INPUT")){
 			Cluster c = new Cluster();

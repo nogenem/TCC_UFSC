@@ -87,7 +87,6 @@ public class PerguntaExtractor {
 		MyNode input = null, lastInput = null;
 		MyNodeType multiCompType = null;
 		int i = 1;
-		boolean error = false;
 		
 		currentP.setForma(FormaDaPerguntaManager.getForma("MULTI_COMP"));
 		CommonLogger.debug("\tMulti Comp:");
@@ -96,10 +95,8 @@ public class PerguntaExtractor {
 		multiCompType = input.getType();
 		while(input != null && input.getType() == multiCompType){
 			if(lastInput != null && 
-					!this.checker.areCompAndTextNear(lastInput, input)){
-				error = true;
+					!this.checker.areCompAndTextNear(lastInput, input))
 				break;
-			}
 
 			Pergunta tmpPerg = new Pergunta(""+ (i++));
 			tmpPerg.setForma(FormaDaPerguntaManager.getForma(multiCompType.toString()));
@@ -117,9 +114,9 @@ public class PerguntaExtractor {
 		//deve-se voltar o index para o final da pergunta
 		if(input != null)
 			--currentI;
-		//Se deu erro e não tem nenhuma filha/alternativa quer dizer que o loop não
+		//Se não tem nenhuma filha/alternativa quer dizer que o loop não
 		//completo nenhuma vez
-		if(error && this.currentP.getFilhas().size() == 0)
+		if(this.currentP.getFilhas().size() == 0)
 			this.currentP.setForma(null);
 		
 		return currentI;
@@ -128,7 +125,6 @@ public class PerguntaExtractor {
 	public int extractSimpleRating(List<MyNode> nodes, int currentI) {
 		MyNode input = null, lastInput = null;
 		int i = 1;//TODO adicionar 0 tb?
-		boolean error = false;
 				
 		currentP.setForma(FormaDaPerguntaManager.getForma("RATING"));
 		CommonLogger.debug("\tRating:");
@@ -136,10 +132,8 @@ public class PerguntaExtractor {
 		input = nodes.get(currentI);
 		while(input != null && input.getType() == MyNodeType.RADIO_INPUT){
 			if(lastInput != null && 
-					!this.checker.areCompAndTextNear(lastInput, input)){
-				error = true;
+					!this.checker.areCompAndTextNear(lastInput, input))
 				break;
-			}
 			
 			Alternativa tmpAlt = new Alternativa(""+ (i++));
 			this.currentP.addAlternativa(tmpAlt);
@@ -153,7 +147,7 @@ public class PerguntaExtractor {
 		}
 		if(input != null)
 			--currentI;
-		if(error && this.currentP.getAlternativas().size() == 0)
+		if(this.currentP.getAlternativas().size() == 0)
 			this.currentP.setForma(null);
 		
 		return currentI;
@@ -161,7 +155,7 @@ public class PerguntaExtractor {
 
 	public int extractCheckboxOrRadioInput(Questionario currentQ, List<MyNode> nodes, int currentI) {
 		MyNode img = null, input = null, text = null, tmp = null;
-		boolean isImgQuestion = false, error = false;
+		boolean isImgQuestion = false;
 		String txt = "";
 		
 		input = nodes.get(currentI);
@@ -180,11 +174,10 @@ public class PerguntaExtractor {
 		isImgQuestion = img.isImage() && tmp.isImage();
 		while(input != null && 
 				(input.getType() == MyNodeType.CHECKBOX_INPUT || input.getType() == MyNodeType.RADIO_INPUT) &&
+				text.getType() == MyNodeType.TEXT &&
 				(!isImgQuestion || (img != null && img.isImage()))){
-			if(!this.checker.areCompAndTextNear(input, text)){
-				error = true;
+			if(!this.checker.areCompAndTextNear(input, text))
 				break;
-			}
 			
 			txt = text.getText();
 			Object dono = null;
@@ -246,7 +239,7 @@ public class PerguntaExtractor {
 			if(this.currentP.getAlternativas().size() == 0)
 				currentI += 1;
 		}
-		if(error && this.currentP.getAlternativas().size() == 0)
+		if(this.currentP.getAlternativas().size() == 0)
 			this.currentP.setForma(null);
 		
 		return currentI;
@@ -255,7 +248,7 @@ public class PerguntaExtractor {
 	public int extractCheckboxOrRadioInputWithTextAbove(Questionario currentQ, List<MyNode> nodes, int currentI) {
 		// A principio faz apenas uma extração simples, sem se preocupar com imgs e input text
 		MyNode input = null, text = null, img = null;
-		boolean isImgQuestion = false, error = false;
+		boolean isImgQuestion = false;
 		String txt = "";
 		
 		input = nodes.get(currentI);
@@ -276,10 +269,8 @@ public class PerguntaExtractor {
 				text.getType() == MyNodeType.TEXT &&
 				(!isImgQuestion || (img != null && img.isImage()))){
 			
-			if(!this.checker.areCompAndTextNear(input, text)){
-				error = true;
+			if(!this.checker.areCompAndTextNear(input, text))
 				break;
-			}
 			
 			txt = text.getText();
 			CommonLogger.debug("\t\t{}", txt);
@@ -308,7 +299,7 @@ public class PerguntaExtractor {
 			if(isImgQuestion && img != null) --currentI;
 			currentI -= 2;
 		}
-		if(error && this.currentP.getAlternativas().size() == 0)
+		if(this.currentP.getAlternativas().size() == 0)
 			this.currentP.setForma(null);
 		
 		return currentI;
@@ -316,7 +307,6 @@ public class PerguntaExtractor {
 
 	public int extractSelect(List<MyNode> nodes, int currentI) {
 		MyNode opt = null, text = null;
-		boolean error = false;
 		
 		if(checker.isSelectGroup(nodes, currentI)){
 			currentP.setForma(FormaDaPerguntaManager.getForma("SELECT_GROUP"));
@@ -341,10 +331,8 @@ public class PerguntaExtractor {
 				}
 			}
 				
-			if(!this.checker.areCompAndTextNear(opt, text)){
-				error = true;
+			if(!this.checker.areCompAndTextNear(opt, text))
 				break;
-			}
 			
 			Alternativa tmpAlt = new Alternativa(text.getText());
 			this.currentP.addAlternativa(tmpAlt);
@@ -358,7 +346,7 @@ public class PerguntaExtractor {
 		}
 		if(opt != null)
 			currentI -= 2;
-		if(error && this.currentP.getAlternativas().size() == 0)
+		if(this.currentP.getAlternativas().size() == 0)
 			this.currentP.setForma(null);
 		
 		return currentI;
@@ -366,7 +354,6 @@ public class PerguntaExtractor {
 	
 	private int extractSelectGroup(List<MyNode> nodes, int currentI) {
 		MyNode opt = null, text = null;
-		boolean error = false;
 		Pergunta p = new Pergunta((currentP.getFilhas().size()+1) +"");
 		p.setPai(currentP);
 		
@@ -375,7 +362,8 @@ public class PerguntaExtractor {
 		
 		opt = nodes.get(++currentI);
 		text = nodes.get(++currentI);
-		while(opt != null && opt.getType() == MyNodeType.OPTION){
+		while(opt != null && opt.isA("OPTION") &&
+				(text.isA("TEXT") || text.isA("OPTION"))){		
 			if(text.isA("OPTION")){
 				if(currentI+1 < nodes.size()){
 					opt = text;
@@ -387,10 +375,8 @@ public class PerguntaExtractor {
 				}
 			}
 				
-			if(!this.checker.areCompAndTextNear(opt, text)){
-				error = true;
+			if(!this.checker.areCompAndTextNear(opt, text))
 				break;
-			}
 			
 			Alternativa tmpAlt = new Alternativa(text.getText());
 			p.addAlternativa(tmpAlt);
@@ -404,7 +390,7 @@ public class PerguntaExtractor {
 		}
 		if(opt != null)
 			currentI -= 2;
-		if(!error || p.getAlternativas().size() > 0)
+		if(p.getAlternativas().size() > 0)
 			this.currentP.addFilha(p);
 		
 		if(currentI+2 < nodes.size()){
@@ -417,6 +403,9 @@ public class PerguntaExtractor {
 				return this.extractSelectGroup(nodes, currentI);
 			}
 		}
+		
+		if(this.currentP.getFilhas().size() == 0)
+			this.currentP.setForma(null);
 		
 		return currentI;
 	}

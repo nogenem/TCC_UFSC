@@ -33,6 +33,7 @@ public class PerguntaBuilder {
 	private Cluster firstGroupOfQuestionnaire;
 	
 	// Matrix
+	private Cluster lastMatrixDesc;
 	private Cluster lastMatrixHead;
 	private Pergunta lastMatrix;
 	
@@ -52,6 +53,7 @@ public class PerguntaBuilder {
 		
 		this.firstGroupOfQuestionnaire = null;
 		
+		this.lastMatrixDesc = null;
 		this.lastMatrixHead = null;
 		this.lastMatrix = null;
 		
@@ -281,7 +283,10 @@ public class PerguntaBuilder {
 							cTmp1 = null;
 					}
 					//Verifica se não é o texto de um grupo
-					if(cTmp1 != null && this.checker.isGroupText(cTmp1, desc, this.firstGroupOfQuestionnaire) &&
+					cTmp2 = this.lastMatrixDesc != null ? this.lastMatrixDesc : 
+						this.lastQWithSubQsDesc != null ? this.lastQWithSubQsDesc :
+							desc;
+					if(cTmp1 != null && this.checker.isGroupText(cTmp1, cTmp2, this.firstGroupOfQuestionnaire) &&
 							!cStack.isEmpty()){
 						currentG = new Grupo(cTmp1.getText());
 						currentQ.addGrupo(currentG);
@@ -301,7 +306,10 @@ public class PerguntaBuilder {
 				}else{
 					//Verifica se não é o texto de um grupo
 					cTmp1 = cStack.peek();
-					if(this.checker.isGroupText(cTmp1, desc, this.firstGroupOfQuestionnaire)){
+					cTmp2 = this.lastMatrixDesc != null ? this.lastMatrixDesc : 
+						this.lastQWithSubQsDesc != null ? this.lastQWithSubQsDesc :
+							desc;
+					if(this.checker.isGroupText(cTmp1, cTmp2, this.firstGroupOfQuestionnaire)){
 						cTmp1 = cStack.pop();
 						this.currentG = new Grupo(cTmp1.getText());
 						currentQ.addGrupo(currentG);
@@ -365,6 +373,7 @@ public class PerguntaBuilder {
 			}
 			Cluster desc = cStack.pop();
 			desc = this.checker.checkIfDescIsComplete(desc, cStack, nodes, this.currentI);
+			this.lastMatrixDesc = desc;
 			this.lastMatrix.setDescricao(desc.getText());
 		}
 		if(this.lastMatrix != null)
@@ -376,8 +385,9 @@ public class PerguntaBuilder {
 			currentQ.addPergunta(this.lastMatrix);
 			CommonLogger.debug("Matrix descricao: {}\n\n", this.lastMatrix.getDescricao());		
 		}
-		this.lastMatrix = null;
+		this.lastMatrixDesc = null;
 		this.lastMatrixHead = null;
+		this.lastMatrix = null;
 	}
 
 	public void clearData(Questionario currentQ) {
