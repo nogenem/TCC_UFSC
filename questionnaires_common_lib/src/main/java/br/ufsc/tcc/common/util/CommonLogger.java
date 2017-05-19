@@ -101,10 +101,8 @@ public class CommonLogger {
 	}
 	
 	// FATAL_ERROR level
-	
-	//PS: FATAL_ERROR esta sempre ativo e não pode ser desabilitado
 	public static boolean isFatalErrorEnabled(){
-		return true;
+		return enabledLevels.contains("FATAL_ERROR");
 	}
 		
 	public static void fatalError(Throwable e){
@@ -132,5 +130,11 @@ public class CommonLogger {
 	// Bloco estático
 	static {
 		enabledLevels += ProjectConfigs.getLogLevels().toUpperCase();
+		// Pequena gambiarra para setar o nivel de log do Crawler4J
+		ch.qos.logback.classic.Level level = enabledLevels.contains("|INFO") ? ch.qos.logback.classic.Level.INFO : 
+			ch.qos.logback.classic.Level.ERROR;
+		ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger)
+				LoggerFactory.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
+		root.setLevel(level);
 	}
 }
