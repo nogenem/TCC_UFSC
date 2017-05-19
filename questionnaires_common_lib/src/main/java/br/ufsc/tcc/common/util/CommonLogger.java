@@ -132,7 +132,7 @@ public class CommonLogger {
 		enabledLevels += ProjectConfigs.getLogLevels().toUpperCase();
 		// Pequena gambiarra para setar o nivel de log do Crawler4J
 		ch.qos.logback.classic.Level level = enabledLevels.contains("|INFO") ? ch.qos.logback.classic.Level.INFO : 
-			ch.qos.logback.classic.Level.ERROR;
+			ch.qos.logback.classic.Level.WARN;
 		ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger)
 				LoggerFactory.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
 		root.setLevel(level);
