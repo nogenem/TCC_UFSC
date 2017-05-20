@@ -28,7 +28,7 @@ public class RulesChecker {
 	// Regex usados para extrair coisas como:
 	//		[ ] / month [ ] / day [ ] year
 	public static final String DATE_REGEX1 = "(/|\\-)",
-			DATE_REGEX2 = "(month|day|year|m(ê|e)s|dia|ano)";
+			DATE_REGEX2 = "(month|day|year|m(ê|e)s|d(i|í)a|a(n|ñ)o)";
 	
 	public RulesChecker() {
 		this.distMatrix = new DistanceMatrix();
@@ -90,7 +90,7 @@ public class RulesChecker {
 		return true;
 	}
 
-	// Métodos usados pela classe PerguntaBuilder e Pergunta Extractor
+	// Métodos usados pela classe PerguntaBuilder e PerguntaExtractor
 	public boolean isOnlyOneImg(Cluster c) {
 		return c.size() == 1 && c.first().isImage();
 	}
@@ -145,6 +145,10 @@ public class RulesChecker {
 	}
 	
 	public boolean isDescriptionsNear(Cluster firstDesc, Cluster secondDesc){
+		if(firstDesc == null || firstDesc.isEmpty() || 
+				secondDesc == null || secondDesc.isEmpty())
+			return false;
+		
 		JSONObject obj = CONFIGS.getJSONObject("distBetweenPartsOfDescription");
 		DeweyExt dist = this.distMatrix.getDist(firstDesc.last(), secondDesc.first());
 		return dist.getHeight() <= obj.getInt("height") && 
@@ -185,7 +189,7 @@ public class RulesChecker {
 			if(txt.split(" ").length <= CONFIGS.getInt("maxWordsInAGroupDescription")){
 				if(firstGroupOfQuestionnaire != null){
 					//O tamanho do Dewey dos grupos de um questionario, geralmente,
-					//é o mesmo
+					//é o mesmo [utilizam o mesmo padrão de nodos pais]
 					if(firstGroupOfQuestionnaire.last().getDewey().toString().length() == 
 							cTmp.last().getDewey().toString().length())
 						return true;
@@ -234,6 +238,7 @@ public class RulesChecker {
 	}
 
 	public boolean isAbove(MyNode n1, MyNode n2) {
+		if(n1 == null || n2 == null) return false;
 		//Verifica se n1 esta acima de n2
 		DeweyExt dist = this.distMatrix.getDist(n1, n2);
 		return dist.isNegative();
@@ -341,6 +346,8 @@ public class RulesChecker {
 	}
 	
 	public boolean checkDistForTextsOfAlternative(MyNode n1, MyNode n2){
+		if(n1 == null || n2 == null) return false;
+		
 		JSONObject obj = CONFIGS.getJSONObject("distBetweenTextsOfSameAlternative");
 		DeweyExt dist = this.distMatrix.getDist(n1, n2);
 		return dist.getHeight() <= obj.getInt("height") &&
@@ -472,54 +479,54 @@ public class RulesChecker {
 	
 	// Métodos/Blocos estáticos
 	static {
-		//Load heuristics
-		JSONObject h = ProjectConfigs.getHeuristics(), tmp = null;
+		//Load parameters
+		JSONObject p = ProjectConfigs.getParameters(), tmp = null;
 		String lastObj = "";
 		
 		// Verifica se todas as heurísticas foram declaradas
 		try{
-			h.getInt("minQuestionsOnQuestionnaire");
-			h.getInt("maxWordsInAGroupDescription");
-			h.getString("phrasesToIgnoreRegex");
+			p.getInt("minQuestionsOnQuestionnaire");
+			p.getInt("maxWordsInAGroupDescription");
+			p.getString("phrasesToIgnoreRegex");
 			
 			lastObj = "distBetweenTextsInsideQuestionnaire";
-			tmp = h.getJSONObject(lastObj);
+			tmp = p.getJSONObject(lastObj);
 				tmp.getInt("height");
 				
 			lastObj = "distBetweenCompAndText";
-			tmp = h.getJSONObject(lastObj);
+			tmp = p.getJSONObject(lastObj);
 				tmp.getInt("height");
 				tmp.getInt("maxHeight");
 			
 			lastObj = "distBetweenDescAndQuestion";
-			tmp = h.getJSONObject(lastObj);	
+			tmp = p.getJSONObject(lastObj);	
 				tmp.getInt("height");
 				tmp.getInt("maxHeight");
 				
 			lastObj = "distBetweenGroupAndFirstQuestion";
-			tmp = h.getJSONObject(lastObj);	
+			tmp = p.getJSONObject(lastObj);	
 				tmp.getInt("height");
 				tmp.getInt("width");
 				
 			lastObj = "distBetweenDescAndComplementaryText";
-			tmp = h.getJSONObject(lastObj);	
+			tmp = p.getJSONObject(lastObj);	
 				tmp.getInt("height");
 				tmp.getInt("maxHeight");
 				tmp.getInt("width");
 				
 			lastObj = "distBetweenTextsInQuestionWithSubQuestions";
-			tmp = h.getJSONObject(lastObj);	
+			tmp = p.getJSONObject(lastObj);	
 				tmp.getInt("height");
 				tmp.getInt("width");
 				
 			lastObj = "distBetweenPartsOfDescription";
-			tmp = h.getJSONObject(lastObj);	
+			tmp = p.getJSONObject(lastObj);	
 				tmp.getInt("height");
 				tmp.getInt("width");
 				tmp.getInt("maxHeight");
 				
 			lastObj = "distBetweenTextsOfSameAlternative";
-			tmp = h.getJSONObject(lastObj);	
+			tmp = p.getJSONObject(lastObj);	
 				tmp.getInt("height");
 				tmp.getInt("width");
 				tmp.getInt("maxHeight");
@@ -531,7 +538,7 @@ public class RulesChecker {
 					"' não encontrado no arquivo de configuração!";
 			CommonLogger.fatalError(new JSONException(msg));
 		}
-		CONFIGS = h;
+		CONFIGS = p;
 		
 		CommonLogger.debug("RulesChecker:> Static block executed!");
 	}

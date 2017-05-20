@@ -246,7 +246,7 @@ public class PerguntaExtractor {
 	}
 
 	public int extractCheckboxOrRadioInputWithTextAbove(Questionario currentQ, List<MyNode> nodes, int currentI) {
-		// A principio faz apenas uma extração simples, sem se preocupar com imgs e input text
+		// A principio não se preocupa com input text
 		MyNode input = null, text = null, img = null;
 		boolean isImgQuestion = false;
 		String txt = "";

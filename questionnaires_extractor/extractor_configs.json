@@ -31,10 +31,10 @@
 		"https://www.survio.com/modelo-de-pesquisa/pesquisa-da-notoriedade-da-marca",
 		"https://www.survio.com/modelo-de-pesquisa/pesquisa-da-experiencia-de-compra"
 	],
-	"heuristics": {
+	"parameters": {
 		"minQuestionsOnQuestionnaire": 2,
 		"maxWordsInAGroupDescription": 5,
-		"phrasesToIgnoreRegex": "^(account id|subscribe|create (an )?account|contact us( now)?!?|enter your email.*|(send (a )?)?comments?:?|user(name)?:?|sign( )?in.*|sign( )?up.*|register|login:?|password:?|forgot (your)? password\\??|retrieve password|confirm password:?|keep me logged in|reset password|search:?|entre com seu email.*|comente:?|(envie ((um|seu) )?)?coment(a|á)rio:?|coment(á|a)rios?:?|usu(a|á)rio|entr(e|ar)|inscrev(a|er)-se|registr(ar|e-se)|logar|entrar|senha|repita (a|sua) senha:?|esqueceu sua senha\\?|me mantenha logado|mantenha-me logado|recupere sua senha|buscar:?)",
+		"phrasesToIgnoreRegex": "^(((s|t)u )?nombre( completo)?:?|apellidos?:?|(seu|primeiro|(ú|u)ltimo) nome:?|sobrenome:?|(full|your|first|last) name:?|(get our )?newsletter|account id|subscribe|create (an )?account|contact us( now)?!?|enter your email.*|(send (a )?)?comments?:?|users?(name)?:?|sign( )?in.*|sign( )?up.*|register|login:?|log in here|password:?|forgot(ten)?( your)? password\\??|retrieve password|confirm password:?|keep me logged in|reset password|search:?|entre com seu email.*|comente:?|(envie ((um|seu) )?)?coment(a|á)rio:?|coment(á|a)rios?:?|usu(a|á)rio|entr(e|ar)|inscrev(a|er)-se|registr(ar|e-se)|logar|entrar|senha|repita (a|sua) senha:?|esqueceu sua senha\\?|me mantenha logado|mantenha-me logado|recupere sua senha|buscar:?)\\*?",
 		"distBetweenNearNodes": {
 			"height": 3,
 			"maxHeight": 3,
