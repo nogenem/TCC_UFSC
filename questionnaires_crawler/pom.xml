@@ -15,11 +15,6 @@
   		<version>1.9.2</version>
   	</dependency>
   	<dependency>
-  		<groupId>org.slf4j</groupId>
-  		<artifactId>slf4j-simple</artifactId>
-  		<version>1.7.21</version>
-  	</dependency>
-  	<dependency>
   		<groupId>org.postgresql</groupId>
   		<artifactId>postgresql</artifactId>
   		<version>9.4-1206-jdbc42</version>

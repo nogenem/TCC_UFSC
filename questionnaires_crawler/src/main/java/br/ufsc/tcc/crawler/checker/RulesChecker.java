@@ -159,25 +159,25 @@ public class RulesChecker {
 	
 	// Métodos/Blocos estáticos
 	static {
-		//Load heuristics
-		JSONObject h = ProjectConfigs.getHeuristics(), tmp = null;
+		//Load parameters
+		JSONObject p = ProjectConfigs.getParameters(), tmp = null;
 		
 		try{
-			String txtTmp = h.getString("surveyWordsRegex");
+			String txtTmp = p.getString("surveyWordsRegex");
 			SURVEY_WORDS_REGEX = Pattern.compile(txtTmp, 
 					Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
 			
-			txtTmp = h.getString("phrasesToIgnoreRegex");
+			txtTmp = p.getString("phrasesToIgnoreRegex");
 			PHRASES_TO_IGNORE_REGEX = Pattern.compile(txtTmp, 
 					Pattern.CASE_INSENSITIVE);
 			
-			MIN_COMPS_IN_ONE_CLUSTER = h.getInt("minCompsInOneCluster");
+			MIN_COMPS_IN_ONE_CLUSTER = p.getInt("minCompsInOneCluster");
 			if(MIN_COMPS_IN_ONE_CLUSTER <= 0) MIN_COMPS_IN_ONE_CLUSTER = 4;
 			
-			MIN_CLUSTERS_WITH_COMP = h.getInt("minClustersWithComp");
+			MIN_CLUSTERS_WITH_COMP = p.getInt("minClustersWithComp");
 			if(MIN_CLUSTERS_WITH_COMP <= 0) MIN_CLUSTERS_WITH_COMP = 3;
 	
-			tmp = h.getJSONObject("distBetweenNearQuestions");
+			tmp = p.getJSONObject("distBetweenNearQuestions");
 			HEIGHT_BETWEEN_QUESTIONS = tmp.optInt("height");
 			if(HEIGHT_BETWEEN_QUESTIONS <= 0) HEIGHT_BETWEEN_QUESTIONS = 4;
 		}catch(JSONException exp){
