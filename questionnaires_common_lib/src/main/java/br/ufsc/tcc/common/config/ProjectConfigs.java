@@ -55,12 +55,12 @@ public abstract class ProjectConfigs {
 		return configs.optJSONObject("crawler");
 	}
 	
-	public static JSONObject getHeuristics(){
+	public static JSONObject getParameters(){
 		try{
-			return configs.getJSONObject("heuristics");
+			return configs.getJSONObject("parameters");
 		}catch(JSONException exp){
 			CommonLogger.fatalError(
-					new JSONException("Objeto 'heuristics' não encontrado no arquivo de configuração!"));
+					new JSONException("Objeto 'parameters' não encontrado no arquivo de configuração!"));
 			return null;
 		}
 	}
@@ -69,9 +69,8 @@ public abstract class ProjectConfigs {
 		try{
 			return configs.getJSONArray("seeds");
 		}catch(JSONException exp){
-			CommonLogger.fatalError(
-					new JSONException("Arranjo 'seeds' não encontrado no arquivo de configuração!"));
-			return null;
+			CommonLogger.info("Arranjo 'seeds' não encontrado no arquivo de configuração!");
+			return new JSONArray();
 		}
 	}
 	

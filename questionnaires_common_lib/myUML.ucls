@@ -188,62 +188,62 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <generalization id="22">    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="9"/>  
-  </generalization>  
-  <association id="23">    
+  <association id="22">    
     <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="24" name="group">        
+      <attribute id="23" name="group">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="25" minimum="0" maximum="2147483647">        
+      <multiplicity id="24" minimum="0" maximum="2147483647">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="16" navigable="true"/>    
     <display labels="false" multiplicity="false"/>  
   </association>  
-  <association id="26">    
+  <association id="25">    
     <end type="SOURCE" refId="16" navigable="false">      
-      <attribute id="27" name="dewey">        
+      <attribute id="26" name="type">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="28" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="17" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <association id="29">    
-    <end type="SOURCE" refId="21" navigable="false">      
-      <attribute id="30" name="pqDao">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="31" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="13" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <generalization id="32">    
-    <end type="SOURCE" refId="13"/>    
-    <end type="TARGET" refId="12"/>  
-  </generalization>  
-  <association id="33">    
-    <end type="SOURCE" refId="16" navigable="false">      
-      <attribute id="34" name="type">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="35" minimum="0" maximum="1">        
+      <multiplicity id="27" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="18" navigable="true"/>    
     <display labels="false" multiplicity="false"/>  
   </association>  
+  <association id="28">    
+    <end type="SOURCE" refId="21" navigable="false">      
+      <attribute id="29" name="pqDao">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="30" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="31">    
+    <end type="SOURCE" refId="16" navigable="false">      
+      <attribute id="32" name="dewey">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="33" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="17" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <generalization id="34">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="12"/>  
+  </generalization>  
+  <generalization id="35">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="9"/>  
+  </generalization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="false" package="false" protected="false" private="false" static="false"/>    

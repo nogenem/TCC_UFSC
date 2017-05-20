@@ -76,11 +76,11 @@ public class DistanceMatrix {
 	
 	// Métodos/Blocos estáticos
 	static {
-		//Load heuristics
-		JSONObject h = ProjectConfigs.getHeuristics(), tmp = null;
+		//Load parameters
+		JSONObject p = ProjectConfigs.getParameters(), tmp = null;
 		
 		try{
-			tmp = h.getJSONObject("distBetweenNearNodes");	
+			tmp = p.getJSONObject("distBetweenNearNodes");	
 			MAX_WIDTH = tmp.getInt("width");
 			if(MAX_WIDTH <= 0) MAX_WIDTH = 3;
 			
