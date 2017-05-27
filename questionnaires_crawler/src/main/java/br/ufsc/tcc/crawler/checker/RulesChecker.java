@@ -96,13 +96,13 @@ public class RulesChecker {
 					}else
 						qCount++;
 				}
+				lastCluster = c;
 			}
 			if(qCount == MIN_CLUSTERS_WITH_COMP){
 				CommonLogger.debug("\n\t\t===> Minimo {} clusters com componentes!", MIN_CLUSTERS_WITH_COMP);
 				CommonLogger.debug("\nLast cluster: \n" +c.toString());//TODO remover isso
 				return true;
 			}
-			lastCluster = c;
 		}
 		return false;
 	}
