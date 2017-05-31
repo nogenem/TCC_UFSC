@@ -126,7 +126,8 @@ public class RulesChecker {
 			return 0.0;
 		
 		double count = 0.0;
-		boolean hasDescriptionAbove = false;
+		boolean hasDescriptionAbove = false, hasQuestionAbove = false;
+		String text = "";
 		ArrayList<MyNode> nodes = c.getGroup();
 		
 		for(int i = 0; i < nodes.size(); i++){
@@ -136,28 +137,40 @@ public class RulesChecker {
 					count = -1;
 					break;
 				}
-				hasDescriptionAbove = isLikelyADescription(node.getText());
+				text = fixText(node.getText());
+				hasDescriptionAbove = isLikelyADescription(text);
+				hasQuestionAbove = hasDescriptionAbove && isLikelyAQuestion(text);
 			}else if(node.isComponent() && node.getType() != MyNodeType.OPTION){
 				//Toda pergunta deve ter pelo menos uma descricao acima dela
 				if(hasDescriptionAbove){
+					//Se a descrição acima não for uma questão, então conta como 0.5
 					//RADIO_INPUT e CHECKBOX sempre aparecem em 2 ou + em uma pergunta, por isso
 					//cada um conta como 0.5
-					if(CommonUtil.getMultiComps().contains(node.getText()))
+					if(!hasQuestionAbove || CommonUtil.getMultiComps().contains(node.getText()))
 						count += 0.5;
 					else
 						count++;
 				}
 				hasDescriptionAbove = false;
+				hasQuestionAbove = false;
 			}
 		}
 		return count;
 	}
 	
 	private boolean isLikelyADescription(String text){
-		if(text.endsWith(" :"))
-			text = text.substring(0, text.length()-2) + ":";
-		return (text.length() >= 4 && text.contains(" ")) || 
+		return (text.length() >= 4 && CommonUtil.startsWithUpperCase(text) && text.contains(" ")) || 
 				text.matches("(\\d{1,3}(\\s{1,2})?(\\.|\\:|\\)|\\-)?)");
+	}
+	
+	private boolean isLikelyAQuestion(String text){
+		return text.endsWith("?") || text.endsWith(":");
+	}
+	
+	private String fixText(String text){
+		text = text.replaceAll("( )?\\*", "");
+		text = text.endsWith(" :") ? text.substring(0, text.length()-2) + ":" : text;
+		return text;
 	}
 	
 	private boolean isStartingANewQuestionnaire(Cluster lastCluster, Cluster newCluster) {
