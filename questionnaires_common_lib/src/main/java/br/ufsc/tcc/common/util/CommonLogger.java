@@ -38,7 +38,10 @@ public class CommonLogger {
 	
 	public static void debug(List<? extends Object> arr){
 		if(enabledLevels.contains("DEBUG")){
-			arr.forEach(System.out::println);
+			for(int i = 0; i<arr.size(); i++){
+				System.out.println(MessageFormatter.
+						format("<{}>{}", i, arr.get(i)).getMessage());
+			}
 			System.out.println();
 		}
 	}
