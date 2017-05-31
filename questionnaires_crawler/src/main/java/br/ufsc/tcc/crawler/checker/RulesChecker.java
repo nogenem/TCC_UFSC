@@ -27,6 +27,7 @@ public class RulesChecker {
 	private static Pattern PHRASES_TO_IGNORE_REGEX = null;
 	private static int MIN_COMPS_IN_ONE_CLUSTER = 0;
 	private static int MIN_CLUSTERS_WITH_COMP = 0;
+	private static int MAX_CLUSTERS_BETWEEN_CLUSTERS_WITH_COMP = 0;
 	private static int HEIGHT_BETWEEN_QUESTIONS = 0;
 
 	private DistanceMatrix distMatrix;
@@ -70,24 +71,32 @@ public class RulesChecker {
 	}
 	
 	private boolean hasQuestionnaire(List<Cluster> clusters) {
-		//Contador de componentes, Contador de 'questões'
-		double cCount = 0.0, qCount = 0.0;
+		//Contador de componentes, Contador de 'questões', Contador de clusters sem componentes
+		double cCount = 0.0;
+		int qCount = 0, ncCount = 0;
 		Cluster lastCluster = null;
 		
 		//Um questionario deve ter pelo menos 1 cluster com X componentes ou
 		//X clusters com pelo menos 1 componente
-		for(Cluster c : clusters){
+		for(int i = 0; i<clusters.size(); i++){
+			Cluster c = clusters.get(i);
 			cCount = getCountOfComps(c);
+			
+			CommonLogger.debug("<{}>cCount: {}; qCount: {};", i, cCount, qCount);
+			
+			//Atualiza o contador de clusters sem componentes e verifica se ja 
+			//chego no limite
+			if(cCount == 0){
+				ncCount++;
+				if(qCount > 0 && ncCount == MAX_CLUSTERS_BETWEEN_CLUSTERS_WITH_COMP)
+					qCount = 0;
+			}
 			
 			//Toda questão deve ter pelo menos 1 componente e não deve possuir
 			//frases contidas no: PHRASES_TO_IGNORE_REGEX
-			CommonLogger.debug("cCount: " +cCount+ "; qCount: " +qCount);
 			if(cCount >= 1){
-				if(cCount >= MIN_COMPS_IN_ONE_CLUSTER){
-					CommonLogger.debug("\n\t\t===> Minimo {} componentes em um cluster!", MIN_COMPS_IN_ONE_CLUSTER);
-					CommonLogger.debug("\nLast cluster: \n" +c.toString());//TODO remover isso
-					return true;
-				}else{
+				ncCount = 0;
+				if(cCount < MIN_COMPS_IN_ONE_CLUSTER){
 					if(lastCluster != null){
 						if(!isStartingANewQuestionnaire(lastCluster, c))
 							qCount++;
@@ -95,6 +104,10 @@ public class RulesChecker {
 							qCount = 1;
 					}else
 						qCount++;
+				}else{
+					CommonLogger.debug("\n\t\t===> Minimo {} componentes em um cluster!", MIN_COMPS_IN_ONE_CLUSTER);
+					CommonLogger.debug("\nLast cluster: \n" +c.toString());//TODO remover isso
+					return true;
 				}
 				lastCluster = c;
 			}
@@ -108,13 +121,13 @@ public class RulesChecker {
 	}
 	
 	private double getCountOfComps(Cluster c){
+		// Os clusters de perguntas sempre começam com um texto ou imagem !?
+		if(c.first().isComponent())
+			return 0.0;
+		
 		double count = 0.0;
 		boolean hasDescriptionAbove = false;
 		ArrayList<MyNode> nodes = c.getGroup();
-		
-		// Os clusters de perguntas sempre começam com um texto ou imagem !?
-		if(c.first().isComponent())
-			return count;
 		
 		for(int i = 0; i < nodes.size(); i++){
 			MyNode node = nodes.get(i);
@@ -172,10 +185,13 @@ public class RulesChecker {
 					Pattern.CASE_INSENSITIVE);
 			
 			MIN_COMPS_IN_ONE_CLUSTER = p.getInt("minCompsInOneCluster");
-			if(MIN_COMPS_IN_ONE_CLUSTER <= 0) MIN_COMPS_IN_ONE_CLUSTER = 4;
+			if(MIN_COMPS_IN_ONE_CLUSTER <= 0) MIN_COMPS_IN_ONE_CLUSTER = 5;
 			
 			MIN_CLUSTERS_WITH_COMP = p.getInt("minClustersWithComp");
 			if(MIN_CLUSTERS_WITH_COMP <= 0) MIN_CLUSTERS_WITH_COMP = 3;
+			
+			MAX_CLUSTERS_BETWEEN_CLUSTERS_WITH_COMP = p.getInt("maxClustersBetweenClustersWithComp");
+			if(MAX_CLUSTERS_BETWEEN_CLUSTERS_WITH_COMP <= 0) MAX_CLUSTERS_BETWEEN_CLUSTERS_WITH_COMP = 5;
 	
 			tmp = p.getJSONObject("distBetweenNearQuestions");
 			HEIGHT_BETWEEN_QUESTIONS = tmp.optInt("height");

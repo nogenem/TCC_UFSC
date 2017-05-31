@@ -63,7 +63,7 @@ public class ClusterBuilder {
 	private boolean shouldGroup(Cluster c1, Cluster c2, Cluster c3) {
 		//Deve-se juntar grupos de input
 		//PS: pode ter uma img na frente
-		String starterInputRegex = "(?s)^(img\\[alt=.*\\]\\n)?"
+		final String starterInputRegex = "(?s)^(img\\[alt=.*\\]\\n)?"
 				+ "(input\\[type=.+\\]).*";
 		String c1Text = c1.getAllNodesText(),
 				c2Text = c2.getAllNodesText();
@@ -83,7 +83,7 @@ public class ClusterBuilder {
 		//    -por isso o c3-
 		if((c3 == null || c3.first().isText()) &&
 				((c1.isAllText() && !c2.first().isText()) || 
-						(!c2.first().isText() && c2.size() == 1)))//TODO rever essa ultima parte?
+						(!c2.first().isText() && c2.size() == 1)))
 			return true;
 		return false;
 	}
