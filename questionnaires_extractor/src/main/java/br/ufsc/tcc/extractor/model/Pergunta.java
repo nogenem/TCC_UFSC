@@ -74,10 +74,10 @@ public class Pergunta {
 
 	public void setTipo(String tipo) {
 		tipo = tipo.toUpperCase();
-		if(!tipo.matches("(ABERTO|FECHADO|MULTIPLA_ESCOLHA)"))
-			CommonLogger.info("Pergunta:setTipo()> Tipo nao permitido ({}).", tipo);
-		else
+		if(tipo.matches("(ABERTO|FECHADO|MULTIPLA_ESCOLHA)"))
 			this.tipo = tipo;
+		else
+			CommonLogger.info("Pergunta:setTipo()> Tipo nao permitido ({}).", tipo);
 	}
 
 	public FormaDaPergunta getForma() {
@@ -214,6 +214,9 @@ public class Pergunta {
 		builder.append("\tFilhas:\n");
 		for(Pergunta filha : this.getFilhas()){
 			builder.append("\t\t" +filha.getDescricao() +" [" +filha.getForma()+ "]\n");
+			for(Alternativa a : filha.getAlternativas()){
+				builder.append("\t\t\t"+ a.getDescricao() +"\n");
+			}
 		}
 		builder.append("\n");
 		return builder.toString();

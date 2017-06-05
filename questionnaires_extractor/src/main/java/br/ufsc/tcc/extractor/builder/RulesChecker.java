@@ -30,8 +30,8 @@ public class RulesChecker {
 	public static final String DATE_REGEX1 = "(/|\\-)",
 			DATE_REGEX2 = "(month|day|year|m(ê|e)s|d(i|í)a|a(n|ñ)o)";
 	
-	public RulesChecker() {
-		this.distMatrix = new DistanceMatrix();
+	public RulesChecker(DistanceMatrix distMatrix) {
+		this.distMatrix = distMatrix;
 	}
 	
 	// Getters e Setters
@@ -107,6 +107,12 @@ public class RulesChecker {
 	public Cluster getCorrectDescription(Cluster desc, ArrayList<Alternativa> tmpAlts, MyNode firstNode,
 			Stack<Cluster> cStack) {
 		if(desc == null || desc.isEmpty()) return desc;
+		
+		//Ex: https://www.surveymonkey.com/r/CAHPS-Health-Plan-Survey-40-Template
+		if(desc.getText().equals(".") && !cStack.isEmpty())
+			desc = cStack.pop();
+		
+		if(desc.size() != tmpAlts.size()) return desc;//TODO ainda requer testes...
 		
 		boolean flag = true;
 		String altsTxt = "";
@@ -255,20 +261,24 @@ public class RulesChecker {
 		boolean flag = false;
 		int count = filhas.size()+alts.size();
 		
+		//TODO ainda requer testes [containsWithLineBreak]...
 		if(count == 0 && cTmp2.size() == 1){//Ex: https://www.survio.com/modelo-de-pesquisa/pesquisa-de-preco-do-produto
 			txtTmp = Pattern.quote(cTmp2.getText());
-			flag = CommonUtil.matchesWithLineBreak(currentP.getDescricao(), txtTmp);
+//			flag = CommonUtil.matchesWithLineBreak(currentP.getDescricao(), txtTmp);
+			flag = CommonUtil.containsWithLineBreak(txtTmp, currentP.getDescricao());
 		}else if(count == cTmp2.size()){
 			flag = true;
 			for(int j = 0; j < alts.size(); j++){
 				txtTmp = alts.get(j).getDescricao();
 				txtTmp = Pattern.quote(txtTmp);
-				flag = flag && CommonUtil.matchesWithLineBreak(txt, txtTmp);
+				//flag = flag && CommonUtil.matchesWithLineBreak(txt, txtTmp);
+				flag = flag && CommonUtil.containsWithLineBreak(txtTmp, txt);
 			}
 			for(int j = 0; j < filhas.size(); j++){
 				txtTmp = filhas.get(j).getDescricao();
 				txtTmp = Pattern.quote(txtTmp);
-				flag = flag && CommonUtil.matchesWithLineBreak(txt, txtTmp);
+//				flag = flag && CommonUtil.matchesWithLineBreak(txt, txtTmp);
+				flag = flag && CommonUtil.containsWithLineBreak(txtTmp, txt);
 			}
 		}
 		
@@ -428,7 +438,8 @@ public class RulesChecker {
 			i -= 1;
 		
 		text = nodes.get(i);
-		return text.isA("SELECT") || (text.isText() && text.getText().matches(DATE_REGEX1));
+		return text.isA("SELECT") || (text.isText() && 
+				(text.getText().matches(DATE_REGEX1) || text.getText().matches("(?i)"+DATE_REGEX2)));
 	}
 	
 	public boolean checkIfTextIsAbove(List<MyNode> nodes, int currentI) {
@@ -475,6 +486,11 @@ public class RulesChecker {
 		}
 
 		return false;
+	}
+	
+	public boolean isSameText(MyNode nTmp, MyNode last) {
+		DeweyExt dist = this.distMatrix.getDist(nTmp, last);
+		return dist.getWidth() == 1 && dist.getHeight() == 1;
 	}
 	
 	// Métodos/Blocos estáticos

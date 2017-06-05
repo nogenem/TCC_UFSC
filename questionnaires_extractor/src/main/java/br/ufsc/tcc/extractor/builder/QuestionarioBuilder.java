@@ -10,11 +10,13 @@ import br.ufsc.tcc.common.model.Cluster;
 import br.ufsc.tcc.common.model.MyNode;
 import br.ufsc.tcc.common.util.CommonLogger;
 import br.ufsc.tcc.common.util.CommonUtil;
+import br.ufsc.tcc.common.util.DistanceMatrix;
 import br.ufsc.tcc.extractor.model.Questionario;
 
 public class QuestionarioBuilder {
 	private Questionario currentQ;
 	private String currentLink;
+	private DistanceMatrix distMatrix;
 	private PerguntaBuilder pBuilder;
 	private RulesChecker checker;
 	
@@ -22,7 +24,9 @@ public class QuestionarioBuilder {
 	public QuestionarioBuilder(){
 		this.currentQ = null;
 		this.currentLink = "";
-		this.checker = new RulesChecker();
+		this.distMatrix = new DistanceMatrix();//TODO voltar ao jeito q tava
+		
+		this.checker = new RulesChecker(this.distMatrix);
 		this.pBuilder = new PerguntaBuilder(this.checker);
 	}
 	
@@ -52,7 +56,7 @@ public class QuestionarioBuilder {
 			if(nTmp.isImgOrText()){
 				//Verifica se tem que criar um novo cluster
 				if(this.checker.shouldCreateNewCluster(cTmp, nTmp, nodes, i)){	
-//					CommonLogger.debug("{}\n\t{}", cTmp, nTmp);
+//					CommonLogger.debug("\n{}\n\t{}\n", cTmp, nTmp);
 					cStack.add(cTmp);
 					cTmp = new Cluster();
 				}

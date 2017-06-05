@@ -25,20 +25,16 @@
 		"resumableCrawling": false	
 	},
 	"seeds": [
-		"https://www.survio.com/modelo-de-pesquisa/feedback-sobre-servico",
-		"https://www.survio.com/modelo-de-pesquisa/pesquisa-de-preco-do-produto",
-		"https://www.survio.com/modelo-de-pesquisa/pesquisa-de-percepcao-da-publicidade-e-de-sua-eficiencia",
-		"https://www.survio.com/modelo-de-pesquisa/pesquisa-da-notoriedade-da-marca",
-		"https://www.survio.com/modelo-de-pesquisa/pesquisa-da-experiencia-de-compra"
+		"https://survey.sogosurvey.com/survey.aspx?k=SsWUYTsQSVsPsPsP&lang=0&data="
 	],
 	"parameters": {
 		"minQuestionsOnQuestionnaire": 2,
 		"maxWordsInAGroupDescription": 5,
-		"phrasesToIgnoreRegex": "^(((s|t)u )?nombre( completo)?:?|apellidos?:?|(seu|primeiro|(ú|u)ltimo) nome:?|sobrenome:?|(full|your|first|last) name:?|(get our )?newsletter|account id|subscribe|create (an )?account|contact us( now)?!?|enter your email.*|(send (a )?)?comments?:?|users?(name)?:?|sign( )?in.*|sign( )?up.*|register|login:?|log in here|password:?|forgot(ten)?( your)? password\\??|retrieve password|confirm password:?|keep me logged in|reset password|search:?|entre com seu email.*|comente:?|(envie ((um|seu) )?)?coment(a|á)rio:?|coment(á|a)rios?:?|usu(a|á)rio|entr(e|ar)|inscrev(a|er)-se|registr(ar|e-se)|logar|entrar|senha|repita (a|sua) senha:?|esqueceu sua senha\\?|me mantenha logado|mantenha-me logado|recupere sua senha|buscar:?)\\*?",
+		"phrasesToIgnoreRegex": "^((ordernar|filtrar) por:?|(sort|filter) by:?|(get our )?newsletter|account id|subscribe|create (an )?account|contact us( now)?!?|enter your email.*|users?(name)?:?|sign( )?in|sign( )?up|register|login:?|log in here|password:?|forgot(ten)?( your)? password\\??|retrieve password|confirm password:?|keep me logged in|reset password|search:?|entre com seu email.*|comente:?|(envie ((um|seu) )?)?coment(a|á)rio:?|coment(á|a)rios?:?|usu(a|á)rio|entr(e|ar)|inscrev(a|er)-se|registr(ar|e-se)|logar|entrar|senha|repita (a|sua) senha:?|esqueceu sua senha\\?|me mantenha logado|mantenha-me logado|recupere sua senha|buscar:?)\\*?",
 		"distBetweenNearNodes": {
 			"height": 3,
 			"maxHeight": 3,
-			"width": 3
+			"width": 4
 		},
 		"distBetweenTextsInsideQuestionnaire": {
 			"height": 4
@@ -62,7 +58,7 @@
 		},
 		"distBetweenTextsInQuestionWithSubQuestions": {
 			"height": 1,
-			"width": 5
+			"width": 7
 		},
 		"distBetweenPartsOfDescription": {
 			"width": 4,

@@ -185,7 +185,7 @@ public class PerguntaBuilder {
 				}else
 					desc.add(nTmp1);
 			}
-			
+
 			this.currentP.setDescricao(desc.getText());
 			CommonLogger.debug("Descricao: {}\n\n", this.currentP.getDescricao());
 			
@@ -253,11 +253,15 @@ public class PerguntaBuilder {
 			
 			if(!cStack.isEmpty()){
 				//Verifica se não é a imagem da pergunta
+				MyNode imgTmp = null;
 				cTmp1 = cStack.peek();
-				if(this.checker.isOnlyOneImg(cTmp1) && this.distMatrix.areNear(cTmp1, desc)){
-					cTmp1 = cStack.pop();
-					MyNode tmp = cTmp1.last();
-					Figura fig = new Figura(tmp.getAttr("src"), tmp.getAttr("alt"));
+				if(this.checker.isOnlyOneImg(cTmp1) && this.distMatrix.areNear(cTmp1, desc))
+					imgTmp = cStack.pop().last();
+				else if(desc.first().isImage())
+					imgTmp = desc.first();
+				
+				if(imgTmp != null){
+					Figura fig = new Figura(imgTmp.getAttr("src"), imgTmp.getAttr("alt"));
 					fig.setDono(this.currentP);
 					currentQ.addFigura(fig);
 					CommonLogger.debug("Figura da pergunta: {}\n", fig);
@@ -271,17 +275,25 @@ public class PerguntaBuilder {
 					this.firstGroupOfQuestionnaire = null;
 					
 					//Verifica se não é a imagem do questionário
-					if(this.checker.isOnlyOneImg(cTmp1)){
-						MyNode tmp = cTmp1.last();
-						Figura fig = new Figura(tmp.getAttr("src"), tmp.getAttr("alt"));
+					MyNode imgTmp = null;
+					if(this.checker.isOnlyOneImg(cTmp1))
+						imgTmp = cTmp1.last();
+					else if(cTmp1.first().isImage())
+						imgTmp = cTmp1.first();
+					
+					if(imgTmp != null){
+						Figura fig = new Figura(imgTmp.getAttr("src"), imgTmp.getAttr("alt"));
 						fig.setDono(currentQ);
 						currentQ.addFigura(fig);
 						CommonLogger.debug("Figura do questionario: {}\n", fig);
-						if(!cStack.isEmpty())
-							cTmp1 = cStack.pop();
-						else
-							cTmp1 = null;
+						if(this.checker.isOnlyOneImg(cTmp1)){
+							if(!cStack.isEmpty())
+								cTmp1 = cStack.pop();
+							else
+								cTmp1 = null;
+						}
 					}
+
 					//Verifica se não é o texto de um grupo
 					cTmp2 = this.lastMatrixDesc != null ? this.lastMatrixDesc : 
 						this.lastQWithSubQsDesc != null ? this.lastQWithSubQsDesc :

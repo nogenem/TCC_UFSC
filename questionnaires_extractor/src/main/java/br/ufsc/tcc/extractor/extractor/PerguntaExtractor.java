@@ -255,9 +255,9 @@ public class PerguntaExtractor {
 		
 		this.currentP.setForma(FormaDaPerguntaManager.getForma(input.getType().toString()));
 		if(input.getType() == MyNodeType.CHECKBOX_INPUT)
-			CommonLogger.debug("\tCheckbox Input:");
+			CommonLogger.debug("\tCheckbox Input [text above]:");
 		else
-			CommonLogger.debug("\tRadio Input:");
+			CommonLogger.debug("\tRadio Input [text above]:");
 		
 		text = nodes.get(currentI-1);
 		img = nodes.get(currentI-2);
@@ -395,8 +395,14 @@ public class PerguntaExtractor {
 		
 		if(currentI+2 < nodes.size()){
 			text = nodes.get(currentI+1);
-			if(text.isText() && text.getText().matches(RulesChecker.DATE_REGEX1))
-				currentI++;
+			if(text.isText()){
+				if(text.getText().matches(RulesChecker.DATE_REGEX1))
+					currentI++;
+				else if(text.getText().matches("(?i)"+RulesChecker.DATE_REGEX2)){
+					p.setDescricao(text.getText());
+					currentI++;
+				}
+			}
 			opt = nodes.get(currentI+1);
 			if(opt.isA("SELECT")){
 				currentI++;
@@ -461,9 +467,9 @@ public class PerguntaExtractor {
 
 		this.currentP.setForma(FormaDaPerguntaManager.getForma(type));
 		if(input.getType() == MyNodeType.CHECKBOX_INPUT)
-			CommonLogger.debug("\tCheckbox Input:");
+			CommonLogger.debug("\tCheckbox Input [with header]:");
 		else
-			CommonLogger.debug("\tRadio Input:");
+			CommonLogger.debug("\tRadio Input [with header]:");
 		
 		while(input != null && input.isA(type) && j < head.size()){
 			
