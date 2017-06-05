@@ -95,7 +95,6 @@ public class RulesChecker {
 			//Toda questão deve ter pelo menos 1 componente e não deve possuir
 			//frases contidas no: PHRASES_TO_IGNORE_REGEX
 			if(cCount >= 1){
-				ncCount = 0;
 				if(cCount < MIN_COMPS_IN_ONE_CLUSTER){
 					if(lastCluster != null){
 						if(!isStartingANewQuestionnaire(lastCluster, c))
@@ -109,6 +108,9 @@ public class RulesChecker {
 					CommonLogger.debug("\nLast cluster: \n" +c.toString());//TODO remover isso
 					return true;
 				}
+			}
+			if(cCount >= 0.5){
+				ncCount = 0;
 				lastCluster = c;
 			}
 			if(qCount == MIN_CLUSTERS_WITH_COMP){
@@ -126,7 +128,7 @@ public class RulesChecker {
 			return 0.0;
 		
 		double count = 0.0;
-		boolean hasDescriptionAbove = false, hasQuestionAbove = false;
+		boolean hasDescriptionAbove = false, hasQuestionAbove = false, isMultiComp = false;
 		String text = "";
 		ArrayList<MyNode> nodes = c.getGroup();
 		
@@ -140,16 +142,20 @@ public class RulesChecker {
 				text = fixText(node.getText());
 				hasDescriptionAbove = isLikelyADescription(text);
 				hasQuestionAbove = hasDescriptionAbove && isLikelyAQuestion(text);
-			}else if(node.isComponent() && node.getType() != MyNodeType.OPTION){
+			}else if(node.isComponent() && !node.isA("OPTION")){
 				//Toda pergunta deve ter pelo menos uma descricao acima dela
 				if(hasDescriptionAbove){
 					//Se a descrição acima não for uma questão, então conta como 0.5
 					//RADIO_INPUT e CHECKBOX sempre aparecem em 2 ou + em uma pergunta, por isso
 					//cada um conta como 0.5
-					if(!hasQuestionAbove || CommonUtil.getMultiComps().contains(node.getText()))
-						count += 0.5;
-					else
-						count++;
+					isMultiComp = CommonUtil.getMultiComps().contains(node.getText());
+					if(!hasQuestionAbove || isMultiComp){
+						if(isMultiComp && this.isRating(nodes, i))
+							return 1;
+						else
+							count += 0.5;
+					}else
+						count += 1.0;
 				}
 				hasDescriptionAbove = false;
 				hasQuestionAbove = false;
@@ -158,13 +164,27 @@ public class RulesChecker {
 		return count;
 	}
 	
+	private boolean isRating(ArrayList<MyNode> nodes, int i) {
+		MyNodeType type = nodes.get(i).getType();
+		
+		int count = 1;
+		for(int j = i+1; j<nodes.size(); j++){
+			if(nodes.get(j).getType() == type)
+				count++;
+			else
+				break;
+		}		
+		return count >= 3;
+	}
+
 	private boolean isLikelyADescription(String text){
-		return (text.length() >= 4 && CommonUtil.startsWithUpperCase(text) && text.contains(" ")) || 
+		return (text.length() >= 4 && (CommonUtil.startsWithUpperCase(text) || CommonUtil.startsWithDigit(text)) 
+				&& text.contains(" ")) || 
 				text.matches("(\\d{1,3}(\\s{1,2})?(\\.|\\:|\\)|\\-)?)");
 	}
 	
 	private boolean isLikelyAQuestion(String text){
-		return text.endsWith("?") || text.endsWith(":");
+		return text.contains("?") || text.contains(":");
 	}
 	
 	private String fixText(String text){
