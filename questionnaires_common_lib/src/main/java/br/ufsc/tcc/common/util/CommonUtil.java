@@ -228,6 +228,14 @@ public class CommonUtil {
 				.trim();
 	}
 	
+	public static boolean startsWithUpperCase(String text){
+		return Character.isUpperCase(text.charAt(0));
+	}
+	
+	public static boolean startsWithDigit(String text){
+		return Character.isDigit(text.charAt(0));
+	}
+	
 	public static Timestamp getCurrentTime() {
 		Calendar calendar = Calendar.getInstance();
 		return new Timestamp(calendar.getTime().getTime());
@@ -328,6 +336,16 @@ public class CommonUtil {
 		return false;
 	}
 	
+	public static boolean containsWithLineBreak(String text, String txtToCheck){
+		text = text.toLowerCase();
+		String [] lines = txtToCheck.split("\n");
+		for(String line : lines){
+			if(text.contains(line.toLowerCase()))
+				return true;
+		}
+		return false;
+	}
+	
 	public static List<MyNode> findCompsImgsAndTexts(Node root) {
 		List<MyNode> ret = new ArrayList<>();
 		if(root != null)
@@ -338,7 +356,16 @@ public class CommonUtil {
 	private static void findCompsImgsAndTexts(Node root, String dewey, List<MyNode> ret) {
 		if(isCompImgOrTextNode(root)){
 			MyNode node = new MyNode(root, new DeweyExt(dewey));
-			ret.add(node);
+			//TODO remover isso?
+			//Agrupa textos que foram separados por <br>
+			if(node.isText() && !ret.isEmpty()){
+				MyNode last = ret.get(ret.size()-1);
+				if(last.isText() && node.getDewey().equals(last.getDewey())){
+					last.setText(last.getText() +" "+ node.getText());
+				}else
+					ret.add(node);
+			}else
+				ret.add(node);
 		}
 		
 		int n = 1;
@@ -346,8 +373,10 @@ public class CommonUtil {
 		for(int i = 0; i < children.size(); i++){
 			Node child = children.get(i);
 			
-			// Ignora comentarios, tags 'br', tags <p>/<a> sem texto e href e textos vazios
-			if(!child.nodeName().matches("#comment|br") && 
+			// Ignora comentarios, inputs hidden, tags 'br', tags <p>/<a> sem texto e href e textos vazios
+			if(child.nodeName().equals("br"))
+				n--;
+			if(!child.nodeName().matches("#comment|br") &&
 				!trim(child.toString()).isEmpty() && !CommonUtil.isEmptyAorP(child))
 					findCompsImgsAndTexts(children.get(i), 
 							dewey +"."+ padNumber(n++), 

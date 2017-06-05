@@ -35,6 +35,10 @@ public class MyNode implements Comparable<MyNode> {
 		return this.text;
 	}
 	
+	public void setText(String text){
+		this.text = text;
+	}
+	
 	public MyNodeType getType(){
 		return this.type;
 	}
@@ -53,6 +57,10 @@ public class MyNode implements Comparable<MyNode> {
 	
 	public DeweyExt getDewey() {
 		return dewey;
+	}
+	
+	public void setDewey(DeweyExt dewey){
+		this.dewey = dewey;
 	}
 	
 	// Demais métodos
