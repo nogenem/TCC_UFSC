@@ -229,7 +229,9 @@ public class CommonUtil {
 	}
 	
 	public static boolean startsWithUpperCase(String text){
-		return Character.isUpperCase(text.charAt(0));
+		char c = text.charAt(0);
+		c = c == '¿' ? text.charAt(1) : c;
+		return Character.isUpperCase(c);
 	}
 	
 	public static boolean startsWithDigit(String text){
@@ -358,11 +360,12 @@ public class CommonUtil {
 			MyNode node = new MyNode(root, new DeweyExt(dewey));
 			//TODO remover isso?
 			//Agrupa textos que foram separados por <br>
-			if(node.isText() && !ret.isEmpty()){
+			
+			if(!ret.isEmpty()){
 				MyNode last = ret.get(ret.size()-1);
-				if(last.isText() && node.getDewey().equals(last.getDewey())){
-					last.setText(last.getText() +" "+ node.getText());
-				}else
+				if(node.getDewey().equals(last.getDewey()))
+					last.setText(last.getText() +"\n"+ node.getText());
+				else
 					ret.add(node);
 			}else
 				ret.add(node);
@@ -374,16 +377,27 @@ public class CommonUtil {
 			Node child = children.get(i);
 			
 			// Ignora comentarios, inputs hidden, tags 'br', tags <p>/<a> sem texto e href e textos vazios
-			if(child.nodeName().equals("br"))
+			if(child.nodeName().equals("br") && isBetweenTexts(children, i))
 				n--;
 			if(!child.nodeName().matches("#comment|br") &&
 				!trim(child.toString()).isEmpty() && !CommonUtil.isEmptyAorP(child))
-					findCompsImgsAndTexts(children.get(i), 
+					findCompsImgsAndTexts(child, 
 							dewey +"."+ padNumber(n++), 
 							ret);
 		}
 	}
 	
+	
+	private static boolean isBetweenTexts(List<Node> children, int i) {
+		if(i-1 < 0 || i+1 >= children.size())
+			return false;
+		Node c1 = children.get(i-1), c2 = children.get(i+1);
+		if(!c1.nodeName().equals("#text") && 
+				!c2.nodeName().equals("#text"))
+			return false;
+		return !trim(c1.toString()).isEmpty() && !trim(c2.toString()).isEmpty();
+	}
+
 	private static boolean isEmptyAorP(Node el){
 		String txt = el.nodeName();
 		return el.childNodeSize() == 0 && (txt.equals("p") || 
