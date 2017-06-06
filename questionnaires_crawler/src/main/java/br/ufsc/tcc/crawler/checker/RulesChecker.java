@@ -140,21 +140,20 @@ public class RulesChecker {
 					break;
 				}
 				text = fixText(node.getText());
-				hasDescriptionAbove = isLikelyADescription(text);
+				hasDescriptionAbove = isLikelyADescription(text, isMultiComp);
 				hasQuestionAbove = hasDescriptionAbove && isLikelyAQuestion(text);
+				isMultiComp = false;
 			}else if(node.isComponent() && !node.isA("OPTION")){
-				//Toda pergunta deve ter pelo menos uma descricao acima dela
 				if(hasDescriptionAbove){
-					//Se a descrição acima não for uma questão, então conta como 0.5
-					//RADIO_INPUT e CHECKBOX sempre aparecem em 2 ou + em uma pergunta, por isso
-					//cada um conta como 0.5
 					isMultiComp = CommonUtil.getMultiComps().contains(node.getText());
-					if(!hasQuestionAbove || isMultiComp){
-						if(isMultiComp && this.isRating(nodes, i))
-							return 1;
+					if(isMultiComp){
+						if(this.isRatingOrMatrix(nodes, i))
+							return 1.0;
+						else if(hasQuestionAbove)
+							count += 0.75;
 						else
-							count += 0.5;
-					}else
+							count += 0.25;
+					}else if(hasQuestionAbove)
 						count += 1.0;
 				}
 				hasDescriptionAbove = false;
@@ -164,7 +163,7 @@ public class RulesChecker {
 		return count;
 	}
 	
-	private boolean isRating(ArrayList<MyNode> nodes, int i) {
+	private boolean isRatingOrMatrix(ArrayList<MyNode> nodes, int i) {
 		MyNodeType type = nodes.get(i).getType();
 		
 		int count = 1;
@@ -177,10 +176,10 @@ public class RulesChecker {
 		return count >= 3;
 	}
 
-	private boolean isLikelyADescription(String text){
-		return (text.length() >= 4 && (CommonUtil.startsWithUpperCase(text) || CommonUtil.startsWithDigit(text)) 
-				&& text.contains(" ")) || 
-				text.matches("(\\d{1,3}(\\s{1,2})?(\\.|\\:|\\)|\\-)?)");
+	private boolean isLikelyADescription(String text, boolean lastCompIsMultiComp){
+		return (((!lastCompIsMultiComp && text.length() >= 4 && text.contains(" ")) || lastCompIsMultiComp) && 
+				(CommonUtil.startsWithUpperCase(text) || CommonUtil.startsWithDigit(text))) 
+				|| text.matches("(\\d{1,3}(\\s{1,2})?(\\.|\\:|\\)|\\-)?)");
 	}
 	
 	private boolean isLikelyAQuestion(String text){
