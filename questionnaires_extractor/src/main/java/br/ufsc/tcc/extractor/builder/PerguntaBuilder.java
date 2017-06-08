@@ -193,6 +193,9 @@ public class PerguntaBuilder {
 			}
 
 			this.currentP.setDescricao(desc.getText());
+			//Ex: http://www.zarca.com/Online-Surveys-Non-Profit/association-member-satisfaction-survey.html
+			if(checker.isATextInputDisabledWithValue(desc.last()))
+				this.currentP.setDescricao(this.currentP.getDescricao() + "\n" + desc.last().getAttr("value"));
 			CommonLogger.debug("Descricao: {}\n\n", this.currentP.getDescricao());
 			
 			//Verifica se é uma matriz

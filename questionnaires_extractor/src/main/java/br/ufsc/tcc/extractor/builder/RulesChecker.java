@@ -218,13 +218,14 @@ public class RulesChecker {
 			//Lida com casos aonde se tem 2 textos complementares
 			//	Ex: https://www.survio.com/modelo-de-pesquisa/feedback-sobre-servico
 			//TODO e se não tiver mais nada embaixo? (i+2 = max)
-			if(i+3 < nodes.size() && nTmp3.isImgOrText() && 
-					dist.getMaxHeight() == 1 && dist.getWidth() == 2){
+			if(i+3 < nodes.size() && (nTmp3.isImgOrText() || isATextInputDisabledWithValue(nTmp3)) && 
+					dist.getMaxHeight() == 1 && dist.getWidth() <= 2){
 				nTmp3 = nodes.get(i+3);
 			}
+			
 			JSONObject obj = CONFIGS.getJSONObject("distBetweenDescAndComplementaryText");
 			
-			if(nTmp2.isText() && nTmp3.isImgOrText()){
+			if((nTmp2.isText() || isATextInputDisabledWithValue(nTmp2)) && nTmp3.isImgOrText()){
 				dist = distMatrix.getDist(nTmp1, nTmp2);
 				if(dist.getHeight() <= obj.getInt("height") && dist.getMaxHeight() <= obj.getInt("maxHeight") && 
 						dist.getWidth() <= obj.getInt("width")){
@@ -242,6 +243,11 @@ public class RulesChecker {
 			}
 		}
 		return false;
+	}
+	
+	public boolean isATextInputDisabledWithValue(MyNode input){
+		return input.isA("TEXT_INPUT") && !input.getAttr("disabled").isEmpty() && 
+				!input.getAttr("value").isEmpty();
 	}
 
 	public boolean isAbove(MyNode n1, MyNode n2) {
@@ -336,7 +342,7 @@ public class RulesChecker {
 	public boolean checkDistForQWithSubQs(MyNode n1, MyNode n2) {
 		JSONObject obj = CONFIGS.getJSONObject("distBetweenTextsInQuestionWithSubQuestions");
 		DeweyExt dist = this.distMatrix.getDist(n1, n2);
-		return dist.getHeight() == obj.getInt("height") && dist.getWidth() <= obj.getInt("width");
+		return dist.getHeight() <= obj.getInt("height") && dist.getWidth() <= obj.getInt("width");
 	}
 	
 	// Middle e bottom devem esta perto um do outro
@@ -450,7 +456,7 @@ public class RulesChecker {
 		
 		input = nodes.get(i);
 		
-		// Verifica se os elementos acima podem ser considerado
+		// Verifica se os elementos acima podem ser considerados
 		// a descrição da alternativa e da pergunta
 		text = i-1 <= nodes.size()-1 ? nodes.get(i-1) : null;
 		if((text == null || !text.isA("text")) || !areCompAndTextNear(input, text))
