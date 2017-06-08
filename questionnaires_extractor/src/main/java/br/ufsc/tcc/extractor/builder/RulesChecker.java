@@ -77,8 +77,7 @@ public class RulesChecker {
 	}
 	
 	public boolean isValidQuestionnaire(Questionario q){
-		if(q.getAssunto().isEmpty() || 
-				q.getPerguntas().size() < CONFIGS.getInt("minQuestionsOnQuestionnaire"))
+		if(q.getPerguntas().size() < CONFIGS.getInt("minQuestionsOnQuestionnaire"))
 			return false;
 		if(CommonUtil.matchesWithLineBreak(q.getAssunto(), 
 				CONFIGS.getString("phrasesToIgnoreRegex")))
@@ -142,8 +141,10 @@ public class RulesChecker {
 			return desc;
 		
 		Cluster tmp = cStack.peek();
+		//Ex: https://polldaddy.com/s/d5564eb1c42db4d1
+		boolean has4orMoreChars = tmp.getText().length() >= 4;
 		if(!tmp.getText().isEmpty() && this.isDescriptionsNear(tmp, desc) &&
-				!this.distMatrix.areNear(tmp.last(), nodes.get(i+1))){
+				((has4orMoreChars && !this.distMatrix.areNear(tmp.last(), nodes.get(i+1))) || !has4orMoreChars) ){
 			tmp = cStack.pop();
 			tmp = tmp.join(desc);
 			return tmp;

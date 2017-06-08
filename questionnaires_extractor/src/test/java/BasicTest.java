@@ -69,7 +69,7 @@ public class BasicTest {
 		qBuilder.setCurrentLink(url);
 		
 		JSONObject expQs = expected.getJSONObject("questionarios");
-		ArrayList<Questionario> qs = qBuilder.build(root);
+		ArrayList<Questionario> qs = qBuilder.build(root, doc.title());
 		//Isto permite a escolha de quais perguntas se quer testar
 		//e quais não
 		for(String key : expQs.keySet()){

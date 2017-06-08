@@ -55,7 +55,7 @@ public class Crawler extends WebCrawler {
 				Element root = doc.select("body").get(0);
 				
 				qBuilder.setCurrentLink(link);
-				ArrayList<Questionario> questionarios = qBuilder.build(root);
+				ArrayList<Questionario> questionarios = qBuilder.build(root, doc.title());
 				for(Questionario q : questionarios){
 //					this.qManager.save(q);
 					

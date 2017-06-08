@@ -40,7 +40,7 @@ public class QuestionarioBuilder {
 	}
 	
 	// Demais métodos
-	public ArrayList<Questionario> build(Node root) {
+	public ArrayList<Questionario> build(Node root, String docTitle) {
 		ArrayList<Questionario> ret = new ArrayList<>();
 		List<MyNode> nodes = CommonUtil.findCompsImgsAndTexts(root);
 		
@@ -65,8 +65,14 @@ public class QuestionarioBuilder {
 				if(!this.currentQ.getPerguntas().isEmpty()){ 
 					if(checker.shouldStartNewQuestionario(lastDesc, nTmp)){
 						this.pBuilder.clearData(this.currentQ);
-						if(this.checker.isValidQuestionnaire(this.currentQ))	
+						if(this.checker.isValidQuestionnaire(this.currentQ)){
+							//Ex: https://polldaddy.com/s/d5564eb1c42db4d1
+							if(this.currentQ.getAssunto().isEmpty()){
+								this.currentQ.setAssunto(docTitle);
+								CommonLogger.debug("Assunto: {}\n\n", currentQ.getAssunto());
+							}
 							ret.add(this.currentQ);
+						}
 						CommonLogger.debug("==================shouldStartNewQuestionario()==================\n");
 						this.currentQ = new Questionario(this.currentLink);
 					}
@@ -83,8 +89,14 @@ public class QuestionarioBuilder {
 			}
 		}
 		this.pBuilder.clearData(this.currentQ);
-		if(this.checker.isValidQuestionnaire(this.currentQ))	
+		if(this.checker.isValidQuestionnaire(this.currentQ)){	
+			//Ex: https://polldaddy.com/s/d5564eb1c42db4d1
+			if(this.currentQ.getAssunto().isEmpty()){
+				this.currentQ.setAssunto(docTitle);
+				CommonLogger.debug("Assunto: {}\n\n", currentQ.getAssunto());
+			}
 			ret.add(this.currentQ);
+		}
 		
 //		cStack.add(cTmp);
 //		CommonLogger.debug("\nClusters:");
