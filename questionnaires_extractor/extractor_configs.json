@@ -69,6 +69,11 @@
 			"height": 1,
 			"maxHeight": 2,
 			"width": 2
-		}
+		},
+		"distBetweenEvaluationLevelsAndDesc": {
+			"height": 1
+		},
+		"maxSpacesAndNewLinesInEvaluationLevels": 3,
+		"evaluationLevelsWordsRegex": "(?ism).*(likely|confident|strongly|provável|confiante|fortemente).*"
 	}
 }

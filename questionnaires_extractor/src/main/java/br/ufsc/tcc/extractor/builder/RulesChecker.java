@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Stack;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -493,6 +494,29 @@ public class RulesChecker {
 		return dist.getWidth() == 1 && dist.getHeight() == 1;
 	}
 	
+	//Ex: http://lap.umd.edu/surveys/census/files/surveya1pagesbytopic/page2.html
+	//Ex: https://statpac.com/online-surveys/resturaunt_customer_satisfaction_survey.htm
+	public boolean isEvaluationLevels(Cluster desc, Stack<Cluster> cStack){
+		if(desc.size() == 2){
+			JSONObject obj = CONFIGS.getJSONObject("distBetweenEvaluationLevelsAndDesc");
+			DeweyExt dist = this.distMatrix.getDist(desc.first(), cStack.peek().last());
+			if(dist.getHeight() <= obj.getInt("height")){
+				MyNode first = desc.first(), last = desc.last();
+				String regex = CONFIGS.getString("evaluationLevelsWordsRegex");
+				if(first.getText().matches(regex) && last.getText().matches(regex)){
+					int fspaces = StringUtils.countMatches(first.getText(), " "), fnewlines = StringUtils.countMatches(first.getText(), "\n"),
+							lspaces = StringUtils.countMatches(last.getText(), " "), lnewlines = StringUtils.countMatches(last.getText(), "\n");
+					int fsum = fspaces+fnewlines, lsum = lspaces+lnewlines;
+					int max = CONFIGS.getInt("maxSpacesAndNewLinesInEvaluationLevels");
+					
+					if((fsum > 0 && fsum <= max) && (lsum > 0 && lsum <= max))
+						return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 	// Métodos/Blocos estáticos
 	static {
 		//Load parameters
@@ -546,6 +570,12 @@ public class RulesChecker {
 				tmp.getInt("height");
 				tmp.getInt("width");
 				tmp.getInt("maxHeight");
+				
+			lastObj = "distBetweenEvaluationLevelsAndDesc";
+			tmp = p.getJSONObject(lastObj);	
+				tmp.getInt("height");
+			p.getInt("maxSpacesAndNewLinesInEvaluationLevels");
+			p.getString("evaluationLevelsWordsRegex");
 		}catch(JSONException exp){
 			String msg = exp.getMessage();
 			String value = msg.substring(msg.indexOf('[')+2, msg.lastIndexOf(']')-1);

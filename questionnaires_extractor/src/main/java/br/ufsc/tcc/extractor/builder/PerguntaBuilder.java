@@ -31,10 +31,11 @@ public class PerguntaBuilder {
 	
 	// Group
 	private Cluster firstGroupOfQuestionnaire;
-	
+
 	// Matrix
 	private Cluster lastMatrixDesc;
 	private Cluster lastMatrixHead;
+	private Cluster lastMatrixEvaluationLevels;
 	private Pergunta lastMatrix;
 	
 	// Question with subquestions
@@ -55,6 +56,7 @@ public class PerguntaBuilder {
 		
 		this.lastMatrixDesc = null;
 		this.lastMatrixHead = null;
+		this.lastMatrixEvaluationLevels = null;
 		this.lastMatrix = null;
 		
 		this.lastQWithSubQs = null;
@@ -162,6 +164,10 @@ public class PerguntaBuilder {
 			ArrayList<Alternativa> tmpAlts = this.currentP.getAlternativas();
 			
 			//Atualiza a desc da pergunta
+			if(!cStack.isEmpty() && checker.isEvaluationLevels(desc, cStack)){
+				this.setEvaluationLevels(this.currentP, desc);
+				desc = cStack.pop();
+			}
 			desc = this.checker.getCorrectDescription(desc, tmpAlts, firstNode, cStack);
 			desc = this.checker.checkIfDescIsComplete(desc, cStack, nodes, this.currentI);
 			
@@ -384,6 +390,10 @@ public class PerguntaBuilder {
 				this.lastMatrix.setForma(FormaDaPerguntaManager.getForma(forma.toString()+"_MATRIX"));
 			}
 			Cluster desc = cStack.pop();
+			if(!cStack.isEmpty() && checker.isEvaluationLevels(desc, cStack)){
+				lastMatrixEvaluationLevels = desc;
+				desc = cStack.pop();
+			}
 			desc = this.checker.checkIfDescIsComplete(desc, cStack, nodes, this.currentI);
 			this.lastMatrixDesc = desc;
 			this.lastMatrix.setDescricao(desc.getText());
@@ -394,12 +404,28 @@ public class PerguntaBuilder {
 
 	private void saveLastMatrix(Questionario currentQ) {
 		if(this.lastMatrix != null){
+			if(this.lastMatrixEvaluationLevels != null)
+				this.setEvaluationLevels(this.lastMatrix, this.lastMatrixEvaluationLevels);
+			
 			currentQ.addPergunta(this.lastMatrix);
 			CommonLogger.debug("Matrix descricao: {}\n\n", this.lastMatrix.getDescricao());		
 		}
 		this.lastMatrixDesc = null;
 		this.lastMatrixHead = null;
+		this.lastMatrixEvaluationLevels = null;
 		this.lastMatrix = null;
+	}
+
+	private void setEvaluationLevels(Pergunta perg, Cluster evaluationLevels) {
+		if(perg.isA("RADIO_INPUT")){
+			ArrayList<Alternativa> alts = perg.getAlternativas();
+			
+			alts.get(0).setDescricao(evaluationLevels.first().getText() + "\n" +alts.get(0).getDescricao());
+			alts.get(alts.size()-1).setDescricao(evaluationLevels.first().getText() + "\n" +alts.get(alts.size()-1).getDescricao());
+		}else if(perg.isA("RADIO_INPUT_MATRIX")){
+			for(Pergunta p : perg.getFilhas())
+				setEvaluationLevels(p, evaluationLevels);
+		}
 	}
 
 	public void clearData(Questionario currentQ) {
