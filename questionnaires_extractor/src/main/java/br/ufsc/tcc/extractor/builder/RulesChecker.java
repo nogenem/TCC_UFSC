@@ -30,6 +30,8 @@ public class RulesChecker {
 	//		[ ] / month [ ] / day [ ] year
 	public static final String DATE_REGEX1 = "(/|\\-)",
 			DATE_REGEX2 = "(month|day|year|m(ê|e)s|d(i|í)a|a(n|ñ)o)";
+	public static final String MONEY_REGEX1 = "(\\.)",
+			MONEY_REGEX2 = "(dollars?|cents?)";
 	
 	public RulesChecker(DistanceMatrix distMatrix) {
 		this.distMatrix = distMatrix;
@@ -388,7 +390,9 @@ public class RulesChecker {
 					inputTxt = "input\\[type="+tmpType+"\\]",
 					txt = c.getAllNodesText();
 			String r1 = DATE_REGEX1,
-					r2 = DATE_REGEX2;
+					r2 = DATE_REGEX2,
+					r3 = MONEY_REGEX1,
+					r4 = MONEY_REGEX2;
 			
 			//Check [ ] : [ ] (: [ ])?
 			//	Ex: https://www.bioinfo.mpg.de/mctq/core_work_life/core/core.jsp?language=por_b
@@ -412,6 +416,12 @@ public class RulesChecker {
 			regex = r1+"\n"+r2+"\n"+inputTxt+"\n"+r1+"\n"+r2+"\n"+inputTxt+"\n"+r2+".*";
 			if(txt.matches("(?ism)"+regex))
 				return 3;
+			
+			//Check [ ] Dollars . [ ] Cents
+			//	Ex: https://gallery.wufoo.com/embed/w1qtrb451rja978/def/embedKey=w1qtrb451rja9786468&entsource=&referrer=https%3Awuslashwuslashwww.wufoo.comwuslashgallerywuslashtemplateswuslashsurveyswuslash
+			regex = r4+"\n"+r3+"\n"+inputTxt+"\n"+r4+".*";
+			if(txt.matches("(?ism)"+regex))
+				return 4;
 		}
 		
 		return -1;

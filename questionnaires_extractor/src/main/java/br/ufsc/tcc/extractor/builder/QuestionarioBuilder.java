@@ -123,7 +123,7 @@ public class QuestionarioBuilder {
 		JSONObject p = ProjectConfigs.getParameters();
 		try{
 			//Ex: http://www.sciencebuddies.org/science-fair-projects/project_ideas/Soc_survey_sample1.shtml
-			MAX_TEXT_CLUSTERS_BETWEEN_QUESTIONS = p.getInt("maxTexClustersBetweenQuestions");
+			MAX_TEXT_CLUSTERS_BETWEEN_QUESTIONS = p.getInt("maxTextClustersBetweenQuestions");
 			if(MAX_TEXT_CLUSTERS_BETWEEN_QUESTIONS <= 0) MAX_TEXT_CLUSTERS_BETWEEN_QUESTIONS = 4;
 		}catch(JSONException exp){
 			CommonLogger.fatalError(exp);

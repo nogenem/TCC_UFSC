@@ -59,23 +59,38 @@ public class PerguntaExtractor {
 			
 			String txt = nodes.get(currentI+2).getText();
 			Pergunta p = new Pergunta(txt, forma);
-			p.setPai(currentP);
 			currentP.addFilha(p);
 			CommonLogger.debug("\t\t{}", txt);
 			
 			txt = nodes.get(currentI+5).getText();
 			p = new Pergunta(txt, forma);
-			p.setPai(currentP);
 			currentP.addFilha(p);
 			CommonLogger.debug("\t\t{}", txt);
 			
 			txt = nodes.get(currentI+7).getText();
 			p = new Pergunta(txt, forma);
-			p.setPai(currentP);
 			currentP.addFilha(p);
 			CommonLogger.debug("\t\t{}", txt);
 			
 			currentI += 7;
+			break;
+		}case 4:{
+			FormaDaPergunta forma = FormaDaPerguntaManager.getForma(type);
+			CommonLogger.debug("\tInput [{}].", type+"_GROUP");
+			currentP.setForma(FormaDaPerguntaManager.getForma(type+"_GROUP"));
+			
+			String txt = nodes.get(currentI+1).getText();
+			Pergunta p = new Pergunta(txt, forma);
+			currentP.addFilha(p);
+			CommonLogger.debug("\t\t{}", txt);
+			
+			txt = nodes.get(currentI+4).getText();
+			p = new Pergunta(txt, forma);
+			currentP.addFilha(p);
+			CommonLogger.debug("\t\t{}", txt);
+			
+			currentI += 4;
+			break;
 		}
 		default:
 			break;
