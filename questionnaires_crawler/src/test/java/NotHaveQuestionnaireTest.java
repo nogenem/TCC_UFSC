@@ -84,9 +84,12 @@ public class NotHaveQuestionnaireTest {
 	}
 	
 	private static List<String> links = Arrays.asList(
-		//"https://www.questionpro.com",
-		//"https://www.questionpro.com/de/",
-		//"https://public.zohosurvey.com/offline/pPy2YJ",
+//		"https://public.zohosurvey.com/offline/pPy2YJ",
+//		"http://www.webcrawler.com/info.wbcrwl.udog/search/news?q=survey%2Bexamples%2Btemplates",
+//		"https://www.surveypolice.com/pick-a-perk/",
+			
+		"https://www.questionpro.com/de/",
+		"https://www.questionpro.com",
 		"https://www.bettercloud.com/monitor/the-academy/how-to-create-a-survey-using-excel/",
 		"https://www.clicktools.com/resources/?filter-customer-case-study",
 		"https://www.clicktools.com/customer-feedback/customer-service-satisfaction-surveys",
@@ -95,7 +98,6 @@ public class NotHaveQuestionnaireTest {
 		"http://www.surveytool.com/employee-satisfaction-survey/",
 		"http://www.surveytool.com/feedback-survey/",
 		"http://www.webcrawler.com/info.wbcrwl.udog/search/images?aid=4b3b2a56-4cc5-4417-9e5a-9fc92a4cbc7a&fcoid=408&fcop=topnav&fpid=2&q=survey%2Btemplate&ridx=1&ss=t",
-		//"http://www.webcrawler.com/info.wbcrwl.udog/search/news?q=survey%2Bexamples%2Btemplates",
 		"http://www.zarca.com/About-Zarca/locations.html",
 		"http://www.zarca.com/Online-Surveys-Non-Profit/sample-surveys-for-associations.html",
 		"https://www.surveycrest.com/",
@@ -187,7 +189,6 @@ public class NotHaveQuestionnaireTest {
 		"https://kohls.pissedconsumer.com/was-asked-to-fill-out-a-survey-to-receive-a-500-gift-card-from-kohls-did-so-several-times-no-gift-c-20121130363610.html",
 		"http://flightsglobal.net/how-to-get-paid-to-take-online-surveys/",
 		"https://www.mysurveyasia.co.kr/index.cfm?action=Main.lobbyGeneral&myContent=enquiryform",
-//		"https://www.surveypolice.com/pick-a-perk/",
 		"https://www.yelp.com/biz/kohls-redlands-3",
 		"http://surveychris.com/cashcrate-review/",
 		"http://download.cnet.com/Paid-Survey-Reviews/3000-2648_4-10543475.html",

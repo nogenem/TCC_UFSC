@@ -85,10 +85,11 @@ public class HaveQuestionnaireTest {
 	}
 	
 	private static List<String> links = Arrays.asList(
-//		"https://surveynuts.com/surveys/take?id=2668&c=85393DRVH", //erro https
-//		"http://www.liveabberlyvillage.com/resident-survey.htm"
+//		"https://surveynuts.com/surveys/take?id=2668&c=85393DRVH" //erro https
+//		"http://www.liveabberlyvillage.com/resident-survey.htm",
 //		"http://www.almaderma.com.br/formulario/florais/entrevista02/contato.php",
-//		"http://www.negocioselectronicos.biz/empresa/trabaja-con-nosotros",
+//		"http://www.negocioselectronicos.biz/empresa/trabaja-con-nosotros"
+			
 		"http://www.zarca.com/Online-Surveys-Customer/customer-service-brief-version.html",
 		"https://survey.zoho.com/surveytemplate/health%20care%20survey-drinking%20habits%20survey",
 		"https://www.surveymonkey.com/r/online-photo-sharing-template",

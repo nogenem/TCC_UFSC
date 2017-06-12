@@ -32,11 +32,13 @@ public class RulesChecker {
 
 	private DistanceMatrix distMatrix;
 	private ClusterBuilder builder;
+	private boolean lastWasAMatrix;
 	
 	// Construtores
 	public RulesChecker(){
 		this.distMatrix = new DistanceMatrix();
 		this.builder = new ClusterBuilder();
+		this.lastWasAMatrix = false;
 	}
 	
 	// Demais métodos
@@ -108,15 +110,16 @@ public class RulesChecker {
 					CommonLogger.debug("\nLast cluster: \n" +c.toString());//TODO remover isso
 					return true;
 				}
+				
+				if(qCount == MIN_CLUSTERS_WITH_COMP){
+					CommonLogger.debug("\n\t\t===> Minimo {} clusters com componentes!", MIN_CLUSTERS_WITH_COMP);
+					CommonLogger.debug("\nLast cluster: \n" +c.toString());//TODO remover isso
+					return true;
+				}
 			}
 			if(cCount >= 0.5){
 				ncCount = 0;
 				lastCluster = c;
-			}
-			if(qCount == MIN_CLUSTERS_WITH_COMP){
-				CommonLogger.debug("\n\t\t===> Minimo {} clusters com componentes!", MIN_CLUSTERS_WITH_COMP);
-				CommonLogger.debug("\nLast cluster: \n" +c.toString());//TODO remover isso
-				return true;
 			}
 		}
 		return false;
@@ -126,6 +129,9 @@ public class RulesChecker {
 		// Os clusters de perguntas sempre começam com um texto ou imagem !?
 		if(c.first().isComponent())
 			return 0.0;
+		
+		if(c.isAllTextOrImg())
+			this.lastWasAMatrix = false;
 		
 		double count = 0.0;
 		boolean hasDescriptionAbove = false, hasQuestionAbove = false, isMultiComp = false;
@@ -147,9 +153,12 @@ public class RulesChecker {
 				if(hasDescriptionAbove){
 					isMultiComp = CommonUtil.getMultiComps().contains(node.getText());
 					if(isMultiComp){
-						if(this.isRatingOrMatrix(nodes, i))
+						if(this.isRatingOrMatrix(nodes, i)){
+							if(this.lastWasAMatrix)
+								return 0.5;
+							this.lastWasAMatrix = true;
 							return 1.0;
-						else if(hasQuestionAbove)
+						}else if(hasQuestionAbove)
 							count += 0.75;
 						else
 							count += 0.25;
@@ -158,6 +167,7 @@ public class RulesChecker {
 				}
 				hasDescriptionAbove = false;
 				hasQuestionAbove = false;
+				this.lastWasAMatrix = false;
 			}
 		}
 		return count;
