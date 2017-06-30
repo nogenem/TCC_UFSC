@@ -84,10 +84,24 @@ public class RulesChecker {
 		if(CommonUtil.matchesWithLineBreak(q.getAssunto(), 
 				CONFIGS.getString("phrasesToIgnoreRegex")))
 			return false;
+		
+		int count = 0;
 		for(Pergunta p : q.getPerguntas()){
 			if(CommonUtil.matchesWithLineBreak(p.getDescricao(), 
-					CONFIGS.getString("phrasesToIgnoreRegex")))
-				return false;
+					CONFIGS.getString("phrasesToIgnoreRegex"))){
+				count++;
+				if(count == 2)
+					return false;
+			}
+			
+			for(Pergunta f : p.getFilhas()){
+				if(CommonUtil.matchesWithLineBreak(f.getDescricao(), 
+						CONFIGS.getString("phrasesToIgnoreRegex"))){
+					count++;
+					if(count == 2)
+						return false;
+				}
+			}
 		}
 		return true;
 	}
@@ -532,6 +546,19 @@ public class RulesChecker {
 			}
 		}
 		return false;
+	}
+	
+	public boolean isImageCheckboxOrRadioInput(List<MyNode> nodes, int currentI){
+		// Perguntas de RADIO/CHECKBOX_INPUT seguem o padrão:
+		//		input -> img -> input -> img ...
+		boolean ret = nodes.get(currentI).isA("RADIO_INPUT") ||
+				nodes.get(currentI).isA("CHECKBOX_INPUT");
+		ret = ret && nodes.get(currentI+1).isImage();
+		ret = ret && nodes.get(currentI+2).isA("RADIO_INPUT") ||
+				nodes.get(currentI+2).isA("CHECKBOX_INPUT");
+		ret = ret && nodes.get(currentI+3).isImage();
+		
+		return ret;
 	}
 	
 	// Métodos/Blocos estáticos

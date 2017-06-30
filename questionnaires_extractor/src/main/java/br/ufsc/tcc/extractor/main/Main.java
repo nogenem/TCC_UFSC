@@ -1,5 +1,17 @@
 package br.ufsc.tcc.extractor.main;
 
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.X509TrustManager;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -79,8 +91,8 @@ public class Main {
 //		path = "cache/SurveyForBusiness1.html";
 //		path = "https://www.surveyshare.com/template/380/ELearning-Student-Tracking";
 
-		path = "https://www.jotform.com/form-templates/preview/21014328614342?preview=true";
-
+//		path = "http://www.sciencebuddies.org/science-fair-projects/project_ideas/Soc_survey_sample1.shtml";
+		
 		BasicConnection conn = new PostgreConnection(ProjectConfigs.getExtractorDatabaseConfigs());;
 		FormaDaPerguntaManager.loadFormas(conn);
 		QuestionarioBuilder qBuilder = new QuestionarioBuilder();
@@ -93,13 +105,17 @@ public class Main {
 			}else{
 //				System.setProperty("javax.net.debug", "all");
 				System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2");
+//				enableSSLSocket();
+				
+				path = path.replaceAll("%20", " ");
 				doc = Jsoup.connect(path)
 					.validateTLSCertificates(false)
+					.userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.82 Safari/537.36")
 					.get();
 			}
 			Element root = doc.select("body").get(0);
 			qBuilder.setCurrentLink(path);
-			qBuilder.build(root);
+			qBuilder.build(root, doc.title());
 		}catch(Exception e){
 			CommonLogger.error(e);
 		}
@@ -153,4 +169,26 @@ public class Main {
 			CommonLogger.error(e);
 		}
 	}
+	
+	public static void enableSSLSocket() throws KeyManagementException, NoSuchAlgorithmException {
+        HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
+            public boolean verify(String hostname, SSLSession session) {
+                return true;
+            }
+        });
+ 
+        SSLContext context = SSLContext.getInstance("TLS");
+        context.init(null, new X509TrustManager[]{new X509TrustManager() {
+            public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+            }
+ 
+            public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+            }
+ 
+            public X509Certificate[] getAcceptedIssuers() {
+                return new X509Certificate[0];
+            }
+        }}, new SecureRandom());
+        HttpsURLConnection.setDefaultSSLSocketFactory(context.getSocketFactory());
+    }
 }

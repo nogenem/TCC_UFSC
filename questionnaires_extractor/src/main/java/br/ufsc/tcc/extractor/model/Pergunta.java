@@ -155,6 +155,7 @@ public class Pergunta {
 		switch(this.getForma().toString()){
 		case "SELECT":
 		case "SELECT_GROUP":
+		case "IMAGE_RADIO_INPUT":
 		case "RADIO_INPUT":
 		case "RADIO_INPUT_GROUP":
 		case "RANGE_INPUT":
@@ -162,6 +163,7 @@ public class Pergunta {
 		case "RATING":
 		case "RATING_GROUP":
 			return "FECHADO";
+		case "IMAGE_CHECKBOX_INPUT":
 		case "CHECKBOX_INPUT":
 		case "CHECKBOX_INPUT_GROUP":
 		case "CHECKBOX_INPUT_MATRIX":

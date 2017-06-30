@@ -129,6 +129,8 @@ public class PerguntaBuilder {
 				if(checker.checkIfTextIsAbove(nodes, currentI)){
 					desc = cStack.pop();
 					this.currentI = this.extractor.extractCheckboxOrRadioInputWithTextAbove(currentQ, nodes, this.currentI);
+				}else if(this.checker.isImageCheckboxOrRadioInput(nodes, this.currentI)){
+					this.currentI = this.extractor.extractImageCheckboxOrRadioInput(currentQ, nodes, this.currentI);
 				}else
 					this.currentI = this.extractor.extractCheckboxOrRadioInput(currentQ, nodes, this.currentI);
 				break;
@@ -136,6 +138,8 @@ public class PerguntaBuilder {
 				if(checker.checkIfTextIsAbove(nodes, currentI)){
 					desc = cStack.pop();
 					this.currentI = this.extractor.extractCheckboxOrRadioInputWithTextAbove(currentQ, nodes, this.currentI);
+				}else if(this.checker.isImageCheckboxOrRadioInput(nodes, this.currentI)){
+					this.currentI = this.extractor.extractImageCheckboxOrRadioInput(currentQ, nodes, this.currentI);
 				}else
 					this.currentI = this.extractor.extractCheckboxOrRadioInput(currentQ, nodes, this.currentI);
 				break;
@@ -146,7 +150,7 @@ public class PerguntaBuilder {
 			case TEL_INPUT:
 			case TIME_INPUT:
 			case URL_INPUT:{
-				this.currentI = this.extractor.extractGenericInput(nodes, this.currentI);
+				this.currentI = this.extractor.extractGenericInput(currentQ, nodes, this.currentI);
 				break;
 			}case TEXTAREA:{
 				this.extractor.extractTextarea(nodes);

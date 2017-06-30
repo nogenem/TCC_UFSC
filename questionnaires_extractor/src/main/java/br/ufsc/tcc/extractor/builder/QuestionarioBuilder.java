@@ -81,8 +81,9 @@ public class QuestionarioBuilder {
 								CommonLogger.debug("Assunto: {}\n\n", currentQ.getAssunto());
 							}
 							ret.add(this.currentQ);
-						}
-						CommonLogger.debug("==================shouldStartNewQuestionario()==================\n");
+						}else
+							CommonLogger.debug("================== Questionario invalido! ==================");
+						CommonLogger.debug("================== shouldStartNewQuestionario() ==================\n");
 						this.currentQ = new Questionario(this.currentLink);
 					}
 				}
@@ -106,13 +107,14 @@ public class QuestionarioBuilder {
 				CommonLogger.debug("Assunto: {}\n\n", currentQ.getAssunto());
 			}
 			ret.add(this.currentQ);
-		}
+		}else if(!this.currentQ.getPerguntas().isEmpty())
+			CommonLogger.debug("================== Questionario invalido! ==================");
 		
 //		cStack.add(cTmp);
 //		CommonLogger.debug("\nClusters:");
 //		CommonLogger.debug(cStack);
 		
-		CommonLogger.debug("\t\t\t========Questionarios========");
+		CommonLogger.debug("\t\t\t================> Questionarios <================");
 		CommonLogger.debug(ret);
 		return ret;
 	}

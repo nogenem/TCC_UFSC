@@ -36,10 +36,21 @@ public class PerguntaExtractor {
 		currentP.setForma(FormaDaPerguntaManager.getForma("TEXTAREA"));
 	}
 
-	public int extractGenericInput(List<MyNode> nodes, int currentI) {
+	public int extractGenericInput(Questionario currentQ, List<MyNode> nodes, int currentI) {
 		String type = nodes.get(currentI).getType().toString();
 		CommonLogger.debug("\tInput [{}].", type);
 		currentP.setForma(FormaDaPerguntaManager.getForma(type));
+		
+		// Verifica se não tem uma imagem entre o input e a sua descrição
+		//Ex: https://www.123contactform.com/js-form--37173.html [ultima pergunta]
+		int i = currentI-1;
+		while(nodes.get(i).isImage()){
+			Figura fig = new Figura(nodes.get(i).getAttr("src"), nodes.get(i).getAttr("alt"));
+			fig.setDono(this.currentP);
+			currentQ.addFigura(fig);
+			CommonLogger.debug("\t\tFigura da pergunta: {}", fig);
+			i--;
+		}
 		
 		int ret = checker.checkCompositeInput(nodes, type, currentI);
 		switch(ret){
@@ -257,6 +268,42 @@ public class PerguntaExtractor {
 		if(this.currentP.getAlternativas().size() == 0)
 			this.currentP.setForma(null);
 		
+		return currentI;
+	}
+	
+	public int extractImageCheckboxOrRadioInput(Questionario currentQ, List<MyNode> nodes, int currentI) {
+		MyNode img = null, 
+			input = nodes.get(currentI);
+		int backup_currentI = currentI;
+		
+		this.currentP.setForma(FormaDaPerguntaManager.getForma("IMAGE_" +input.getType().toString()));
+		if(input.isA("CHECKBOX_INPUT"))
+			CommonLogger.debug("\tImage Checkbox Input:");
+		else
+			CommonLogger.debug("\tImage Radio Input:");
+		
+		img = nodes.get(++currentI);
+		while(input != null && 
+				(input.isA("CHECKBOX_INPUT") || input.isA("RADIO_INPUT")) &&
+				img.isImage()){
+			if(!this.checker.areCompAndTextNear(input, img))
+				break;
+			
+			Figura fig = new Figura(img.getAttr("src"), img.getAttr("alt"));
+			fig.setDono(currentP);
+			currentQ.addFigura(fig);
+			CommonLogger.debug("\t\t{}", fig);
+			
+			if(currentI+2 < nodes.size()){
+				input = nodes.get(++currentI);
+				img = nodes.get(++currentI);
+			}else
+				input = null;
+		}
+		if(input != null)
+			currentI -= 2;
+		if(currentI == backup_currentI)//Não salvo nenhuma imagem
+			this.currentP.setForma(null);
 		return currentI;
 	}
 
