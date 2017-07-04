@@ -488,7 +488,7 @@ public class RulesChecker {
 			return false;
 		text = i-2 <= nodes.size()-1 ? nodes.get(i-2) : null;
 		if(text != null && text.isA("img")){
-			text = i-3 <= nodes.size()-1 ? nodes.get(i-3) : null;
+			text = (i-3 >= 0 && i-3 <= nodes.size()-1) ? nodes.get(i-3) : null;
 			hasImgAbove = true;
 		}
 		if((text == null || !text.isA("text")) || !areDescAndPergNear(text, input))

@@ -402,8 +402,17 @@ public class PerguntaBuilder {
 				desc = cStack.pop();
 			}
 			desc = this.checker.checkIfDescIsComplete(desc, cStack, nodes, this.currentI);
-			this.lastMatrixDesc = desc;
-			this.lastMatrix.setDescricao(desc.getText());
+			
+			//Verifica se a desc e o cabeçalho da matriz estão perto um do outro
+			if(!checker.areDescAndPergNear(desc, this.lastMatrixHead.first())) {
+				//Matriz sem descrição
+				//	Ex: http://www.questionpro.com/survey-templates/employee-benefits-survey/
+				this.lastMatrixDesc = null;
+				this.lastMatrix.setDescricao("");
+			}else {
+				this.lastMatrixDesc = desc;
+				this.lastMatrix.setDescricao(desc.getText());				
+			}
 		}
 		if(this.lastMatrix != null)
 			this.lastMatrix.addFilha(this.currentP);

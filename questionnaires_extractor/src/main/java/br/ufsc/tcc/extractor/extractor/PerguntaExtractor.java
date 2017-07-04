@@ -198,8 +198,8 @@ public class PerguntaExtractor {
 		// Perguntas com imagens seguem o padrão: 
 		//		img -> input -> text -> img -> input -> text ...
 		isImgQuestion = img.isImage() && tmp.isImage();
-		while(input != null && 
-				(input.getType() == MyNodeType.CHECKBOX_INPUT || input.getType() == MyNodeType.RADIO_INPUT) &&
+		while(input != null &&
+				(input.isA("CHECKBOX_INPUT") || input.isA("RADIO_INPUT")) &&
 				text.getType() == MyNodeType.TEXT &&
 				(!isImgQuestion || (img != null && img.isImage()))){
 			if(!this.checker.areCompAndTextNear(input, text))
@@ -219,13 +219,19 @@ public class PerguntaExtractor {
 				
 				CommonLogger.debug("\t\t{}", txt);
 				
-				if(tmp != null && tmp.getType() == MyNodeType.TEXT_INPUT && 
+				if(tmp != null && (tmp.isA("TEXT_INPUT") || tmp.isA("TEXTAREA")) && 
 						this.checker.areCompAndTextNear(tmp, text)){
 					Pergunta tmpPerg = new Pergunta(txt);
 					dono = tmpPerg;
 					
-					tmpPerg.setForma(FormaDaPerguntaManager.getForma("TEXT_INPUT"));
-					CommonLogger.debug("\t\t\tCom Text Input.");
+					if(tmp.isA("TEXT_INPUT")) {
+						tmpPerg.setForma(FormaDaPerguntaManager.getForma("TEXT_INPUT"));
+						CommonLogger.debug("\t\t\tCom Text Input.");
+					}else {
+						//Ex: http://www.surveymoz.com/s/course-evaluation-survey-example
+						tmpPerg.setForma(FormaDaPerguntaManager.getForma("TEXTAREA"));
+						CommonLogger.debug("\t\t\tCom Textarea.");						
+					}
 					
 					tmpPerg.setQuestionario(currentQ);
 					this.currentP.addFilha(tmpPerg);

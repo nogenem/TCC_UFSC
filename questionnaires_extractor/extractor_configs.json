@@ -25,7 +25,7 @@
 		"resumableCrawling": false	
 	},
 	"seeds": [
-		"https://survey.sogosurvey.com/survey.aspx?k=SsWUYTsQSVsPsPsP&lang=0&data="
+		"https://www.123contactform.com/js-form--37173.html"
 	],
 	"parameters": {
 		"minQuestionsOnQuestionnaire": 2,
@@ -50,7 +50,7 @@
 		},
 		"distBetweenGroupAndFirstQuestion": {
 			"height": 1,
-			"width": 4
+			"width": 7
 		},
 		"distBetweenDescAndComplementaryText": {
 			"height": 2,
