@@ -1,5 +1,3 @@
-
-
 import static org.junit.Assert.*;
 
 import java.io.IOException;
@@ -47,7 +45,9 @@ public class HaveQuestionnaireTest {
 			final List<String> domains = new ArrayList<>();
 			links = links.stream().filter((link) -> {
 				link = link.replaceAll("^((http|https)://)", "");
-				String domain = link.substring(0, link.indexOf('/'));
+				int index = link.indexOf('/');
+				String domain = index < 1 ? link : link.substring(0, index);
+				
 				if(domains.contains(domain))
 					return false;
 				else{
@@ -67,19 +67,27 @@ public class HaveQuestionnaireTest {
 		
 		System.out.println();
 		for(int i = 0; i<max; i++){
+			String error_msg = "";
 			String link = links.get(i);
-			link = link.replaceAll("%20", " ");
 			inicio = System.currentTimeMillis();
 			
-			doc = Jsoup.connect(link)
-				.userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.82 Safari/537.36")
-				.validateTLSCertificates(false)
-				.get();		
-			assertTrue("Link: \n>"+link+"\ndeveria ser considerada um questionario!", 
-					checker.shouldSave(doc));
+			try {
+				link = link.replaceAll("%20", " ");
+				doc = Jsoup.connect(link)
+					.userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.82 Safari/537.36")
+					.validateTLSCertificates(false)
+					.timeout(15000)
+					.get();		
+				assertTrue("Link: \n>"+link+"\ndeveria ser considerado um questionario!", 
+						checker.shouldSave(doc));
+			}catch(IOException e) {
+				error_msg = e.getMessage();
+			}
 			
 			fim = System.currentTimeMillis();
-			System.out.println(link +"> Time expend: " +(fim-inicio)+ "ms");
+			System.out.println(i + ") "+ link +"> Time expend: " +(fim-inicio)+ "ms");
+			if(!error_msg.isEmpty())
+				System.out.println("\tError: [" +error_msg+ "]");
 		}
 		System.out.println();
 	}

@@ -1,6 +1,4 @@
-
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,7 +45,9 @@ public class NotHaveQuestionnaireTest {
 			final List<String> domains = new ArrayList<>();
 			links = links.stream().filter((link) -> {
 				link = link.replaceAll("^((http|https)://)", "");
-				String domain = link.substring(0, link.indexOf('/'));
+				int index = link.indexOf('/');
+				String domain = index < 1 ? link : link.substring(0, index);
+				
 				if(domains.contains(domain))
 					return false;
 				else{
@@ -67,18 +67,27 @@ public class NotHaveQuestionnaireTest {
 		
 		System.out.println();
 		for(int i = 0; i<max; i++){
+			String error_msg = "";
 			String link = links.get(i);
 			inicio = System.currentTimeMillis();
 			
-			doc = Jsoup.connect(link)
-				.userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.82 Safari/537.36")
-				.validateTLSCertificates(false)
-				.get();		
-			assertFalse("Link: \n>"+link+"\nnao deveria ser considerada um questionario!", 
-					checker.shouldSave(doc));
+			try {
+				link = link.replaceAll("%20", " ");
+				doc = Jsoup.connect(link)
+					.userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.82 Safari/537.36")
+					.validateTLSCertificates(false)
+					.timeout(15000)
+					.get();		
+				assertFalse("Link: \n>"+link+"\nnao deveria ser considerado um questionario!", 
+						checker.shouldSave(doc));
+			}catch(IOException e) {
+				error_msg = e.getMessage();
+			}
 			
 			fim = System.currentTimeMillis();
-			System.out.println(link +"> Time expend: " +(fim-inicio)+ "ms");
+			System.out.println(i + ") "+ link +"> Time expend: " +(fim-inicio)+ "ms");
+			if(!error_msg.isEmpty())
+				System.out.println("\tError: [" +error_msg+ "]");
 		}
 		System.out.println();
 	}
@@ -179,7 +188,6 @@ public class NotHaveQuestionnaireTest {
 		"https://www.sitejabber.com/reviews/www.mysurvey.com",
 		"http://www.onlinehomeincome.in/work-from-home-free-online-surveys.php",
 		"http://www.workathomenoscams.com/2015/03/30/survey-club-review-is-it-legit/",
-		"https://www.getpaidto.com/points/surveys/response",
 		"https://www.globaltestmarket.com/gtm_recruiting/join2.php?utm_source=LIGHTSPEED&utm_medium=CrossRecruitment&utm_campaign=lsrclosuremye&p=lsrclosuremye&lang=E&CONTACT_COUNTRY=MY&redirect=false",
 		"http://www.mysurvey.com.hk/index.cfm?action=Main.lobbyGeneral&myContent=enquiryform",
 		"http://www.watchforscams.com/survey_scams.html",

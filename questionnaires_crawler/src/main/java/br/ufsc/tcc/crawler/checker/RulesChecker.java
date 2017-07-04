@@ -193,7 +193,8 @@ public class RulesChecker {
 	}
 	
 	private boolean isLikelyAQuestion(String text){
-		return text.contains("?") || text.contains(":");
+		return text.contains("?") || text.contains(":") || 
+				text.matches("(?m)^(\\d{1,4}).*(\\.)$");
 	}
 	
 	private String fixText(String text){
