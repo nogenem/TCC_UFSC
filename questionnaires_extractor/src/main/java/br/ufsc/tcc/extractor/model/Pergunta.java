@@ -206,18 +206,22 @@ public class Pergunta {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
+		String tmpTxt = "";
 		builder.append(this.getDescricao() +" ["+ this.getForma() + 
 				" / "+ this.getTipo()+"]\n");
 		builder.append("\tGrupo: " +this.getGrupo()+ "\n");
 		builder.append("\tAlternativas:\n");
 		for(Alternativa a : this.getAlternativas()){
-			builder.append("\t\t" +a+ "\n");
+			tmpTxt = a.toString().replaceAll("\n", "\n\t\t   ");
+			builder.append("\t\t" +tmpTxt+ "\n");
 		}
 		builder.append("\tFilhas:\n");
 		for(Pergunta filha : this.getFilhas()){
-			builder.append("\t\t" +filha.getDescricao() +" [" +filha.getForma()+ "]\n");
+			tmpTxt = filha.getDescricao().replaceAll("\n", "\n\t\t   ");
+			builder.append("\t\t" +tmpTxt+" [" +filha.getForma()+ "]\n");
 			for(Alternativa a : filha.getAlternativas()){
-				builder.append("\t\t\t"+ a.getDescricao() +"\n");
+				tmpTxt = a.toString().replaceAll("\n", "\n\t\t\t   ");
+				builder.append("\t\t\t"+ tmpTxt +"\n");
 			}
 		}
 		builder.append("\n");

@@ -180,9 +180,11 @@ public class PerguntaExtractor {
 	}
 
 	public int extractCheckboxOrRadioInput(Questionario currentQ, List<MyNode> nodes, int currentI) {
-		MyNode img = null, input = null, text = null, tmp = null;
-		boolean isImgQuestion = false;
-		String txt = "";
+		MyNode img = null, input = null, text = null, tmp = null, firstInput = null;
+		boolean isImgInputQuestion = false, 
+				isTextImgQuestion = false,
+				isImgQuestion = false;
+		String txt = "", commonPrefix = "";
 		
 		input = nodes.get(currentI);
 		
@@ -192,18 +194,48 @@ public class PerguntaExtractor {
 		else
 			CommonLogger.debug("\tRadio Input:");
 		
+		// Faz verificações sobre imagens no meio das alternativas
 		img = nodes.get(currentI-1);
 		text = nodes.get(++currentI);
 		tmp = nodes.get(currentI+1);
-		// Perguntas com imagens seguem o padrão: 
+		// Perguntas com imagens pode seguir o padrão: 
 		//		img -> input -> text -> img -> input -> text ...
-		isImgQuestion = img.isImage() && tmp.isImage();
+		// Ex: https://www.survio.com/modelo-de-pesquisa/avaliacao-de-um-e-shop
+		isImgInputQuestion = img.isImage() && tmp.isImage();
+		
+		if(!isImgInputQuestion) {
+			img = tmp;
+			tmp = currentI+4 < nodes.size() ? nodes.get(currentI+4) : null;
+			// Ou pode seguir o padrão:
+			//		input -> text -> img -> input -> text -> img
+			// Ex: http://www.objectplanet.com/opinio/s/s?s=259
+			isTextImgQuestion = img.isImage() && tmp != null && tmp.isImage();
+			if(isTextImgQuestion)
+				img = nodes.get(++currentI);
+			else
+				img = null;
+			tmp = nodes.get(currentI+1);
+		}
+		
+		isImgQuestion = isImgInputQuestion || isTextImgQuestion;
 		while(input != null &&
 				(input.isA("CHECKBOX_INPUT") || input.isA("RADIO_INPUT")) &&
 				text.getType() == MyNodeType.TEXT &&
 				(!isImgQuestion || (img != null && img.isImage()))){
+			
 			if(!this.checker.areCompAndTextNear(input, text))
 				break;
+			
+			// Vefifica o prefixo comum para ver se terminou esta pergunta
+			if(firstInput == null) { 
+				firstInput = input;
+			}else if(commonPrefix.isEmpty()) {
+				commonPrefix = firstInput.getDewey().getCommonPrefix(input.getDewey());
+			}else {
+				String cTmp = firstInput.getDewey().getCommonPrefix(input.getDewey());
+				if(!cTmp.equals(commonPrefix))
+					break;
+			}
 			
 			txt = text.getText();
 			Object dono = null;
@@ -253,13 +285,15 @@ public class PerguntaExtractor {
 				CommonLogger.debug("\t\t\tLegenda: {}", fig.getLegenda());
 			}
 			
-			if(currentI+1 < nodes.size() && isImgQuestion)
+			if(currentI+1 < nodes.size() && isImgInputQuestion)
 				img = nodes.get(++currentI);
 			else
 				img = null;
 			if(currentI+2 < nodes.size()){
 				input = nodes.get(++currentI);
 				text = nodes.get(++currentI);
+				if(isTextImgQuestion && currentI+1 < nodes.size())
+					img = nodes.get(++currentI);
 				if(currentI+1 < nodes.size())
 					tmp = nodes.get(currentI+1);
 			}else
@@ -315,9 +349,9 @@ public class PerguntaExtractor {
 
 	public int extractCheckboxOrRadioInputWithTextAbove(Questionario currentQ, List<MyNode> nodes, int currentI) {
 		// A principio não se preocupa com input text
-		MyNode input = null, text = null, img = null;
+		MyNode input = null, text = null, img = null, firstInput = null;
 		boolean isImgQuestion = false;
-		String txt = "";
+		String txt = "", commonPrefix = "";
 		
 		input = nodes.get(currentI);
 		
@@ -333,12 +367,23 @@ public class PerguntaExtractor {
 		//		img -> text -> input -> img -> text -> input ...
 		isImgQuestion = img.isImage() && (nodes.get(currentI+1).isImage());
 		while(input != null && 
-				(input.getType() == MyNodeType.CHECKBOX_INPUT || input.getType() == MyNodeType.RADIO_INPUT) &&
+				(input.isA("CHECKBOX_INPUT") || input.isA("RADIO_INPUT")) &&
 				text.getType() == MyNodeType.TEXT &&
 				(!isImgQuestion || (img != null && img.isImage()))){
 			
 			if(!this.checker.areCompAndTextNear(input, text))
 				break;
+			
+			// Vefifica o prefixo comum para ver se terminou esta pergunta
+			if(firstInput == null) { 
+				firstInput = input;
+			}else if(commonPrefix.isEmpty()) {
+				commonPrefix = firstInput.getDewey().getCommonPrefix(input.getDewey());
+			}else {
+				String cTmp = firstInput.getDewey().getCommonPrefix(input.getDewey());
+				if(!cTmp.equals(commonPrefix))
+					break;
+			}
 			
 			txt = text.getText();
 			CommonLogger.debug("\t\t{}", txt);
