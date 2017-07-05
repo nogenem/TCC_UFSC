@@ -54,16 +54,16 @@ public class PerguntaExtractor {
 		
 		int ret = checker.checkCompositeInput(nodes, type, currentI);
 		switch(ret){
-		case 0:
+		case 0://Check [ ] : [ ] (: [ ])?
 			currentI += 2;
 			break;
-		case 1:
+		case 1://Check ( [ ] ) [ ]
 			currentI += 2;
 			break;
-		case 2:
+		case 2://Check [ ] (/|-) [ ] (/|-) [ ]
 			currentI += 4;
 			break;
-		case 3:{
+		case 3:{//Check [ ] (/|-) Month [ ] (/|-) Day [ ] Year
 			FormaDaPergunta forma = FormaDaPerguntaManager.getForma(type);
 			CommonLogger.debug("\tInput [{}].", type+"_GROUP");
 			currentP.setForma(FormaDaPerguntaManager.getForma(type+"_GROUP"));
@@ -85,7 +85,7 @@ public class PerguntaExtractor {
 			
 			currentI += 7;
 			break;
-		}case 4:{
+		}case 4:{//Check [ ] Dollars . [ ] Cents
 			FormaDaPergunta forma = FormaDaPerguntaManager.getForma(type);
 			CommonLogger.debug("\tInput [{}].", type+"_GROUP");
 			currentP.setForma(FormaDaPerguntaManager.getForma(type+"_GROUP"));

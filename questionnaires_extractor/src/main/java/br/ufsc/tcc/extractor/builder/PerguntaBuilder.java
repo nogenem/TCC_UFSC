@@ -91,6 +91,7 @@ public class PerguntaBuilder {
 		//Verifica se tem componentes em sequência que podem fazer parte de uma
 		//matriz ou uma pergunta de RATING
 		if(nTmp1 != null && firstNode.getType() != MyNodeType.SELECT && nTmp1.isComponent() &&
+				!this.checker.isATextInputDisabledWithValue(nTmp1) &&
 				this.distMatrix.areNear(firstNode, nTmp1)){
 			
 			if(this.lastMatrixHead != null && !cStack.isEmpty() &&
@@ -179,6 +180,7 @@ public class PerguntaBuilder {
 			if(!checker.areDescAndPergNear(desc, firstNode))
 				return this.currentI;
 			
+			String tmpDescTxt = desc.getText();
 			//Verifica se o texto abaixo, se tiver, não faz parte desta pergunta (Ex: Peso: [ ] kg)
 			while(this.checker.checkComplementaryText(nodes, this.currentI)){
 				nTmp1 = nodes.get(++this.currentI);
@@ -189,17 +191,27 @@ public class PerguntaBuilder {
 					if(this.currentP.getFilhas().size() > 0){
 						ArrayList<Pergunta> filhas = this.currentP.getFilhas();
 						Pergunta p = filhas.get(filhas.size()-1);
-						p.setDescricao(p.getDescricao()+"\n"+nTmp1.getText());
-					}else
+						if(this.checker.isATextInputDisabledWithValue(nTmp1))
+							p.setDescricao(p.getDescricao() +"\n"+ nTmp1.getAttr("value"));
+						else
+							p.setDescricao(p.getDescricao() +"\n"+ nTmp1.getText());
+					}else {
 						desc.add(nTmp1);
-				}else
+						if(this.checker.isATextInputDisabledWithValue(nTmp1))
+							tmpDescTxt += "\n"+ nTmp1.getAttr("value");
+						else
+							tmpDescTxt += "\n"+ nTmp1.getText();
+					}
+				}else {
 					desc.add(nTmp1);
+					if(this.checker.isATextInputDisabledWithValue(nTmp1))
+						tmpDescTxt += "\n"+ nTmp1.getAttr("value");
+					else
+						tmpDescTxt += "\n"+ nTmp1.getText();
+				}
 			}
-
-			this.currentP.setDescricao(desc.getText());
-			//Ex: http://www.zarca.com/Online-Surveys-Non-Profit/association-member-satisfaction-survey.html
-			if(checker.isATextInputDisabledWithValue(desc.last()))
-				this.currentP.setDescricao(this.currentP.getDescricao() + "\n" + desc.last().getAttr("value"));
+		
+			this.currentP.setDescricao(tmpDescTxt);
 			CommonLogger.debug("Descricao: {}\n\n", this.currentP.getDescricao());
 			
 			//Verifica se é uma matriz
