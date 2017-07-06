@@ -1,5 +1,10 @@
 package br.ufsc.tcc.common.model;
 
+/**
+ * Enum que possui os tipos de Nodos interessantes para esta aplicação.
+ * 
+ * @author Gilney N. Mathias
+ */
 public enum MyNodeType {
 	UNKNOWN("unknown"),
 	TEXT("#text"),

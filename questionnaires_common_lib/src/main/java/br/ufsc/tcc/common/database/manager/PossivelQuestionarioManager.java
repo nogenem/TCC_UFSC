@@ -7,6 +7,12 @@ import br.ufsc.tcc.common.database.dao.PossivelQuestionarioDao;
 import br.ufsc.tcc.common.model.PossivelQuestionario;
 import br.ufsc.tcc.common.util.CommonLogger;
 
+/**
+ * Classe de mais alto nível responsável por lidar com operações do banco de dados
+ * relacionadas a classe/tabela PossivelQuestionario.
+ * 
+ * @author Gilney N. Mathias
+ */
 public class PossivelQuestionarioManager {
 	
 	private PossivelQuestionarioDao pqDao;

@@ -12,6 +12,12 @@ import br.ufsc.tcc.common.model.Cluster;
 import br.ufsc.tcc.common.model.DeweyExt;
 import br.ufsc.tcc.common.model.MyNode;
 
+/**
+ * Classe responsável por guardar as distâncias entre os Nodos, 
+ * serve como uma 'cache' para os valores.
+ * 
+ * @author Gilney N. Mathias
+ */
 public class DistanceMatrix {
 	
 	private static int MAX_WIDTH = 0;
@@ -49,12 +55,31 @@ public class DistanceMatrix {
 	}
 	
 	// Demais métodos
+	/**
+	 * Verifica se os Clusters estão perto um do outro olhando 
+	 * a distância do ultimo Nodo do Cluster {@code c1} e do
+	 * primeiro Nodo do Cluster {@code c2}.
+	 * 
+	 * @param c1		Primeiro Cluster.
+	 * @param c2		Segundo Cluster.
+	 * @return			<b>True</b> caso {@code c1} seja considerado 'perto' de {@code c2} ou<br>
+	 * 					<False> caso contrario.
+	 */
 	public boolean areNear(Cluster c1, Cluster c2){
 		if(c1 != null && c2 != null) 
 			return this.areNear(c1.last(), c2.first());
 		return false;
 	}
 	
+	/**
+	 * Verifica se os Nodos {@code n1} e {@code n2} estão 
+	 * perto um do outro.
+	 * 
+	 * @param c1		Primeiro Nodo.
+	 * @param c2		Segundo Nodo.
+	 * @return			<b>True</b> caso {@code n1} seja considerado 'perto' de {@code n2} ou<br>
+	 * 					<False> caso contrario.
+	 */
 	public boolean areNear(MyNode n1, MyNode n2){
 		if(n1 != null && n2 != null){
 			DeweyExt dist = this.getDist(n1, n2);

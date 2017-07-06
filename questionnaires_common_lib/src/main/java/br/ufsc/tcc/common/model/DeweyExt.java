@@ -4,6 +4,11 @@ import java.util.ArrayList;
 
 import br.ufsc.tcc.common.util.CommonUtil;
 
+/**
+ * Classe responsável por fornecer todas as operações referentes a Dewey-Ext.
+ * 
+ * @author Gilney N. Mathias
+ */
 public class DeweyExt {
 	
 	private String value;
@@ -119,7 +124,6 @@ public class DeweyExt {
 		return dist;
 	}
 	
-	//TODO tratar possivel erro do valueOf?
 	public ArrayList<Integer> parseValueToNumbers(String value) {
 		ArrayList<Integer> numbers = new ArrayList<>();
 		if(!value.isEmpty()){
@@ -143,6 +147,12 @@ public class DeweyExt {
 		return value;
 	}
 	
+	/**
+	 * Verifica se o primeiro valor deste DeweyExt é negativo.<br>
+	 * 
+	 * @return 	<b>True</b> caso o primeiro valor seja negativo ou<br>
+	 * 			<b>False</b> caso contrario.
+	 */
 	public boolean isNegative(){
 		if(!this.numbers.isEmpty())
 			return this.numbers.get(0) < 0;

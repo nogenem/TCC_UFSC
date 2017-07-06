@@ -30,6 +30,12 @@ public class Cluster {
 		return this.group.isEmpty();
 	}
 	
+	/**
+	 * Retorna uma String contendo o texto de todos os nodos deste Cluster 
+	 * concatenadas com '\n', independente se o nodo é de texto ou não.
+	 * 
+	 * @return		String contendo o texto de todos os nodos deste Cluster.
+	 */
 	public String getAllNodesText(){
 		StringBuilder builder = new StringBuilder();
 		for(MyNode node : this.group){
@@ -40,6 +46,12 @@ public class Cluster {
 		return builder.toString();
 	}
 	
+	/**
+	 * Retorna uma String contendo o texto de todos os nodos de texto 
+	 * deste Cluster concatenadas com '\n'.
+	 * 
+	 * @return		String contendo o texto de todos os nodos deste Cluster.
+	 */
 	public String getText(){
 		StringBuilder builder = new StringBuilder();
 		for(MyNode node : this.group){
@@ -58,6 +70,12 @@ public class Cluster {
 		return this;
 	}
 	
+	/**
+	 * Adiciona todos os nodos do parâmetro {@code other} a este Cluster.
+	 * 
+	 * @param other		Cluster que se quer pegar os nodos.
+	 * @return			Este Cluster.
+	 */
 	public Cluster join(Cluster other){
 		if(other != null){
 			for(MyNode node : other.group)
@@ -66,24 +84,45 @@ public class Cluster {
 		return this;
 	}
 	
+	/**
+	 * Retorna o primeiro nodo deste Cluster.
+	 * 
+	 * @return		O primeiro nodo deste Cluster.
+	 */
 	public MyNode first(){
 		if(!this.group.isEmpty())
 			return this.group.get(0);
 		return null;
 	}
 	
+	/**
+	 * Retorna o nodo do meio deste Cluster.
+	 * 
+	 * @return		O nodo do meio deste Cluster.
+	 */
 	public MyNode middle(){
 		if(!this.group.isEmpty())
 			return this.group.get((group.size()-1)/2);
 		return null;
 	}
 	
+	/**
+	 * Retorna o ultimo nodo deste Cluster.
+	 * 
+	 * @return		O ultimo nodo deste Cluster.
+	 */
 	public MyNode last(){
 		if(!this.group.isEmpty())
 			return this.group.get(this.group.size()-1);
 		return null;
 	}
 	
+	/**
+	 * Verifica se todos os nodos deste Cluster são nodos de texto.
+	 * 
+	 * @return		<b>True</b> caso todos os nodos sejam de texto ou<br>
+	 * 				<b>False</b> caso contrario.
+	 */
 	public boolean isAllText(){
 		return this.group.parallelStream()
 				.reduce(true, 
@@ -91,6 +130,12 @@ public class Cluster {
 						Boolean::logicalAnd);
 	}
 	
+	/**
+	 * Verifica se todos os nodos deste Cluster são nodos de texto ou imagem.
+	 * 
+	 * @return		<b>True</b> caso todos os nodos sejam de texto ou imagem ou<br>
+	 * 				<b>False</b> caso contrario.
+	 */
 	public boolean isAllTextOrImg(){
 		return this.group.parallelStream()
 				.reduce(true, 

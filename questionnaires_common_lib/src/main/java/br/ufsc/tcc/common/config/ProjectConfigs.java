@@ -7,6 +7,13 @@ import org.json.JSONObject;
 import br.ufsc.tcc.common.util.CommonLogger;
 import br.ufsc.tcc.common.util.CommonUtil;
 
+/**
+ * Classe responsável por ler o arquivo de configuração e providenciar 
+ * uma forma simples e rápida para que outras classes possam acessar as 
+ * propriedades do mesmo.
+ * 
+ * @author Gilney N. Mathias
+ */
 public abstract class ProjectConfigs {
 	
 	private static JSONObject configs = new JSONObject();

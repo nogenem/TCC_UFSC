@@ -5,6 +5,12 @@ import org.jsoup.nodes.Node;
 
 import br.ufsc.tcc.common.util.CommonUtil;
 
+/**
+ * Classe que possui os atribuitos necessarios para representar
+ * um nodo da arvore HTML.
+ * 
+ * @author Gilney N. Mathias
+ */
 public class MyNode implements Comparable<MyNode> {
 	
 	private String text;
@@ -64,6 +70,14 @@ public class MyNode implements Comparable<MyNode> {
 	}
 	
 	// Demais métodos
+	/**
+	 * Verifica se este Nodo é do tipo passado pelo parâmetro {@code type}.<br>
+	 * Os tipos de um Nodo podem ser vistos na classe {@link MyNodeType}.
+	 * 
+	 * @param type		Tipo para verificação.
+	 * @return			<b>True</b> caso este Nodo seja do tipo {@code type} ou<br>
+	 * 					<b>False</b> caso contrario.
+	 */
 	public boolean isA(String type){
 		return this.getType().toString()
 				.equals(type.toUpperCase());

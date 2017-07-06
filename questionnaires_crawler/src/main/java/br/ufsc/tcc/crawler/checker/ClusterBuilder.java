@@ -7,6 +7,12 @@ import br.ufsc.tcc.common.model.Cluster;
 import br.ufsc.tcc.common.model.MyNode;
 import br.ufsc.tcc.common.util.DistanceMatrix;
 
+/**
+ * Classe responsável por agrupar Nodo e/ou Cluster para formar 
+ * outros Cluster.
+ * 
+ * @author Gilney N. Mathias
+ */
 public class ClusterBuilder {
 	
 	// Construtores

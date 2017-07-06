@@ -10,7 +10,11 @@ import org.slf4j.helpers.MessageFormatter;
 
 import br.ufsc.tcc.common.config.ProjectConfigs;
 
-
+/**
+ * Classe responsável por lidar com os logs do sistema.
+ * 
+ * @author Gilney N. Mathias
+ */
 public class CommonLogger {
 
 	protected static final String path = "./log.txt";
@@ -123,7 +127,14 @@ public class CommonLogger {
 			System.exit(-1);
 		}
 	}
-
+	
+	/**
+	 * Salva os dados de um Erro no arquivo de log.
+	 * 
+	 * @param e			Erro que se quer salvar.
+	 * @return			<b>True</b> caso consiga salvar o arquivo ou<br>
+	 * 					<b>False</b> caso contrario.
+	 */
 	private static boolean logToFile(Throwable e) {
 		String content = CommonUtil.getCurrentTime() +" | Stacktrace: ";
 		content += "\n"+CommonUtil.exceptionStacktraceToString(e)+"\n";
