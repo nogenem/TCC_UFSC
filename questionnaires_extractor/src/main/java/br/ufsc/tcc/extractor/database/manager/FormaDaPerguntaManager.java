@@ -7,6 +7,12 @@ import br.ufsc.tcc.common.util.CommonLogger;
 import br.ufsc.tcc.extractor.database.dao.FormaDaPerguntaDao;
 import br.ufsc.tcc.extractor.model.FormaDaPergunta;
 
+/**
+ * Classe de mais alto nível responsável por lidar com operações do banco de dados
+ * relacionadas a classe/tabela FormaDaPergunta.
+ * 
+ * @author Gilney N. Mathias
+ */
 public class FormaDaPerguntaManager {
 	
 	private static HashMap<String, FormaDaPergunta> formas;

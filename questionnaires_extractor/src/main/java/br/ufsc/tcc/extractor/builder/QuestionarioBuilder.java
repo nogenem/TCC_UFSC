@@ -16,6 +16,13 @@ import br.ufsc.tcc.common.util.CommonUtil;
 import br.ufsc.tcc.common.util.DistanceMatrix;
 import br.ufsc.tcc.extractor.model.Questionario;
 
+/**
+ * Classe responsável por 'montar'/'construir' os questionários de 
+ * uma pagina Web.
+ * 
+ * @author Gilne
+ *
+ */
 public class QuestionarioBuilder {
 	
 	private static int MAX_TEXT_CLUSTERS_BETWEEN_QUESTIONS = 0;

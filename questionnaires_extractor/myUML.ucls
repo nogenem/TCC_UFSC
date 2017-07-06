@@ -1,22 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<class-diagram version="1.1.14" icons="true" automaticImage="PNG" always-add-relationships="true" generalizations="true" 
+<class-diagram version="1.2.0" icons="true" automaticImage="PNG" always-add-relationships="true" generalizations="true" 
   realizations="true" associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
-  <package id="1" language="java" name="br.ufsc.tcc.extractor.model" project="questionnaires_extractor" 
-    file="/questionnaires_extractor/src/main/java/br/ufsc/tcc/extractor/model" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="311" width="442" x="15" y="8"/>    
-    <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
-  </package>  
-  <class id="2" language="java" name="br.ufsc.tcc.extractor.model.Alternativa" project="questionnaires_extractor" 
-    file="/questionnaires_extractor/src/main/java/br/ufsc/tcc/extractor/model/Alternativa.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="99" y="90"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="false"/>    
-    </display>  
-  </class>  
-  <class id="3" language="java" name="br.ufsc.tcc.extractor.model.Figura" project="questionnaires_extractor" 
+  <class id="1" language="java" name="br.ufsc.tcc.extractor.model.Figura" project="questionnaires_extractor" 
     file="/questionnaires_extractor/src/main/java/br/ufsc/tcc/extractor/model/Figura.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="240" y="89"/>    
@@ -26,7 +11,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="4" language="java" name="br.ufsc.tcc.extractor.model.FormaDaPergunta" project="questionnaires_extractor" 
+  <class id="2" language="java" name="br.ufsc.tcc.extractor.model.FormaDaPergunta" project="questionnaires_extractor" 
     file="/questionnaires_extractor/src/main/java/br/ufsc/tcc/extractor/model/FormaDaPergunta.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="381" y="90"/>    
@@ -36,7 +21,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="5" language="java" name="br.ufsc.tcc.extractor.model.Grupo" project="questionnaires_extractor" 
+  <class id="3" language="java" name="br.ufsc.tcc.extractor.model.Grupo" project="questionnaires_extractor" 
     file="/questionnaires_extractor/src/main/java/br/ufsc/tcc/extractor/model/Grupo.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="86" y="174"/>    
@@ -46,7 +31,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="6" language="java" name="br.ufsc.tcc.extractor.model.Pergunta" project="questionnaires_extractor" 
+  <class id="4" language="java" name="br.ufsc.tcc.extractor.model.Pergunta" project="questionnaires_extractor" 
     file="/questionnaires_extractor/src/main/java/br/ufsc/tcc/extractor/model/Pergunta.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="243" y="262"/>    
@@ -56,7 +41,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="7" language="java" name="br.ufsc.tcc.extractor.model.Questionario" project="questionnaires_extractor" 
+  <class id="5" language="java" name="br.ufsc.tcc.extractor.model.Questionario" project="questionnaires_extractor" 
     file="/questionnaires_extractor/src/main/java/br/ufsc/tcc/extractor/model/Questionario.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="387" y="162"/>    
@@ -66,12 +51,12 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <package id="8" language="java" name="br.ufsc.tcc.extractor.builder" project="questionnaires_extractor" 
+  <package id="6" language="java" name="br.ufsc.tcc.extractor.builder" project="questionnaires_extractor" 
     file="/questionnaires_extractor/src/main/java/br/ufsc/tcc/extractor/builder" binary="false" corner="BOTTOM_RIGHT">    
     <position height="182" width="317" x="22" y="421"/>    
     <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
   </package>  
-  <class id="9" language="java" name="br.ufsc.tcc.extractor.builder.PerguntaBuilder" project="questionnaires_extractor" 
+  <class id="7" language="java" name="br.ufsc.tcc.extractor.builder.PerguntaBuilder" project="questionnaires_extractor" 
     file="/questionnaires_extractor/src/main/java/br/ufsc/tcc/extractor/builder/PerguntaBuilder.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="91" y="504"/>    
@@ -81,7 +66,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="10" language="java" name="br.ufsc.tcc.extractor.builder.QuestionarioBuilder" 
+  <class id="8" language="java" name="br.ufsc.tcc.extractor.builder.QuestionarioBuilder" 
     project="questionnaires_extractor" 
     file="/questionnaires_extractor/src/main/java/br/ufsc/tcc/extractor/builder/QuestionarioBuilder.java" binary="false" 
     corner="BOTTOM_RIGHT">    
@@ -92,7 +77,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="11" language="java" name="br.ufsc.tcc.extractor.builder.RulesChecker" project="questionnaires_extractor" 
+  <class id="9" language="java" name="br.ufsc.tcc.extractor.builder.RulesChecker" project="questionnaires_extractor" 
     file="/questionnaires_extractor/src/main/java/br/ufsc/tcc/extractor/builder/RulesChecker.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="164" y="571"/>    
@@ -102,12 +87,12 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <package id="12" language="java" name="br.ufsc.tcc.extractor.crawler" project="questionnaires_extractor" 
+  <package id="10" language="java" name="br.ufsc.tcc.extractor.crawler" project="questionnaires_extractor" 
     file="/questionnaires_extractor/src/main/java/br/ufsc/tcc/extractor/crawler" binary="false" corner="BOTTOM_RIGHT">    
     <position height="118" width="207" x="572" y="423"/>    
     <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
   </package>  
-  <class id="13" language="java" name="br.ufsc.tcc.extractor.crawler.Crawler" project="questionnaires_extractor" 
+  <class id="11" language="java" name="br.ufsc.tcc.extractor.crawler.Crawler" project="questionnaires_extractor" 
     file="/questionnaires_extractor/src/main/java/br/ufsc/tcc/extractor/crawler/Crawler.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="674" y="503"/>    
@@ -117,12 +102,12 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <package id="14" language="java" name="br.ufsc.tcc.extractor.extractor" project="questionnaires_extractor" 
+  <package id="12" language="java" name="br.ufsc.tcc.extractor.extractor" project="questionnaires_extractor" 
     file="/questionnaires_extractor/src/main/java/br/ufsc/tcc/extractor/extractor" binary="false" corner="BOTTOM_RIGHT">    
     <position height="115" width="206" x="358" y="332"/>    
     <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
   </package>  
-  <class id="15" language="java" name="br.ufsc.tcc.extractor.extractor.PerguntaExtractor" 
+  <class id="13" language="java" name="br.ufsc.tcc.extractor.extractor.PerguntaExtractor" 
     project="questionnaires_extractor" 
     file="/questionnaires_extractor/src/main/java/br/ufsc/tcc/extractor/extractor/PerguntaExtractor.java" binary="false" 
     corner="BOTTOM_RIGHT">    
@@ -133,13 +118,13 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <package id="16" language="java" name="br.ufsc.tcc.extractor.database.manager" project="questionnaires_extractor" 
+  <package id="14" language="java" name="br.ufsc.tcc.extractor.database.manager" project="questionnaires_extractor" 
     file="/questionnaires_extractor/src/main/java/br/ufsc/tcc/extractor/database/manager" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="182" width="387" x="496" y="135"/>    
     <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
   </package>  
-  <class id="17" language="java" name="br.ufsc.tcc.extractor.database.manager.FormaDaPerguntaManager" 
+  <class id="15" language="java" name="br.ufsc.tcc.extractor.database.manager.FormaDaPerguntaManager" 
     project="questionnaires_extractor" 
     file="/questionnaires_extractor/src/main/java/br/ufsc/tcc/extractor/database/manager/FormaDaPerguntaManager.java" 
     binary="false" corner="BOTTOM_RIGHT">    
@@ -150,7 +135,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="18" language="java" name="br.ufsc.tcc.extractor.database.manager.PerguntaManager" 
+  <class id="16" language="java" name="br.ufsc.tcc.extractor.database.manager.PerguntaManager" 
     project="questionnaires_extractor" 
     file="/questionnaires_extractor/src/main/java/br/ufsc/tcc/extractor/database/manager/PerguntaManager.java" 
     binary="false" corner="BOTTOM_RIGHT">    
@@ -161,7 +146,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="19" language="java" name="br.ufsc.tcc.extractor.database.manager.QuestionarioManager" 
+  <class id="17" language="java" name="br.ufsc.tcc.extractor.database.manager.QuestionarioManager" 
     project="questionnaires_extractor" 
     file="/questionnaires_extractor/src/main/java/br/ufsc/tcc/extractor/database/manager/QuestionarioManager.java" 
     binary="false" corner="BOTTOM_RIGHT">    
@@ -172,13 +157,13 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <package id="20" language="java" name="br.ufsc.tcc.extractor.database.dao" project="questionnaires_extractor" 
+  <package id="18" language="java" name="br.ufsc.tcc.extractor.database.dao" project="questionnaires_extractor" 
     file="/questionnaires_extractor/src/main/java/br/ufsc/tcc/extractor/database/dao" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="424" width="219" x="904" y="67"/>    
     <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
   </package>  
-  <class id="21" language="java" name="br.ufsc.tcc.extractor.database.dao.FormaDaPerguntaDao" 
+  <class id="19" language="java" name="br.ufsc.tcc.extractor.database.dao.FormaDaPerguntaDao" 
     project="questionnaires_extractor" 
     file="/questionnaires_extractor/src/main/java/br/ufsc/tcc/extractor/database/dao/FormaDaPerguntaDao.java" 
     binary="false" corner="BOTTOM_RIGHT">    
@@ -189,7 +174,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="22" language="java" name="br.ufsc.tcc.extractor.database.dao.PerguntaDao" 
+  <class id="20" language="java" name="br.ufsc.tcc.extractor.database.dao.PerguntaDao" 
     project="questionnaires_extractor" 
     file="/questionnaires_extractor/src/main/java/br/ufsc/tcc/extractor/database/dao/PerguntaDao.java" binary="false" 
     corner="BOTTOM_RIGHT">    
@@ -200,7 +185,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="23" language="java" name="br.ufsc.tcc.extractor.database.dao.AlternativaDao" 
+  <class id="21" language="java" name="br.ufsc.tcc.extractor.database.dao.AlternativaDao" 
     project="questionnaires_extractor" 
     file="/questionnaires_extractor/src/main/java/br/ufsc/tcc/extractor/database/dao/AlternativaDao.java" binary="false" 
     corner="BOTTOM_RIGHT">    
@@ -211,7 +196,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="24" language="java" name="br.ufsc.tcc.extractor.database.dao.GrupoDao" project="questionnaires_extractor" 
+  <class id="22" language="java" name="br.ufsc.tcc.extractor.database.dao.GrupoDao" project="questionnaires_extractor" 
     file="/questionnaires_extractor/src/main/java/br/ufsc/tcc/extractor/database/dao/GrupoDao.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1015" y="332"/>    
@@ -221,7 +206,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="25" language="java" name="br.ufsc.tcc.extractor.database.dao.FiguraDao" project="questionnaires_extractor" 
+  <class id="23" language="java" name="br.ufsc.tcc.extractor.database.dao.FiguraDao" project="questionnaires_extractor" 
     file="/questionnaires_extractor/src/main/java/br/ufsc/tcc/extractor/database/dao/FiguraDao.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1014" y="393"/>    
@@ -231,7 +216,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="26" language="java" name="br.ufsc.tcc.extractor.database.dao.QuestionarioDao" 
+  <class id="24" language="java" name="br.ufsc.tcc.extractor.database.dao.QuestionarioDao" 
     project="questionnaires_extractor" 
     file="/questionnaires_extractor/src/main/java/br/ufsc/tcc/extractor/database/dao/QuestionarioDao.java" 
     binary="false" corner="BOTTOM_RIGHT">    
@@ -242,12 +227,12 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <package id="27" language="java" name="br.ufsc.tcc.extractor.main" project="questionnaires_extractor" 
+  <package id="25" language="java" name="br.ufsc.tcc.extractor.main" project="questionnaires_extractor" 
     file="/questionnaires_extractor/src/main/java/br/ufsc/tcc/extractor/main" binary="false" corner="BOTTOM_RIGHT">    
     <position height="105" width="170" x="552" y="7"/>    
     <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
   </package>  
-  <class id="28" language="java" name="br.ufsc.tcc.extractor.main.Main" project="questionnaires_extractor" 
+  <class id="26" language="java" name="br.ufsc.tcc.extractor.main.Main" project="questionnaires_extractor" 
     file="/questionnaires_extractor/src/main/java/br/ufsc/tcc/extractor/main/Main.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="638" y="81"/>    
@@ -257,388 +242,364 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <association id="29">    
-    <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="30" name="grupos">        
+  <association id="27">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="28" name="formas">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="31" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <association id="32">    
-    <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="33" name="checker">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="34" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <association id="35">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="36" name="alternativas">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="37" minimum="0" maximum="2147483647">        
+      <multiplicity id="29" minimum="0" maximum="2147483647">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="false" multiplicity="false"/>  
   </association>  
-  <association id="38">    
+  <association id="30">    
     <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="39" name="qBuilder">        
+      <attribute id="31" name="checker">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="40" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="10" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <association id="41">    
-    <end type="SOURCE" refId="18" navigable="false">      
-      <attribute id="42" name="perguntaDao">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="43" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="22" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <association id="44">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="45" name="filhas">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="46" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <association id="47">    
-    <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="48" name="figuras">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="49" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <association id="50">    
-    <end type="SOURCE" refId="9" navigable="false">      
-      <attribute id="51" name="checker">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="52" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <association id="53">    
-    <end type="SOURCE" refId="19" navigable="false">      
-      <attribute id="54" name="perguntaManager">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="55" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="18" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <association id="56">    
-    <end type="SOURCE" refId="9" navigable="false">      
-      <attribute id="57" name="lastMatrix">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="58" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <association id="59">    
-    <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="60" name="checker">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="61" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <association id="62">    
-    <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="63" name="qManager">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="64" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="19" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <association id="65">    
-    <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="66" name="currentP">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="67" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <association id="68">    
-    <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="69" name="pBuilder">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="70" minimum="0" maximum="1">        
+      <multiplicity id="32" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="9" navigable="true"/>    
     <display labels="false" multiplicity="false"/>  
   </association>  
-  <association id="71">    
-    <end type="SOURCE" refId="19" navigable="false">      
-      <attribute id="72" name="figuraDao">        
+  <association id="33">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="34" name="checker">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="73" minimum="0" maximum="1">        
+      <multiplicity id="35" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="25" navigable="true"/>    
+    <end type="TARGET" refId="9" navigable="true"/>    
     <display labels="false" multiplicity="false"/>  
   </association>  
-  <association id="74">    
-    <end type="SOURCE" refId="9" navigable="false">      
-      <attribute id="75" name="extractor">        
+  <association id="36">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="37" name="lastMatrix">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="76" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="15" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <association id="77">    
-    <end type="SOURCE" refId="18" navigable="false">      
-      <attribute id="78" name="alternativaDao">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="79" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="23" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <association id="80">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="81" name="pergunta">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="82" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <association id="83">    
-    <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="84" name="currentQ">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="85" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="7" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <association id="86">    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="87" name="questionario">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="88" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="7" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <association id="89">    
-    <end type="SOURCE" refId="9" navigable="false">      
-      <attribute id="90" name="currentG">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="91" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <association id="92">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="93" name="grupo">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="94" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <association id="95">    
-    <end type="SOURCE" refId="17" navigable="false">      
-      <attribute id="96" name="formas">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="97" minimum="0" maximum="2147483647">        
+      <multiplicity id="38" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="false" multiplicity="false"/>  
   </association>  
-  <association id="98">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="99" name="pai">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="100" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <association id="101">    
-    <end type="SOURCE" refId="19" navigable="false">      
-      <attribute id="102" name="grupoDao">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="103" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="24" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <association id="104">    
+  <association id="39">    
     <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="105" name="perguntas">        
+      <attribute id="40" name="currentG">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="106" minimum="0" maximum="2147483647">        
+      <multiplicity id="41" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
+    <end type="TARGET" refId="3" navigable="true"/>    
     <display labels="false" multiplicity="false"/>  
   </association>  
-  <association id="107">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="108" name="questionario">        
+  <association id="42">    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="43" name="qManager">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="109" minimum="0" maximum="1">        
+      <multiplicity id="44" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="7" navigable="true"/>    
+    <end type="TARGET" refId="17" navigable="true"/>    
     <display labels="false" multiplicity="false"/>  
   </association>  
-  <association id="110">    
-    <end type="SOURCE" refId="9" navigable="false">      
-      <attribute id="111" name="currentP">        
+  <association id="45">    
+    <end type="SOURCE" refId="16" navigable="false">      
+      <attribute id="46" name="alternativaDao">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="112" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <association id="113">    
-    <end type="SOURCE" refId="17" navigable="false">      
-      <attribute id="114" name="dao">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="115" minimum="0" maximum="1">        
+      <multiplicity id="47" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="21" navigable="true"/>    
     <display labels="false" multiplicity="false"/>  
   </association>  
-  <association id="116">    
-    <end type="SOURCE" refId="9" navigable="false">      
-      <attribute id="117" name="lastQWithSubQs">        
+  <association id="48">    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="49" name="questionarioDao">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="118" minimum="0" maximum="1">        
+      <multiplicity id="50" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
+    <end type="TARGET" refId="24" navigable="true"/>    
     <display labels="false" multiplicity="false"/>  
   </association>  
-  <association id="119">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="120" name="forma">        
+  <association id="51">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="52" name="figuras">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="121" minimum="0" maximum="1">        
+      <multiplicity id="53" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="54">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="55" name="perguntas">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="56" minimum="0" maximum="2147483647">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="false" multiplicity="false"/>  
   </association>  
-  <association id="122">    
-    <end type="SOURCE" refId="19" navigable="false">      
-      <attribute id="123" name="questionarioDao">        
+  <association id="57">    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="58" name="grupoDao">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="124" minimum="0" maximum="1">        
+      <multiplicity id="59" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="26" navigable="true"/>    
+    <end type="TARGET" refId="22" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="60">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="61" name="dao">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="62" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="19" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="63">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="64" name="currentP">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="65" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="66">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="67" name="currentP">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="68" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="69">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="70" name="filhas">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="71" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="72">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="73" name="questionario">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="74" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="75">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="76" name="grupo">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="77" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="78">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="79" name="extractor">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="80" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="81">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="82" name="grupos">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="83" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="84">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="85" name="pBuilder">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="86" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="87">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="88" name="forma">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="89" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="90">    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="91" name="figuraDao">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="92" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="23" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="93">    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="94" name="perguntaManager">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="95" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="16" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="96">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="97" name="pai">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="98" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="99">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="100" name="lastQWithSubQs">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="101" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="102">    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="103" name="qBuilder">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="104" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="105">    
+    <end type="SOURCE" refId="16" navigable="false">      
+      <attribute id="106" name="perguntaDao">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="107" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="20" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="108">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="109" name="checker">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="110" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="111">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="112" name="currentQ">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="113" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="114">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="115" name="questionario">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="116" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="false" multiplicity="false"/>  
   </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 

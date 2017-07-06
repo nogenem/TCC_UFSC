@@ -14,6 +14,13 @@ import br.ufsc.tcc.extractor.model.FormaDaPergunta;
 import br.ufsc.tcc.extractor.model.Pergunta;
 import br.ufsc.tcc.extractor.model.Questionario;
 
+/**
+ * Classe responsável por utilizar os padrões encontrados
+ * durante a fase de analise para fazer a extração das perguntas
+ * de um questionário.
+ * 
+ * @author Gilney N. Mathias
+ */
 public class PerguntaExtractor {
 	
 	public Pergunta currentP;
@@ -42,7 +49,7 @@ public class PerguntaExtractor {
 		currentP.setForma(FormaDaPerguntaManager.getForma(type));
 		
 		// Verifica se não tem uma imagem entre o input e a sua descrição
-		//Ex: https://www.123contactform.com/js-form--37173.html [ultima pergunta]
+		//		Ex: https://www.123contactform.com/js-form--37173.html [ultima pergunta]
 		int i = currentI-1;
 		while(nodes.get(i).isImage()){
 			Figura fig = new Figura(nodes.get(i).getAttr("src"), nodes.get(i).getAttr("alt"));

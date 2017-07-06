@@ -195,7 +195,7 @@ public class RulesChecker {
 				dist.getMaxHeight() <= obj.getInt("maxHeight");
 	}
 	
-	public boolean isGroupText(Cluster cTmp, Cluster desc, Cluster firstGroupOfQuestionnaire) {
+	public boolean isAGroupText(Cluster cTmp, Cluster desc, Cluster firstGroupOfQuestionnaire) {
 		if(cTmp == null || cTmp.isEmpty() || desc == null || desc.isEmpty())
 			return false;
 		
@@ -273,10 +273,17 @@ public class RulesChecker {
 		DeweyExt dist = this.distMatrix.getDist(n1, n2);
 		return dist.isNegative();
 	}
-
+	
+	/**
+	 * Verifica se as alternativas/filhas da {@code currentP} contêm todos os textos
+	 * do {@code cTmp2}, ou se a descrição da {@code currentP} contém o 
+	 * texto de {@code cTmp2}.
+	 * 
+	 * @param currentP
+	 * @param cTmp2
+	 * @return
+	 */
 	public boolean hasSameTexts(Pergunta currentP, Cluster cTmp2) {
-		//Verifica se as alternativas/filhas da currentP contêm todos os textos
-		//do cTmp2, ou se a descrição da currentP contém o texto de cTmp2
 		if(cTmp2 == null || cTmp2.getText().isEmpty()) return false;
 		
 		ArrayList<Alternativa> alts = currentP.getAlternativas();
@@ -474,6 +481,14 @@ public class RulesChecker {
 				(text.getText().matches(DATE_REGEX1) || text.getText().matches("(?i)"+DATE_REGEX2)));
 	}
 	
+	/**
+	 * Verifica se é um RADIO/CHECKBOX INPUT com o padrão: 
+	 * 		text -> input -> text -> input.
+	 * 
+	 * @param nodes
+	 * @param currentI
+	 * @return
+	 */
 	public boolean checkIfTextIsAbove(List<MyNode> nodes, int currentI) {
 		MyNode input = null, text = null, img = null;
 		int i = currentI;
@@ -520,11 +535,6 @@ public class RulesChecker {
 		return false;
 	}
 	
-	public boolean isSameText(MyNode nTmp, MyNode last) {
-		DeweyExt dist = this.distMatrix.getDist(nTmp, last);
-		return dist.getWidth() == 1 && dist.getHeight() == 1;
-	}
-	
 	//Ex: http://lap.umd.edu/surveys/census/files/surveya1pagesbytopic/page2.html
 	//Ex: https://statpac.com/online-surveys/resturaunt_customer_satisfaction_survey.htm
 	public boolean isEvaluationLevels(Cluster desc, Stack<Cluster> cStack){
@@ -548,6 +558,13 @@ public class RulesChecker {
 		return false;
 	}
 	
+	/**
+	 * Verifica se é um RADO/CHECKBOX INPUT com apenas imagens.
+	 * 
+	 * @param nodes
+	 * @param currentI
+	 * @return
+	 */
 	public boolean isImageCheckboxOrRadioInput(List<MyNode> nodes, int currentI){
 		// Perguntas de RADIO/CHECKBOX_INPUT seguem o padrão:
 		//		input -> img -> input -> img ...

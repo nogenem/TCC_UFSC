@@ -18,6 +18,14 @@ import br.ufsc.tcc.extractor.model.Grupo;
 import br.ufsc.tcc.extractor.model.Pergunta;
 import br.ufsc.tcc.extractor.model.Questionario;
 
+/**
+ * Classe responsável por 'montar'/'construir' as perguntas de um questionário 
+ * utilizando certos padrões.<br>
+ * Ela também é responsável por achar outras características importantes de
+ * um questionário, como o seu assunto e imagens relacionadas ao mesmo.
+ * 
+ * @author Gilney N. Mathias
+ */
 public class PerguntaBuilder {
 	// Current
 	private Pergunta currentP;
@@ -210,7 +218,8 @@ public class PerguntaBuilder {
 						tmpDescTxt += "\n"+ nTmp1.getText();
 				}
 			}
-		
+			
+			//Seta a descrição da pergunta
 			this.currentP.setDescricao(tmpDescTxt);
 			CommonLogger.debug("Descricao: {}\n\n", this.currentP.getDescricao());
 			
@@ -323,7 +332,7 @@ public class PerguntaBuilder {
 					cTmp2 = this.lastMatrixDesc != null ? this.lastMatrixDesc : 
 						this.lastQWithSubQsDesc != null ? this.lastQWithSubQsDesc :
 							desc;
-					if(cTmp1 != null && this.checker.isGroupText(cTmp1, cTmp2, this.firstGroupOfQuestionnaire) &&
+					if(cTmp1 != null && this.checker.isAGroupText(cTmp1, cTmp2, this.firstGroupOfQuestionnaire) &&
 							!cStack.isEmpty()){
 						currentG = new Grupo(cTmp1.getText());
 						currentQ.addGrupo(currentG);
@@ -335,6 +344,8 @@ public class PerguntaBuilder {
 						else
 							cTmp1 = null;
 					}
+					
+					//Seta o assunto do questionário atual
 					if(cTmp1 != null){
 						cTmp1 = this.checker.checkIfDescIsComplete(cTmp1, cStack, nodes, this.currentI);
 						currentQ.setAssunto(cTmp1.getText());
@@ -346,7 +357,7 @@ public class PerguntaBuilder {
 					cTmp2 = this.lastMatrixDesc != null ? this.lastMatrixDesc : 
 						this.lastQWithSubQsDesc != null ? this.lastQWithSubQsDesc :
 							desc;
-					if(this.checker.isGroupText(cTmp1, cTmp2, this.firstGroupOfQuestionnaire)){
+					if(this.checker.isAGroupText(cTmp1, cTmp2, this.firstGroupOfQuestionnaire)){
 						cTmp1 = cStack.pop();
 						this.currentG = new Grupo(cTmp1.getText());
 						currentQ.addGrupo(currentG);
@@ -370,7 +381,15 @@ public class PerguntaBuilder {
 		
 		return this.currentI;
 	}
-
+	
+	/**
+	 * Atualiza os dados da ultima pergunta com subperguntas encontrada.
+	 * 
+	 * @param currentQ
+	 * @param nodes
+	 * @param cStack
+	 * @param nTmp1
+	 */
 	private void updateLastQWithSubQs(Questionario currentQ, List<MyNode> nodes, Stack<Cluster> cStack, MyNode nTmp1) {
 		if(cStack.isEmpty()) return;
 		
@@ -386,7 +405,12 @@ public class PerguntaBuilder {
 		this.lastQWithSubQs.setDescricao(this.lastQWithSubQsDesc.getText());							
 		this.lastQWithSubQs.addFilha(this.currentP);
 	}
-
+	
+	/**
+	 * Adiciona a ultima pergunta com subperguntas encontrada ao questionário atual.
+	 * 
+	 * @param currentQ		Questionário atual.
+	 */
 	private void saveLastQWithSubQs(Questionario currentQ) {
 		if(this.lastQWithSubQs != null){
 			currentQ.addPergunta(this.lastQWithSubQs);
@@ -396,7 +420,14 @@ public class PerguntaBuilder {
 		this.lastQWithSubQsDesc = null;
 		this.lastQWithSubQsCommonPrefix = "";
 	}
-
+	
+	/**
+	 * Atualiza os dados da ultima matriz encontrada.
+	 * 
+	 * @param nodes
+	 * @param cStack
+	 * @param cTmp2
+	 */
 	private void updateLastMatrix(List<MyNode> nodes, Stack<Cluster> cStack, Cluster cTmp2) {
 		if(!cStack.isEmpty() && cTmp2 == cStack.peek())
 			this.lastMatrixHead = cStack.pop();
@@ -429,7 +460,12 @@ public class PerguntaBuilder {
 		if(this.lastMatrix != null)
 			this.lastMatrix.addFilha(this.currentP);
 	}
-
+	
+	/**
+	 * Adiciona a ultima matriz encontrada ao questionário atual.
+	 * 
+	 * @param currentQ		Questionário atual.
+	 */
 	private void saveLastMatrix(Questionario currentQ) {
 		if(this.lastMatrix != null){
 			if(this.lastMatrixEvaluationLevels != null)

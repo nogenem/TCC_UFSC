@@ -14,6 +14,12 @@ import br.ufsc.tcc.extractor.model.Grupo;
 import br.ufsc.tcc.extractor.model.Pergunta;
 import br.ufsc.tcc.extractor.model.Questionario;
 
+/**
+ * Classe de mais alto nível responsável por lidar com operações do banco de dados
+ * relacionadas a classe/tabela Questionario.
+ * 
+ * @author Gilney N. Mathias
+ */
 public class QuestionarioManager {
 	
 	private QuestionarioDao questionarioDao;
