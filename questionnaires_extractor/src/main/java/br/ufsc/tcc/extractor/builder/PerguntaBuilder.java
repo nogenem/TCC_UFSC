@@ -448,8 +448,10 @@ public class PerguntaBuilder {
 		if(perg.isA("RADIO_INPUT")){
 			ArrayList<Alternativa> alts = perg.getAlternativas();
 			
-			alts.get(0).setDescricao(evaluationLevels.first().getText() + "\n" +alts.get(0).getDescricao());
-			alts.get(alts.size()-1).setDescricao(evaluationLevels.first().getText() + "\n" +alts.get(alts.size()-1).getDescricao());
+			alts.get(0).setDescricao(evaluationLevels.first().getText() + 
+					"\n" +alts.get(0).getDescricao());
+			alts.get(alts.size()-1).setDescricao(evaluationLevels.last().getText() + 
+					"\n" +alts.get(alts.size()-1).getDescricao());
 		}else if(perg.isA("RADIO_INPUT_MATRIX")){
 			for(Pergunta p : perg.getFilhas())
 				setEvaluationLevels(p, evaluationLevels);

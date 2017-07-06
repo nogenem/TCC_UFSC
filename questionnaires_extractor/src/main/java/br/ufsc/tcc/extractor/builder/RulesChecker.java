@@ -31,7 +31,7 @@ public class RulesChecker {
 	public static final String DATE_REGEX1 = "(/|\\-)",
 			DATE_REGEX2 = "(month|day|year|m(ê|e)s|d(i|í)a|a(n|ñ)o)";
 	public static final String MONEY_REGEX1 = "(\\.)",
-			MONEY_REGEX2 = "(dollars?|cents?)";
+			MONEY_REGEX2 = "(dollars?|cents?|dólares?|reais?|centavos)";
 	
 	public RulesChecker(DistanceMatrix distMatrix) {
 		this.distMatrix = distMatrix;

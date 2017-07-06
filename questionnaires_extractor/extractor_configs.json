@@ -25,7 +25,7 @@
 		"resumableCrawling": false	
 	},
 	"seeds": [
-		"https://www.123contactform.com/js-form--37173.html"
+		"https://www.123contactform.com/js-form--37440.html"
 	],
 	"parameters": {
 		"minQuestionsOnQuestionnaire": 2,
@@ -50,7 +50,7 @@
 		},
 		"distBetweenGroupAndFirstQuestion": {
 			"height": 1,
-			"width": 7
+			"width": 6
 		},
 		"distBetweenDescAndComplementaryText": {
 			"height": 2,
@@ -59,7 +59,7 @@
 		},
 		"distBetweenTextsInQuestionWithSubQuestions": {
 			"height": 1,
-			"width": 7
+			"width": 6
 		},
 		"distBetweenPartsOfDescription": {
 			"width": 4,
@@ -75,6 +75,6 @@
 			"height": 1
 		},
 		"maxSpacesAndNewLinesInEvaluationLevels": 3,
-		"evaluationLevelsWordsRegex": "(?ism).*(likely|confident|strongly|provável|confiante|fortemente).*"
+		"evaluationLevelsWordsRegex": "(?ism).*(satisfied|likely|confident|strongly|satisfeito|prov(á|a)vel|confiante|fortemente).*"
 	}
 }
