@@ -44,7 +44,7 @@ public class CommonLogger {
 		if(enabledLevels.contains("DEBUG")){
 			for(int i = 0; i<arr.size(); i++){
 				System.out.println(MessageFormatter.
-						format("<{}>{}", i, arr.get(i)).getMessage());
+						format("<{}>{}", i+1, arr.get(i)).getMessage());
 			}
 			System.out.println();
 		}

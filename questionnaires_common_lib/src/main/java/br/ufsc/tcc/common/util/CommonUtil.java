@@ -360,7 +360,6 @@ public class CommonUtil {
 			MyNode node = new MyNode(root, new DeweyExt(dewey));
 			//TODO remover isso?
 			//Agrupa textos que foram separados por <br>
-			
 			if(!ret.isEmpty()){
 				MyNode last = ret.get(ret.size()-1);
 				if(node.getDewey().equals(last.getDewey()))
@@ -392,7 +391,7 @@ public class CommonUtil {
 		if(i-1 < 0 || i+1 >= children.size())
 			return false;
 		Node c1 = children.get(i-1), c2 = children.get(i+1);
-		if(!c1.nodeName().equals("#text") && 
+		if(!c1.nodeName().equals("#text") || 
 				!c2.nodeName().equals("#text"))
 			return false;
 		return !trim(c1.toString()).isEmpty() && !trim(c2.toString()).isEmpty();
