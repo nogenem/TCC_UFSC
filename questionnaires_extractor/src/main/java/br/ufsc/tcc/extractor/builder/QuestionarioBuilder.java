@@ -77,7 +77,7 @@ public class QuestionarioBuilder {
 				}
 				
 				//Verifica se esta começando um novo questinario
-				if(!this.currentQ.getPerguntas().isEmpty()){ 
+				if(!this.currentQ.getPerguntas().isEmpty() || pBuilder.hasBuildBegun()){ 
 					if(clustersWithTextSinceLastQuestion > MAX_TEXT_CLUSTERS_BETWEEN_QUESTIONS || 
 							checker.shouldStartNewQuestionario(lastDesc, nTmp)){
 						this.pBuilder.clearData(this.currentQ);

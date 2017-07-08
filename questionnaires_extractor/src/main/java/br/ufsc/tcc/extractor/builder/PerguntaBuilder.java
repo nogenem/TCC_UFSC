@@ -71,6 +71,11 @@ public class PerguntaBuilder {
 		this.lastQWithSubQsDesc = null;
 		this.lastQWithSubQsCommonPrefix = null;
 	}
+	
+	public boolean hasBuildBegun() {
+		return this.lastQWithSubQs != null ||
+				this.lastMatrix != null;
+	}
 
 	public int build(Questionario currentQ, List<MyNode> nodes, int i, Stack<Cluster> cStack) {
 		if(cStack.isEmpty())

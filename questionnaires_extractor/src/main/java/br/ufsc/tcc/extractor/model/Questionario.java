@@ -109,7 +109,7 @@ public class Questionario {
 		builder.append("\tPerguntas:\n");
 		for(int i = 0; i<this.perguntas.size(); i++){
 			Pergunta p = this.perguntas.get(i);
-			builder.append("<<"+i+">> " +p);
+			builder.append("<<"+(i+1)+">> " +p);
 		}
 		return builder.toString();
 	}
