@@ -25,7 +25,7 @@
 		"resumableCrawling": false	
 	},
 	"seeds": [
-		"https://www.123contactform.com/js-form--37440.html"
+		"https://surveynuts.com/surveys/take?id=2668&c=85393DRVH"
 	],
 	"parameters": {
 		"minQuestionsOnQuestionnaire": 2,
@@ -73,6 +73,10 @@
 		},
 		"distBetweenEvaluationLevelsAndDesc": {
 			"height": 1
+		},
+		"distBetweenHeaderAndFirstAlternative": {
+			"height": 1,
+			"width": 6
 		},
 		"maxSpacesAndNewLinesInEvaluationLevels": 3,
 		"evaluationLevelsWordsRegex": "(?ism).*(satisfied|likely|confident|strongly|satisfeito|prov(á|a)vel|confiante|fortemente).*"

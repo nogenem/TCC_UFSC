@@ -321,6 +321,15 @@ public class RulesChecker {
 		Cluster head = !cStack.isEmpty() ? cStack.peek() : null;
 		MyNode nTmp = nodes.get(i);
 		
+		if(head == null || !head.isAllText())
+			return false;
+		
+		JSONObject obj = CONFIGS.getJSONObject("distBetweenHeaderAndFirstAlternative");
+		DeweyExt dist = this.distMatrix.getDist(head.last(), nTmp);
+		if(dist.getHeight() > obj.getInt("height") || 
+				dist.getWidth() > obj.getInt("width"))
+			return false;
+		
 		//Conta a quantidade de componentes em sequência
 		do{ 
 			count++;
@@ -331,16 +340,21 @@ public class RulesChecker {
 		}while(nTmp != null && nTmp.isComponent());
 		
 		//A quantidade encontrada acima deve ser a mesma de textos no head da matriz
-		return head != null && head.isAllText() && head.size() == count;
+		return head.size() == count;
 	}
 	
-	public boolean isRadioInputOrCheckboxWithHeader(List<MyNode> nodes, Stack<Cluster> cStack, int i, Cluster desc){
+	public boolean isRadioInputOrCheckboxWithHeader(List<MyNode> nodes, int i, Cluster head){
 		int count = 0;
 		MyNode nTmp = nodes.get(i);
 		String type = nTmp.getType().toString();
-		Cluster head = desc;
 		
-		if(!type.matches("RADIO_INPUT|CHECKBOX_INPUT"))
+		if(head == null || !head.isAllText() || !type.matches("RADIO_INPUT|CHECKBOX_INPUT"))
+			return false;
+		
+		JSONObject obj = CONFIGS.getJSONObject("distBetweenHeaderAndFirstAlternative");
+		DeweyExt dist = this.distMatrix.getDist(head.last(), nTmp);
+		if(dist.getHeight() > obj.getInt("height") || 
+				dist.getWidth() > obj.getInt("width"))
 			return false;
 		
 		//Conta a quantidade de componentes em sequência
@@ -353,7 +367,7 @@ public class RulesChecker {
 		}while(nTmp != null && nTmp.isA(type));
 		
 		//A quantidade encontrada acima deve ser a mesma de textos no head da matriz
-		return head != null && head.isAllText() && head.size() == count;
+		return head.size() == count;
 	}
 	
 	public boolean checkPrefixForQuestionGroup(MyNode n1, MyNode n2, String prefix) {
@@ -635,6 +649,12 @@ public class RulesChecker {
 			lastObj = "distBetweenEvaluationLevelsAndDesc";
 			tmp = p.getJSONObject(lastObj);	
 				tmp.getInt("height");
+				
+			lastObj = "distBetweenHeaderAndFirstAlternative";
+			tmp = p.getJSONObject(lastObj);	
+				tmp.getInt("height");
+				tmp.getInt("width");
+					
 			p.getInt("maxSpacesAndNewLinesInEvaluationLevels");
 			p.getString("evaluationLevelsWordsRegex");
 		}catch(JSONException exp){

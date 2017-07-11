@@ -119,7 +119,7 @@ public class PerguntaBuilder {
 				//Ex: https://www.surveycrest.com/template_preview/pyof1IFwp9Xa1_x430JdUeVsuHVRKuw
 				this.currentI = this.extractor.extractSimpleMatrix(nodes, currentQ, 
 						this.lastMatrixHead, this.currentI);
-			}else if(this.checker.isRadioInputOrCheckboxWithHeader(nodes, cStack, currentI, desc)){
+			}else if(this.checker.isRadioInputOrCheckboxWithHeader(nodes, currentI, desc)){
 				
 				//Ex: http://infopoll.net/live/surveys/s32805.htm
 				this.currentI = this.extractor.extractCheckboxOrRadioInputWithHeader(nodes, desc, currentI);
@@ -436,7 +436,8 @@ public class PerguntaBuilder {
 	private void updateLastMatrix(List<MyNode> nodes, Stack<Cluster> cStack, Cluster cTmp2) {
 		if(!cStack.isEmpty() && cTmp2 == cStack.peek())
 			this.lastMatrixHead = cStack.pop();
-		if(!cStack.isEmpty() && lastMatrix == null){
+		
+		if(lastMatrix == null) {
 			this.lastMatrix = new Pergunta();
 			FormaDaPergunta forma = this.currentP.getForma();
 			if(this.currentP.isA("MIX_COMP_GROUP")){
@@ -444,24 +445,32 @@ public class PerguntaBuilder {
 			}else{
 				this.lastMatrix.setForma(FormaDaPerguntaManager.getForma(forma.toString()+"_MATRIX"));
 			}
-			Cluster desc = cStack.pop();
-			if(!cStack.isEmpty() && checker.isEvaluationLevels(desc, cStack)){
-				lastMatrixEvaluationLevels = desc;
-				desc = cStack.pop();
-			}
-			desc = this.checker.checkIfDescIsComplete(desc, cStack, nodes, this.currentI);
-			
-			//Verifica se a desc e o cabeçalho da matriz estão perto um do outro
-			if(!checker.areDescAndPergNear(desc, this.lastMatrixHead.first())) {
-				//Matriz sem descrição
-				//	Ex: http://www.questionpro.com/survey-templates/employee-benefits-survey/
+			Cluster desc = !cStack.isEmpty() ? cStack.pop() : null;
+			if(desc != null) {
+				if(!cStack.isEmpty() && checker.isEvaluationLevels(desc, cStack)){
+					lastMatrixEvaluationLevels = desc;
+					desc = cStack.pop();
+				}
+				desc = this.checker.checkIfDescIsComplete(desc, cStack, nodes, this.currentI);
+				
+				//Verifica se a desc e o cabeçalho da matriz estão perto um do outro
+				if(checker.areDescAndPergNear(desc, this.lastMatrixHead.first())) {
+					this.lastMatrixDesc = desc;
+					this.lastMatrix.setDescricao(desc.getText());		
+				}else {
+					//Matriz sem descrição
+					//	Ex: http://www.questionpro.com/survey-templates/employee-benefits-survey/
+					this.lastMatrixDesc = null;
+					this.lastMatrix.setDescricao("");
+				}
+			}else {
+				//Caso meio raro...
+				//	Ex: http://www.123contactform.com/js-form--1941084.html
 				this.lastMatrixDesc = null;
 				this.lastMatrix.setDescricao("");
-			}else {
-				this.lastMatrixDesc = desc;
-				this.lastMatrix.setDescricao(desc.getText());				
 			}
 		}
+		
 		if(this.lastMatrix != null)
 			this.lastMatrix.addFilha(this.currentP);
 	}

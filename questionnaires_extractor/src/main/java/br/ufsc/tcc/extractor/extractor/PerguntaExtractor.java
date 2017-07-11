@@ -130,8 +130,12 @@ public class PerguntaExtractor {
 			if(lastInput != null && 
 					!this.checker.areCompAndTextNear(lastInput, input))
 				break;
-
-			Pergunta tmpPerg = new Pergunta(""+ (i++));
+			
+			String desc = input.getAttr("placeholder");
+			if(desc.isEmpty())
+				desc = ""+ (i++);
+			
+			Pergunta tmpPerg = new Pergunta(desc);
 			tmpPerg.setForma(FormaDaPerguntaManager.getForma(multiCompType.toString()));
 			tmpPerg.setQuestionario(currentQ);
 			this.currentP.addFilha(tmpPerg);
