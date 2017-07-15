@@ -22,12 +22,10 @@ import java.util.regex.Pattern;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 
 import com.google.common.base.CharMatcher;
 
-import br.ufsc.tcc.common.model.Cluster;
 import br.ufsc.tcc.common.model.DeweyExt;
 import br.ufsc.tcc.common.model.MyNode;
 
@@ -102,6 +100,14 @@ public class CommonUtil {
 		return content;
 	}
 	
+	/**
+	 * Le todo o conteúdo de um recurso e o retorna em 
+	 * forma de uma String.
+	 * 
+	 * @param resource				Recurso que se quer o conteúdo.
+	 * @return						Uma String que contém todo o conteúdo do recurso
+	 * 								passado.
+	 */	
 	public static String readResource(String resource){
 		String content = "";
 		try {
@@ -198,10 +204,10 @@ public class CommonUtil {
 	}
 	
 	/**
-	 * Retorna um JSONObject da String content passada.
+	 * Retorna um JSONObject da String {@code content} passada.
 	 * 
-	 * @param content	Conteudo que se quer gerar um JSONObject.
-	 * @return			Um JSONObject do conteudo passado.
+	 * @param content	Conteúdo que se quer gerar um JSONObject.
+	 * @return			Um JSONObject do conteúdo passado.
 	 */
 	public static JSONObject parseJson(String content){
 		JSONObject obj = null;
@@ -214,8 +220,8 @@ public class CommonUtil {
 	}
 	
 	/**
-	 * Remove espaços antes e depois da String str, incluindo os caracteres
-	 * '\u00a0' e '\ufeff'.
+	 * Remove espaços antes e depois da String {@code str}, incluindo os 
+	 * caracteres '\u00a0' e '\ufeff'.
 	 * 
 	 * @param str	String que se quer remover os espaços em volta.
 	 * @return		A String str sem espaços em volta.
@@ -251,16 +257,39 @@ public class CommonUtil {
 	    return baos.toString();
 	}
 	
+	/**
+	 * Conta o tamanho do prefixo comum entre {@code d1} e {@code d2} 
+	 * desconsiderando sinais negativos, '-'.
+	 * 
+	 * @param d1
+	 * @param d2
+	 * @return			Valor do tamanho do prefixo comum.
+	 */
 	public static int getPrefixLenght(DeweyExt d1, DeweyExt d2){
 		return getPrefixLength(d1.getCommonPrefix(d2));
 	}
 	
+	/**
+	 * Conta o tamanho do prefixo comum {@code prefix}  
+	 * desconsiderando sinais negativos, '-'.
+	 * 
+	 * @param prefix
+	 * @return			Valor do tamanho do prefixo comum.
+	 */
 	public static int getPrefixLength(String prefix){
 		int n = prefix.length();
 		n -= CharMatcher.is('-').countIn(prefix);
 		return n;
 	}
 	
+	/**
+	 * Adiciona zeros a frente de um numero para deixa-los com 
+	 * exatamente 3 caracteres. Por exemplo, 1 vira 001, 10 vira 010 e 
+	 * 100 continua como 100.
+	 * 
+	 * @param i			Numero que precisa de padding.
+	 * @return			String com exatamente 3 caracteres do numero {@code i}.
+	 */
 	public static String padNumber(int i){
 		return ((i < 0) ? "-" : "") + String.format("%03d", Math.abs(i)); 
 	}
@@ -296,6 +325,15 @@ public class CommonUtil {
 						REQUIRED_REGEX, REQUIRED_REGEX), ""));
 	}
 	
+	/**
+	 * Verifica se o nodo passado é um componente de formulário, 
+	 * uma imagem ou um texto.
+	 * 
+	 * @param node		Nodo que se quer verificar.
+	 * @return			<b>True</b> caso este nodo seja um componente de formulário, 
+	 * 					uma imagem ou um texto ou<br>
+	 * 					<b>False</b> caso contrário.
+	 */
 	public static boolean isCompImgOrTextNode(Node node){
 		if(node == null) return false;
 		
@@ -305,29 +343,15 @@ public class CommonUtil {
 						!node.attr("type").equals("hidden"));
 	}
 	
-	public static int getCountOfElems(Element root){
-		if(root == null) return -1;
-		
-		String single = String.join(",", singleComps),
-				multi = String.join(",", multiComps);
-		
-		return root.select(single).size() + 
-				root.select(multi).size()/2;
-	}
-	
-	public static int getCountOfElems(Cluster c){
-		if(c == null) return -1;
-		
-		double count = 0;
-		for(MyNode node : c.getGroup()){
-			if(singleComps.contains(node.getText()))
-				count++;
-			else if(multiComps.contains(node.getText()))
-				count += 0.5;
-		}
-		return (int) count;
-	}
-	
+	/**
+	 * Compara o {@code regex} passado com cada linha da String {@code txt}.
+	 * 
+	 * @param txt			
+	 * @param regex
+	 * @return				<b>True</b> caso o {@code regex} passado seja encontrado
+	 * 						em alguma das linhas de {@code txt} ou<br>
+	 * 						<b>False</b> caso contrario.
+	 */
 	public static boolean matchesWithLineBreak(String txt, String regex){
 		String [] lines = txt.split("\n");
 		Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
@@ -348,6 +372,13 @@ public class CommonUtil {
 		return false;
 	}
 	
+	/**
+	 * Encontra e retorna todos os nodos de componente de formulário, imagem ou 
+	 * texto a partir de um nodo {@code root}.
+	 * 
+	 * @param root			Nodo inicial da busca.
+	 * @return				Lista com todos os nodos encontrados.
+	 */
 	public static List<MyNode> findCompsImgsAndTexts(Node root) {
 		List<MyNode> ret = new ArrayList<>();
 		if(root != null)
@@ -358,7 +389,6 @@ public class CommonUtil {
 	private static void findCompsImgsAndTexts(Node root, String dewey, List<MyNode> ret) {
 		if(isCompImgOrTextNode(root)){
 			MyNode node = new MyNode(root, new DeweyExt(dewey));
-			//TODO remover isso?
 			//Agrupa textos que foram separados por <br>
 			if(!ret.isEmpty()){
 				MyNode last = ret.get(ret.size()-1);
@@ -386,7 +416,13 @@ public class CommonUtil {
 		}
 	}
 	
-	
+	/**
+	 * Verifica se o nodo na posição {@code i} esta entre dois nodos de texto.
+	 * 
+	 * @param children
+	 * @param i
+	 * @return
+	 */
 	private static boolean isBetweenTexts(List<Node> children, int i) {
 		if(i-1 < 0 || i+1 >= children.size())
 			return false;

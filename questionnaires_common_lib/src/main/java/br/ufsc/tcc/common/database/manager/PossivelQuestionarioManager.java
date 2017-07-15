@@ -34,13 +34,13 @@ public class PossivelQuestionarioManager {
 	
 	public void save(PossivelQuestionario q) throws Exception {
 		pqDao.save(q);
-		savedLinks.add(q.getLink_doc());//TODO remover isso?
+		savedLinks.add(q.getLink_doc());
 	}
 	
 	public void remove(String link) throws Exception {
 		if(savedLinks.contains(link)){
 			pqDao.remove(link);
-			savedLinks.remove(link);//TODO remover isso?
+			savedLinks.remove(link);
 		}
 	}
 	
