@@ -54,7 +54,6 @@ public class RulesChecker {
 		
 		Element root = tmp.get(0);
 		
-		//TODO realmente deixar assim? [tentar encontrar um questionario que quebre essa regra]
 		if(!SURVEY_WORDS_REGEX.matcher(root.text()).matches() && 
 				!SURVEY_WORDS_REGEX.matcher(doc.title()).matches()){
 			this.distMatrix.clear();
@@ -84,7 +83,7 @@ public class RulesChecker {
 			Cluster c = clusters.get(i);
 			cCount = getCountOfComps(c);
 			
-			CommonLogger.debug("<{}>cCount: {}; qCount: {};", i, cCount, qCount);
+			CommonLogger.debug("<{}>cCount: {}; qCount: {};", i+1, cCount, qCount);
 			
 			//Atualiza o contador de clusters sem componentes e verifica se ja 
 			//chego no limite
@@ -194,7 +193,7 @@ public class RulesChecker {
 	
 	private boolean isLikelyAQuestion(String text){
 		return text.contains("?") || text.contains(":") || 
-				text.matches("(?m)^(\\d{1,4}).*(\\.)$");
+				text.matches("(?m)^(\\d{1,4}).*(\\.)$");//começa com numero e termina com '.'
 	}
 	
 	private String fixText(String text){
