@@ -161,7 +161,7 @@ public class PerguntaExtractor {
 
 	public int extractSimpleRating(List<MyNode> nodes, int currentI) {
 		MyNode input = null, lastInput = null;
-		int i = 1;//TODO adicionar 0 tb?
+		int i = 1;
 				
 		currentP.setForma(FormaDaPerguntaManager.getForma("RATING"));
 		CommonLogger.debug("\tRating:");
@@ -431,6 +431,8 @@ public class PerguntaExtractor {
 
 	public int extractSelect(List<MyNode> nodes, int currentI) {
 		MyNode opt = null, text = null;
+		
+		if(currentI+2 >= nodes.size()) return currentI;
 		
 		if(checker.isSelectGroup(nodes, currentI)){
 			currentP.setForma(FormaDaPerguntaManager.getForma("SELECT_GROUP"));

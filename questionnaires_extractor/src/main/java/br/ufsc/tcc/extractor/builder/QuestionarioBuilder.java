@@ -20,7 +20,7 @@ import br.ufsc.tcc.extractor.model.Questionario;
  * Classe responsável por 'montar'/'construir' os questionários de 
  * uma pagina Web.
  * 
- * @author Gilne
+ * @author Gilney N. Mathias
  *
  */
 public class QuestionarioBuilder {
@@ -37,7 +37,7 @@ public class QuestionarioBuilder {
 	public QuestionarioBuilder(){
 		this.currentQ = null;
 		this.currentLink = "";
-		this.distMatrix = new DistanceMatrix();//TODO voltar ao jeito q tava
+		this.distMatrix = new DistanceMatrix();
 		
 		this.checker = new RulesChecker(this.distMatrix);
 		this.pBuilder = new PerguntaBuilder(this.checker);

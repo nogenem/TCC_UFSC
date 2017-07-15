@@ -156,6 +156,7 @@ public class Pergunta {
 		case "SELECT":
 		case "SELECT_GROUP":
 		case "IMAGE_RADIO_INPUT":
+		case "IMAGE_RADIO_INPUT_GROUP":
 		case "RADIO_INPUT":
 		case "RADIO_INPUT_GROUP":
 		case "RANGE_INPUT":
@@ -167,6 +168,7 @@ public class Pergunta {
 		case "CHECKBOX_INPUT":
 		case "CHECKBOX_INPUT_GROUP":
 		case "CHECKBOX_INPUT_MATRIX":
+		case "IMAGE_RADIO_INPUT_MATRIX":
 		case "RADIO_INPUT_MATRIX":
 			return "MULTIPLA_ESCOLHA";
 		case "TEXT_INPUT":
@@ -193,7 +195,7 @@ public class Pergunta {
 		case "TEXTAREA":
 		case "TEXTAREA_GROUP":
 		case "TEXTAREA_MATRIX":
-		case "MIX_COMP_GROUP"://TODO deixar assim mesmo?
+		case "MIX_COMP_GROUP":
 		case "MIX_COMP_MATRIX":
 		case "MULTI_COMP":
 		case "MULTI_COMP_GROUP":

@@ -25,7 +25,7 @@
 		"resumableCrawling": false	
 	},
 	"seeds": [
-		"https://surveynuts.com/surveys/take?id=2668&c=85393DRVH"
+		"https://survey.sogosurvey.com/survey.aspx?k=SsWUYTsQSUsPsPsP&lang=0&data"
 	],
 	"parameters": {
 		"minQuestionsOnQuestionnaire": 2,
@@ -71,12 +71,12 @@
 			"maxHeight": 2,
 			"width": 2
 		},
-		"distBetweenEvaluationLevelsAndDesc": {
-			"height": 1
-		},
 		"distBetweenHeaderAndFirstAlternative": {
 			"height": 1,
 			"width": 6
+		},
+		"distBetweenEvaluationLevelsAndDesc": {
+			"height": 1
 		},
 		"maxSpacesAndNewLinesInEvaluationLevels": 3,
 		"evaluationLevelsWordsRegex": "(?ism).*(satisfied|likely|confident|strongly|satisfeito|prov(á|a)vel|confiante|fortemente).*"

@@ -10,7 +10,7 @@ public class MainTest extends BasicTest {
 	public void allTests() {
 		CommonLogger.setDebugEnabled(false);
 		try {
-			super.executeTest("Survio1.json");//TODO dar jeito na descrição da ultima pergunta!
+			super.executeTest("Survio1.json");
 			super.executeTest("Survio2.json");
 			super.executeTest("SurveyMonkey1.json");
 			super.executeTest("SurveyMonkey2.json");
@@ -21,7 +21,6 @@ public class MainTest extends BasicTest {
 			super.executeTest("SurveyCrest2.json");
 			super.executeTest("SurveyCrest3.json");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

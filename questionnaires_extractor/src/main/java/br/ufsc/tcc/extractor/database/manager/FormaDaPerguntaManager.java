@@ -19,7 +19,7 @@ public class FormaDaPerguntaManager {
 	private static FormaDaPerguntaDao dao;
 	
 	public static FormaDaPergunta getForma(String forma){
-		if(formas == null){//TODO mudar isso?
+		if(formas == null){
 			CommonLogger.info("FormaDaPerguntaManager:getForma()> Chame a funcao 'loadFormas' "
 					+"para inicializar as informacoes!");
 			return null;

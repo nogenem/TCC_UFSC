@@ -128,7 +128,7 @@ public class RulesChecker {
 		if(desc.getText().equals(".") && !cStack.isEmpty())
 			desc = cStack.pop();
 		
-		if(desc.size() != tmpAlts.size()) return desc;//TODO ainda requer testes...
+		if(desc.size() != tmpAlts.size()) return desc;
 		
 		boolean flag = true;
 		String altsTxt = "";
@@ -234,7 +234,6 @@ public class RulesChecker {
 
 			//Lida com casos aonde se tem 2 textos complementares
 			//	Ex: https://www.survio.com/modelo-de-pesquisa/feedback-sobre-servico
-			//TODO e se não tiver mais nada embaixo? (i+2 = max)
 			if(i+3 < nodes.size() && (nTmp3.isImgOrText() || isATextInputDisabledWithValue(nTmp3)) && 
 					dist.getMaxHeight() == 1 && dist.getWidth() <= 2){
 				nTmp3 = nodes.get(i+3);
@@ -292,23 +291,19 @@ public class RulesChecker {
 		boolean flag = false;
 		int count = filhas.size()+alts.size();
 		
-		//TODO ainda requer testes [containsWithLineBreak]...
 		if(count == 0 && cTmp2.size() == 1){//Ex: https://www.survio.com/modelo-de-pesquisa/pesquisa-de-preco-do-produto
 			txtTmp = Pattern.quote(cTmp2.getText());
-//			flag = CommonUtil.matchesWithLineBreak(currentP.getDescricao(), txtTmp);
 			flag = CommonUtil.containsWithLineBreak(txtTmp, currentP.getDescricao());
 		}else if(count == cTmp2.size()){
 			flag = true;
 			for(int j = 0; j < alts.size(); j++){
 				txtTmp = alts.get(j).getDescricao();
 				txtTmp = Pattern.quote(txtTmp);
-				//flag = flag && CommonUtil.matchesWithLineBreak(txt, txtTmp);
 				flag = flag && CommonUtil.containsWithLineBreak(txtTmp, txt);
 			}
 			for(int j = 0; j < filhas.size(); j++){
 				txtTmp = filhas.get(j).getDescricao();
 				txtTmp = Pattern.quote(txtTmp);
-//				flag = flag && CommonUtil.matchesWithLineBreak(txt, txtTmp);
 				flag = flag && CommonUtil.containsWithLineBreak(txtTmp, txt);
 			}
 		}
@@ -465,6 +460,8 @@ public class RulesChecker {
 	public boolean isSelectGroup(List<MyNode> nodes, int currentI) {
 		MyNode opt = null, text = null;
 		int i = currentI;
+		
+		if(i+2 >= nodes.size()) return false;
 		
 		opt = nodes.get(++i);
 		text = nodes.get(++i);
