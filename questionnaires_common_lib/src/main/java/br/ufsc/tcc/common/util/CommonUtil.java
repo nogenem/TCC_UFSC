@@ -409,7 +409,7 @@ public class CommonUtil {
 			if(child.nodeName().equals("br") && isBetweenTexts(children, i))
 				n--;
 			if(!child.nodeName().matches("#comment|br") &&
-				!trim(child.toString()).isEmpty() && !CommonUtil.isEmptyAorP(child))
+				!trim(child.toString()).isEmpty() && !CommonUtil.isEmptyAorPorTH(child))
 					findCompsImgsAndTexts(child, 
 							dewey +"."+ padNumber(n++), 
 							ret);
@@ -433,9 +433,9 @@ public class CommonUtil {
 		return !trim(c1.toString()).isEmpty() && !trim(c2.toString()).isEmpty();
 	}
 
-	private static boolean isEmptyAorP(Node el){
+	private static boolean isEmptyAorPorTH(Node el){
 		String txt = el.nodeName();
-		return el.childNodeSize() == 0 && (txt.equals("p") || 
+		return el.childNodeSize() == 0 && (txt.equals("p") || txt.equals("th") || 
 				(txt.equals("a") && !el.hasAttr("href"))); 
 	}
 }
