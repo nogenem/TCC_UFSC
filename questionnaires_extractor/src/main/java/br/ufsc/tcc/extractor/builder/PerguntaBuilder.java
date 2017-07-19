@@ -142,20 +142,20 @@ public class PerguntaBuilder {
 			}case CHECKBOX_INPUT:{
 				if(checker.checkIfTextIsAbove(nodes, currentI)){
 					desc = cStack.pop();
-					this.currentI = this.extractor.extractCheckboxOrRadioInputWithTextAbove(currentQ, nodes, this.currentI);
+					this.currentI = this.extractor.extractCheckboxOrRadioInputWithTextAbove(currentQ, desc, nodes, this.currentI);
 				}else if(this.checker.isImageCheckboxOrRadioInput(nodes, this.currentI)){
 					this.currentI = this.extractor.extractImageCheckboxOrRadioInput(currentQ, nodes, this.currentI);
 				}else
-					this.currentI = this.extractor.extractCheckboxOrRadioInput(currentQ, nodes, this.currentI);
+					this.currentI = this.extractor.extractCheckboxOrRadioInput(currentQ, desc, nodes, this.currentI);
 				break;
 			}case RADIO_INPUT:{
 				if(checker.checkIfTextIsAbove(nodes, currentI)){
 					desc = cStack.pop();
-					this.currentI = this.extractor.extractCheckboxOrRadioInputWithTextAbove(currentQ, nodes, this.currentI);
+					this.currentI = this.extractor.extractCheckboxOrRadioInputWithTextAbove(currentQ, desc, nodes, this.currentI);
 				}else if(this.checker.isImageCheckboxOrRadioInput(nodes, this.currentI)){
 					this.currentI = this.extractor.extractImageCheckboxOrRadioInput(currentQ, nodes, this.currentI);
 				}else
-					this.currentI = this.extractor.extractCheckboxOrRadioInput(currentQ, nodes, this.currentI);
+					this.currentI = this.extractor.extractCheckboxOrRadioInput(currentQ, desc, nodes, this.currentI);
 				break;
 			}case TEXT_INPUT:
 			case NUMBER_INPUT:

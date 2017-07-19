@@ -190,8 +190,8 @@ public class PerguntaExtractor {
 		return currentI;
 	}
 
-	public int extractCheckboxOrRadioInput(Questionario currentQ, List<MyNode> nodes, int currentI) {
-		MyNode img = null, input = null, text = null, tmp = null, firstInput = null;
+	public int extractCheckboxOrRadioInput(Questionario currentQ, Cluster desc, List<MyNode> nodes, int currentI) {
+		MyNode img = null, input = null, text = null, tmp = null, lastDescNode = desc.last();
 		boolean isImgInputQuestion = false, 
 				isTextImgQuestion = false,
 				isImgQuestion = false;
@@ -238,12 +238,10 @@ public class PerguntaExtractor {
 				break;
 			
 			// Vefifica o prefixo comum para ver se terminou esta pergunta
-			if(firstInput == null) { 
-				firstInput = input;
-			}else if(commonPrefix.isEmpty()) {
-				commonPrefix = firstInput.getDewey().getCommonPrefix(input.getDewey());
+			if(commonPrefix.isEmpty()) {
+				commonPrefix = lastDescNode.getDewey().getCommonPrefix(input.getDewey());
 			}else {
-				String cTmp = firstInput.getDewey().getCommonPrefix(input.getDewey());
+				String cTmp = lastDescNode.getDewey().getCommonPrefix(input.getDewey());
 				if(!cTmp.equals(commonPrefix))
 					break;
 			}
@@ -358,9 +356,9 @@ public class PerguntaExtractor {
 		return currentI;
 	}
 
-	public int extractCheckboxOrRadioInputWithTextAbove(Questionario currentQ, List<MyNode> nodes, int currentI) {
+	public int extractCheckboxOrRadioInputWithTextAbove(Questionario currentQ, Cluster desc, List<MyNode> nodes, int currentI) {
 		// A principio não se preocupa com input text
-		MyNode input = null, text = null, img = null, firstInput = null;
+		MyNode input = null, text = null, img = null, lastDescNode = desc.last();
 		boolean isImgQuestion = false;
 		String txt = "", commonPrefix = "";
 		
@@ -386,12 +384,10 @@ public class PerguntaExtractor {
 				break;
 			
 			// Vefifica o prefixo comum para ver se terminou esta pergunta
-			if(firstInput == null) { 
-				firstInput = input;
-			}else if(commonPrefix.isEmpty()) {
-				commonPrefix = firstInput.getDewey().getCommonPrefix(input.getDewey());
+			if(commonPrefix.isEmpty()) {
+				commonPrefix = lastDescNode.getDewey().getCommonPrefix(input.getDewey());
 			}else {
-				String cTmp = firstInput.getDewey().getCommonPrefix(input.getDewey());
+				String cTmp = lastDescNode.getDewey().getCommonPrefix(input.getDewey());
 				if(!cTmp.equals(commonPrefix))
 					break;
 			}
