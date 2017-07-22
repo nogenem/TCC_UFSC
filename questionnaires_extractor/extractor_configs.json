@@ -3,12 +3,14 @@
 	"database": {
 		"loadSeedsFromCrawler": false,
 		"crawler": {
+			"dbms": "postgresql",
 			"name": "tcc_crawler",
 			"host": "localhost:5432",
 			"login": "postgres",
 			"password": "123"
 		},
-		"extractor": {
+		"extractor": {	
+			"dbms": "postgresql",
 			"name": "tcc_extractor",
 			"host": "localhost:5432",
 			"login": "postgres",

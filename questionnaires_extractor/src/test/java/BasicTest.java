@@ -15,7 +15,6 @@ import org.junit.BeforeClass;
 
 import br.ufsc.tcc.common.config.ProjectConfigs;
 import br.ufsc.tcc.common.database.connection.BasicConnection;
-import br.ufsc.tcc.common.database.connection.PostgreConnection;
 import br.ufsc.tcc.common.util.CommonUtil;
 import br.ufsc.tcc.extractor.builder.QuestionarioBuilder;
 import br.ufsc.tcc.extractor.database.manager.FormaDaPerguntaManager;
@@ -40,7 +39,7 @@ public class BasicTest {
 		// Necessario para carregar as informações 
 		// do banco de dados
 		ProjectConfigs.loadConfigs(configsPath);
-		conn = new PostgreConnection(ProjectConfigs.getExtractorDatabaseConfigs());
+		conn = new BasicConnection(ProjectConfigs.getExtractorDatabaseConfigs());
 		FormaDaPerguntaManager.loadFormas(conn);
 		
 		qBuilder = new QuestionarioBuilder();

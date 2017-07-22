@@ -21,7 +21,6 @@ import org.jsoup.nodes.Element;
 import br.ufsc.tcc.common.config.ProjectConfigs;
 import br.ufsc.tcc.common.crawler.CrawlerController;
 import br.ufsc.tcc.common.database.connection.BasicConnection;
-import br.ufsc.tcc.common.database.connection.PostgreConnection;
 import br.ufsc.tcc.common.database.manager.PossivelQuestionarioManager;
 import br.ufsc.tcc.common.util.CommonLogger;
 import br.ufsc.tcc.common.util.CommonUtil;
@@ -38,11 +37,11 @@ public class Main {
 		System.out.println("Carregando arquivo de configuracao...");
 		ProjectConfigs.loadConfigs(configsPath);
 		
-//		Dewey d1 = new Dewey("001.002.001.001.001.001.010.008.001.002.001.001"),
-//				d2 = new Dewey("001.002.001.001.001.001.010.008.001.003.001.001.001"),
+//		DeweyExt d1 = new DeweyExt("001.001.015.002.004.001.002.001.003.001.001.001.001.001.001.001.001.002.001.001"),
+//				d2 = new DeweyExt("001.001.015.002.004.001.002.001.003.001.001.001.001.001.001.001.002.002.001.001.001.001.001.001"),
 //				d3 = d1.distanceOf(d2);
 //		System.out.println(d3);
-				
+		
 		// Inicializa a aplicação
 //		start();
 		test();
@@ -51,7 +50,7 @@ public class Main {
 	//TODO remover isso ao final do desenvolvimento!
 	private static void test(){
 		String path = "cache/Survio_1.html";
-		path = "https://www.survio.com/modelo-de-pesquisa/pesquisa-de-preco-do-produto";
+//		path = "https://www.survio.com/modelo-de-pesquisa/pesquisa-de-preco-do-produto";
 //		path = "https://www.survio.com/modelo-de-pesquisa/feedback-sobre-servico";
 //		path = "https://www.survio.com/modelo-de-pesquisa/avaliacao-de-um-e-shop";
 //		path = "https://www.survio.com/modelo-de-pesquisa/pesquisa-sobre-empregados-sobrecarregados-e-esgotados";
@@ -91,9 +90,9 @@ public class Main {
 //		path = "cache/SurveyForBusiness1.html";
 //		path = "https://www.surveyshare.com/template/380/ELearning-Student-Tracking";
 
-//		path = "http://www.sciencebuddies.org/science-fair-projects/project_ideas/Soc_survey_sample1.shtml";
+		path = "https://www.survio.com/modelo-de-pesquisa/avaliacao-de-um-e-shop";
 		
-		BasicConnection conn = new PostgreConnection(ProjectConfigs.getExtractorDatabaseConfigs());;
+		BasicConnection conn = new BasicConnection(ProjectConfigs.getExtractorDatabaseConfigs());;
 		FormaDaPerguntaManager.loadFormas(conn);
 		QuestionarioBuilder qBuilder = new QuestionarioBuilder();
 		
@@ -118,6 +117,8 @@ public class Main {
 			qBuilder.build(root, doc.title());
 		}catch(Exception e){
 			CommonLogger.error(e);
+		}finally{
+			conn.close();			
 		}
 	}
 	
@@ -134,12 +135,9 @@ public class Main {
 			// Seeds do banco de dados
 			System.out.println("Carregando seeds do banco de dados...");
 			if(ProjectConfigs.loadSeedsFromCrawler()){
-				//TODO rever isso...
-				BasicConnection conn = new PostgreConnection(ProjectConfigs.getCrawlerDatabaseConfigs());
-				PossivelQuestionarioManager.loadPossivelQuestionarioLinks(conn);
-				conn.close();
+				PossivelQuestionarioManager.loadLinksAsASet();
 				
-				for(String seed : PossivelQuestionarioManager.getSavedLinks()){
+				for(String seed : PossivelQuestionarioManager.getLinksAsASet()){
 					controller.addSeed(seed);					
 				}
 			}
@@ -153,13 +151,14 @@ public class Main {
 			
 			//Limpando banco de dados
 			System.out.println("Limpando banco de dados do extrator...");
-			BasicConnection conn = new PostgreConnection(ProjectConfigs.getExtractorDatabaseConfigs());
+			BasicConnection conn = new BasicConnection(ProjectConfigs.getExtractorDatabaseConfigs());
 			QuestionarioManager qManager = new QuestionarioManager(conn);
 			if(ProjectConfigs.loadSeedsFromCrawler())
 				qManager.cleanDatabase();
 			else
 				qManager.deleteLinks(seeds);
 			conn.close();
+			qManager = null;
 			
 			// Inicia o crawling
 			System.out.println("Inicializando a aplicacao...");
