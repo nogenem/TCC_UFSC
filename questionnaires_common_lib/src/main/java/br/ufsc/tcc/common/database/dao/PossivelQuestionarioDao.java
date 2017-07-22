@@ -1,13 +1,21 @@
 package br.ufsc.tcc.common.database.dao;
 
+import java.nio.charset.Charset;
 import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+
+import com.google.common.hash.BloomFilter;
+import com.google.common.hash.Funnels;
 
 import br.ufsc.tcc.common.database.connection.BasicConnection;
 import br.ufsc.tcc.common.model.PossivelQuestionario;
 
 public class PossivelQuestionarioDao extends BasicDao {
+	
+	private static int BloomFilter_BASE_SIZE = 1000;
+	private static double BloomFilter_BASE_FPP = 0.01;
 	
 	public PossivelQuestionarioDao(BasicConnection c) {
 		super(c, "PossivelQuestionario");
@@ -24,28 +32,43 @@ public class PossivelQuestionarioDao extends BasicDao {
 		q.setId(getLastUID());
 	}
 	
-	public void remove(String link) throws Exception {
-		HashMap<String, Object> where = new HashMap<>();
+	public BloomFilter<String> getAllLinksAsABloomFilter() throws Exception {
+		this.select("COUNT(*) AS rowcount");
 		
-		where.put("LINK_DOCUMENTO", link);
+		ResultSet result = this.getResultSet();
+		int size = BloomFilter_BASE_SIZE;
+		if(result.next())
+			size += result.getInt("rowcount");
 		
-		this.delete(where);
-	}
-	
-	public ArrayList<String> getAllLinks() throws Exception {
-		ArrayList<String> resp = new ArrayList<>();
+		BloomFilter<String> resp = BloomFilter.create(Funnels.stringFunnel(Charset.forName("utf-8")), 
+				size, BloomFilter_BASE_FPP);
 		
 		this.select("LINK_DOCUMENTO");
 		
+		result = this.getResultSet();
+		while(result != null && result.next()){
+			resp.put(result.getString("LINK_DOCUMENTO"));
+		}
+		
+		result.close();
+		return resp;
+	}
+	
+	public Set<String> getAllLinksAsASet() throws Exception {
+		this.select("LINK_DOCUMENTO");
+		
+		Set<String> resp = new HashSet<>();
 		ResultSet result = this.getResultSet();
 		while(result != null && result.next()){
 			resp.add(result.getString("LINK_DOCUMENTO"));
 		}
+		
+		result.close();
 		return resp;
 	}
 	
-	public ArrayList<PossivelQuestionario> getAll() throws Exception {
-		ArrayList<PossivelQuestionario> resp = new ArrayList<>();
+	public Set<PossivelQuestionario> getAll() throws Exception {
+		Set<PossivelQuestionario> resp = new HashSet<>();
 		PossivelQuestionario pq = null;
 		
 		this.select("*");
@@ -58,6 +81,20 @@ public class PossivelQuestionarioDao extends BasicDao {
 			pq.setEncontradoEm(result.getTimestamp("ENCONTRADO_EM"));
 			resp.add(pq);
 		}
+		
+		result.close();
+		return resp;
+	}
+
+	public boolean containsLink(String link) throws Exception {
+		HashMap<String, Object> where = new HashMap<>();
+		where.put("LINK_DOCUMENTO", link);
+		
+		this.select("*", where);
+		ResultSet result = this.getResultSet();
+		boolean resp = result != null && result.next();
+		
+		result.close();
 		return resp;
 	}
 }

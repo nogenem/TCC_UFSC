@@ -1,7 +1,10 @@
 package br.ufsc.tcc.common.database.manager;
 
-import java.util.ArrayList;
+import java.util.Set;
 
+import com.google.common.hash.BloomFilter;
+
+import br.ufsc.tcc.common.config.ProjectConfigs;
 import br.ufsc.tcc.common.database.connection.BasicConnection;
 import br.ufsc.tcc.common.database.dao.PossivelQuestionarioDao;
 import br.ufsc.tcc.common.model.PossivelQuestionario;
@@ -17,51 +20,112 @@ public class PossivelQuestionarioManager {
 	
 	private PossivelQuestionarioDao pqDao;
 	
-	// Pega os links dos Possiveis Questionarios que ja estão
-	// no banco de dados
-	private static ArrayList<String> savedLinks;
+	/**
+	 * BloomFilter é uma estrutura de dados rápida e eficiente mas que
+	 * possui um problema, ela pode gerar falso possitivos quando se 
+	 * verifica a existência de um elemento nela.
+	 */
+	private static BloomFilter<String> bfSavedLinks = null;
+	private static Set<String> setSavedLinks = null;
 	
-	public PossivelQuestionarioManager(BasicConnection c) {
-		this.pqDao = new PossivelQuestionarioDao(c);
-		
-		// Carrega os dados do banco de dados
-		PossivelQuestionarioManager.loadPossivelQuestionarioLinks(pqDao);
+	// Construtores
+	/**
+	 * Construtor da classe.
+	 * 
+	 * @param loadLinksAsASet		Deve-se carregar os links do banco de dados
+	 * 								em uma estrutura de <b>Set</b>? <br> 
+	 * 								Caso seja passado o valor <b>False</b>, os links 
+	 * 								serão carregados em uma estrutura de <b>BloomFilter</b>.
+	 */
+	public PossivelQuestionarioManager(boolean loadLinksAsASet) {
+		this(new BasicConnection(ProjectConfigs.getCrawlerDatabaseConfigs()), 
+				loadLinksAsASet);
 	}
 	
-	public ArrayList<PossivelQuestionario> getAll() throws Exception {
+	/**
+	 * Construtor da classe.
+	 * 
+	 * @param connection			Uma instancia de BasicConnection.
+	 * @param loadLinksAsASet		Deve-se carregar os links do banco de dados
+	 * 								em uma estrutura de <b>Set</b>? <br> 
+	 * 								Caso seja passado o valor <b>False</b>, os links 
+	 * 								serão carregados em uma estrutura de <b>BloomFilter</b>.
+	 */
+	public PossivelQuestionarioManager(BasicConnection connection, boolean loadLinksAsASet) {
+		this.pqDao = new PossivelQuestionarioDao(connection);
+		
+		if(loadLinksAsASet)
+			PossivelQuestionarioManager.loadLinksAsASet(this.pqDao);
+		else
+			PossivelQuestionarioManager.loadLinksAsABloomFilter(this.pqDao);
+	}
+	
+	// Demais métodos
+	public boolean containsLink(String link) throws Exception {
+		return this.pqDao.containsLink(link);
+	}
+	
+	public Set<PossivelQuestionario> getAll() throws Exception {
 		return pqDao.getAll();
 	}
 	
 	public void save(PossivelQuestionario q) throws Exception {
 		pqDao.save(q);
-		savedLinks.add(q.getLink_doc());
-	}
-	
-	public void remove(String link) throws Exception {
-		if(savedLinks.contains(link)){
-			pqDao.remove(link);
-			savedLinks.remove(link);
-		}
+		if(bfSavedLinks != null)
+			bfSavedLinks.put(q.getLink_doc());
+		else
+			setSavedLinks.add(q.getLink_doc());
 	}
 	
 	// Métodos estáticos
 	public static boolean linkWasSaved(String link){
-		return savedLinks.contains(link);
+		if(bfSavedLinks != null)
+			return bfSavedLinks.mightContain(link);
+		else if(setSavedLinks != null)
+			return setSavedLinks.contains(link);
+		else
+			return false;
 	}
 	
-	public static ArrayList<String> getSavedLinks(){
-		return savedLinks;
+	public static Set<String> getLinksAsASet(){
+		return setSavedLinks;
 	}
 	
-	public static synchronized void loadPossivelQuestionarioLinks(BasicConnection c){
-		loadPossivelQuestionarioLinks(new PossivelQuestionarioDao(c));
+	public static BloomFilter<String> getLinksAsABloomFilter(){
+		return bfSavedLinks;
 	}
 	
-	private static synchronized void loadPossivelQuestionarioLinks(PossivelQuestionarioDao dao) {
-		if(savedLinks != null) return;
+	public static synchronized void loadLinksAsASet() {
+		BasicConnection conn = new BasicConnection(ProjectConfigs.getCrawlerDatabaseConfigs());
+		loadLinksAsASet(new PossivelQuestionarioDao(conn));
+		conn.close();
+	}
+	
+	private static synchronized void loadLinksAsASet(PossivelQuestionarioDao dao) {
+		if(setSavedLinks != null) return;
 		
 		try {
-			savedLinks = dao.getAllLinks();
+			setSavedLinks = dao.getAllLinksAsASet();
+			
+			CommonLogger.debug("{} carregou os links dos possiveis questionarios do banco de dados.", 
+					Thread.currentThread().getName());
+		} catch (Exception e) {
+			// Database não deve esta funcionado, então mata a aplicação
+			CommonLogger.fatalError(e);
+		}
+	}
+	
+	public static synchronized void loadLinksAsABloomFilter() {
+		BasicConnection conn = new BasicConnection(ProjectConfigs.getCrawlerDatabaseConfigs());
+		loadLinksAsABloomFilter(new PossivelQuestionarioDao(conn));
+		conn.close();
+	}
+	
+	private static synchronized void loadLinksAsABloomFilter(PossivelQuestionarioDao dao) {
+		if(bfSavedLinks != null) return;
+		
+		try {
+			bfSavedLinks = dao.getAllLinksAsABloomFilter();
 			
 			CommonLogger.debug("{} carregou os links dos possiveis questionarios do banco de dados.", 
 					Thread.currentThread().getName());
