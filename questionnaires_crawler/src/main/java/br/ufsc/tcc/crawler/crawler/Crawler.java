@@ -8,7 +8,6 @@ import org.json.JSONObject;
 
 import br.ufsc.tcc.common.config.ProjectConfigs;
 import br.ufsc.tcc.common.database.connection.BasicConnection;
-import br.ufsc.tcc.common.database.connection.PostgreConnection;
 import br.ufsc.tcc.common.database.manager.PossivelQuestionarioManager;
 import br.ufsc.tcc.common.model.PossivelQuestionario;
 import br.ufsc.tcc.common.util.CommonLogger;
@@ -30,8 +29,8 @@ public class Crawler extends WebCrawler {
 	
 	@Override
 	public void onStart() {
-		this.conn = new PostgreConnection(ProjectConfigs.getCrawlerDatabaseConfigs());
-		this.pqManager = new PossivelQuestionarioManager(conn);
+		this.conn = new BasicConnection(ProjectConfigs.getCrawlerDatabaseConfigs());
+		this.pqManager = new PossivelQuestionarioManager(this.conn, false);
 		this.checker = new RulesChecker();
 	}
 	
@@ -116,7 +115,16 @@ public class Crawler extends WebCrawler {
 		WebURL url = page.getWebURL();
 		
 		// Verifica se o link ja foi extraido
-		if(PossivelQuestionarioManager.linkWasSaved(url.getURL())) return;
+		// PS: BloomFilter pode gerar falso positivos, por isso deve-se
+		//     checar o BD caso ele retorne true
+		if(PossivelQuestionarioManager.linkWasSaved(url.getURL())) {
+			try {
+				if(this.pqManager.containsLink(url.getURL()))
+					return;
+			} catch (Exception e) {
+				CommonLogger.error(e);
+			}
+		}
 		
 		String contentType = page.getContentType();
 		if(contentType != null && contentType.contains("html") &&

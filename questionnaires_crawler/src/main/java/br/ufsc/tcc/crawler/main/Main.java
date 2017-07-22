@@ -1,8 +1,18 @@
 package br.ufsc.tcc.crawler.main;
 
 import java.net.URL;
-import java.util.ArrayList;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.util.Set;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.X509TrustManager;
 import javax.swing.JOptionPane;
 
 import org.json.JSONArray;
@@ -13,7 +23,6 @@ import org.jsoup.nodes.Document;
 import br.ufsc.tcc.common.config.ProjectConfigs;
 import br.ufsc.tcc.common.crawler.CrawlerController;
 import br.ufsc.tcc.common.database.connection.BasicConnection;
-import br.ufsc.tcc.common.database.connection.PostgreConnection;
 import br.ufsc.tcc.common.database.manager.PossivelQuestionarioManager;
 import br.ufsc.tcc.common.model.PossivelQuestionario;
 import br.ufsc.tcc.common.util.CommonLogger;
@@ -39,7 +48,7 @@ public class Main {
 				System.out.println("Esta aplicacao pode ser inicializada com os seguintes parametros:\n"
 						+ "\t--run-clawler|-rc\t\t Inicia o Crawler.\n"
 						+ "\t--show-links|-sl\t\t Mostra os links encontrados pelo Crawler ate agora.\n"
-						+ "\t--help|-h\t\t\t Mostra esta mensagem de ajuda.\n"
+						+ "\t--help|-h\t\t Mostra esta mensagem de ajuda.\n"
 						+ "Soh eh possivel executar esta aplicacao com um parametro por vez.\n"
 						+ "Quando passado mais de um parametro por vez, apenas o primeiro sera executado.\n"
 						+ "Quando inicializado sem nenhum parametro, a aplicacao iniciara o Crawler.");
@@ -51,24 +60,21 @@ public class Main {
 			}
 		}else{
 //			showLinks();
-//			runCrawler();
-			test();
+			runCrawler();
+//			test();
 		}
 	}
 	
-	//TODO procurar outras seeds!!!!
-	//TODO pensar em um jeito de saber que esta começando um novo questionario!!!
 	private static void test() {
-		String url = "http://www.survio.com/en/blog/tips-and-tricks/how-to-create-a-questionnaire-in-survio";
-//		url = "https://www.businessformtemplate.com/preview/Blank_Survey_Template"; 
+		String url = "https://www.businessformtemplate.com/preview/Blank_Survey_Template"; 
 //		url = "https://www.surveygizmo.com/survey-examples/";
 //		url = "https://www.quotev.com/surveys/Fun?v=users";
 //		url = "http://searchdisasterrecovery.techtarget.com/tutorial/Business-impact-analysis-questionnaire-template";
 //		url = "https://www.jotform.com/help/158-How-to-create-a-survey-form-and-customize-it";
 //		url = "http://evaluationtoolbox.net.au/index.php?Itemid=139&id=29&option=com_rubberdoc&view=category";
 //		url = "http://www.howtogeek.com/203892/how-to-create-fillable-forms-with-ms-word-2010/";
-		//TODO verificar esse site!!!
 //		url = "http://www.webcrawler.com/support/privacypolicy?aid=271b9f5c-942b-4c4b-befc-cb06bc0b1f49&qc=web&ridx=1";
+//		url = "https://forums.zoho.com/zoho-books/uncategorised/filter/ideas/mostvoted";
 		
 		
 //		url = "https://www.survio.com/modelo-de-pesquisa/pesquisa-de-preco-do-produto";
@@ -78,9 +84,10 @@ public class Main {
 //		url = "https://www.bioinfo.mpg.de/mctq/core_work_life/core/core.jsp?language=por_b";
 //		url = "http://anpei.tempsite.ws/intranet/mediaempresa";
 //		url = "https://www.surveycrest.com/template_preview/pyof1IFwp9Xa1_x430JdUeVsuHVRKuw";
+//		url = "http://www.hoteljardinsdajuda.com/questionário.aspx?ID=17";
 //		url = "http://lap.umd.edu/surveys/census/files/surveya1pagesbytopic/page8.html";
 		
-		url = "https://www.surveyforbusiness.com/survey-industry/market-research.html";
+		url = "http://fortune.com/data-store/?iid=f500main";
 		
 		RulesChecker checker = new RulesChecker();
 		Document doc = null;
@@ -90,8 +97,12 @@ public class Main {
 				doc = Jsoup.parse(html);				
 			}else{
 //				System.setProperty("javax.net.debug", "all");
-				System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2");
+//				System.setProperty("http.keepAlive", "true");
+				System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2");//TLSv1,TLSv1.1,TLSv1.2
+				
+//				enableSSLSocket();
 				doc = Jsoup.connect(url)
+					.userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36")
 					.validateTLSCertificates(false)
 					.get();
 			}
@@ -104,6 +115,7 @@ public class Main {
 	private static void runCrawler() {
 		// Cria o Controller do Crawler, adiciona as Seeds e inicia o Crawler
 		try {
+			CommonLogger.setDebugEnabled(false);//TODO remover isso!!
 			final CrawlerController controller = new CrawlerController(ProjectConfigs.getCrawlerConfigs());
 			
 			// Adiciona as seeds do arquivo de configuração
@@ -113,18 +125,35 @@ public class Main {
 				seeds.forEach((seed) -> controller.addSeed((String)seed));	
 			}
 			
+			// robots.txt
+//			controller.addSeed("http://www.ask.com/web?q=survey+template&qsrc=0&o=0&l=dir&qo=homepageSearchBox");
+//			controller.addSeed("http://www.ask.com/web?q=questionnaires+template&qsrc=1&o=0&l=dir&qo=serpSearchTopBox");
+//			controller.addSeed("https://www.webcrawler.com/serp?q=survey+template");
+			
 			// Testar
-			controller.addSeed("http://search.lycos.com/web/?q=survey+template&keyvol=00948a2c54764e0e566a");
-			controller.addSeed("http://search.lycos.com/web/?q=questionnaire+template&keyvol=008b07d47969f38be4a4");
-			controller.addSeed("https://www.webcrawler.com/serp?q=survey+template");
+			controller.addSeed("https://survey.com.br/examples");
+			controller.addSeed("https://www.surveygizmo.com/survey-examples/");
+			controller.addSeed("https://www.surveyking.com/help/survey-templates.php");
+			controller.addSeed("https://www.surveyrock.com/home/sample-survey-templates.html");
+			controller.addSeed("https://www.proprofs.com/survey/examples.php");
+			controller.addSeed("http://surveyonics.com/survey/survey-templates.aspx");
+			controller.addSeed("https://www.proprofs.com/survey/");
+			
+//			controller.addSeed("http://search.lycos.com/web/?q=survey+online&pageInfo=Keywords%3Dsurvey%2520online%26xargs%3D12KPjg1sVSq5quh831MeKMQeKUgRpd1tm58854T8AuSrYHuidgUODDX5u%255F3pgqGK5q7wrGlE6gzJRada2g3KTXSwOPQVKfQKO9icqaiNYlVZ%252DhT4gTv49vn6C80t8QZztZPze8eNKfrt4%252E%26hData%3D12KPjg1o1gkMH3yLmqAs7ASOSAxl195pCy9MNpCJEPbd1a93BpUpENT5Px");
+//			controller.addSeed("http://search.lycos.com/web/?q=survey+online+template&pageInfo=Keywords%3Dsurvey%2520online%2520template%26xargs%3D12KPjg1sVSq5quh831MeKMQeKUgRpd1tm58854T8AuSrYHuidgUODDX5u%255F3pgqGK5q7wrGlE6gzJRada2g3KTXSwOPQVKfQKO9icqaiNYlVZ%252DhT4gTv49vn6C80t8QZztZPze8eNKfrt4%252E%26hData%3D12KPjg1o1g48b%252Dyc%252Dsc83OPeGDxigOlJDB88pofpd%252DbtMv8nNpJ%252DJ%255FT5Px");
+
+//			controller.addSeed("http://www.ask.com/web?o=0&l=dir&qo=moreResults&q=survey+online&qsrc=467");
+//			controller.addSeed("https://www.webcrawler.com/serp?q=survey+online");
+			
+			
+//			controller.addSeed("http://search.lycos.com/web/?q=questionario+de+pesquisa&keyvol=00f83b25c31b3b36e4ba");
+//			controller.addSeed("http://search.lycos.com/web/?q=survey+template&keyvol=00948a2c54764e0e566a");
+//			controller.addSeed("http://search.lycos.com/web/?q=questionnaire+template&keyvol=008b07d47969f38be4a4");
+//			controller.addSeed("http://search.lycos.com/web/?q=research+questionnaire&keyvol=00f8b07f7d1bb06fa01a");
 			
 			// off?
 			//controller.addSeed("http://www.yippy.com/search?v%3Aproject=clusty-new&query=survey+template");
 			//controller.addSeed("http://www.yippy.com/search?v%3Aproject=clusty-new&query=questionnaire+template");
-			
-			// robots.txt
-			//controller.addSeed("http://www.ask.com/web?q=survey+template&qsrc=0&o=0&l=dir&qo=homepageSearchBox");
-			//controller.addSeed("http://www.ask.com/web?q=questionnaires+template&qsrc=1&o=0&l=dir&qo=serpSearchTopBox");
 			
 			// precisam de simulador
 			//controller.addSeed("http://www.contenko.com/?q=survey%20template");
@@ -144,13 +173,13 @@ public class Main {
 	private static void showLinks() {
 		JSONObject output = new JSONObject();
 		
-		BasicConnection c = new PostgreConnection(ProjectConfigs.getCrawlerDatabaseConfigs());
-		PossivelQuestionarioManager pqManager = new PossivelQuestionarioManager(c);
+		BasicConnection c = new BasicConnection(ProjectConfigs.getCrawlerDatabaseConfigs());
+		PossivelQuestionarioManager pqManager = new PossivelQuestionarioManager(c, true);
 		
 		try {
 			// Carrega os dados do banco de dados
 			System.out.println("Carregando dados do banco de dados...");
-			ArrayList<PossivelQuestionario> pqs = pqManager.getAll();
+			Set<PossivelQuestionario> pqs = pqManager.getAll();
 			String key = "", tmpTxt = "";
 			URL tmpUrl = null;
 			JSONObject tmpObj = null;
@@ -200,4 +229,26 @@ public class Main {
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
+
+	public static void enableSSLSocket() throws KeyManagementException, NoSuchAlgorithmException {
+        HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
+            public boolean verify(String hostname, SSLSession session) {
+                return true;
+            }
+        });
+ 
+        SSLContext context = SSLContext.getInstance("TLS");
+        context.init(null, new X509TrustManager[]{new X509TrustManager() {
+            public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+            }
+ 
+            public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+            }
+ 
+            public X509Certificate[] getAcceptedIssuers() {
+                return new X509Certificate[0];
+            }
+        }}, new SecureRandom());
+        HttpsURLConnection.setDefaultSSLSocketFactory(context.getSocketFactory());
+    }
 }
