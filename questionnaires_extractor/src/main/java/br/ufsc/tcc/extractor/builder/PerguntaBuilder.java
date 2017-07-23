@@ -11,6 +11,7 @@ import br.ufsc.tcc.common.util.CommonLogger;
 import br.ufsc.tcc.common.util.DistanceMatrix;
 import br.ufsc.tcc.extractor.database.manager.FormaDaPerguntaManager;
 import br.ufsc.tcc.extractor.extractor.PerguntaExtractor;
+import br.ufsc.tcc.extractor.extractor.PerguntaExtractorFactory;
 import br.ufsc.tcc.extractor.model.Alternativa;
 import br.ufsc.tcc.extractor.model.Figura;
 import br.ufsc.tcc.extractor.model.FormaDaPergunta;
@@ -35,7 +36,6 @@ public class PerguntaBuilder {
 	// Helpers
 	private DistanceMatrix distMatrix;
 	private RulesChecker checker;
-	private PerguntaExtractor extractor;
 	
 	// Group
 	private Cluster firstGroupOfQuestionnaire;
@@ -59,7 +59,6 @@ public class PerguntaBuilder {
 		
 		this.checker = checker;
 		this.distMatrix = this.checker.getDistMatrix();
-		this.extractor = new PerguntaExtractor(this.checker);
 		
 		this.firstGroupOfQuestionnaire = null;
 		
@@ -86,9 +85,9 @@ public class PerguntaBuilder {
 			return i;
 		
 		this.currentP = new Pergunta();
-		this.extractor.setCurrentPergunta(this.currentP);
 		this.currentI = i;
 		
+		PerguntaExtractor extractor = null;
 		MyNode firstNode = nodes.get(this.currentI), lastCompNode = null;
 		MyNode nTmp1 = (this.currentI+1) < nodes.size() ? nodes.get(this.currentI+1) : null, 
 				nTmp2 = null;
@@ -105,8 +104,7 @@ public class PerguntaBuilder {
 				!cStack.isEmpty())
 			desc = cStack.pop();
 		
-		//Verifica se tem componentes em sequência que podem fazer parte de uma
-		//matriz ou uma pergunta de RATING
+		//Verifica se tem componentes em sequência
 		if(nTmp1 != null && firstNode.getType() != MyNodeType.SELECT && nTmp1.isComponent() &&
 				!this.checker.isATextInputDisabledWithValue(nTmp1) &&
 				this.distMatrix.areNear(firstNode, nTmp1)){
@@ -121,65 +119,40 @@ public class PerguntaBuilder {
 				
 				//Ex: http://anpei.tempsite.ws/intranet/mediaempresa/
 				//Ex: https://www.surveycrest.com/template_preview/pyof1IFwp9Xa1_x430JdUeVsuHVRKuw
-				this.currentI = this.extractor.extractSimpleMatrix(nodes, currentQ, 
-						this.lastMatrixHead, this.currentI);
+				extractor = PerguntaExtractorFactory.getExtractor("SIMPLE_MATRIX", currentQ, 
+						this.currentP, this.checker);
+				this.currentI = extractor.extract(this.lastMatrixHead, nodes, this.currentI);
 			}else if(this.checker.isRadioInputOrCheckboxWithHeader(nodes, currentI, desc)){
 				
 				//Ex: http://infopoll.net/live/surveys/s32805.htm
-				this.currentI = this.extractor.extractCheckboxOrRadioInputWithHeader(nodes, desc, currentI);
+				extractor = PerguntaExtractorFactory.getExtractor("CHOICE_INPUT_WITH_HEADER", currentQ, 
+						this.currentP, this.checker);
+				this.currentI = extractor.extract(desc, nodes, this.currentI);
 				desc = !cStack.isEmpty() ? cStack.pop() : null;
 			}else if(firstNode.getType() == MyNodeType.RADIO_INPUT && 
 					nTmp1.getType() == MyNodeType.RADIO_INPUT){
 				
 				//Ex: https://www.survio.com/modelo-de-pesquisa/avaliacao-de-um-e-shop [questão 9]
-				this.currentI = this.extractor.extractSimpleRating(nodes, this.currentI);
+				extractor = PerguntaExtractorFactory.getExtractor("RATING", currentQ, 
+						this.currentP, this.checker);
+				this.currentI = extractor.extract(null, nodes, this.currentI);
 			}else if(firstNode.getType() == nTmp1.getType()){
 				
 				//Ex: http://lap.umd.edu/surveys/census/files/surveya1pagesbytopic/page1.html [questão 2a]
-				this.currentI = this.extractor.extractMultiCompQuestion(nodes, currentQ, this.currentI);
+				extractor = PerguntaExtractorFactory.getExtractor("MULTI_COMP", currentQ, 
+						this.currentP, this.checker);
+				this.currentI = extractor.extract(null, nodes, this.currentI);
 			}
 		}else{
-			switch (firstNode.getType()) {
-			case SELECT:{
-				this.currentI = this.extractor.extractSelect(nodes, this.currentI);
-				break;
-			}case CHECKBOX_INPUT:{
-				if(checker.checkIfTextIsAbove(nodes, currentI)){
-					desc = cStack.pop();
-					this.currentI = this.extractor.extractCheckboxOrRadioInputWithTextAbove(currentQ, desc, nodes, this.currentI);
-				}else if(this.checker.isImageCheckboxOrRadioInput(nodes, this.currentI)){
-					this.currentI = this.extractor.extractImageCheckboxOrRadioInput(currentQ, nodes, this.currentI);
-				}else
-					this.currentI = this.extractor.extractCheckboxOrRadioInput(currentQ, desc, nodes, this.currentI);
-				break;
-			}case RADIO_INPUT:{
-				if(checker.checkIfTextIsAbove(nodes, currentI)){
-					desc = cStack.pop();
-					this.currentI = this.extractor.extractCheckboxOrRadioInputWithTextAbove(currentQ, desc, nodes, this.currentI);
-				}else if(this.checker.isImageCheckboxOrRadioInput(nodes, this.currentI)){
-					this.currentI = this.extractor.extractImageCheckboxOrRadioInput(currentQ, nodes, this.currentI);
-				}else
-					this.currentI = this.extractor.extractCheckboxOrRadioInput(currentQ, desc, nodes, this.currentI);
-				break;
-			}case TEXT_INPUT:
-			case NUMBER_INPUT:
-			case EMAIL_INPUT:
-			case DATE_INPUT:
-			case TEL_INPUT:
-			case TIME_INPUT:
-			case URL_INPUT:{
-				this.currentI = this.extractor.extractGenericInput(currentQ, nodes, this.currentI);
-				break;
-			}case TEXTAREA:{
-				this.extractor.extractTextarea(nodes);
-				break;
-			}case RANGE_INPUT:{
-				//TODO tentar achar um exemplo?
-				break;
-			}default:
-				break;
-			}
+			//Checagem duplicada mas, infelizmente, necessaria
+			if((firstNode.isA("CHECKBOX_INPUT") || firstNode.isA("RADIO_INPUT")) && 
+					checker.checkIfTextIsAbove(nodes, currentI))
+				desc = cStack.pop();
+			extractor = PerguntaExtractorFactory.getExtractor(firstNode.getType().toString(), currentQ, 
+					this.currentP, this.checker);
+			this.currentI = extractor.extract(desc, nodes, this.currentI);
 		}
+		extractor = null;
 		
 		//Verifica se foi possivel extrair a pergunta
 		if(this.currentP.getForma() != null){
@@ -531,7 +504,6 @@ public class PerguntaBuilder {
 		
 		this.currentG = null;
 		this.currentP = null;
-		this.extractor.setCurrentPergunta(null);
 		this.distMatrix.clear();
 	}
 

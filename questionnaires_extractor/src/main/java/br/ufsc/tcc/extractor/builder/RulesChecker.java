@@ -133,15 +133,15 @@ public class RulesChecker {
 		boolean flag = true;
 		String altsTxt = "";
 		
-		//Pega o texto de todas as alternativas da perguta
+		//Pega o texto de todas as alternativas da pergunta
 		for(Alternativa alt : tmpAlts){
-			altsTxt += alt.getDescricao()+"\n";
+			altsTxt += alt.getDescricao().toLowerCase()+"\n";
 		}
 		
 		//Ex: https://www.surveymonkey.com/r/General-Event-Feedback-Template [questão 1]
 		while(true){
 			for(MyNode node : desc.getGroup()){
-				String txt = node.getText();
+				String txt = node.getText().toLowerCase();
 				flag = flag && !txt.isEmpty() && altsTxt.contains(txt);
 			}
 			if(flag && !cStack.isEmpty()){
