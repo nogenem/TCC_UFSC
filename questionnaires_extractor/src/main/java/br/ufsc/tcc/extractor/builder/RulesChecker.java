@@ -365,7 +365,7 @@ public class RulesChecker {
 		return head.size() == count;
 	}
 	
-	public boolean checkPrefixForQuestionGroup(MyNode n1, MyNode n2, String prefix) {
+	public boolean checkCommonPrefix(MyNode n1, MyNode n2, String prefix) {
 		if(n1 == null || n2 == null || prefix.isEmpty()) return false;
 		
 		String tmp = n1.getDewey().getCommonPrefix(n2.getDewey());
@@ -388,7 +388,7 @@ public class RulesChecker {
 		MyNode bottom = nodes.get(currentI+1);
 		
 		if(checkDistForQWithSubQs(middle, bottom) && 
-				checkPrefixForQuestionGroup(bottom, qWithSubQsDesc, prefix1)){
+				checkCommonPrefix(bottom, qWithSubQsDesc, prefix1)){
 			String prefix2 = middle.getDewey().getCommonPrefix(bottom.getDewey());
 			return CommonUtil.getPrefixLength(prefix1) < CommonUtil.getPrefixLength(prefix2);
 		}

@@ -339,7 +339,7 @@ public class PerguntaExtractor {
 				break;
 			
 			Figura fig = new Figura(img.getAttr("src"), img.getAttr("alt"));
-			fig.setDono(currentP);
+			fig.setDono(currentP);//TODO criar alternativas com ALT e setar elas como donos...
 			currentQ.addFigura(fig);
 			CommonLogger.debug("\t\t{}", fig);
 			

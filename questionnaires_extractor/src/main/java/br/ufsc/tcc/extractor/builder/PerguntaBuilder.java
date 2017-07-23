@@ -45,6 +45,7 @@ public class PerguntaBuilder {
 	private Cluster lastMatrixHead;
 	private Cluster lastMatrixEvaluationLevels;
 	private Pergunta lastMatrix;
+	private String lastMatrixCommonPrefix;
 	
 	// Question with subquestions
 	private Cluster lastQWithSubQsDesc;
@@ -66,10 +67,13 @@ public class PerguntaBuilder {
 		this.lastMatrixHead = null;
 		this.lastMatrixEvaluationLevels = null;
 		this.lastMatrix = null;
+		//Criado por causa deste link [2* perg tem as mesmas alternativas que a head da matriz]:
+		//	Ex: https://survey.com.br/preview/hotel-satisfaction-feedback-survey?template=true
+		this.lastMatrixCommonPrefix = "";
 		
 		this.lastQWithSubQs = null;
 		this.lastQWithSubQsDesc = null;
-		this.lastQWithSubQsCommonPrefix = null;
+		this.lastQWithSubQsCommonPrefix = "";
 	}
 	
 	public boolean hasBuildBegun() {
@@ -85,7 +89,7 @@ public class PerguntaBuilder {
 		this.extractor.setCurrentPergunta(this.currentP);
 		this.currentI = i;
 		
-		MyNode firstNode = nodes.get(this.currentI);
+		MyNode firstNode = nodes.get(this.currentI), lastCompNode = null;
 		MyNode nTmp1 = (this.currentI+1) < nodes.size() ? nodes.get(this.currentI+1) : null, 
 				nTmp2 = null;
 		Cluster desc = cStack.pop();
@@ -193,6 +197,7 @@ public class PerguntaBuilder {
 			if(!checker.areDescAndPergNear(desc, firstNode))
 				return this.currentI;
 			
+			lastCompNode = nodes.get(this.currentI);
 			String tmpDescTxt = desc.getText();
 			//Verifica se o texto abaixo, se tiver, não faz parte desta pergunta (Ex: Peso: [ ] kg)
 			while(this.checker.checkComplementaryText(nodes, this.currentI)){
@@ -231,6 +236,7 @@ public class PerguntaBuilder {
 			//Verifica se é uma matriz
 			//	Ex: https://www.survio.com/modelo-de-pesquisa/pesquisa-de-preco-do-produto [questão 3]
 			boolean matrixFlag = false;
+			nTmp1 = desc.first();
 			cTmp2 = this.lastMatrixHead;
 			
 			if(!cStack.isEmpty()){
@@ -244,17 +250,22 @@ public class PerguntaBuilder {
 				}
 			}
 			
-			matrixFlag = this.checker.hasSameTexts(this.currentP, cTmp2);
-			if(matrixFlag){
-				this.updateLastMatrix(nodes, cStack, cTmp2);
-			}else if(this.lastMatrix != null){
+			if(this.lastMatrix == null || this.checker.checkCommonPrefix(cTmp2.last(), 
+					nTmp1, this.lastMatrixCommonPrefix)) {
+				matrixFlag = this.checker.hasSameTexts(this.currentP, cTmp2);
+				if(matrixFlag){
+					this.updateLastMatrix(nodes, cStack, nTmp1, cTmp2);
+				}else if(this.lastMatrix != null){
+					this.saveLastMatrix(currentQ);
+				}
+			}else {
 				this.saveLastMatrix(currentQ);
 			}
 			
 			//Verifica se é uma pergunta com subperguntas
 			//	Ex: https://www.surveymonkey.com/r/online-social-networking-template [questão 4]
 			boolean qWithSubQsFlag = false;
-			nTmp1 = nodes.get(this.currentI);
+			nTmp1 = lastCompNode;
 			nTmp2 = this.lastQWithSubQsDesc != null ? 
 						this.lastQWithSubQsDesc.last() : null;
 			
@@ -275,7 +286,7 @@ public class PerguntaBuilder {
 						this.updateLastQWithSubQs(currentQ, nodes, cStack, nTmp1);
 						qWithSubQsFlag = true;
 					}else if(this.lastQWithSubQs != null && 
-							this.checker.checkPrefixForQuestionGroup(nTmp1, nTmp2, this.lastQWithSubQsCommonPrefix)){
+							this.checker.checkCommonPrefix(nTmp1, nTmp2, this.lastQWithSubQsCommonPrefix)){
 						if(!this.lastQWithSubQs.getForma().toString().
 								startsWith(this.currentP.getForma().toString())){
 							this.lastQWithSubQs.setForma(FormaDaPerguntaManager.getForma("MIX_COMP_GROUP"));
@@ -431,9 +442,10 @@ public class PerguntaBuilder {
 	 * 
 	 * @param nodes
 	 * @param cStack
+	 * @param descFirstNode 
 	 * @param cTmp2
 	 */
-	private void updateLastMatrix(List<MyNode> nodes, Stack<Cluster> cStack, Cluster cTmp2) {
+	private void updateLastMatrix(List<MyNode> nodes, Stack<Cluster> cStack, MyNode descFirstNode, Cluster cTmp2) {
 		if(!cStack.isEmpty() && cTmp2 == cStack.peek())
 			this.lastMatrixHead = cStack.pop();
 		
@@ -445,6 +457,10 @@ public class PerguntaBuilder {
 			}else{
 				this.lastMatrix.setForma(FormaDaPerguntaManager.getForma(forma.toString()+"_MATRIX"));
 			}
+			
+			this.lastMatrixCommonPrefix = this.lastMatrixHead.last().getDewey()
+					.getCommonPrefix(descFirstNode.getDewey());
+			
 			Cluster desc = !cStack.isEmpty() ? cStack.pop() : null;
 			if(desc != null) {
 				if(!cStack.isEmpty() && checker.isEvaluationLevels(desc, cStack)){
@@ -492,6 +508,7 @@ public class PerguntaBuilder {
 		this.lastMatrixHead = null;
 		this.lastMatrixEvaluationLevels = null;
 		this.lastMatrix = null;
+		this.lastMatrixCommonPrefix = "";
 	}
 
 	private void setEvaluationLevels(Pergunta perg, Cluster evaluationLevels) {
