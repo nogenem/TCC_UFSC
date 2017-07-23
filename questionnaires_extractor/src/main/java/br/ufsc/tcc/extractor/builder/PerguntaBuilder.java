@@ -88,7 +88,8 @@ public class PerguntaBuilder {
 		this.currentI = i;
 		
 		PerguntaExtractor extractor = null;
-		MyNode firstNode = nodes.get(this.currentI), lastCompNode = null;
+		MyNode firstNode = nodes.get(this.currentI), lastCompNode = null,
+				firstImg = null;
 		MyNode nTmp1 = (this.currentI+1) < nodes.size() ? nodes.get(this.currentI+1) : null, 
 				nTmp2 = null;
 		Cluster desc = cStack.pop();
@@ -99,10 +100,13 @@ public class PerguntaBuilder {
 		//for igual a ')' então provavelmente deve ser uma pergunta de telefone: ( [ ] ) [ ]
 		//		Ex: https://www.survio.com/modelo-de-pesquisa/avaliacao-de-um-e-shop
 		//		Ex: http://www.almaderma.com.br/formulario/florais/infantil/contato.php
-		if((this.checker.isOnlyOneImg(desc) || 
-				(desc.getText().equals("(") && nTmp1 != null && nTmp1.getText().equals(")"))) && 
-				!cStack.isEmpty())
+		if(!cStack.isEmpty() && this.checker.isOnlyOneImg(desc)) {
+			firstImg = desc.last();
 			desc = cStack.pop();
+		}else if(!cStack.isEmpty() && desc.getText().equals("(") && 
+				nTmp1 != null && nTmp1.getText().equals(")")){
+			desc = cStack.pop();
+		}
 		
 		//Verifica se tem componentes em sequência
 		if(nTmp1 != null && firstNode.getType() != MyNodeType.SELECT && nTmp1.isComponent() &&
@@ -169,6 +173,10 @@ public class PerguntaBuilder {
 			//Verifica se a desc e a pergunta estão perto uma da outra
 			if(!checker.areDescAndPergNear(desc, firstNode))
 				return this.currentI;
+			
+			// Atualiza a firstImg
+			if(firstImg == null || currentQ.hasFigura(firstImg))
+				firstImg = desc.last();
 			
 			lastCompNode = nodes.get(this.currentI);
 			String tmpDescTxt = desc.getText();
@@ -274,21 +282,21 @@ public class PerguntaBuilder {
 				}
 			}
 			
-			if(!cStack.isEmpty()){
-				//Verifica se não é a imagem da pergunta
-				MyNode imgTmp = null;
-				cTmp1 = cStack.peek();
-				if(this.checker.isOnlyOneImg(cTmp1) && this.distMatrix.areNear(cTmp1, desc))
-					imgTmp = cStack.pop().last();
-				else if(desc.first().isImage())
-					imgTmp = desc.first();
-				
-				if(imgTmp != null){
-					Figura fig = new Figura(imgTmp.getAttr("src"), imgTmp.getAttr("alt"));
-					fig.setDono(this.currentP);
-					currentQ.addFigura(fig);
-					CommonLogger.debug("Figura da pergunta: {}\n", fig);
+			//Verifica se não é a imagem da pergunta
+			if(!firstImg.isImage() || currentQ.hasFigura(firstImg)) {
+				if(!cStack.isEmpty()) {
+					cTmp1 = cStack.peek();
+					if(this.checker.isOnlyOneImg(cTmp1) && this.distMatrix.areNear(cTmp1, desc))
+						firstImg = cStack.pop().last();
+					else if(desc.first().isImage())
+						firstImg = desc.first();
 				}
+			}
+			if(firstImg.isImage() && !currentQ.hasFigura(firstImg)) {
+				Figura fig = new Figura(firstImg.getAttr("src"), firstImg.getAttr("alt"));
+				fig.setDono(this.currentP);
+				currentQ.addFigura(fig);
+				CommonLogger.debug("Figura da pergunta: {}\n", fig);
 			}
 			
 			if(!cStack.isEmpty()){	

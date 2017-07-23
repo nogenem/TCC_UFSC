@@ -2,6 +2,8 @@ package br.ufsc.tcc.extractor.model;
 
 import java.util.ArrayList;
 
+import br.ufsc.tcc.common.model.MyNode;
+
 public class Questionario {
 	
 	// idQuestionario
@@ -97,6 +99,21 @@ public class Questionario {
 	}
 	
 	// Demais métodos
+	public boolean hasFigura(Figura fig) {
+		return this.figuras.contains(fig);
+	}
+	
+	public boolean hasFigura(MyNode fig) {
+		if(!fig.isImage()) return false;
+		String src = fig.getAttr("src"), alt = fig.getAttr("alt");
+		for(Figura f : this.figuras) {
+			if(f.getImage_url().equals(src) && 
+					f.getLegenda().equals(alt))
+				return true;
+		}
+		return false;
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();

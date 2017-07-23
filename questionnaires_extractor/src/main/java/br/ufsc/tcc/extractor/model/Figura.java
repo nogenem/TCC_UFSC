@@ -23,7 +23,7 @@ public class Figura {
 	
 	public Figura(String image_url, String legenda){
 		this.id = -1;
-		this.image_url = image_url;
+		this.image_url = image_url.replaceAll("(\r)?\n", "");
 		this.legenda = legenda;
 		this.dono = null;
 	}
@@ -76,5 +76,15 @@ public class Figura {
 	@Override
 	public String toString() {
 		return this.getLegenda() +" - "+ this.getImage_url();
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null || getClass() != obj.getClass())
+			return false;
+		Figura other = (Figura) obj;
+		return this.toString().equals(other.toString());
 	}
 }
