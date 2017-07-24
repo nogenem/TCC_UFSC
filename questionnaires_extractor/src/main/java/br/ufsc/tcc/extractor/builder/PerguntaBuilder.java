@@ -88,7 +88,7 @@ public class PerguntaBuilder {
 		this.currentI = i;
 		
 		PerguntaExtractor extractor = null;
-		MyNode firstNode = nodes.get(this.currentI), lastCompNode = null,
+		MyNode firstNode = nodes.get(this.currentI), questionLastNode = null,
 				firstImg = null;
 		MyNode nTmp1 = (this.currentI+1) < nodes.size() ? nodes.get(this.currentI+1) : null, 
 				nTmp2 = null;
@@ -178,7 +178,7 @@ public class PerguntaBuilder {
 			if(firstImg == null || currentQ.hasFigura(firstImg))
 				firstImg = desc.last();
 			
-			lastCompNode = nodes.get(this.currentI);
+			questionLastNode = nodes.get(this.currentI);
 			String tmpDescTxt = desc.getText();
 			//Verifica se o texto abaixo, se tiver, não faz parte desta pergunta (Ex: Peso: [ ] kg)
 			while(this.checker.checkComplementaryText(nodes, this.currentI)){
@@ -246,7 +246,7 @@ public class PerguntaBuilder {
 			//Verifica se é uma pergunta com subperguntas
 			//	Ex: https://www.surveymonkey.com/r/online-social-networking-template [questão 4]
 			boolean qWithSubQsFlag = false;
-			nTmp1 = lastCompNode;
+			nTmp1 = questionLastNode;
 			nTmp2 = this.lastQWithSubQsDesc != null ? 
 						this.lastQWithSubQsDesc.last() : null;
 			
@@ -260,7 +260,7 @@ public class PerguntaBuilder {
 					nTmp2 = cStack.peek().last();
 				}
 			}
-
+			
 			if(nTmp2 != null && nTmp2.isText()){
 				if(checker.checkDistForQWithSubQs(nTmp2, nTmp1)){
 					if(this.lastQWithSubQs == null && this.checker.checkQWithSubQs(nTmp1, nTmp2, nodes, this.currentI)){
@@ -481,6 +481,7 @@ public class PerguntaBuilder {
 		if(this.lastMatrix != null){
 			if(this.lastMatrixEvaluationLevels != null)
 				this.setEvaluationLevels(this.lastMatrix, this.lastMatrixEvaluationLevels);
+			this.removePergDescFromAltDesc(this.lastMatrix);
 			
 			currentQ.addPergunta(this.lastMatrix);
 			CommonLogger.debug("Matrix descricao: {}\n\n", this.lastMatrix.getDescricao());		
@@ -490,6 +491,32 @@ public class PerguntaBuilder {
 		this.lastMatrixEvaluationLevels = null;
 		this.lastMatrix = null;
 		this.lastMatrixCommonPrefix = "";
+	}
+	
+	/**
+	 * Remove a descrição das perguntas filhas da Matriz da 
+	 * descrição de suas alternativas.
+	 * 
+	 * @param matrix
+	 */
+	private void removePergDescFromAltDesc(Pergunta matrix) {
+		//Ex: http://www.surveymoz.com/s/evaluation-of-company-and-supervisor-example
+		String pDesc = "", aDesc = "";
+
+		for(Pergunta perg : matrix.getFilhas()) {
+			pDesc = perg.getDescricao();
+			if(!perg.getAlternativas().isEmpty()) {
+				for(Alternativa alt : perg.getAlternativas()) {
+					aDesc = alt.getDescricao();
+					alt.setDescricao(aDesc.replace(pDesc, "").trim());
+				}
+			}else {
+				for(Pergunta p : perg.getFilhas()) {
+					aDesc = p.getDescricao();
+					p.setDescricao(aDesc.replace(pDesc, "").trim());
+				}
+			}
+		}
 	}
 
 	private void setEvaluationLevels(Pergunta perg, Cluster evaluationLevels) {

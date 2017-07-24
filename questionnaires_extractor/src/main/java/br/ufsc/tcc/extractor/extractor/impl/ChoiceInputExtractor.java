@@ -239,7 +239,7 @@ public class ChoiceInputExtractor implements PerguntaExtractor {
 	private int extractWithImageOnly(List<MyNode> nodes, int currentI) {
 		MyNode img = null, 
 				input = nodes.get(currentI);
-		int backup_currentI = currentI;
+		int backup_currentI = currentI, i = 1;
 		
 		this.currentP.setForma(FormaDaPerguntaManager.getForma("IMAGE_" +input.getType().toString()));
 		if(input.isA("CHECKBOX_INPUT"))
@@ -254,11 +254,17 @@ public class ChoiceInputExtractor implements PerguntaExtractor {
 			if(!this.checker.areCompAndTextNear(input, img))
 				break;
 			
+			Alternativa tmpAlt = new Alternativa();
 			Figura fig = new Figura(img.getAttr("src"), img.getAttr("alt"));
-			fig.setDono(currentP);//TODO criar alternativas com ALT e setar elas como donos...
+			
+			tmpAlt.setDescricao(fig.getLegenda().isEmpty() ? i+"" : fig.getLegenda());
+			currentP.addAlternativa(tmpAlt);
+			
+			fig.setDono(tmpAlt);
 			this.currentQ.addFigura(fig);
 			CommonLogger.debug("\t\t{}", fig);
 			
+			i++;
 			if(currentI+2 < nodes.size()){
 				input = nodes.get(++currentI);
 				img = nodes.get(++currentI);

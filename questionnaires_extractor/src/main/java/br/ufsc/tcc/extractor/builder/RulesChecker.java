@@ -570,7 +570,7 @@ public class RulesChecker {
 	}
 	
 	/**
-	 * Verifica se é um RADO/CHECKBOX INPUT com apenas imagens.
+	 * Verifica se é um RADIO/CHECKBOX INPUT com apenas imagens.
 	 * 
 	 * @param nodes
 	 * @param currentI
