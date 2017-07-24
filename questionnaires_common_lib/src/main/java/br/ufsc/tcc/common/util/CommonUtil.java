@@ -405,11 +405,11 @@ public class CommonUtil {
 		for(int i = 0; i < children.size(); i++){
 			Node child = children.get(i);
 			
-			// Ignora comentarios, inputs hidden, tags 'br', tags <p>/<a> sem texto e href e textos vazios
+			// Ignora comentarios, tags 'br' e 'button', algumas tags e textos textos vazios
 			if(child.nodeName().equals("br") && isBetweenTexts(children, i))
 				n--;
-			if(!child.nodeName().matches("#comment|br") &&
-				!trim(child.toString()).isEmpty() && !CommonUtil.isEmptyAorPorTH(child))
+			if(!child.nodeName().matches("#comment|br|button") &&
+				!trim(child.toString()).isEmpty() && !CommonUtil.isEmptyA_P_TH_DIV(child))
 					findCompsImgsAndTexts(child, 
 							dewey +"."+ padNumber(n++), 
 							ret);
@@ -433,9 +433,9 @@ public class CommonUtil {
 		return !trim(c1.toString()).isEmpty() && !trim(c2.toString()).isEmpty();
 	}
 
-	private static boolean isEmptyAorPorTH(Node el){
+	private static boolean isEmptyA_P_TH_DIV(Node el){
 		String txt = el.nodeName();
 		return el.childNodeSize() == 0 && (txt.equals("p") || txt.equals("th") || 
-				(txt.equals("a") && !el.hasAttr("href"))); 
+				txt.equals("div") || (txt.equals("a") && !el.hasAttr("href"))); 
 	}
 }
