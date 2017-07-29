@@ -22,6 +22,7 @@ import java.util.regex.Pattern;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 
 import com.google.common.base.CharMatcher;
@@ -282,6 +283,11 @@ public class CommonUtil {
 		return n;
 	}
 	
+	public static boolean isOnlyOneWord(String str) {
+		return CharMatcher.is(' ').countIn(str) == 0 &&
+				CharMatcher.is('\n').countIn(str) == 0;
+	}
+	
 	/**
 	 * Adiciona zeros a frente de um numero para deixa-los com 
 	 * exatamente 3 caracteres. Por exemplo, 1 vira 001, 10 vira 010 e 
@@ -409,10 +415,11 @@ public class CommonUtil {
 			if(child.nodeName().equals("br") && isBetweenTexts(children, i))
 				n--;
 			if(!child.nodeName().matches("#comment|br|button") &&
-				!trim(child.toString()).isEmpty() && !CommonUtil.isEmptyA_P_TH_DIV(child))
+				!trim(child.toString()).isEmpty() && !CommonUtil.checkEmptinessOfSomeBlockElems(child)) {
 					findCompsImgsAndTexts(child, 
 							dewey +"."+ padNumber(n++), 
 							ret);
+			}
 		}
 	}
 	
@@ -432,10 +439,34 @@ public class CommonUtil {
 			return false;
 		return !trim(c1.toString()).isEmpty() && !trim(c2.toString()).isEmpty();
 	}
-
-	private static boolean isEmptyA_P_TH_DIV(Node el){
-		String txt = el.nodeName();
-		return el.childNodeSize() == 0 && (txt.equals("p") || txt.equals("th") || 
-				txt.equals("div") || (txt.equals("a") && !el.hasAttr("href"))); 
+	
+	/**
+	 * Verifica se alguns tipos de elemento de bloco estão vazieis, ou seja,
+	 * que não possuem nenhum elemento filho ou possuam texto vazio.<br>
+	 * Os elementos verificados são: < p >, < span >, < th >, < div > e < a >.
+	 * 
+	 * @param el
+	 * @return
+	 */
+	private static boolean checkEmptinessOfSomeBlockElems(Node el){
+		String name = el.nodeName();
+		int nodeSize = el.childNodeSize();
+		
+		if(name.equals("span") && nodeSize == 1 && el.childNode(0).nodeName().equals("span")) {
+			el = el.childNode(0);
+			name = el.nodeName();
+			nodeSize = el.childNodeSize();
+		}
+		
+		boolean notHasElem = (nodeSize == 0 || (nodeSize == 1 && el.childNode(0).nodeName().equals("#text")));
+		if(notHasElem && (name.matches("(p|span|th|div)") || 
+				(name.equals("a") && !el.hasAttr("href")))){
+			String content = el.toString();
+			if(el instanceof Element) {
+				content = ((Element) el).text();
+			}
+			return trim(content).isEmpty();
+		}
+		return false;
 	}
 }
