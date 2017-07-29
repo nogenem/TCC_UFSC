@@ -26,6 +26,8 @@ public class RulesChecker {
 	private static JSONObject CONFIGS = null;
 	private DistanceMatrix distMatrix;
 	
+	private static final String NUMBER_REGEX = "(\\d{1,3}(\\s{1,2})?(\\.|\\:|\\)|\\-)?)";
+	
 	// Regex usados para extrair coisas como:
 	//		[ ] / month [ ] / day [ ] year
 	public static final String DATE_REGEX1 = "(/|\\-)",
@@ -157,14 +159,17 @@ public class RulesChecker {
 			return desc;
 		
 		Cluster tmp = cStack.peek();
+		String txt = tmp.getText();
+		
 		//Ex: https://polldaddy.com/s/d5564eb1c42db4d1
-		boolean has4orMoreChars = tmp.getText().length() >= 4;
-		if(!tmp.getText().isEmpty() && this.isDescriptionsNear(tmp, desc) &&
-				((has4orMoreChars && !this.distMatrix.areNear(tmp.last(), nodes.get(i+1))) || !has4orMoreChars) ){
+		boolean has4orMoreChars = txt.length() >= 4;
+		if(!txt.isEmpty() && this.isDescriptionsNear(tmp, desc) &&
+				((has4orMoreChars && !this.distMatrix.areNear(tmp.last(), nodes.get(i+1))) || !has4orMoreChars)) {
 			tmp = cStack.pop();
 			tmp = tmp.join(desc);
 			return tmp;
 		}
+		
 		return desc;
 	}
 	
@@ -201,8 +206,10 @@ public class RulesChecker {
 		
 		String txt = cTmp.getText();
 		txt = CommonUtil.trim(txt);
-		//Cluster deve ter um e APENAS um texto
-		if(txt.isEmpty() || txt.contains("\n"))
+		//Cluster deve ter um e APENAS um texto e não deve ser apenas um numero
+		//	Ex: https://www.proprofs.com/survey/t/?title=okgaw&type=template [number]
+		if(txt.isEmpty() || txt.contains("\n") ||
+				txt.matches(NUMBER_REGEX))
 			return false;
 		
 		JSONObject obj = CONFIGS.getJSONObject("distBetweenGroupAndFirstQuestion");
@@ -375,6 +382,9 @@ public class RulesChecker {
 	public boolean checkDistForQWithSubQs(MyNode n1, MyNode n2) {
 		JSONObject obj = CONFIGS.getJSONObject("distBetweenTextsInQuestionWithSubQuestions");
 		DeweyExt dist = this.distMatrix.getDist(n1, n2);
+		// Checa o 1* elemento depois do BODY
+		if(n1.getDewey().getNumbers().get(1) != n2.getDewey().getNumbers().get(1))
+			return false;
 		return dist.getHeight() <= obj.getInt("height") && dist.getWidth() <= obj.getInt("width");
 	}
 	
@@ -384,12 +394,12 @@ public class RulesChecker {
 	public boolean checkQWithSubQs(MyNode middle, MyNode qWithSubQsDesc, List<MyNode> nodes, int currentI) {
 		if(currentI+1 >= nodes.size()) return false;
 		
-		String prefix1 = middle.getDewey().getCommonPrefix(qWithSubQsDesc.getDewey());
 		MyNode bottom = nodes.get(currentI+1);
+		String prefix1 = middle.getDewey().getCommonPrefix(qWithSubQsDesc.getDewey());
+		String prefix2 = middle.getDewey().getCommonPrefix(bottom.getDewey());
 		
 		if(checkDistForQWithSubQs(middle, bottom) && 
 				checkCommonPrefix(bottom, qWithSubQsDesc, prefix1)){
-			String prefix2 = middle.getDewey().getCommonPrefix(bottom.getDewey());
 			return CommonUtil.getPrefixLength(prefix1) < CommonUtil.getPrefixLength(prefix2);
 		}
 		return false;

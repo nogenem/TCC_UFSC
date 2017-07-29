@@ -32,6 +32,7 @@ public class ChoiceInputExtractor implements PerguntaExtractor {
 			//Ex: https://www.nbrii.com/customer-survey-questions-template/
 			return this.extractWithTextAbove(desc, nodes, currentI);
 		}else if(this.checker.isImageCheckboxOrRadioInput(nodes, currentI)){
+			//Ex: https://survey.zoho.com/surveytemplate/Events-Entertainment%20Evaluation%20Survey [+/-]
 			return this.extractWithImageOnly(nodes, currentI);
 		}else
 			return this.extractSimplePattern(desc, nodes, currentI);

@@ -33,7 +33,7 @@
 		"minQuestionsOnQuestionnaire": 2,
 		"maxWordsInAGroupDescription": 5,
 		"maxTextClustersBetweenQuestions": 4,
-		"phrasesToIgnoreRegex": "^((ordernar|filtrar) por:?|(sort|filter) by:?|(get our )?newsletter|account id|subscribe|create (an )?account|contact us( now)?!?|enter your email.*|users?(name)?:?|sign( )?in|sign( )?up|register|login:?|log in here|password:?|forgot(ten)?( your)? password\\??|retrieve password|confirm password:?|keep me logged in|reset password|search:?|entre com seu email.*|comente:?|(envie ((um|seu) )?)?coment(a|á)rio:?|coment(á|a)rios?:?|usu(a|á)rio|entr(e|ar)|inscrev(a|er)-se|registr(ar|e-se)|logar|entrar|senha|repita (a|sua) senha:?|esqueceu sua senha\\?|me mantenha logado|mantenha-me logado|recupere sua senha|buscar:?)\\*?",
+		"phrasesToIgnoreRegex": "^((ordernar|filtrar) por:?|(sort|filter) by:?|(get our )?newsletter|account id|subscribe|create (an )?account|contact us( now)?!?|enter your email.*|users?(name)?:?|sign( |\\-)?in|sign( )?up|register|login:?|log in here|password:?|forgot(ten)?( your)? password\\??|retrieve password|confirm password:?|keep me logged in|reset password|search:?|entre com seu email.*|comente:?|(envie ((um|seu) )?)?coment(a|á)rio:?|coment(á|a)rios?:?|usu(a|á)rio|entr(e|ar)|inscrev(a|er)-se|registr(ar|e-se)|logar|entrar|senha|repita (a|sua) senha:?|esqueceu sua senha\\?|me mantenha logado|mantenha-me logado|recupere sua senha|buscar:?)\\*?",
 		"distBetweenNearNodes": {
 			"height": 3,
 			"maxHeight": 3,
@@ -48,7 +48,7 @@
 		},
 		"distBetweenDescAndQuestion": {
 			"height": 2,
-			"maxHeight": 4
+			"maxHeight": 5
 		},
 		"distBetweenGroupAndFirstQuestion": {
 			"height": 1,
@@ -75,7 +75,7 @@
 		},
 		"distBetweenHeaderAndFirstAlternative": {
 			"height": 1,
-			"width": 6
+			"width": 7
 		},
 		"distBetweenEvaluationLevelsAndDesc": {
 			"height": 1

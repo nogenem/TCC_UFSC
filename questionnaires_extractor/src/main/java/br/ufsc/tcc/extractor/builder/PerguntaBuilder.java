@@ -94,6 +94,7 @@ public class PerguntaBuilder {
 				nTmp2 = null;
 		Cluster desc = cStack.pop();
 		Cluster cTmp1 = null, cTmp2 = null;
+		boolean isSimpleMatrix = false;
 		
 		//Se a desc for apenas uma imagem então ela é provavelmente a imagem
 		//da 1* alternativa da pergunta; e se a desc for igual a '('e o próximo nodo 
@@ -126,6 +127,7 @@ public class PerguntaBuilder {
 				extractor = PerguntaExtractorFactory.getExtractor("SIMPLE_MATRIX", currentQ, 
 						this.currentP, this.checker);
 				this.currentI = extractor.extract(this.lastMatrixHead, nodes, this.currentI);
+				isSimpleMatrix = true;
 			}else if(this.checker.isRadioInputOrCheckboxWithHeader(nodes, currentI, desc)){
 				
 				//Ex: http://infopoll.net/live/surveys/s32805.htm
@@ -231,8 +233,8 @@ public class PerguntaBuilder {
 				}
 			}
 			
-			if(this.lastMatrix == null || this.checker.checkCommonPrefix(cTmp2.last(), 
-					nTmp1, this.lastMatrixCommonPrefix)) {
+			if(this.lastMatrix == null || isSimpleMatrix || 
+					this.checker.checkCommonPrefix(cTmp2.last(), nTmp1, this.lastMatrixCommonPrefix)) {
 				matrixFlag = this.checker.hasSameTexts(this.currentP, cTmp2);
 				if(matrixFlag){
 					this.updateLastMatrix(nodes, cStack, nTmp1, cTmp2);
@@ -246,18 +248,22 @@ public class PerguntaBuilder {
 			//Verifica se é uma pergunta com subperguntas
 			//	Ex: https://www.surveymonkey.com/r/online-social-networking-template [questão 4]
 			boolean qWithSubQsFlag = false;
-			nTmp1 = questionLastNode;
+			
+			nTmp1 = questionLastNode;//TODO verificar isso!
+//			nTmp1 = firstNode;
+//			nTmp1 = desc.first();
+			
 			nTmp2 = this.lastQWithSubQsDesc != null ? 
-						this.lastQWithSubQsDesc.last() : null;
+						this.lastQWithSubQsDesc.first() : null;//.last()//TODO verificar isso!
 			
 			if(!cStack.isEmpty()){
 				if(nTmp2 == null){
 					if(!currentQ.getAssunto().isEmpty() || cStack.size() >= 2)
-						nTmp2 = cStack.peek().last();
+						nTmp2 = cStack.peek().first();//.last();//TODO verificar isso!
 				}else if(this.checker.isAbove(nTmp2, cStack.peek().first())){
 					//Se tiver um texto no meio quer dizer que ja termino as subperguntas
 					this.saveLastQWithSubQs(currentQ);
-					nTmp2 = cStack.peek().last();
+					nTmp2 = cStack.peek().first();//.last();//TODO verificar isso!
 				}
 			}
 			
@@ -343,7 +349,7 @@ public class PerguntaBuilder {
 					}
 					
 					//Seta o assunto do questionário atual
-					if(cTmp1 != null){
+					if(cTmp1 != null) {
 						cTmp1 = this.checker.checkIfDescIsComplete(cTmp1, cStack, nodes, this.currentI);
 						currentQ.setAssunto(cTmp1.getText());
 						CommonLogger.debug("Assunto: {}\n\n", currentQ.getAssunto());
@@ -394,7 +400,7 @@ public class PerguntaBuilder {
 		this.lastQWithSubQsDesc = this.checker.
 				checkIfDescIsComplete(this.lastQWithSubQsDesc, cStack, nodes, this.currentI);
 		this.lastQWithSubQsCommonPrefix = nTmp1.getDewey().
-				getCommonPrefix(this.lastQWithSubQsDesc.last().getDewey());
+				getCommonPrefix(this.lastQWithSubQsDesc.first().getDewey());//.last()//TODO verificar isso
 		
 		this.lastQWithSubQs = new Pergunta();
 		String forma = this.currentP.getForma().toString();
