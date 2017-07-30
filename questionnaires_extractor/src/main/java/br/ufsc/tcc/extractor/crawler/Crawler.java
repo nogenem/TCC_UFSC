@@ -6,8 +6,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import br.ufsc.tcc.common.config.ProjectConfigs;
 import br.ufsc.tcc.common.database.connection.BasicConnection;
+import br.ufsc.tcc.common.util.CommonConfiguration;
 import br.ufsc.tcc.common.util.CommonLogger;
 import br.ufsc.tcc.extractor.builder.QuestionarioBuilder;
 import br.ufsc.tcc.extractor.database.manager.QuestionarioManager;
@@ -25,7 +25,7 @@ public class Crawler extends WebCrawler {
 	
 	@Override
 	public void onStart() {
-		this.qConn = new BasicConnection(ProjectConfigs.getExtractorDatabaseConfigs());
+		this.qConn = new BasicConnection(CommonConfiguration.getInstance().getExtractorDatabaseConfigs());
 		this.qManager = new QuestionarioManager(this.qConn);
 		this.qBuilder = new QuestionarioBuilder();
 	}

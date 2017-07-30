@@ -6,14 +6,13 @@ import java.util.Stack;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import br.ufsc.tcc.common.config.ProjectConfigs;
 import br.ufsc.tcc.common.model.Cluster;
 import br.ufsc.tcc.common.model.DeweyExt;
 import br.ufsc.tcc.common.model.MyNode;
 import br.ufsc.tcc.common.model.MyNodeType;
+import br.ufsc.tcc.common.util.CommonConfiguration;
 import br.ufsc.tcc.common.util.CommonLogger;
 import br.ufsc.tcc.common.util.CommonUtil;
 import br.ufsc.tcc.common.util.DistanceMatrix;
@@ -602,77 +601,7 @@ public class RulesChecker {
 	// Métodos/Blocos estáticos
 	static {
 		//Load parameters
-		JSONObject p = ProjectConfigs.getParameters(), tmp = null;
-		String lastObj = "";
-		
-		// Verifica se todas as heurísticas foram declaradas
-		try{
-			p.getInt("minQuestionsOnQuestionnaire");
-			p.getInt("maxWordsInAGroupDescription");
-			p.getString("phrasesToIgnoreRegex");
-			
-			lastObj = "distBetweenTextsInsideQuestionnaire";
-			tmp = p.getJSONObject(lastObj);
-				tmp.getInt("height");
-				
-			lastObj = "distBetweenCompAndText";
-			tmp = p.getJSONObject(lastObj);
-				tmp.getInt("height");
-				tmp.getInt("maxHeight");
-			
-			lastObj = "distBetweenDescAndQuestion";
-			tmp = p.getJSONObject(lastObj);	
-				tmp.getInt("height");
-				tmp.getInt("maxHeight");
-				
-			lastObj = "distBetweenGroupAndFirstQuestion";
-			tmp = p.getJSONObject(lastObj);	
-				tmp.getInt("height");
-				tmp.getInt("width");
-				
-			lastObj = "distBetweenDescAndComplementaryText";
-			tmp = p.getJSONObject(lastObj);	
-				tmp.getInt("height");
-				tmp.getInt("maxHeight");
-				tmp.getInt("width");
-				
-			lastObj = "distBetweenTextsInQuestionWithSubQuestions";
-			tmp = p.getJSONObject(lastObj);	
-				tmp.getInt("height");
-				tmp.getInt("width");
-				
-			lastObj = "distBetweenPartsOfDescription";
-			tmp = p.getJSONObject(lastObj);	
-				tmp.getInt("height");
-				tmp.getInt("width");
-				tmp.getInt("maxHeight");
-				
-			lastObj = "distBetweenTextsOfSameAlternative";
-			tmp = p.getJSONObject(lastObj);	
-				tmp.getInt("height");
-				tmp.getInt("width");
-				tmp.getInt("maxHeight");
-				
-			lastObj = "distBetweenEvaluationLevelsAndDesc";
-			tmp = p.getJSONObject(lastObj);	
-				tmp.getInt("height");
-				
-			lastObj = "distBetweenHeaderAndFirstAlternative";
-			tmp = p.getJSONObject(lastObj);	
-				tmp.getInt("height");
-				tmp.getInt("width");
-					
-			p.getInt("maxSpacesAndNewLinesInEvaluationLevels");
-			p.getString("evaluationLevelsWordsRegex");
-		}catch(JSONException exp){
-			String msg = exp.getMessage();
-			String value = msg.substring(msg.indexOf('[')+2, msg.lastIndexOf(']')-1);
-			lastObj += lastObj.equals("") ? "" : ".";
-			msg = "Valor '"+(lastObj+value)+
-					"' não encontrado no arquivo de configuração!";
-			CommonLogger.fatalError(new JSONException(msg));
-		}
-		CONFIGS = p;
+		CONFIGS = CommonConfiguration.getInstance().getParameters();
 		
 		CommonLogger.debug("RulesChecker:> Static block executed!");
 	}

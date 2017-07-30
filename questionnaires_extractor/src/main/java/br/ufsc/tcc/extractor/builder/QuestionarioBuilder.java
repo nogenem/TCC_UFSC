@@ -4,13 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.nodes.Node;
 
-import br.ufsc.tcc.common.config.ProjectConfigs;
 import br.ufsc.tcc.common.model.Cluster;
 import br.ufsc.tcc.common.model.MyNode;
+import br.ufsc.tcc.common.util.CommonConfiguration;
 import br.ufsc.tcc.common.util.CommonLogger;
 import br.ufsc.tcc.common.util.CommonUtil;
 import br.ufsc.tcc.common.util.DistanceMatrix;
@@ -128,15 +127,11 @@ public class QuestionarioBuilder {
 	
 	// Métodos/Blocos estáticos
 	static {
-		//Load parameters
-		JSONObject p = ProjectConfigs.getParameters();
-		try{
-			//Ex: http://www.sciencebuddies.org/science-fair-projects/project_ideas/Soc_survey_sample1.shtml
-			MAX_TEXT_CLUSTERS_BETWEEN_QUESTIONS = p.getInt("maxTextClustersBetweenQuestions");
-			if(MAX_TEXT_CLUSTERS_BETWEEN_QUESTIONS <= 0) MAX_TEXT_CLUSTERS_BETWEEN_QUESTIONS = 4;
-		}catch(JSONException exp){
-			CommonLogger.fatalError(exp);
-		}
+		JSONObject p = CommonConfiguration.getInstance().getParameters();
+		
+		//Ex: http://www.sciencebuddies.org/science-fair-projects/project_ideas/Soc_survey_sample1.shtml
+		MAX_TEXT_CLUSTERS_BETWEEN_QUESTIONS = p.getInt("maxTextClustersBetweenQuestions");
+		
 		CommonLogger.debug("QuestionarioBuilder:> Static block executed!");
 	}
 }

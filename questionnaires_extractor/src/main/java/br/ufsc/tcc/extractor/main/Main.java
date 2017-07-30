@@ -18,24 +18,24 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import br.ufsc.tcc.common.config.ProjectConfigs;
 import br.ufsc.tcc.common.crawler.CrawlerController;
 import br.ufsc.tcc.common.database.connection.BasicConnection;
 import br.ufsc.tcc.common.database.manager.PossivelQuestionarioManager;
+import br.ufsc.tcc.common.util.CommonConfiguration;
 import br.ufsc.tcc.common.util.CommonLogger;
 import br.ufsc.tcc.common.util.CommonUtil;
 import br.ufsc.tcc.extractor.builder.QuestionarioBuilder;
 import br.ufsc.tcc.extractor.crawler.Crawler;
 import br.ufsc.tcc.extractor.database.manager.FormaDaPerguntaManager;
 import br.ufsc.tcc.extractor.database.manager.QuestionarioManager;
+import br.ufsc.tcc.extractor.util.Configuration;
 
 public class Main {
-	private static String configsPath = "./extractor_configs.json";
 	
 	public static void main(String[] args) {		
 		// Carrega as configurações do projeto
 		System.out.println("Carregando arquivo de configuracao...");
-		ProjectConfigs.loadConfigs(configsPath);
+		CommonConfiguration.setInstance(new Configuration());
 		
 //		DeweyExt d1 = new DeweyExt("001.001.015.002.004.001.002.001.003.001.001.001.001.001.001.001.001.002.001.001"),
 //				d2 = new DeweyExt("001.001.015.002.004.001.002.001.003.001.001.001.001.001.001.001.002.002.001.001.001.001.001.001"),
@@ -70,8 +70,6 @@ public class Main {
 //		path = "http://surveyonics.com/Survey/Post-event-Survey.aspx";									
 
 		
-		//TODO refazer o checkEmptinessOfSomeBlockElems [span vazio dentro de span]
-			//http://www.surveyexpression.com/Survey.aspx?id=d3f09b77-831a-47ba-907c-ae34368bfd80
 		//TODO pegar mais links da _v6 do link:
 			//https://www.proprofs.com/survey/examples.php
 		
@@ -120,7 +118,7 @@ public class Main {
 		path = "http://www.surveyexpression.com/Survey.aspx?id=d3f09b77-831a-47ba-907c-ae34368bfd80";
 		path = "http://www.surveyexpression.com/Survey.aspx?id=5bd74ae1-3d2c-49c1-9df0-9e43a8f580c0";
 		
-		BasicConnection conn = new BasicConnection(ProjectConfigs.getExtractorDatabaseConfigs());;
+		BasicConnection conn = new BasicConnection(CommonConfiguration.getInstance().getExtractorDatabaseConfigs());;
 		FormaDaPerguntaManager.loadFormas(conn);
 		QuestionarioBuilder qBuilder = new QuestionarioBuilder();
 		
@@ -152,7 +150,7 @@ public class Main {
 	
 	private static void start(){
 		try{
-			JSONObject configs = ProjectConfigs.getCrawlerConfigs();
+			JSONObject configs = CommonConfiguration.getInstance().getCrawlerConfigs();
 			// Para o extrator o maxDepth tem que ser igual a 0 pois a
 			// biblioteca de Crawler é usada apenas para percorrer as seeds
 			// passadas e não para explorar ainda mais as mesmas
@@ -162,7 +160,7 @@ public class Main {
 			
 			// Seeds do banco de dados
 			System.out.println("Carregando seeds do banco de dados...");
-			if(ProjectConfigs.loadSeedsFromCrawler()){
+			if(CommonConfiguration.getInstance().loadSeedsFromCrawler()){
 				PossivelQuestionarioManager.loadLinksAsASet();
 				
 				for(String seed : PossivelQuestionarioManager.getLinksAsASet()){
@@ -172,16 +170,16 @@ public class Main {
 			
 			// Seeds do arquivo de configuração
 			System.out.println("Carregando seeds do arquivo de configuracao...");
-			JSONArray seeds = ProjectConfigs.getSeeds();
+			JSONArray seeds = CommonConfiguration.getInstance().getSeeds();
 			if(seeds != null){
 				seeds.forEach((seed) -> controller.addSeed((String)seed));	
 			}
 			
 			//Limpando banco de dados
 			System.out.println("Limpando banco de dados do extrator...");
-			BasicConnection conn = new BasicConnection(ProjectConfigs.getExtractorDatabaseConfigs());
+			BasicConnection conn = new BasicConnection(CommonConfiguration.getInstance().getExtractorDatabaseConfigs());
 			QuestionarioManager qManager = new QuestionarioManager(conn);
-			if(ProjectConfigs.loadSeedsFromCrawler())
+			if(CommonConfiguration.getInstance().loadSeedsFromCrawler())
 				qManager.cleanDatabase();
 			else
 				qManager.deleteLinks(seeds);

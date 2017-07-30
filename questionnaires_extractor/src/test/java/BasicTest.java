@@ -13,8 +13,8 @@ import org.jsoup.nodes.Element;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
-import br.ufsc.tcc.common.config.ProjectConfigs;
 import br.ufsc.tcc.common.database.connection.BasicConnection;
+import br.ufsc.tcc.common.util.CommonConfiguration;
 import br.ufsc.tcc.common.util.CommonUtil;
 import br.ufsc.tcc.extractor.builder.QuestionarioBuilder;
 import br.ufsc.tcc.extractor.database.manager.FormaDaPerguntaManager;
@@ -23,6 +23,7 @@ import br.ufsc.tcc.extractor.model.Figura;
 import br.ufsc.tcc.extractor.model.Grupo;
 import br.ufsc.tcc.extractor.model.Pergunta;
 import br.ufsc.tcc.extractor.model.Questionario;
+import br.ufsc.tcc.extractor.util.Configuration;
 
 public class BasicTest {
 	
@@ -32,14 +33,13 @@ public class BasicTest {
 	
 	private static BasicConnection conn;
 	private static QuestionarioBuilder qBuilder;
-	private static String configsPath = "./extractor_configs.json";
 	
 	@BeforeClass
 	public static void onBasicStart(){
 		// Necessario para carregar as informações 
 		// do banco de dados
-		ProjectConfigs.loadConfigs(configsPath);
-		conn = new BasicConnection(ProjectConfigs.getExtractorDatabaseConfigs());
+		CommonConfiguration.setInstance(new Configuration());
+		conn = new BasicConnection(CommonConfiguration.getInstance().getExtractorDatabaseConfigs());
 		FormaDaPerguntaManager.loadFormas(conn);
 		
 		qBuilder = new QuestionarioBuilder();
