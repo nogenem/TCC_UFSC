@@ -4,18 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import br.ufsc.tcc.common.config.ProjectConfigs;
 import br.ufsc.tcc.common.model.Cluster;
 import br.ufsc.tcc.common.model.DeweyExt;
 import br.ufsc.tcc.common.model.MyNode;
 import br.ufsc.tcc.common.model.MyNodeType;
+import br.ufsc.tcc.common.util.CommonConfiguration;
 import br.ufsc.tcc.common.util.CommonLogger;
 import br.ufsc.tcc.common.util.CommonUtil;
 import br.ufsc.tcc.common.util.DistanceMatrix;
@@ -215,32 +214,23 @@ public class RulesChecker {
 	// Métodos/Blocos estáticos
 	static {
 		//Load parameters
-		JSONObject p = ProjectConfigs.getParameters(), tmp = null;
+		JSONObject p = CommonConfiguration.getInstance().getParameters(), tmp = null;
 		
-		try{
-			String txtTmp = p.getString("surveyWordsRegex");
-			SURVEY_WORDS_REGEX = Pattern.compile(txtTmp, 
-					Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
-			
-			txtTmp = p.getString("phrasesToIgnoreRegex");
-			PHRASES_TO_IGNORE_REGEX = Pattern.compile(txtTmp, 
-					Pattern.CASE_INSENSITIVE);
-			
-			MIN_COMPS_IN_ONE_CLUSTER = p.getInt("minCompsInOneCluster");
-			if(MIN_COMPS_IN_ONE_CLUSTER <= 0) MIN_COMPS_IN_ONE_CLUSTER = 5;
-			
-			MIN_CLUSTERS_WITH_COMP = p.getInt("minClustersWithComp");
-			if(MIN_CLUSTERS_WITH_COMP <= 0) MIN_CLUSTERS_WITH_COMP = 3;
-			
-			MAX_CLUSTERS_BETWEEN_CLUSTERS_WITH_COMP = p.getInt("maxClustersBetweenClustersWithComp");
-			if(MAX_CLUSTERS_BETWEEN_CLUSTERS_WITH_COMP <= 0) MAX_CLUSTERS_BETWEEN_CLUSTERS_WITH_COMP = 5;
-	
-			tmp = p.getJSONObject("distBetweenNearQuestions");
-			HEIGHT_BETWEEN_QUESTIONS = tmp.optInt("height");
-			if(HEIGHT_BETWEEN_QUESTIONS <= 0) HEIGHT_BETWEEN_QUESTIONS = 4;
-		}catch(JSONException exp){
-			CommonLogger.fatalError(exp);
-		}
+		String txtTmp = p.getString("surveyWordsRegex");
+		SURVEY_WORDS_REGEX = Pattern.compile(txtTmp, 
+				Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
+		
+		txtTmp = p.getString("phrasesToIgnoreRegex");
+		PHRASES_TO_IGNORE_REGEX = Pattern.compile(txtTmp, 
+				Pattern.CASE_INSENSITIVE);
+		
+		MIN_COMPS_IN_ONE_CLUSTER = p.getInt("minCompsInOneCluster");
+		MIN_CLUSTERS_WITH_COMP = p.getInt("minClustersWithComp");
+		MAX_CLUSTERS_BETWEEN_CLUSTERS_WITH_COMP = p.getInt("maxClustersBetweenClustersWithComp");
+
+		tmp = p.getJSONObject("distBetweenNearQuestions");
+		HEIGHT_BETWEEN_QUESTIONS = tmp.optInt("height");
+
 		CommonLogger.debug("RulesChecker:> Static block executed!");
 	}
 

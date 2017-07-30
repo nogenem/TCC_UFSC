@@ -6,10 +6,10 @@ import java.util.regex.Pattern;
 
 import org.json.JSONObject;
 
-import br.ufsc.tcc.common.config.ProjectConfigs;
 import br.ufsc.tcc.common.database.connection.BasicConnection;
 import br.ufsc.tcc.common.database.manager.PossivelQuestionarioManager;
 import br.ufsc.tcc.common.model.PossivelQuestionario;
+import br.ufsc.tcc.common.util.CommonConfiguration;
 import br.ufsc.tcc.common.util.CommonLogger;
 import br.ufsc.tcc.crawler.checker.RulesChecker;
 import edu.uci.ics.crawler4j.crawler.Page;
@@ -29,7 +29,7 @@ public class Crawler extends WebCrawler {
 	
 	@Override
 	public void onStart() {
-		this.conn = new BasicConnection(ProjectConfigs.getCrawlerDatabaseConfigs());
+		this.conn = new BasicConnection(CommonConfiguration.getInstance().getCrawlerDatabaseConfigs());
 		this.pqManager = new PossivelQuestionarioManager(this.conn, false);
 		this.checker = new RulesChecker();
 	}
@@ -182,7 +182,7 @@ public class Crawler extends WebCrawler {
 	
 	// Métodos/Blocos estáticos
 	static {
-		JSONObject tmp = ProjectConfigs.getCrawlerConfigs();
+		JSONObject tmp = CommonConfiguration.getInstance().getCrawlerConfigs();
 		EXCLUDED_EXTENSIONS_REGEX = Pattern.compile(tmp.optString("excludedFilesExtensions"));
 		EXCLUDED_DOMAINS_REGEX = Pattern.compile(tmp.optString("excludedDomains"));
 		EXCLUDED_LANGUAGES_REGEX = Pattern.compile(tmp.optString("excludedLanguages"));

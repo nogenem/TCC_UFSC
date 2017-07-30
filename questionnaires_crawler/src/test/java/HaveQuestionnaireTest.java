@@ -1,4 +1,4 @@
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,9 +12,10 @@ import org.jsoup.nodes.Document;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import br.ufsc.tcc.common.config.ProjectConfigs;
+import br.ufsc.tcc.common.util.CommonConfiguration;
 import br.ufsc.tcc.common.util.CommonLogger;
 import br.ufsc.tcc.crawler.checker.RulesChecker;
+import br.ufsc.tcc.crawler.util.Configuration;
 
 public class HaveQuestionnaireTest {
 	
@@ -22,13 +23,12 @@ public class HaveQuestionnaireTest {
 	//Use um numero menor que 1 para usar todos os links
 	private static final int maxLinksToTest = -1;
 	
-	private static final String configsPath = "./crawler_configs.json";
 	private static RulesChecker checker;
 	
 	@BeforeClass
 	public static void onStart(){
 		CommonLogger.setDebugEnabled(false);
-		ProjectConfigs.loadConfigs(configsPath);
+		CommonConfiguration.setInstance(new Configuration());
 		checker = new RulesChecker();
 		
 		System.out.println("HaveQuestionnarieTest::onStart()> ...");

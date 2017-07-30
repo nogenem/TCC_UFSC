@@ -20,25 +20,25 @@ import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import br.ufsc.tcc.common.config.ProjectConfigs;
 import br.ufsc.tcc.common.crawler.CrawlerController;
 import br.ufsc.tcc.common.database.connection.BasicConnection;
 import br.ufsc.tcc.common.database.manager.PossivelQuestionarioManager;
 import br.ufsc.tcc.common.model.PossivelQuestionario;
+import br.ufsc.tcc.common.util.CommonConfiguration;
 import br.ufsc.tcc.common.util.CommonLogger;
 import br.ufsc.tcc.common.util.CommonUtil;
 import br.ufsc.tcc.crawler.checker.RulesChecker;
 import br.ufsc.tcc.crawler.crawler.Crawler;
+import br.ufsc.tcc.crawler.util.Configuration;
 
 public class Main {
 	
 	private static String outputJsonPath = "./possiveis_questionarios.json";
-	private static String configsPath = "./crawler_configs.json";
 	
 	public static void main(String[] args) {
 		// Carrega as configurações do projeto
 		System.out.println("Carregando arquivo de configuracao...");
-		ProjectConfigs.loadConfigs(configsPath);
+		CommonConfiguration.setInstance(new Configuration());
 			
 		// Inicializa a aplicação
 		if(args.length >= 1){
@@ -87,7 +87,7 @@ public class Main {
 //		url = "http://www.hoteljardinsdajuda.com/questionário.aspx?ID=17";
 //		url = "http://lap.umd.edu/surveys/census/files/surveya1pagesbytopic/page8.html";
 		
-		url = "http://fortune.com/data-store/?iid=f500main";
+		url = "https://www.surveyking.com/preview/employee-satisfaction.php";
 		
 		RulesChecker checker = new RulesChecker();
 		Document doc = null;
@@ -116,11 +116,11 @@ public class Main {
 		// Cria o Controller do Crawler, adiciona as Seeds e inicia o Crawler
 		try {
 			CommonLogger.setDebugEnabled(false);//TODO remover isso!!
-			final CrawlerController controller = new CrawlerController(ProjectConfigs.getCrawlerConfigs());
+			final CrawlerController controller = new CrawlerController(CommonConfiguration.getInstance().getCrawlerConfigs());
 			
 			// Adiciona as seeds do arquivo de configuração
 			System.out.println("Carregando seeds do arquivo de configuracao...");
-			JSONArray seeds = ProjectConfigs.getSeeds();
+			JSONArray seeds = CommonConfiguration.getInstance().getSeeds();
 			if(seeds != null){
 				seeds.forEach((seed) -> controller.addSeed((String)seed));	
 			}
@@ -131,16 +131,13 @@ public class Main {
 //			controller.addSeed("https://www.webcrawler.com/serp?q=survey+template");
 			
 			// Testar
-			controller.addSeed("https://survey.com.br/examples");
-			controller.addSeed("https://www.surveygizmo.com/survey-examples/");
-			controller.addSeed("https://www.surveyking.com/help/survey-templates.php");
-			controller.addSeed("https://www.surveyrock.com/home/sample-survey-templates.html");
-			controller.addSeed("https://www.proprofs.com/survey/examples.php");
-			controller.addSeed("http://surveyonics.com/survey/survey-templates.aspx");
-			controller.addSeed("https://www.proprofs.com/survey/");
+//			controller.addSeed("https://survey.com.br/examples");
+//			controller.addSeed("https://www.surveygizmo.com/survey-examples/");
+//			controller.addSeed("https://www.surveyking.com/help/survey-templates.php");
+//			controller.addSeed("https://www.surveyrock.com/home/sample-survey-templates.html");
 			
-//			controller.addSeed("http://search.lycos.com/web/?q=survey+online&pageInfo=Keywords%3Dsurvey%2520online%26xargs%3D12KPjg1sVSq5quh831MeKMQeKUgRpd1tm58854T8AuSrYHuidgUODDX5u%255F3pgqGK5q7wrGlE6gzJRada2g3KTXSwOPQVKfQKO9icqaiNYlVZ%252DhT4gTv49vn6C80t8QZztZPze8eNKfrt4%252E%26hData%3D12KPjg1o1gkMH3yLmqAs7ASOSAxl195pCy9MNpCJEPbd1a93BpUpENT5Px");
-//			controller.addSeed("http://search.lycos.com/web/?q=survey+online+template&pageInfo=Keywords%3Dsurvey%2520online%2520template%26xargs%3D12KPjg1sVSq5quh831MeKMQeKUgRpd1tm58854T8AuSrYHuidgUODDX5u%255F3pgqGK5q7wrGlE6gzJRada2g3KTXSwOPQVKfQKO9icqaiNYlVZ%252DhT4gTv49vn6C80t8QZztZPze8eNKfrt4%252E%26hData%3D12KPjg1o1g48b%252Dyc%252Dsc83OPeGDxigOlJDB88pofpd%252DbtMv8nNpJ%252DJ%255FT5Px");
+			controller.addSeed("http://search.lycos.com/web/?q=survey+online&pageInfo=Keywords%3Dsurvey%2520online%26xargs%3D12KPjg1sVSq5quh831MeKMQeKUgRpd1tm58854T8AuSrYHuidgUODDX5u%255F3pgqGK5q7wrGlE6gzJRada2g3KTXSwOPQVKfQKO9icqaiNYlVZ%252DhT4gTv49vn6C80t8QZztZPze8eNKfrt4%252E%26hData%3D12KPjg1o1gkMH3yLmqAs7ASOSAxl195pCy9MNpCJEPbd1a93BpUpENT5Px");
+			controller.addSeed("http://search.lycos.com/web/?q=survey+online+template&pageInfo=Keywords%3Dsurvey%2520online%2520template%26xargs%3D12KPjg1sVSq5quh831MeKMQeKUgRpd1tm58854T8AuSrYHuidgUODDX5u%255F3pgqGK5q7wrGlE6gzJRada2g3KTXSwOPQVKfQKO9icqaiNYlVZ%252DhT4gTv49vn6C80t8QZztZPze8eNKfrt4%252E%26hData%3D12KPjg1o1g48b%252Dyc%252Dsc83OPeGDxigOlJDB88pofpd%252DbtMv8nNpJ%252DJ%255FT5Px");
 
 //			controller.addSeed("http://www.ask.com/web?o=0&l=dir&qo=moreResults&q=survey+online&qsrc=467");
 //			controller.addSeed("https://www.webcrawler.com/serp?q=survey+online");
@@ -173,7 +170,7 @@ public class Main {
 	private static void showLinks() {
 		JSONObject output = new JSONObject();
 		
-		BasicConnection c = new BasicConnection(ProjectConfigs.getCrawlerDatabaseConfigs());
+		BasicConnection c = new BasicConnection(CommonConfiguration.getInstance().getCrawlerDatabaseConfigs());
 		PossivelQuestionarioManager pqManager = new PossivelQuestionarioManager(c, true);
 		
 		try {
