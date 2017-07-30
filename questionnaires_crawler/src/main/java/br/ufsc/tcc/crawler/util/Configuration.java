@@ -6,8 +6,6 @@ import org.json.JSONObject;
 import br.ufsc.tcc.common.util.CommonConfiguration;
 
 public class Configuration extends CommonConfiguration {
-
-protected static Configuration instance;
 	
 	//Construtores
 	public Configuration() {
