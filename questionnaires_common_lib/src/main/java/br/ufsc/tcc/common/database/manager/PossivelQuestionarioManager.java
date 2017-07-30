@@ -4,10 +4,10 @@ import java.util.Set;
 
 import com.google.common.hash.BloomFilter;
 
-import br.ufsc.tcc.common.config.ProjectConfigs;
 import br.ufsc.tcc.common.database.connection.BasicConnection;
 import br.ufsc.tcc.common.database.dao.PossivelQuestionarioDao;
 import br.ufsc.tcc.common.model.PossivelQuestionario;
+import br.ufsc.tcc.common.util.CommonConfiguration;
 import br.ufsc.tcc.common.util.CommonLogger;
 
 /**
@@ -38,7 +38,7 @@ public class PossivelQuestionarioManager {
 	 * 								serão carregados em uma estrutura de <b>BloomFilter</b>.
 	 */
 	public PossivelQuestionarioManager(boolean loadLinksAsASet) {
-		this(new BasicConnection(ProjectConfigs.getCrawlerDatabaseConfigs()), 
+		this(new BasicConnection(CommonConfiguration.getInstance().getCrawlerDatabaseConfigs()), 
 				loadLinksAsASet);
 	}
 	
@@ -96,7 +96,7 @@ public class PossivelQuestionarioManager {
 	}
 	
 	public static synchronized void loadLinksAsASet() {
-		BasicConnection conn = new BasicConnection(ProjectConfigs.getCrawlerDatabaseConfigs());
+		BasicConnection conn = new BasicConnection(CommonConfiguration.getInstance().getCrawlerDatabaseConfigs());
 		loadLinksAsASet(new PossivelQuestionarioDao(conn));
 		conn.close();
 	}
@@ -116,7 +116,7 @@ public class PossivelQuestionarioManager {
 	}
 	
 	public static synchronized void loadLinksAsABloomFilter() {
-		BasicConnection conn = new BasicConnection(ProjectConfigs.getCrawlerDatabaseConfigs());
+		BasicConnection conn = new BasicConnection(CommonConfiguration.getInstance().getCrawlerDatabaseConfigs());
 		loadLinksAsABloomFilter(new PossivelQuestionarioDao(conn));
 		conn.close();
 	}

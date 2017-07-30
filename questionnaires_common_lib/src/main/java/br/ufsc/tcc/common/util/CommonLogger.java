@@ -8,8 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.helpers.MessageFormatter;
 
-import br.ufsc.tcc.common.config.ProjectConfigs;
-
 /**
  * Classe responsável por lidar com os logs do sistema.
  * 
@@ -143,7 +141,8 @@ public class CommonLogger {
 	
 	// Bloco estático
 	static {
-		enabledLevels += ProjectConfigs.getLogLevels().toUpperCase();
+		if(CommonConfiguration.getInstance() != null)
+			enabledLevels += CommonConfiguration.getInstance().getLogLevels().toUpperCase();
 		// Pequena gambiarra para setar o nivel de log do Crawler4J
 		ch.qos.logback.classic.Level level = enabledLevels.contains("|INFO") ? ch.qos.logback.classic.Level.INFO : 
 			ch.qos.logback.classic.Level.WARN;

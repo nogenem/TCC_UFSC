@@ -14,11 +14,11 @@ public class BasicConnection {
 	protected String database, dbms, host, login, password;
 	
 	public BasicConnection(JSONObject configs) {
-		this(configs.optString("dbms"),
-				configs.optString("name"),
-				configs.optString("host"),
-				configs.optString("login"),
-				configs.optString("password"));
+		this(configs.getString("dbms"),
+				configs.getString("name"),
+				configs.getString("host"),
+				configs.getString("login"),
+				configs.getString("password"));
 	}
 	
 	public BasicConnection(String dbms, String database, String host, String login, String password){
