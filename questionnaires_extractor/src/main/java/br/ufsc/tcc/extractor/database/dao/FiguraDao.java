@@ -20,7 +20,7 @@ public class FiguraDao extends BasicDao {
 		HashMap<String, Object> data = new HashMap<>();
 		
 		data.put("Legenda", f.getLegenda());
-		data.put("imagem", f.getImage_url());
+		data.put("imagem_url", f.getImage_url());
 		
 		Object dono = f.getDono();
 		if(dono instanceof Questionario){

@@ -58,7 +58,7 @@ public class Crawler extends WebCrawler {
 				for(Questionario q : questionarios){
 //					this.qManager.save(q);
 					
-					CommonLogger.debug(Thread.currentThread().getName()+ "> SAVE DONE!");
+					System.out.println("<"+Thread.currentThread().getName()+">URL: " +link+ " - SAVE DONE!");
 				}
 				questionarios.clear();
 			}catch (Exception e) {

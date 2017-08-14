@@ -64,59 +64,82 @@ public class Main {
 //		path = "http://lap.umd.edu/surveys/census/files/surveya1pagesbytopic/page8.html";
 		
 		
-		//XXX site esta off... espero q volte... ;x
-//		path = "http://surveyonics.com/Survey/motivation-and-buying-experience-survey.aspx";									
-//		path = "http://surveyonics.com/SurveyCourseware/Designing-Marketing-Research-Survey.aspx";									
-//		path = "http://surveyonics.com/Survey/Post-event-Survey.aspx";									
-
-		
 		//TODO pegar mais links da _v6 do link:
 			//https://www.proprofs.com/survey/examples.php
 		
-		path = "https://www.questionpro.com/survey-templates/auto-purchase-lease-satisfaction/";
-		path = "https://www.questionpro.com/survey-templates/retail-website-customer-evaluation/";
-		path = "https://survey.zoho.com/surveytemplate/human%20resources-peer%20performance%20review%20survey";	
-		path = "https://survey.zoho.com/surveytemplate/health%20care%20survey-smoking%20habits%20survey";	
-		path = "https://survey.zoho.com/surveytemplate/human%20resources-leadership%20survey%20template";	
-		path = "http://www.surveyshare.com/template/3076/OfficeClinic-Survey";										
-		path = "http://www.surveyshare.com/template/3084/Emergency-Room-Visit";										
-		path = "http://www.surveyshare.com/template/3074/OfficeClinic-Survey";	
-		path = "http://www.surveyshare.com/template/1454/Community-Crime-Perception";	
-		path = "https://www.survio.com/modelo-de-pesquisa/pesquisa-de-preco-do-produto";							
-		path = "https://www.survio.com/modelo-de-pesquisa/feedback-sobre-servico";									
-		path = "https://www.surveymonkey.com/r/online-social-networking-template";									
-		path = "https://www.surveymonkey.com/r/Personal-Hygiene-Template";									
-		path = "https://www.surveymonkey.com/r/General-Internet-Usage-Template";									
-		path = "https://www.surveymonkey.com/r/CAHPS-Dental-Plan-Survey-Template";		
-		path = "https://www.surveyforbusiness.com/survey-industry/internet.html";									
-		path = "http://cs.createsurvey.com/publish/survey?s=17&m=MM1Kro";									
-		path = "http://cs.createsurvey.com/publish/survey?s=9&m=bvC7ZD";									
-		path = "https://www.surveycrest.com/template_preview/pXT5Nw_AQPn48qqQ57GYpnQRsHA";									
-		path = "https://www.surveycrest.com/template_preview/pZ0u5a9Kcnda1_x4Kw1pQuJK14thHQpQ";									
-		path = "https://www.surveycrest.com/template_preview/pyof1IFwp9Xa1_x430JdUeVsuHVRKuw";						
-		path = "https://gallery.wufoo.com/embed/r15y6jxp139gb8f/def/embedKey=r15y6jxp139gb8f455631";									
-		path = "https://gallery.wufoo.com/embed/m1v1ukx90mamwj9/def/embedKey=m1v1ukx90mamwj9188801";									
-		path = "https://gallery.wufoo.com/embed/zpfozn70yydvip/def/embedKey=zpfozn70yydvip429528";									
-		path = "https://gallery.wufoo.com/embed/w1qtrb451rja978/def/embedKey=w1qtrb451rja9786468";	
-		path = "http://www.websurveymaster.com/t/16/Samples";									
-		path = "http://www.websurveymaster.com/t/14/Samples";									
-		path = "https://www.smartsurvey.co.uk/s/customer-service-feedback-template?sample-provider=true";									
-		path = "https://www.smartsurvey.co.uk/s/evaluation-of-company-and-supervisor-template?sample-provider=true";									
-		path = "https://www.smartsurvey.co.uk/s/evaluation-of-job-template?sample-provider=true";									
-		path = "http://www.123contactform.com/js-form--37173.html";									
-		path = "http://www.123contactform.com/js-form--1346991.html";									
-		path = "http://www.123contactform.com/js-form--37862.html";									
-		path = "https://www.proprofs.com/survey/t/?title=okgaw&type=template";
-		path = "https://www.proprofs.com/survey/t/?title=xl7oc&type=template";
-		path = "https://www.proprofs.com/survey/t/?title=teacher-feedback-survey";
-		path = "https://survey.com.br/preview/healthcare-patient-feedback?template=true";
-		path = "https://survey.com.br/preview/job-application-web-form-2?template=true";
-		path = "https://survey.com.br/preview/market-research-tourism-target-customers?template=true";
-		path = "https://www.surveyrock.com/template/sample-nonprofit-membership-survey-template-1956";
-		path = "https://www.surveyrock.com/template/sample-campus-issues-survey-template-1843";
-		path = "https://www.surveyrock.com/template/sample-employee-performance-evaluation-survey-template-2008";
-		path = "http://www.surveyexpression.com/Survey.aspx?id=d3f09b77-831a-47ba-907c-ae34368bfd80";
-		path = "http://www.surveyexpression.com/Survey.aspx?id=5bd74ae1-3d2c-49c1-9df0-9e43a8f580c0";
+//		path = "https://www.questionpro.com/survey-templates/auto-purchase-lease-satisfaction/";
+//		path = "https://www.questionpro.com/survey-templates/retail-website-customer-evaluation/";
+//		path = "https://www.questionpro.com/survey-templates/isp-service-evaluation/";
+//		path = "https://www.questionpro.com/survey-templates/seminar-purchase-motivation/";
+//		path = "https://survey.zoho.com/surveytemplate/human%20resources-peer%20performance%20review%20survey";	
+//		path = "https://survey.zoho.com/surveytemplate/health%20care%20survey-smoking%20habits%20survey";	
+//		path = "https://survey.zoho.com/surveytemplate/human%20resources-leadership%20survey%20template";	
+//		path = "http://www.surveyshare.com/template/3076/OfficeClinic-Survey";										
+//		path = "http://www.surveyshare.com/template/3084/Emergency-Room-Visit";										
+//		path = "http://www.surveyshare.com/template/3074/OfficeClinic-Survey";	
+//		path = "http://www.surveyshare.com/template/1454/Community-Crime-Perception";	
+//		path = "https://www.survio.com/modelo-de-pesquisa/pesquisa-de-preco-do-produto";							
+//		path = "https://www.survio.com/modelo-de-pesquisa/feedback-sobre-servico";									
+//		path = "https://www.surveymonkey.com/r/online-social-networking-template";									
+//		path = "https://www.surveymonkey.com/r/Personal-Hygiene-Template";									
+//		path = "https://www.surveymonkey.com/r/General-Internet-Usage-Template";									
+//		path = "https://www.surveymonkey.com/r/CAHPS-Dental-Plan-Survey-Template";		
+//		path = "https://www.surveyforbusiness.com/survey-industry/internet.html";									
+//		path = "http://cs.createsurvey.com/publish/survey?s=17&m=MM1Kro";									
+//		path = "http://cs.createsurvey.com/publish/survey?s=9&m=bvC7ZD";									
+//		path = "https://www.surveycrest.com/template_preview/pXT5Nw_AQPn48qqQ57GYpnQRsHA";									
+//		path = "https://www.surveycrest.com/template_preview/pZ0u5a9Kcnda1_x4Kw1pQuJK14thHQpQ";									
+//		path = "https://www.surveycrest.com/template_preview/pyof1IFwp9Xa1_x430JdUeVsuHVRKuw";						
+//		path = "https://gallery.wufoo.com/embed/r15y6jxp139gb8f/def/embedKey=r15y6jxp139gb8f455631";									
+//		path = "https://gallery.wufoo.com/embed/m1v1ukx90mamwj9/def/embedKey=m1v1ukx90mamwj9188801";									
+//		path = "https://gallery.wufoo.com/embed/zpfozn70yydvip/def/embedKey=zpfozn70yydvip429528";									
+//		path = "https://gallery.wufoo.com/embed/w1qtrb451rja978/def/embedKey=w1qtrb451rja9786468";	
+//		path = "http://www.websurveymaster.com/t/16/Samples";									
+//		path = "http://www.websurveymaster.com/t/14/Samples";									
+//		path = "https://www.smartsurvey.co.uk/s/customer-service-feedback-template?sample-provider=true";									
+//		path = "https://www.smartsurvey.co.uk/s/evaluation-of-company-and-supervisor-template?sample-provider=true";									
+//		path = "https://www.smartsurvey.co.uk/s/evaluation-of-job-template?sample-provider=true";									
+//		path = "http://www.123contactform.com/js-form--37173.html";									
+//		path = "http://www.123contactform.com/js-form--1346991.html";									
+//		path = "http://www.123contactform.com/js-form--37862.html";									
+//		path = "https://www.proprofs.com/survey/t/?title=okgaw&type=template";
+//		path = "https://www.proprofs.com/survey/t/?title=xl7oc&type=template";
+//		path = "https://www.proprofs.com/survey/t/?title=teacher-feedback-survey";
+//		path = "https://survey.com.br/preview/healthcare-patient-feedback?template=true";
+//		path = "https://survey.com.br/preview/job-application-web-form-2?template=true";
+//		path = "https://survey.com.br/preview/market-research-tourism-target-customers?template=true";
+//		path = "https://www.surveyrock.com/template/sample-nonprofit-membership-survey-template-1956";
+//		path = "https://www.surveyrock.com/template/sample-campus-issues-survey-template-1843";
+//		path = "https://www.surveyrock.com/template/sample-employee-performance-evaluation-survey-template-2008";
+//		path = "http://www.surveyexpression.com/Survey.aspx?id=d3f09b77-831a-47ba-907c-ae34368bfd80";
+//		path = "http://www.surveyexpression.com/Survey.aspx?id=5bd74ae1-3d2c-49c1-9df0-9e43a8f580c0";
+//		path = "https://survs.com/survey-templates/employee-satisfaction-survey/";
+//		path = "https://survs.com/survey-templates/course-evaluation-survey/";
+//		path = "http://www.createsurvey.com/cgi-bin/pollfrm?s=36954&m=w9PL1C&presurvey_view=1";
+//		path = "https://www.jotform.com/form-templates/preview/21014328614342?preview=true";
+//		path = "https://www.jotform.com/form-templates/preview/31586782446970?preview=true";
+//		path = "https://www.jotform.com/form-templates/preview/31633965174863?preview=true";
+//		path = "http://www.zarca.com/Online-Surveys-Employee/employee-internal-satisfaction-with-departments.html";
+//		path = "http://www.zarca.com/Online-Surveys-Non-Profit/association-salary-survey.html";
+//		path = "http://www.zarca.com/Online-Surveys-Non-Profit/association-pre-conference-planning-survey.html";
+//		path = "https://www.surveymoz.com/s/product-service-satisfaction-example";
+//		path = "http://www.surveymoz.com/s/evaluation-of-company-and-supervisor-example";
+//		path = "http://www.surveymoz.com/s/health-care-opinion-survey-example";
+//		path = "http://www.almaderma.com.br/formulario/florais/entrevista02/contato.php";
+//		path = "http://infopoll.net/live/surveys/s32802.htm";
+//		path = "http://infopoll.net/live/surveys/s32928.htm";
+//		path = "https://statpac.com/online-surveys/resturaunt_customer_satisfaction_survey.htm";
+//		path = "https://statpac.com/online-surveys/customer_service_evaluation_survey.htm";
+//		path = "http://surveyonics.com/Survey/motivation-and-buying-experience-survey.aspx";
+//		path = "http://surveyonics.com/SurveyCourseware/Designing-Marketing-Research-Survey.aspx";
+//		path = "http://surveyonics.com/Survey/Post-event-Survey.aspx";
+		
+		
+//		path = "https://www.survio.com/modelo-de-pesquisa/feedback-sobre-servico";
+//		path = "https://www.survio.com/modelo-de-pesquisa/pesquisa-de-preco-do-produto";
+//		path = "https://survey.zoho.com/surveytemplate/human%20resources-employee%20performance%20survey";
+//		path = "https://survey.zoho.com/surveytemplate/marketing-new%20brand%20name%20testing%20survey";
+		
 		
 		BasicConnection conn = new BasicConnection(CommonConfiguration.getInstance().getExtractorDatabaseConfigs());;
 		FormaDaPerguntaManager.loadFormas(conn);

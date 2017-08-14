@@ -162,6 +162,8 @@ public class PerguntaBuilder {
 		
 		//Verifica se foi possivel extrair a pergunta
 		if(this.currentP.getForma() != null){
+			this.currentP.convertFormaToTipo();
+			
 			ArrayList<Alternativa> tmpAlts = this.currentP.getAlternativas();
 			
 			//Atualiza a desc da pergunta
@@ -226,7 +228,8 @@ public class PerguntaBuilder {
 				if(cTmp2 == null){
 					if(!currentQ.getAssunto().isEmpty() || cStack.size() >= 2)
 						cTmp2 = cStack.peek();
-				}else if(this.checker.isAbove(cTmp2.last(), cStack.peek().first())){
+				}else if( (lastQWithSubQsDesc != null && this.checker.isAbove(nTmp2, lastQWithSubQsDesc.first())) ||
+						this.checker.isAbove(cTmp2.last(), cStack.peek().first())){
 					//Se tiver um texto no meio quer dizer que ja termino a matriz
 					this.saveLastMatrix(currentQ);
 					cTmp2 = cStack.peek();
@@ -249,42 +252,51 @@ public class PerguntaBuilder {
 			//	Ex: https://www.surveymonkey.com/r/online-social-networking-template [questão 4]
 			boolean qWithSubQsFlag = false;
 			
-			nTmp1 = questionLastNode;//TODO verificar isso!
+			nTmp1 = questionLastNode;//XXX qual será o melhor?
 //			nTmp1 = firstNode;
 //			nTmp1 = desc.first();
 			
-			nTmp2 = this.lastQWithSubQsDesc != null ? 
-						this.lastQWithSubQsDesc.first() : null;//.last()//TODO verificar isso!
+			cTmp1 = this.lastQWithSubQsDesc != null ? 
+					this.lastQWithSubQsDesc : null;
+			nTmp2 = cTmp1==null ? null : cTmp1.first();
 			
 			if(!cStack.isEmpty()){
-				if(nTmp2 == null){
+				if(cTmp1 == null){
 					if(!currentQ.getAssunto().isEmpty() || cStack.size() >= 2)
-						nTmp2 = cStack.peek().first();//.last();//TODO verificar isso!
-				}else if(this.checker.isAbove(nTmp2, cStack.peek().first())){
+						cTmp1 = cStack.peek();
+				}else if( (lastMatrixDesc != null && this.checker.isAbove(nTmp2, lastMatrixDesc.first())) ||
+						this.checker.isAbove(nTmp2, cStack.peek().first())){
 					//Se tiver um texto no meio quer dizer que ja termino as subperguntas
 					this.saveLastQWithSubQs(currentQ);
-					nTmp2 = cStack.peek().first();//.last();//TODO verificar isso!
+					cTmp1 = cStack.peek();
 				}
 			}
 			
-			if(nTmp2 != null && nTmp2.isText()){
-				if(checker.checkDistForQWithSubQs(nTmp2, nTmp1)){
-					if(this.lastQWithSubQs == null && this.checker.checkQWithSubQs(nTmp1, nTmp2, nodes, this.currentI)){
-						this.updateLastQWithSubQs(currentQ, nodes, cStack, nTmp1);
-						qWithSubQsFlag = true;
-					}else if(this.lastQWithSubQs != null && 
-							this.checker.checkCommonPrefix(nTmp1, nTmp2, this.lastQWithSubQsCommonPrefix)){
-						if(!this.lastQWithSubQs.getForma().toString().
-								startsWith(this.currentP.getForma().toString())){
-							this.lastQWithSubQs.setForma(FormaDaPerguntaManager.getForma("MIX_COMP_GROUP"));
+			if(!matrixFlag) {
+				if(cTmp1 != null && this.lastQWithSubQsDesc == null)
+					cTmp1 = this.checker.checkIfDescIsCompleteWithClone(cTmp1, cStack, nodes, this.currentI);
+				nTmp2 = cTmp1==null ? null : cTmp1.first();
+	
+				if(nTmp2 != null && nTmp2.isText()){
+					if(checker.checkDistForQWithSubQs(nTmp2, nTmp1)){
+						if(this.lastQWithSubQs == null && this.checker.
+								isQWithSubQs(nTmp1, nTmp2, nodes, this.currentI)){
+							this.updateLastQWithSubQs(currentQ, nodes, cStack, nTmp1);
+							qWithSubQsFlag = true;
+						}else if(this.lastQWithSubQs != null && 
+								this.checker.checkCommonPrefix(nTmp1, nTmp2, this.lastQWithSubQsCommonPrefix)){
+							if(!this.lastQWithSubQs.getForma().toString().
+									startsWith(this.currentP.getForma().toString())){
+								this.lastQWithSubQs.setForma(FormaDaPerguntaManager.getForma("MIX_COMP_GROUP"));
+							}
+							this.lastQWithSubQs.addFilha(this.currentP);
+							qWithSubQsFlag = true;
+						}else{
+							this.saveLastQWithSubQs(currentQ);
 						}
-						this.lastQWithSubQs.addFilha(this.currentP);
-						qWithSubQsFlag = true;
-					}else{
+					}else if(this.lastQWithSubQs != null){
 						this.saveLastQWithSubQs(currentQ);
 					}
-				}else if(this.lastQWithSubQs != null){
-					this.saveLastQWithSubQs(currentQ);
 				}
 			}
 			
@@ -416,6 +428,7 @@ public class PerguntaBuilder {
 	 */
 	private void saveLastQWithSubQs(Questionario currentQ) {
 		if(this.lastQWithSubQs != null){
+			this.lastQWithSubQs.convertFormaToTipo();
 			currentQ.addPergunta(this.lastQWithSubQs);
 			CommonLogger.debug("Q with SubQs descricao: {}\n\n", this.lastQWithSubQs.getDescricao());			
 		}
@@ -423,6 +436,7 @@ public class PerguntaBuilder {
 		this.lastQWithSubQsDesc = null;
 		this.lastQWithSubQsCommonPrefix = "";
 	}
+	
 	
 	/**
 	 * Atualiza os dados da ultima matriz encontrada.
@@ -478,6 +492,7 @@ public class PerguntaBuilder {
 			this.lastMatrix.addFilha(this.currentP);
 	}
 	
+	
 	/**
 	 * Adiciona a ultima matriz encontrada ao questionário atual.
 	 * 
@@ -488,6 +503,7 @@ public class PerguntaBuilder {
 			if(this.lastMatrixEvaluationLevels != null)
 				this.setEvaluationLevels(this.lastMatrix, this.lastMatrixEvaluationLevels);
 			this.removePergDescFromAltDesc(this.lastMatrix);
+			this.lastMatrix.convertFormaToTipo();
 			
 			currentQ.addPergunta(this.lastMatrix);
 			CommonLogger.debug("Matrix descricao: {}\n\n", this.lastMatrix.getDescricao());		
@@ -498,6 +514,7 @@ public class PerguntaBuilder {
 		this.lastMatrix = null;
 		this.lastMatrixCommonPrefix = "";
 	}
+	
 	
 	/**
 	 * Remove a descrição das perguntas filhas da Matriz da 
@@ -524,6 +541,7 @@ public class PerguntaBuilder {
 			}
 		}
 	}
+	
 
 	private void setEvaluationLevels(Pergunta perg, Cluster evaluationLevels) {
 		if(perg.isA("RADIO_INPUT")){
@@ -538,6 +556,7 @@ public class PerguntaBuilder {
 				setEvaluationLevels(p, evaluationLevels);
 		}
 	}
+	
 
 	public void clearData(Questionario currentQ) {
 		this.saveLastMatrix(currentQ);

@@ -27,7 +27,7 @@
 		"resumableCrawling": false	
 	},
 	"seeds": [
-		"https://survey.sogosurvey.com/survey.aspx?k=SsWUYTsQSUsPsPsP&lang=0&data"
+		"http://www.questionpro.com/survey-templates/product-use-and-satisfaction/"
 	],
 	"parameters": {
 		"minQuestionsOnQuestionnaire": 2,
@@ -61,7 +61,7 @@
 		},
 		"distBetweenTextsInQuestionWithSubQuestions": {
 			"height": 1,
-			"width": 6
+			"width": 7
 		},
 		"distBetweenPartsOfDescription": {
 			"width": 4,
@@ -81,6 +81,6 @@
 			"height": 1
 		},
 		"maxSpacesAndNewLinesInEvaluationLevels": 3,
-		"evaluationLevelsWordsRegex": "(?ism).*(satisfied|likley|likely|confident|strongly|satisfeito|prov(á|a)vel|confiante|fortemente).*"
+		"evaluationLevelsWordsRegex": "(?ism).*(very well|not at all|satisfied|likley|likely|confident|strongly|satisfeito|prov(á|a)vel|confiante|fortemente).*"
 	}
 }

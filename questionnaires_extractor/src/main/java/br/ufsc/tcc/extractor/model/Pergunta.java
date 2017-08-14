@@ -42,8 +42,7 @@ public class Pergunta {
 	public Pergunta(String descricao, FormaDaPergunta forma){
 		this.id = -1;
 		this.descricao = descricao;
-		this.forma = forma;
-		this.tipo = this.convertFormaToTipo();
+		this.setForma(forma);
 		this.pai = null;
 		this.questionario = null;
 		this.grupo = null;
@@ -86,7 +85,7 @@ public class Pergunta {
 
 	public void setForma(FormaDaPergunta forma) {
 		this.forma = forma;
-		this.tipo = this.convertFormaToTipo();
+		this.convertFormaToTipo();
 	}
 
 	public Pergunta getPai() {
@@ -149,28 +148,35 @@ public class Pergunta {
 				FormaDaPerguntaManager.getForma(forma.toUpperCase());
 	}
 	
-	private String convertFormaToTipo(){
-		if(this.getForma() == null) return "";
+	public void convertFormaToTipo(){
+		if(this.getForma() == null) {
+			this.tipo = "";
+			return;
+		}
 		
 		switch(this.getForma().toString()){
 		case "SELECT":
 		case "SELECT_GROUP":
 		case "IMAGE_RADIO_INPUT":
 		case "IMAGE_RADIO_INPUT_GROUP":
+		case "IMAGE_RADIO_INPUT_MATRIX":
 		case "RADIO_INPUT":
 		case "RADIO_INPUT_GROUP":
+		case "RADIO_INPUT_MATRIX":
 		case "RANGE_INPUT":
 		case "RANGE_INPUT_GROUP":
 		case "RATING":
 		case "RATING_GROUP":
-			return "FECHADO";
+			this.tipo = "FECHADO";
+			break;
 		case "IMAGE_CHECKBOX_INPUT":
+		case "IMAGE_CHECKBOX_INPUT_GROUP":
+		case "IMAGE_CHECKBOX_INPUT_MATRIX":
 		case "CHECKBOX_INPUT":
 		case "CHECKBOX_INPUT_GROUP":
 		case "CHECKBOX_INPUT_MATRIX":
-		case "IMAGE_RADIO_INPUT_MATRIX":
-		case "RADIO_INPUT_MATRIX":
-			return "MULTIPLA_ESCOLHA";
+			this.tipo = "MULTIPLA_ESCOLHA";
+			break;
 		case "TEXT_INPUT":
 		case "TEXT_INPUT_GROUP":
 		case "TEXT_INPUT_MATRIX":
@@ -195,13 +201,26 @@ public class Pergunta {
 		case "TEXTAREA":
 		case "TEXTAREA_GROUP":
 		case "TEXTAREA_MATRIX":
+			this.tipo = "ABERTO";
+			break;
 		case "MIX_COMP_GROUP":
 		case "MIX_COMP_MATRIX":
 		case "MULTI_COMP":
-		case "MULTI_COMP_GROUP":
-			return "ABERTO";
-		default:
-			return "";
+		case "MULTI_COMP_GROUP":{
+			String tipo = "", tmp = "";
+			for(Pergunta p : this.filhas) {
+				tmp = p.getTipo();
+				if(tmp.equals("ABERTO"))
+					tipo = "ABERTO";
+				else if(tmp.equals("MULTIPLA_ESCOLHA") && !tipo.equals("ABERTO"))
+					tipo = "MULTIPLA_ESCOLHA";
+				else if(tipo.matches("FECHADO|"))
+					tipo = tmp;
+			}
+			this.tipo = tipo;
+			break;
+		}default:
+			this.tipo = "";
 		}
 	}
 	

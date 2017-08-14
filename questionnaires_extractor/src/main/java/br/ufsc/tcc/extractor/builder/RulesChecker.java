@@ -153,6 +153,25 @@ public class RulesChecker {
 		return desc;
 	}
 	
+	public Cluster checkIfDescIsCompleteWithClone(Cluster desc, Stack<Cluster> cStack, List<MyNode> nodes, int i) {
+		if(desc == null || desc.isEmpty() || cStack.size() < 2 || i+1 >= nodes.size())
+			return desc;
+		
+		Cluster tmp = cStack.get(1);
+		String txt = tmp.getText();
+		
+		//Ex: https://www.survio.com/modelo-de-pesquisa/feedback-sobre-servico
+		boolean has4orMoreChars = txt.length() >= 4;
+		if(!txt.isEmpty() && this.isDescriptionsNear(tmp, desc) &&
+				((has4orMoreChars && !this.distMatrix.areNear(tmp.last(), nodes.get(i+1))) || !has4orMoreChars)) {
+			tmp = tmp.clone();
+			tmp = tmp.join(desc);
+			return tmp;
+		}
+		
+		return desc;
+	}
+	
 	public Cluster checkIfDescIsComplete(Cluster desc, Stack<Cluster> cStack, List<MyNode> nodes, int i){
 		if(desc == null || desc.isEmpty() || cStack.isEmpty() || i+1 >= nodes.size())
 			return desc;
@@ -387,10 +406,22 @@ public class RulesChecker {
 		return dist.getHeight() <= obj.getInt("height") && dist.getWidth() <= obj.getInt("width");
 	}
 	
-	// Middle e bottom devem esta perto um do outro
-	// o prefixo entre middle e qWithSubQsDesc e entre bottom e qWithSubQsDesc deve ser o mesmo
-	// o prefixo acima deve ser menor que o prefixo entre middle e bottom
-	public boolean checkQWithSubQs(MyNode middle, MyNode qWithSubQsDesc, List<MyNode> nodes, int currentI) {
+	/**
+	 * Utiliza uma heurística para verificar se é uma pergunta com subperguntas.<br>
+	 * <ul>
+	 * <li>Middle e bottom devem esta perto um do outro.</li>
+	 * <li>O prefixo entre middle e qWithSubQsDesc e entre bottom = nodes.get(currentI+1) 
+	 * 	   e qWithSubQsDesc deve ser o mesmo.</li>
+	 * <li>O prefixo acima deve ser menor que o prefixo entre middle e bottom.</li>
+	 * </ul>
+	 * 
+	 * @param middle
+	 * @param qWithSubQsDesc
+	 * @param nodes
+	 * @param currentI
+	 * @return
+	 */
+	public boolean isQWithSubQs(MyNode middle, MyNode qWithSubQsDesc, List<MyNode> nodes, int currentI) {
 		if(currentI+1 >= nodes.size()) return false;
 		
 		MyNode bottom = nodes.get(currentI+1);
