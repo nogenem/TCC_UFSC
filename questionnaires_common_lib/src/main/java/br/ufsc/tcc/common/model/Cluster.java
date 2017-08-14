@@ -152,4 +152,12 @@ public class Cluster {
 		}
 		return builder.toString();
 	}
+	
+	@Override
+	public Cluster clone() {
+		Cluster result = new Cluster();
+		for(MyNode n : this.group)
+			result.add(n);
+		return result;
+	}
 }
