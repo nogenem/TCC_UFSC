@@ -27,6 +27,9 @@ INSERT INTO FormaDaPergunta(descricao) VALUES ('URL_INPUT_GROUP');
 INSERT INTO FormaDaPergunta(descricao) VALUES ('URL_INPUT_MATRIX');
 
 INSERT INTO FormaDaPergunta(descricao) VALUES ('IMAGE_CHECKBOX_INPUT');
+INSERT INTO FormaDaPergunta(descricao) VALUES ('IMAGE_CHECKBOX_INPUT_GROUP');
+INSERT INTO FormaDaPergunta(descricao) VALUES ('IMAGE_CHECKBOX_INPUT_MATRIX');
+
 INSERT INTO FormaDaPergunta(descricao) VALUES ('CHECKBOX_INPUT');
 INSERT INTO FormaDaPergunta(descricao) VALUES ('CHECKBOX_INPUT_GROUP');
 INSERT INTO formadapergunta(descricao) VALUES ('CHECKBOX_INPUT_MATRIX');
