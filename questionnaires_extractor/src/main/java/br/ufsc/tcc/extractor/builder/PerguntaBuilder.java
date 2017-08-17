@@ -111,14 +111,14 @@ public class PerguntaBuilder {
 		
 		//Verifica se tem componentes em sequência
 		if(nTmp1 != null && firstNode.getType() != MyNodeType.SELECT && nTmp1.isComponent() &&
-				!this.checker.isATextInputDisabledWithValue(nTmp1) &&
+				!nTmp1.isATextInputDisabledWithValue() &&
 				this.distMatrix.areNear(firstNode, nTmp1)){
 			
 			if(this.lastMatrixHead != null && !cStack.isEmpty() &&
 					this.checker.isAbove(this.lastMatrixHead.last(), cStack.peek().first())){
 				this.saveLastMatrix(currentQ);
 			}
-			if(this.lastMatrixHead != null || this.checker.isSimpleMatrix(nodes, this.currentI, cStack)){
+			if(this.checker.isSimpleMatrix(this.lastMatrixHead, nodes, this.currentI, cStack)){
 				if(this.lastMatrixHead == null)
 					this.lastMatrixHead = cStack.pop();
 				
@@ -172,7 +172,6 @@ public class PerguntaBuilder {
 				desc = cStack.pop();
 			}
 			desc = this.checker.getCorrectDescription(desc, tmpAlts, firstNode, cStack);
-			desc = this.checker.checkIfDescIsComplete(desc, cStack, nodes, this.currentI);
 			
 			//Verifica se a desc e a pergunta estão perto uma da outra
 			if(!checker.areDescAndPergNear(desc, firstNode))
@@ -183,9 +182,11 @@ public class PerguntaBuilder {
 				firstImg = desc.last();
 			
 			questionLastNode = nodes.get(this.currentI);
-			String tmpDescTxt = desc.getText();
+			
 			//Verifica se o texto abaixo, se tiver, não faz parte desta pergunta (Ex: Peso: [ ] kg)
+			boolean foundComplementaryText = false;
 			while(this.checker.checkComplementaryText(nodes, this.currentI)){
+				foundComplementaryText = true;
 				nTmp1 = nodes.get(++this.currentI);
 				//Se for um CHECKBOX ou RADIO INPUT, então o texto complementar deve
 				//pertencer a uma opção 'Outro' que usa um TEXT INPUT
@@ -194,28 +195,19 @@ public class PerguntaBuilder {
 					if(this.currentP.getFilhas().size() > 0){
 						ArrayList<Pergunta> filhas = this.currentP.getFilhas();
 						Pergunta p = filhas.get(filhas.size()-1);
-						if(this.checker.isATextInputDisabledWithValue(nTmp1))
+						if(nTmp1.isATextInputDisabledWithValue())
 							p.setDescricao(p.getDescricao() +"\n"+ nTmp1.getAttr("value"));
 						else
 							p.setDescricao(p.getDescricao() +"\n"+ nTmp1.getText());
-					}else {
+					}else 
 						desc.add(nTmp1);
-						if(this.checker.isATextInputDisabledWithValue(nTmp1))
-							tmpDescTxt += "\n"+ nTmp1.getAttr("value");
-						else
-							tmpDescTxt += "\n"+ nTmp1.getText();
-					}
-				}else {
+				}else 
 					desc.add(nTmp1);
-					if(this.checker.isATextInputDisabledWithValue(nTmp1))
-						tmpDescTxt += "\n"+ nTmp1.getAttr("value");
-					else
-						tmpDescTxt += "\n"+ nTmp1.getText();
-				}
 			}
+			desc = this.checker.checkIfDescIsComplete(desc, cStack, nodes, this.currentI);
 			
 			//Seta a descrição da pergunta
-			this.currentP.setDescricao(tmpDescTxt);
+			this.currentP.setDescricao(desc.getText(foundComplementaryText));
 			CommonLogger.debug("Descricao: {}\n\n", this.currentP.getDescricao());
 			
 			//Verifica se é uma matriz
@@ -462,16 +454,18 @@ public class PerguntaBuilder {
 			this.lastMatrixCommonPrefix = this.lastMatrixHead.last().getDewey()
 					.getCommonPrefix(descFirstNode.getDewey());
 			
-			Cluster desc = !cStack.isEmpty() ? cStack.pop() : null;
+			Cluster desc = !cStack.isEmpty() ? cStack.peek() : null;
 			if(desc != null) {
 				if(!cStack.isEmpty() && checker.isEvaluationLevels(desc, cStack)){
-					lastMatrixEvaluationLevels = desc;
 					desc = cStack.pop();
+					lastMatrixEvaluationLevels = desc;
+					desc = !cStack.isEmpty() ? cStack.peek() : null;
 				}
-				desc = this.checker.checkIfDescIsComplete(desc, cStack, nodes, this.currentI);
 				
 				//Verifica se a desc e o cabeçalho da matriz estão perto um do outro
-				if(checker.areDescAndPergNear(desc, this.lastMatrixHead.first())) {
+				if(desc != null && checker.areDescAndPergNear(desc, this.lastMatrixHead.first())) {
+					desc = cStack.pop();
+					desc = this.checker.checkIfDescIsComplete(desc, cStack, nodes, this.currentI);
 					this.lastMatrixDesc = desc;
 					this.lastMatrix.setDescricao(desc.getText());		
 				}else {

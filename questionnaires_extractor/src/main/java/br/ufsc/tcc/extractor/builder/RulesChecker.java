@@ -259,14 +259,14 @@ public class RulesChecker {
 
 			//Lida com casos aonde se tem 2 textos complementares
 			//	Ex: https://www.survio.com/modelo-de-pesquisa/feedback-sobre-servico
-			if(i+3 < nodes.size() && (nTmp3.isImgOrText() || isATextInputDisabledWithValue(nTmp3)) && 
+			if(i+3 < nodes.size() && (nTmp3.isImgOrText() || nTmp3.isATextInputDisabledWithValue()) && 
 					dist.getMaxHeight() == 1 && dist.getWidth() <= 2){
 				nTmp3 = nodes.get(i+3);
 			}
 			
 			JSONObject obj = CONFIGS.getJSONObject("distBetweenDescAndComplementaryText");
 			
-			if((nTmp2.isText() || isATextInputDisabledWithValue(nTmp2)) && nTmp3.isImgOrText()){
+			if((nTmp2.isText() || nTmp2.isATextInputDisabledWithValue()) && nTmp3.isImgOrText()){
 				dist = distMatrix.getDist(nTmp1, nTmp2);
 				if(dist.getHeight() <= obj.getInt("height") && dist.getMaxHeight() <= obj.getInt("maxHeight") && 
 						dist.getWidth() <= obj.getInt("width")){
@@ -284,11 +284,6 @@ public class RulesChecker {
 			}
 		}
 		return false;
-	}
-	
-	public boolean isATextInputDisabledWithValue(MyNode input){
-		return input.isA("TEXT_INPUT") && !input.getAttr("disabled").isEmpty() && 
-				!input.getAttr("value").isEmpty();
 	}
 
 	public boolean isAbove(MyNode n1, MyNode n2) {
@@ -336,28 +331,33 @@ public class RulesChecker {
 		return flag;
 	}
 
-	public boolean isSimpleMatrix(List<MyNode> nodes, int i, Stack<Cluster> cStack) {
+	public boolean isSimpleMatrix(Cluster header, List<MyNode> nodes, int i, Stack<Cluster> cStack) {
 		int count = 0;
-		Cluster head = !cStack.isEmpty() ? cStack.peek() : null;
+		Cluster head = header != null ? header :
+			!cStack.isEmpty() ? cStack.peek() : null;
 		MyNode nTmp = nodes.get(i);
+		String prefix = nTmp.getDewey().getCommonPrefix(head.last().getDewey()), pTmp = "";
 		
 		if(head == null || !head.isAllText())
 			return false;
 		
-		JSONObject obj = CONFIGS.getJSONObject("distBetweenHeaderAndFirstAlternative");
-		DeweyExt dist = this.distMatrix.getDist(head.last(), nTmp);
-		if(dist.getHeight() > obj.getInt("height") || 
-				dist.getWidth() > obj.getInt("width"))
-			return false;
+		if(header == null) {// 1* pergunta da matriz
+			JSONObject obj = CONFIGS.getJSONObject("distBetweenHeaderAndFirstAlternative");
+			DeweyExt dist = this.distMatrix.getDist(head.last(), nTmp);
+			if(dist.getHeight() > obj.getInt("height") || 
+					dist.getWidth() > obj.getInt("width"))
+				return false;
+		}
 		
 		//Conta a quantidade de componentes em sequência
 		do{ 
 			count++;
-			if(i+count < nodes.size())
+			if(i+count < nodes.size()) {
 				nTmp = nodes.get(i+count);
-			else
+				pTmp = nTmp.getDewey().getCommonPrefix(head.last().getDewey());//Garantia para não pegar componentes a +
+			}else
 				nTmp = null;
-		}while(nTmp != null && nTmp.isComponent());
+		}while(nTmp != null && nTmp.isComponent() && prefix.equals(pTmp));
 		
 		//A quantidade encontrada acima deve ser a mesma de textos no head da matriz
 		return head.size() == count;
