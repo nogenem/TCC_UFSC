@@ -53,10 +53,24 @@ public class Cluster {
 	 * @return		String contendo o texto de todos os nodos deste Cluster.
 	 */
 	public String getText(){
+		return getText(false);
+	}
+	
+	/**
+	 * Retorna uma String contendo o texto de todos os nodos de texto e, 
+	 * caso especificado, os atributos 'value' de input_text desabilitados  
+	 * deste Cluster concatenadas com '\n'.
+	 * 
+	 * @param useValueOfInputDesabled	Usar os atributos 'value' de input_text desabilitados?
+	 * @return		String contendo o texto de todos os nodos deste Cluster.
+	 */
+	public String getText(boolean useValueOfInputDesabled) {
 		StringBuilder builder = new StringBuilder();
 		for(MyNode node : this.group){
 			if(node.isText())
 				builder.append(node.getText() +"\n");
+			else if(useValueOfInputDesabled && node.isATextInputDisabledWithValue())
+				builder.append(node.getAttr("value") +"\n");
 		}
 		if(builder.length() == 0) return "";
 		builder.setLength(builder.length()-1);

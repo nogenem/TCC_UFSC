@@ -100,6 +100,11 @@ public class MyNode implements Comparable<MyNode> {
 				this.type != MyNodeType.UNKNOWN;
 	}
 	
+	public boolean isATextInputDisabledWithValue(){
+		return this.isA("TEXT_INPUT") && !this.getAttr("disabled").isEmpty() && 
+				!this.getAttr("value").isEmpty();
+	}
+	
 	@Override
 	public String toString() {
 		return this.dewey +" - "+ this.text;
