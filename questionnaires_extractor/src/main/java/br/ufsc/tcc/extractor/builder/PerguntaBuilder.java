@@ -205,9 +205,14 @@ public class PerguntaBuilder {
 					desc.add(nTmp1);
 			}
 			desc = this.checker.checkIfDescIsComplete(desc, cStack, nodes, this.currentI);
+			String descTxt = desc.getText(foundComplementaryText);
+			
+			//Ex: http://www.createsurvey.com/cgi-bin/pollfrm?s=36960&m=FWIOpt&presurvey_view=1
+			if(descTxt.matches("\\d\n\\d"))
+				return this.currentI;
 			
 			//Seta a descrição da pergunta
-			this.currentP.setDescricao(desc.getText(foundComplementaryText));
+			this.currentP.setDescricao(descTxt);
 			CommonLogger.debug("Descricao: {}\n\n", this.currentP.getDescricao());
 			
 			//Verifica se é uma matriz
@@ -220,11 +225,15 @@ public class PerguntaBuilder {
 				if(cTmp2 == null){
 					if(!currentQ.getAssunto().isEmpty() || cStack.size() >= 2)
 						cTmp2 = cStack.peek();
-				}else if( (lastQWithSubQsDesc != null && this.checker.isAbove(nTmp2, lastQWithSubQsDesc.first())) ||
-						this.checker.isAbove(cTmp2.last(), cStack.peek().first())){
-					//Se tiver um texto no meio quer dizer que ja termino a matriz
-					this.saveLastMatrix(currentQ);
-					cTmp2 = cStack.peek();
+				}else { 
+					//Ex: https://survs.com/survey-templates/teacher-evaluation-survey/
+					if(lastQWithSubQsDesc != null && this.checker.isAbove(lastQWithSubQsDesc.last(), cTmp2.first()))
+						this.saveLastQWithSubQs(currentQ);
+					if(this.checker.isAbove(cTmp2.last(), cStack.peek().first())) {
+						//Se tiver um texto no meio quer dizer que ja termino a matriz
+						this.saveLastMatrix(currentQ);
+						cTmp2 = cStack.peek();
+					}
 				}
 			}
 			
@@ -232,7 +241,7 @@ public class PerguntaBuilder {
 					this.checker.checkCommonPrefix(cTmp2.last(), nTmp1, this.lastMatrixCommonPrefix)) {
 				matrixFlag = this.checker.hasSameTexts(this.currentP, cTmp2);
 				if(matrixFlag){
-					this.updateLastMatrix(nodes, cStack, nTmp1, cTmp2);
+					this.updateLastMatrix(nodes, cStack, currentQ, nTmp1, cTmp2);
 				}else if(this.lastMatrix != null){
 					this.saveLastMatrix(currentQ);
 				}
@@ -268,7 +277,7 @@ public class PerguntaBuilder {
 				if(cTmp1 != null && this.lastQWithSubQsDesc == null)
 					cTmp1 = this.checker.checkIfDescIsCompleteWithClone(cTmp1, cStack, nodes, this.currentI);
 				nTmp2 = cTmp1==null ? null : cTmp1.first();
-	
+				
 				if(nTmp2 != null && nTmp2.isText()){
 					if(checker.checkDistForQWithSubQs(nTmp2, nTmp1)){
 						if(this.lastQWithSubQs == null && this.checker.
@@ -356,7 +365,7 @@ public class PerguntaBuilder {
 					if(cTmp1 != null) {
 						cTmp1 = this.checker.checkIfDescIsComplete(cTmp1, cStack, nodes, this.currentI);
 						currentQ.setAssunto(cTmp1.getText());
-						CommonLogger.debug("Assunto: {}\n\n", currentQ.getAssunto());
+						CommonLogger.debug("Assunto1: {}\n\n", currentQ.getAssunto());
 					}
 				}else{
 					//Verifica se não é o texto de um grupo
@@ -411,6 +420,13 @@ public class PerguntaBuilder {
 		this.lastQWithSubQs.setForma(FormaDaPerguntaManager.getForma(forma+"_GROUP"));
 		this.lastQWithSubQs.setDescricao(this.lastQWithSubQsDesc.getText());							
 		this.lastQWithSubQs.addFilha(this.currentP);
+		
+		if(this.lastQWithSubQsDesc.last().isImage()) {
+			Figura fig = new Figura(this.lastQWithSubQsDesc.last().getAttr("src"), this.lastQWithSubQsDesc.last().getAttr("alt"));
+			fig.setDono(this.lastMatrix);
+			currentQ.addFigura(fig);
+			CommonLogger.debug("Figura da qWithSubQ: {}\n", fig);
+		}
 	}
 	
 	/**
@@ -438,7 +454,7 @@ public class PerguntaBuilder {
 	 * @param descFirstNode 
 	 * @param cTmp2
 	 */
-	private void updateLastMatrix(List<MyNode> nodes, Stack<Cluster> cStack, MyNode descFirstNode, Cluster cTmp2) {
+	private void updateLastMatrix(List<MyNode> nodes, Stack<Cluster> cStack, Questionario currentQ, MyNode descFirstNode, Cluster cTmp2) {
 		if(!cStack.isEmpty() && cTmp2 == cStack.peek())
 			this.lastMatrixHead = cStack.pop();
 		
@@ -466,6 +482,14 @@ public class PerguntaBuilder {
 				if(desc != null && checker.areDescAndPergNear(desc, this.lastMatrixHead.first())) {
 					desc = cStack.pop();
 					desc = this.checker.checkIfDescIsComplete(desc, cStack, nodes, this.currentI);
+					
+					if(desc.last().isImage()) {
+						Figura fig = new Figura(desc.last().getAttr("src"), desc.last().getAttr("alt"));
+						fig.setDono(this.lastMatrix);
+						currentQ.addFigura(fig);
+						CommonLogger.debug("Figura da matriz: {}\n", fig);
+					}
+					
 					this.lastMatrixDesc = desc;
 					this.lastMatrix.setDescricao(desc.getText());		
 				}else {

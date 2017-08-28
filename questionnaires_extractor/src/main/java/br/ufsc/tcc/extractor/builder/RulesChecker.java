@@ -1,6 +1,7 @@
 package br.ufsc.tcc.extractor.builder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 import java.util.regex.Pattern;
@@ -55,6 +56,7 @@ public class RulesChecker {
 			return false;
 		JSONObject obj = CONFIGS.getJSONObject("distBetweenTextsInsideQuestionnaire");
 		DeweyExt dist = this.distMatrix.getDist(lastDesc.last(), newNode);	
+		
 		if(dist.getHeight() > obj.getInt("height"))
 			return true;
 		
@@ -234,8 +236,11 @@ public class RulesChecker {
 		DeweyExt dist = distMatrix.getDist(cTmp.last(), desc.first());
 		
 		if(dist.getHeight() <= obj.getInt("height") && dist.getWidth() <= obj.getInt("width")){
-			//O texto do grupo deve ter no maximo X palavras 
-			if(txt.split(" ").length <= CONFIGS.getInt("maxWordsInAGroupDescription")){
+			//O texto do grupo deve ter no maximo X palavras (com tamanho > 1)
+			int count = Arrays.stream(txt.split(" ")).
+					reduce(0, (a,b) -> a + (b.length() > 1 ? 1 : 0), 
+							(a,b) -> a+b);
+			if(count <= CONFIGS.getInt("maxWordsInAGroupDescription")){
 				if(firstGroupOfQuestionnaire != null){
 					//O tamanho do Dewey dos grupos de um questionario, geralmente,
 					//é o mesmo [utilizam o mesmo padrão de nodos pais]
@@ -311,8 +316,10 @@ public class RulesChecker {
 		boolean flag = false;
 		int count = filhas.size()+alts.size();
 		
-		if(count == 0 && cTmp2.size() == 1){//Ex: https://www.survio.com/modelo-de-pesquisa/pesquisa-de-preco-do-produto
-			txtTmp = Pattern.quote(cTmp2.getText());
+		if(count == 0 && cTmp2.size() == 1 && !currentP.getDescricao().matches("\\d(\\.)?")){
+			//Ex: https://www.survio.com/modelo-de-pesquisa/pesquisa-de-preco-do-produto
+			//Ex: https://www.surveyrock.com/template/sample-student-choice-professors-classes-survey-template-1897
+			txtTmp = Pattern.quote(txt);
 			flag = CommonUtil.containsWithLineBreak(txtTmp, currentP.getDescricao());
 		}else if(count == cTmp2.size()){
 			flag = true;
@@ -336,10 +343,11 @@ public class RulesChecker {
 		Cluster head = header != null ? header :
 			!cStack.isEmpty() ? cStack.peek() : null;
 		MyNode nTmp = nodes.get(i);
-		String prefix = nTmp.getDewey().getCommonPrefix(head.last().getDewey()), pTmp = "";
 		
 		if(head == null || !head.isAllText())
 			return false;
+		
+		String prefix = nTmp.getDewey().getCommonPrefix(head.last().getDewey()), pTmp = "";
 		
 		if(header == null) {// 1* pergunta da matriz
 			JSONObject obj = CONFIGS.getJSONObject("distBetweenHeaderAndFirstAlternative");

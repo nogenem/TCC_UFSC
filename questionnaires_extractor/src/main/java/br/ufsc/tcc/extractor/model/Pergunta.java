@@ -231,12 +231,12 @@ public class Pergunta {
 		builder.append(this.getDescricao() +" ["+ this.getForma() + 
 				" / "+ this.getTipo()+"]\n");
 		builder.append("\tGrupo: " +this.getGrupo()+ "\n");
-		builder.append("\tAlternativas:\n");
+		builder.append("\tAlternativas [" +this.alternativas.size()+ "]:\n");
 		for(Alternativa a : this.getAlternativas()){
 			tmpTxt = a.toString().replaceAll("\n", "\n\t\t   ");
 			builder.append("\t\t" +tmpTxt+ "\n");
 		}
-		builder.append("\tFilhas:\n");
+		builder.append("\tFilhas [" +this.filhas.size()+ "]:\n");
 		for(Pergunta filha : this.getFilhas()){
 			tmpTxt = filha.getDescricao().replaceAll("\n", "\n\t\t   ");
 			builder.append("\t\t" +tmpTxt+" [" +filha.getForma()+ "]\n");

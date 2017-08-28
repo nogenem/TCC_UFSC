@@ -84,7 +84,7 @@ public class QuestionarioBuilder {
 							//Ex: https://polldaddy.com/s/d5564eb1c42db4d1
 							if(this.currentQ.getAssunto().isEmpty() || CommonUtil.isOnlyOneWord(this.currentQ.getAssunto())){
 								this.currentQ.setAssunto(docTitle);
-								CommonLogger.debug("Assunto: {}\n\n", currentQ.getAssunto());
+								CommonLogger.debug("Assunto2: {}\n\n", currentQ.getAssunto());
 							}
 							ret.add(this.currentQ);
 						}else
@@ -110,7 +110,7 @@ public class QuestionarioBuilder {
 			//Ex: https://polldaddy.com/s/d5564eb1c42db4d1
 			if(this.currentQ.getAssunto().isEmpty() || CommonUtil.isOnlyOneWord(this.currentQ.getAssunto())){
 				this.currentQ.setAssunto(docTitle);
-				CommonLogger.debug("Assunto: {}\n\n", currentQ.getAssunto());
+				CommonLogger.debug("Assunto2: {}\n\n", currentQ.getAssunto());
 			}
 			ret.add(this.currentQ);
 		}else if(!this.currentQ.getPerguntas().isEmpty())

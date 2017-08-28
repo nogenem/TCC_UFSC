@@ -64,8 +64,13 @@ public class SelectExtractor implements PerguntaExtractor {
 			}else
 				opt = null;
 		}
-		if(opt != null)
-			currentI -= 2;
+		if(opt != null) {
+			//Ex: http://www.123contactform.com/js-form--37229.html [perg 8]
+			if(opt.isA("OPTION"))
+				currentI -= 1;
+			else
+				currentI -= 2;
+		}
 		if(this.currentP.getAlternativas().size() == 0)
 			this.currentP.setForma(null);
 		
