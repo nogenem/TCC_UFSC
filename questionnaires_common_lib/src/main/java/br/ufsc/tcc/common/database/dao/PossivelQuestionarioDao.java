@@ -90,11 +90,14 @@ public class PossivelQuestionarioDao extends BasicDao {
 		HashMap<String, Object> where = new HashMap<>();
 		where.put("LINK_DOCUMENTO", link);
 		
-		this.select("*", where);
+		this.select("COUNT(*) AS rowcount", where);
+		
 		ResultSet result = this.getResultSet();
-		boolean resp = result != null && result.next();
+		int size = 0;
+		if(result.next())
+			size = result.getInt("rowcount");
 		
 		result.close();
-		return resp;
+		return size > 0;
 	}
 }

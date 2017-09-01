@@ -69,7 +69,7 @@ public class Cluster {
 		for(MyNode node : this.group){
 			if(node.isText())
 				builder.append(node.getText() +"\n");
-			else if(useValueOfInputDesabled && node.isATextInputDisabledWithValue())
+			else if(node.isATextInputDisabledWithValue() && useValueOfInputDesabled)
 				builder.append(node.getAttr("value") +"\n");
 		}
 		if(builder.length() == 0) return "";

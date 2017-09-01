@@ -163,6 +163,14 @@ public class CommonUtil {
 		}
 	}
 	
+	/**
+	 * Adiciona o counteúdo passado a um arquivo.
+	 * 
+	 * @param path				Caminho para o arquivo que se quer adicionar conteúdo.
+	 * @param content			Conteúdo que se quer adicionar.
+	 * @return					<b>TRUE</b> caso seja possivel escrever o arquivo, ou</br>
+	 * 							<b>FALSE</b> caso contrario.
+	 */
 	public static boolean appendToFile(String path, String content){
 		return writeFile(path, content, StandardOpenOption.CREATE, 
 				StandardOpenOption.APPEND);
@@ -235,21 +243,46 @@ public class CommonUtil {
 				.trim();
 	}
 	
+	/**
+	 * Verifica se a String {@code text} inicia com letra maiúscula.
+	 * 
+	 * @param text		String que se quer verificar.
+	 * @return			<b>TRUE</b> caso a string comece com letra maiúscula, <br>
+	 * 					<b>FALSE</b> caso contrario.
+	 */
 	public static boolean startsWithUpperCase(String text){
 		char c = text.charAt(0);
 		c = c == '¿' ? text.charAt(1) : c;
 		return Character.isUpperCase(c);
 	}
 	
+	/**
+	 * Verifica se a String {@code text} inicia com um numero.
+	 * 
+	 * @param text		String que se quer verificar.
+	 * @return			<b>TRUE</b> caso a string comece com um numero, <br>
+	 * 					<b>FALSE</b> caso contrario.
+	 */
 	public static boolean startsWithDigit(String text){
 		return Character.isDigit(text.charAt(0));
 	}
 	
+	/**
+	 * Retorna um Timestamp do tempo atual.
+	 * 
+	 * @return		Timestamp do tempo atual.
+	 */
 	public static Timestamp getCurrentTime() {
 		Calendar calendar = Calendar.getInstance();
 		return new Timestamp(calendar.getTime().getTime());
 	}
 	
+	/**
+	 * Converte um Stacktrace para uma String.
+	 * 
+	 * @param e			Stacktrace que se quer converter.
+	 * @return			Uma string contendo o Stacktrace passado.
+	 */
 	public static String exceptionStacktraceToString(Throwable e){
 	    ByteArrayOutputStream baos = new ByteArrayOutputStream();
 	    PrintStream ps = new PrintStream(baos);
@@ -283,6 +316,14 @@ public class CommonUtil {
 		return n;
 	}
 	
+	/**
+	 * Verifica se a String {@code str} passada é apenas uma palavra, ou seja,
+	 * se ela não contém espaços e quebra de linhas.
+	 * 
+	 * @param str		String que se quer verificar.
+	 * @return			<b>TRUE</b> caso a string seja apenas uma palavra, <br>
+	 * 					<b>FALSE</b> caso contrario.
+	 */
 	public static boolean isOnlyOneWord(String str) {
 		return CharMatcher.is(' ').countIn(str) == 0 &&
 				CharMatcher.is('\n').countIn(str) == 0;
@@ -300,6 +341,12 @@ public class CommonUtil {
 		return ((i < 0) ? "-" : "") + String.format("%03d", Math.abs(i)); 
 	}
 	
+	/**
+	 * Retorna uma String que represente o Nodo {@code node}.
+	 * 
+	 * @param node		Nodo que se quer uma representação.
+	 * @return			String que represente o nodo passado.
+	 */
 	public static String getNodeRepresentation(Node node){
 		if(node == null) return "";
 		
@@ -368,6 +415,15 @@ public class CommonUtil {
 		return false;
 	}
 	
+	/**
+	 * Verifica se o {@code text} passado esta contido em alguma linha do {@code txtToCheck}.
+	 * 
+	 * @param text
+	 * @param txtToCheck
+	 * @return					<b>True</b> caso o {@code text} passado esteja contido
+	 * 							em alguma das linhas de {@code txtToCheck} ou<br>
+	 * 							<b>False</b> caso contrario.
+	 */
 	public static boolean containsWithLineBreak(String text, String txtToCheck){
 		text = text.toLowerCase();
 		String [] lines = txtToCheck.split("\n");
@@ -411,7 +467,7 @@ public class CommonUtil {
 		for(int i = 0; i < children.size(); i++){
 			Node child = children.get(i);
 			
-			// Ignora comentarios, tags 'br' e 'button', algumas tags e textos textos vazios
+			// Ignora comentarios, tags 'br' e 'button', blocos e textos vazios
 			if(child.nodeName().equals("br") && isBetweenTexts(children, i))
 				n--;
 			if(!child.nodeName().matches("#comment|br|button") &&
@@ -428,7 +484,9 @@ public class CommonUtil {
 	 * 
 	 * @param children
 	 * @param i
-	 * @return
+	 * @return				<b>True</b> caso o nodo na posição {@code i} esteja entre
+	 * 						dois nodos de texto ou<br>
+	 * 						<b>False</b> caso contrario.
 	 */
 	private static boolean isBetweenTexts(List<Node> children, int i) {
 		if(i-1 < 0 || i+1 >= children.size())
@@ -441,12 +499,13 @@ public class CommonUtil {
 	}
 	
 	/**
-	 * Verifica se alguns tipos de elemento de bloco estão vazieis, ou seja,
+	 * Verifica se alguns tipos de elemento de bloco estão vazios, ou seja,
 	 * que não possuem nenhum elemento filho ou possuam texto vazio.<br>
 	 * Os elementos verificados são: < p >, < span >, < th >, < div > e < a >.
 	 * 
 	 * @param el
-	 * @return
+	 * @return				<b>True</b> caso o nodo {@code el} passado esteja vazio ou<br>
+	 * 						<b>False</b> caso contrario.
 	 */
 	private static boolean checkEmptinessOfSomeBlockElems(Node el){
 		String name = el.nodeName();
