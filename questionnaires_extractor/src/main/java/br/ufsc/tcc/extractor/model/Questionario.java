@@ -68,6 +68,14 @@ public class Questionario {
 		this.perguntas = perguntas;
 	}
 	
+	/**
+	 * Adiciona a pergunta {@code p} a lista de perguntas deste
+	 * questionário.<br>
+	 * <b>Side effect</b>: Seta também o questionário da pergunta {@code p} para
+	 * apontar para este questionário.
+	 * 
+	 * @param p
+	 */
 	public void addPergunta(Pergunta p){
 		p.setQuestionario(this); 
 		this.perguntas.add(p);
@@ -81,6 +89,14 @@ public class Questionario {
 		this.grupos = grupos;
 	}
 	
+	/**
+	 * Adiciona o grupo {@code g} a lista de grupos deste
+	 * questionário.<br>
+	 * <b>Side effect</b>: Seta também o questionário do grupo {@code g} para
+	 * apontar para este questionário.
+	 * 
+	 * @param p
+	 */
 	public void addGrupo(Grupo g){
 		g.setQuestionario(this);
 		this.grupos.add(g);
@@ -105,7 +121,8 @@ public class Questionario {
 	
 	public boolean hasFigura(MyNode fig) {
 		if(!fig.isImage()) return false;
-		String src = fig.getAttr("src"), alt = fig.getAttr("alt");
+		String src = fig.getAttr("src").replaceAll("(\r)?\n", ""), 
+				alt = fig.getAttr("alt");
 		for(Figura f : this.figuras) {
 			if(f.getImage_url().equals(src) && 
 					f.getLegenda().equals(alt))

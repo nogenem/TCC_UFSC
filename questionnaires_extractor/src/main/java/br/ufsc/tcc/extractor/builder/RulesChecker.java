@@ -596,10 +596,17 @@ public class RulesChecker {
 	
 	//Ex: http://lap.umd.edu/surveys/census/files/surveya1pagesbytopic/page2.html
 	//Ex: https://statpac.com/online-surveys/resturaunt_customer_satisfaction_survey.htm
-	public boolean isEvaluationLevels(Cluster desc, Stack<Cluster> cStack){
-		if(desc.size() == 2){
+	public boolean isEvaluationLevels(Cluster desc, Stack<Cluster> cStack, boolean checkingTheMatrix){
+		MyNode above = null;
+		if(!checkingTheMatrix && cStack.size() >= 1)
+			above = cStack.peek().last();
+		else if(checkingTheMatrix && cStack.size() >= 2)
+			//Gambiarra porque estou usando peek() para pegar a descrição da matriz
+			above = cStack.get(cStack.size()-2).last();
+		
+		if(above != null && desc.size() == 2){
 			JSONObject obj = CONFIGS.getJSONObject("distBetweenEvaluationLevelsAndDesc");
-			DeweyExt dist = this.distMatrix.getDist(desc.first(), cStack.peek().last());
+			DeweyExt dist = this.distMatrix.getDist(desc.first(), above);
 			if(dist.getHeight() <= obj.getInt("height")){
 				MyNode first = desc.first(), last = desc.last();
 				String regex = CONFIGS.getString("evaluationLevelsWordsRegex");

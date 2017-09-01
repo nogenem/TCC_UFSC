@@ -82,7 +82,13 @@ public class Pergunta {
 	public FormaDaPergunta getForma() {
 		return forma;
 	}
-
+	
+	/**
+	 * Seta a forma desta pergunta.<br>
+	 * <b>Side effect</b>: seta o tipo desta pergunta utilizando o método {@link #convertFormaToTipo()}.
+	 * 
+	 * @param forma
+	 */
 	public void setForma(FormaDaPergunta forma) {
 		this.forma = forma;
 		this.convertFormaToTipo();
@@ -95,7 +101,14 @@ public class Pergunta {
 	public void setPai(Pergunta pai) {
 		this.pai = pai;
 	}
-
+	
+	/**
+	 * Retorna o questionário que esta pergunta faz parte.<br>
+	 * Caso esta pergunta seja filha de outra, é retornado o questionário ao
+	 * qual o pai desta pergunta faz parte.
+	 * 
+	 * @return			Questionário que esta pergunta faz parte.
+	 */
 	public Questionario getQuestionario() {
 		if(this.pai != null)
 			return this.pai.getQuestionario();
@@ -105,7 +118,14 @@ public class Pergunta {
 	public void setQuestionario(Questionario questionario) {
 		this.questionario = questionario;
 	}
-
+	
+	/**
+	 * Retorna o grupo que esta pergunta faz parte.<br>
+	 * Caso esta pergunta seja filha de outra, é retornado o grupo ao
+	 * qual o pai desta pergunta faz parte.
+	 * 
+	 * @return			Grupo que esta pergunta faz parte.
+	 */
 	public Grupo getGrupo() {
 		if(this.grupo == null && this.pai != null)
 			return this.getPai().getGrupo();
@@ -124,6 +144,14 @@ public class Pergunta {
 		this.filhas = filhas;
 	}
 	
+	/**
+	 * Adiciona a pergunta {@code p} a lista de perguntas filhas desta
+	 * pergunta.<br>
+	 * <b>Side effect</b>: Seta também a pergunta pai da pergunta {@code p} para
+	 * apontar para esta pergunta.
+	 * 
+	 * @param p
+	 */
 	public void addFilha(Pergunta p){
 		p.setPai(this);
 		this.filhas.add(p);
@@ -137,17 +165,36 @@ public class Pergunta {
 		this.alternativas = alternativas;
 	}
 	
+	/**
+	 * Adiciona a alternativa {@code a} a lista de alternativas desta
+	 * pergunta.<br>
+	 * <b>Side effect</b>: Seta também a pergunta da alternativa {@code a} para
+	 * apontar para esta pergunta.
+	 * 
+	 * @param a
+	 */
 	public void addAlternativa(Alternativa a){
 		a.setPergunta(this);
 		this.alternativas.add(a);
 	}
 	
 	// Demais métodos
+	/**
+	 * Verifica se esta pergunta é da {@code forma} passada.
+	 * 
+	 * @param forma
+	 * @return				<b>TRUE</b> caso esta pergunta seja da {@code forma} 
+	 * 						passada ou, <br>
+	 * 						<b>FALSE</b> caso contrario.
+	 */
 	public boolean isA(String forma){
 		return this.getForma() ==
 				FormaDaPerguntaManager.getForma(forma.toUpperCase());
 	}
 	
+	/**
+	 * Seta o tipo desta pergunta usando como base a forma dela.
+	 */
 	public void convertFormaToTipo(){
 		if(this.getForma() == null) {
 			this.tipo = "";

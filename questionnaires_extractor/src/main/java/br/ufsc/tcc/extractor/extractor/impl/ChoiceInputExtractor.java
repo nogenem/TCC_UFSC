@@ -8,13 +8,13 @@ import br.ufsc.tcc.common.model.MyNodeType;
 import br.ufsc.tcc.common.util.CommonLogger;
 import br.ufsc.tcc.extractor.builder.RulesChecker;
 import br.ufsc.tcc.extractor.database.manager.FormaDaPerguntaManager;
-import br.ufsc.tcc.extractor.extractor.PerguntaExtractor;
+import br.ufsc.tcc.extractor.extractor.IPerguntaExtractor;
 import br.ufsc.tcc.extractor.model.Alternativa;
 import br.ufsc.tcc.extractor.model.Figura;
 import br.ufsc.tcc.extractor.model.Pergunta;
 import br.ufsc.tcc.extractor.model.Questionario;
 
-public class ChoiceInputExtractor implements PerguntaExtractor {
+public class ChoiceInputExtractor implements IPerguntaExtractor {
 
 	private Questionario currentQ;
 	private Pergunta currentP; 
@@ -85,7 +85,7 @@ public class ChoiceInputExtractor implements PerguntaExtractor {
 			if(!this.checker.areCompAndTextNear(input, text))
 				break;
 			
-			// Vefifica o prefixo comum para ver se terminou esta pergunta
+			// Verifica o prefixo comum para ver se terminou esta pergunta
 			if(commonPrefix.isEmpty()) {
 				commonPrefix = lastDescNode.getDewey().getCommonPrefix(input.getDewey());
 			}else {
@@ -195,7 +195,7 @@ public class ChoiceInputExtractor implements PerguntaExtractor {
 			if(!this.checker.areCompAndTextNear(input, text))
 				break;
 			
-			// Vefifica o prefixo comum para ver se terminou esta pergunta
+			// Verifica o prefixo comum para ver se terminou esta pergunta
 			if(commonPrefix.isEmpty()) {
 				commonPrefix = lastDescNode.getDewey().getCommonPrefix(input.getDewey());
 			}else {

@@ -14,7 +14,7 @@ import br.ufsc.tcc.extractor.model.Questionario;
 
 public abstract class PerguntaExtractorFactory {
 	
-	public static PerguntaExtractor getExtractor(String extractor, Questionario currentQ, 
+	public static IPerguntaExtractor getExtractor(String extractor, Questionario currentQ, 
 			Pergunta currentP, RulesChecker checker) {
 		switch(extractor) {
 		case "SELECT":

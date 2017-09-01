@@ -10,7 +10,7 @@ import br.ufsc.tcc.common.model.MyNodeType;
 import br.ufsc.tcc.common.util.CommonLogger;
 import br.ufsc.tcc.common.util.DistanceMatrix;
 import br.ufsc.tcc.extractor.database.manager.FormaDaPerguntaManager;
-import br.ufsc.tcc.extractor.extractor.PerguntaExtractor;
+import br.ufsc.tcc.extractor.extractor.IPerguntaExtractor;
 import br.ufsc.tcc.extractor.extractor.PerguntaExtractorFactory;
 import br.ufsc.tcc.extractor.model.Alternativa;
 import br.ufsc.tcc.extractor.model.Figura;
@@ -87,7 +87,7 @@ public class PerguntaBuilder {
 		this.currentP = new Pergunta();
 		this.currentI = i;
 		
-		PerguntaExtractor extractor = null;
+		IPerguntaExtractor extractor = null;
 		MyNode firstNode = nodes.get(this.currentI), questionLastNode = null,
 				firstImg = null;
 		MyNode nTmp1 = (this.currentI+1) < nodes.size() ? nodes.get(this.currentI+1) : null, 
@@ -167,7 +167,7 @@ public class PerguntaBuilder {
 			ArrayList<Alternativa> tmpAlts = this.currentP.getAlternativas();
 			
 			//Atualiza a desc da pergunta
-			if(!cStack.isEmpty() && checker.isEvaluationLevels(desc, cStack)){
+			if(!cStack.isEmpty() && checker.isEvaluationLevels(desc, cStack, false)){
 				this.setEvaluationLevels(this.currentP, desc);
 				desc = cStack.pop();
 			}
@@ -472,7 +472,7 @@ public class PerguntaBuilder {
 			
 			Cluster desc = !cStack.isEmpty() ? cStack.peek() : null;
 			if(desc != null) {
-				if(!cStack.isEmpty() && checker.isEvaluationLevels(desc, cStack)){
+				if(!cStack.isEmpty() && checker.isEvaluationLevels(desc, cStack, true)){
 					desc = cStack.pop();
 					lastMatrixEvaluationLevels = desc;
 					desc = !cStack.isEmpty() ? cStack.peek() : null;

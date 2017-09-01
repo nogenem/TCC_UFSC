@@ -7,12 +7,12 @@ import br.ufsc.tcc.common.model.MyNode;
 import br.ufsc.tcc.common.util.CommonLogger;
 import br.ufsc.tcc.extractor.builder.RulesChecker;
 import br.ufsc.tcc.extractor.database.manager.FormaDaPerguntaManager;
-import br.ufsc.tcc.extractor.extractor.PerguntaExtractor;
+import br.ufsc.tcc.extractor.extractor.IPerguntaExtractor;
 import br.ufsc.tcc.extractor.model.Alternativa;
 import br.ufsc.tcc.extractor.model.Pergunta;
 import br.ufsc.tcc.extractor.model.Questionario;
 
-public class SelectExtractor implements PerguntaExtractor {
+public class SelectExtractor implements IPerguntaExtractor {
 
 	private Pergunta currentP; 
 	private RulesChecker checker;

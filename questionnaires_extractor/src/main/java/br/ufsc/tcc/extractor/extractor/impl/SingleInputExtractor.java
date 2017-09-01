@@ -7,13 +7,12 @@ import br.ufsc.tcc.common.model.MyNode;
 import br.ufsc.tcc.common.util.CommonLogger;
 import br.ufsc.tcc.extractor.builder.RulesChecker;
 import br.ufsc.tcc.extractor.database.manager.FormaDaPerguntaManager;
-import br.ufsc.tcc.extractor.extractor.PerguntaExtractor;
-import br.ufsc.tcc.extractor.model.Figura;
+import br.ufsc.tcc.extractor.extractor.IPerguntaExtractor;
 import br.ufsc.tcc.extractor.model.FormaDaPergunta;
 import br.ufsc.tcc.extractor.model.Pergunta;
 import br.ufsc.tcc.extractor.model.Questionario;
 
-public class SingleInputExtractor implements PerguntaExtractor {
+public class SingleInputExtractor implements IPerguntaExtractor {
 
 	private Questionario currentQ;
 	private Pergunta currentP; 

@@ -51,6 +51,8 @@ public class Alternativa {
 	 * Cria um clone simplificado deste objeto. Apenas copia o {@link Alternativa#id} 
 	 * e {@link Alternativa#descricao} sem se preocupar com a Pergunta e Figura que 
 	 * esta Alternativa possa fazer parte/possuir.
+	 * 
+	 * @return		Um clone simplificado desta alternativa.
 	 */
 	public Alternativa clone() {
 		Alternativa c = new Alternativa();

@@ -8,12 +8,12 @@ import br.ufsc.tcc.common.model.MyNodeType;
 import br.ufsc.tcc.common.util.CommonLogger;
 import br.ufsc.tcc.extractor.builder.RulesChecker;
 import br.ufsc.tcc.extractor.database.manager.FormaDaPerguntaManager;
-import br.ufsc.tcc.extractor.extractor.PerguntaExtractor;
+import br.ufsc.tcc.extractor.extractor.IPerguntaExtractor;
 import br.ufsc.tcc.extractor.model.Alternativa;
 import br.ufsc.tcc.extractor.model.Pergunta;
 import br.ufsc.tcc.extractor.model.Questionario;
 
-public class SimpleMatrixExtractor implements PerguntaExtractor {
+public class SimpleMatrixExtractor implements IPerguntaExtractor {
 
 	private Questionario currentQ;
 	private Pergunta currentP; 
