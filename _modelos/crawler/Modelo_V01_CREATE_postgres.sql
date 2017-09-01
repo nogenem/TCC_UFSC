@@ -7,6 +7,9 @@ CREATE TABLE PossivelQuestionario(
 	PRIMARY KEY(idPossivelQuestionario)
 );
 
+DROP INDEX IF EXISTS PossivelQuestionario_FKIndex1;
+CREATE INDEX PossivelQuestionario_FKIndex1 ON PossivelQuestionario(LINK_DOCUMENTO);
+
 DROP SEQUENCE IF EXISTS PossivelQuestionario_seq ;
 CREATE SEQUENCE PossivelQuestionario_seq 
 	START 1 
