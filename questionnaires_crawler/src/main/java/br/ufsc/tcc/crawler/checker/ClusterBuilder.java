@@ -8,8 +8,8 @@ import br.ufsc.tcc.common.model.MyNode;
 import br.ufsc.tcc.common.util.DistanceMatrix;
 
 /**
- * Classe responsável por agrupar Nodo e/ou Cluster para formar 
- * outros Cluster.
+ * Classe responsável por agrupar Nodos e/ou Clusters para formar 
+ * outros Clusters.
  * 
  * @author Gilney N. Mathias
  */
@@ -19,12 +19,31 @@ public class ClusterBuilder {
 	public ClusterBuilder(){}
 	
 	// Demais métodos
+	/**
+	 * Método responsável por 'construir' uma lista de Clusters a partir da
+	 * lista de nodos, {@code nodes}, e da matriz de distâncias, {@code distMatrix},
+	 * passados. <br>
+	 * Os nodos são primeiro agrupados por distância e em seguida são utilizadas algumas 
+	 * heurísticas para tentar melhorar os agrupamentros.
+	 * 
+	 * @param nodes
+	 * @param distMatrix
+	 * @return					Lista de Clusters criada a partir dos nodos e da 
+	 * 							matriz de distância passados.
+	 */
 	public List<Cluster> build(List<MyNode> nodes, DistanceMatrix distMatrix){
 		List<Cluster> clusters = groupNearNodes(nodes, distMatrix);
 		groupClustersByHeuristics(clusters);
 		return clusters;
 	}
 	
+	/**
+	 * Agrupa os nodos que estão próximos uns dos outros.
+	 * 
+	 * @param nodes
+	 * @param distMatrix
+	 * @return					Lista de Clusters de nodos próximos uns dos outros.
+	 */
 	private List<Cluster> groupNearNodes(List<MyNode> nodes, DistanceMatrix distMatrix) {
 		Cluster cTmp = new Cluster();
 		ArrayList<Cluster> ret = new ArrayList<>();
@@ -40,7 +59,13 @@ public class ClusterBuilder {
 			ret.add(cTmp);
 		return ret;
 	}
-
+	
+	/**
+	 * Agrupa os Clusters passados utilizando algumas heurísticas que podem
+	 * ser encontradas no método {@link #shouldGroup(Cluster, Cluster, Cluster) shouldGroup}.
+	 * 
+	 * @param clusters
+	 */
 	private void groupClustersByHeuristics(List<Cluster> clusters) {
 		Cluster tmp1, tmp2, tmp3;
 		int i, size;
@@ -65,7 +90,26 @@ public class ClusterBuilder {
 			}
 		}while(size != clusters.size());
 	}
-
+	
+	/**
+	 * Faz uso de algumas heurísticas para verifica se 
+	 * os Clusters {@code c1} e {@code c2} devem ser unidos.<br>
+	 * As heurísticas utilizadas são:
+	 * <ul>
+	 * 	<li>Deve-se juntar grupos de input</li>
+	 * 	<li>Deve-se juntar grupos de options seguidos</li>
+	 * 	<li>Deve-se juntar padrões de clusters de texto seguidos
+	 *      de clusters de elementos ou clusters com apenas 1 elemento</li>
+	 * </ul>
+	 * O Cluster {@code c3} passado é utilizado na verificação da ultima heurística.
+	 * 
+	 * @param c1
+	 * @param c2
+	 * @param c3
+	 * @return			<b>TRUE</b> caso os clusters {@code c1} e {@code c2} devam
+	 * 					ser unidos ou<br>
+	 * 					<b>FALSE</b> caso contrario.
+	 */
 	private boolean shouldGroup(Cluster c1, Cluster c2, Cluster c3) {
 		//Deve-se juntar grupos de input
 		//PS: pode ter uma img na frente
