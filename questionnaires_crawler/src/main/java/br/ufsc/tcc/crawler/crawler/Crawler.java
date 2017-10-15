@@ -43,7 +43,6 @@ public class Crawler extends WebCrawler {
 	@Override
 	protected WebURL handleUrlBeforeProcess(WebURL curURL) {
 		String href = curURL.getURL();
-		//TODO remover isso??
 		//Pequena gambiarra para esse site especifico...
 		if(href.matches(".*search\\.lycos\\.com/b(njs)?\\.php.+")) {
 			href = href.substring(href.indexOf("&as=")+4, href.length()) +"/";
@@ -76,6 +75,13 @@ public class Crawler extends WebCrawler {
 				!EXCLUDED_DOMAINS_REGEX.matcher(href).matches();
 	}
 	
+	/**
+	 * Verifica se a {@code url} passada é de uma língua contida no EXCLUDED_LANGUAGES_REGEX.
+	 * 
+	 * @param url
+	 * @return				<b>TRUE</b> caso a url passada seja de uma língua não permitida ou,<br>
+	 * 						<b>FALSE</b> caso contrario.
+	 */
 	private boolean isOfExcludedLanguage(WebURL url) {
 		//Link útil: 
 		//	https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains

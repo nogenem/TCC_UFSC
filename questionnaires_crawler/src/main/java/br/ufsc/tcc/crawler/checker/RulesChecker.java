@@ -143,13 +143,11 @@ public class RulesChecker {
 						qCount++;
 				}else{
 					CommonLogger.debug("\n\t\t===> Minimo {} componentes em um cluster!", MIN_COMPS_IN_ONE_CLUSTER);
-					CommonLogger.debug("\nLast cluster: \n" +c.toString());//TODO remover isso
 					return true;
 				}
 				
 				if(qCount == MIN_CLUSTERS_WITH_COMP){
 					CommonLogger.debug("\n\t\t===> Minimo {} clusters com componentes!", MIN_CLUSTERS_WITH_COMP);
-					CommonLogger.debug("\nLast cluster: \n" +c.toString());//TODO remover isso
 					return true;
 				}
 			}
