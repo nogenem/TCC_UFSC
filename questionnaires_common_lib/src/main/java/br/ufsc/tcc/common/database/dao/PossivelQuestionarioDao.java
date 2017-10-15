@@ -14,8 +14,8 @@ import br.ufsc.tcc.common.model.PossivelQuestionario;
 
 public class PossivelQuestionarioDao extends BasicDao {
 	
-	private static int BloomFilter_BASE_SIZE = 1000;
-	private static double BloomFilter_BASE_FPP = 0.01;
+	private static final int BloomFilter_BASE_SIZE = 1000;
+	private static final double BloomFilter_BASE_FPP = 0.01;
 	
 	public PossivelQuestionarioDao(BasicConnection c) {
 		super(c, "PossivelQuestionario");

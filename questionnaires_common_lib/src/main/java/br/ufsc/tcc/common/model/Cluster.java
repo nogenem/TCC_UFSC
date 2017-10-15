@@ -61,15 +61,15 @@ public class Cluster {
 	 * caso especificado, os atributos 'value' de input_text desabilitados  
 	 * deste Cluster concatenadas com '\n'.
 	 * 
-	 * @param useValueOfInputDesabled	Usar os atributos 'value' de input_text desabilitados?
-	 * @return		String contendo o texto de todos os nodos deste Cluster.
+	 * @param useValueOfInputDisabled	Usar os atributos 'value' de input_text desabilitados?
+	 * @return							String contendo o texto de todos os nodos deste Cluster.
 	 */
-	public String getText(boolean useValueOfInputDesabled) {
+	public String getText(boolean useValueOfInputDisabled) {
 		StringBuilder builder = new StringBuilder();
 		for(MyNode node : this.group){
 			if(node.isText())
 				builder.append(node.getText() +"\n");
-			else if(node.isATextInputDisabledWithValue() && useValueOfInputDesabled)
+			else if(node.isATextInputDisabledWithValue() && useValueOfInputDisabled)
 				builder.append(node.getAttr("value") +"\n");
 		}
 		if(builder.length() == 0) return "";

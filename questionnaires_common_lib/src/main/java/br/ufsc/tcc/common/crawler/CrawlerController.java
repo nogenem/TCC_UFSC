@@ -30,13 +30,15 @@ public class CrawlerController {
 	 * Inicializa o Crawler utilizando as configurações do usuario, ou usando
 	 * alguns valores padrão.  </br>
 	 * Os valores padão utilizados são: </br>
-	 * &nbsp;&nbsp;&nbsp;  CrawlerStorageFolder = ./tmp </br>
-	 * &nbsp;&nbsp;&nbsp;  PolitenessDelay = 1000 </br>
-	 * &nbsp;&nbsp;&nbsp;  MaxDepthOfCrawling = -1 (sem limite) </br>
-	 * &nbsp;&nbsp;&nbsp;  MaxPagesToFetch = 10000 </br>
-	 * &nbsp;&nbsp;&nbsp;  IncludeBinaryContentInCrawling = false </br>
-	 * &nbsp;&nbsp;&nbsp;  ResumableCrawling = false </br>
-	 * &nbsp;&nbsp;&nbsp;  NumberOfCrawlers = 5 </br>
+	 * <ul>
+	 * 	<li>CrawlerStorageFolder = ./tmp</li>
+	 * 	<li>PolitenessDelay = 1000</li>
+	 * 	<li>MaxDepthOfCrawling = -1 (sem limite)</li>
+	 * 	<li>MaxPagesToFetch = 10000</li>
+	 * 	<li>IncludeBinaryContentInCrawling = false</li>
+	 * 	<li>ResumableCrawling = false</li>
+	 * 	<li>NumberOfCrawlers = 5</li>
+	 * </ul>
 	 * 
 	 * @throws Exception
 	 */
@@ -44,7 +46,7 @@ public class CrawlerController {
 		configs = new CrawlConfig();
 		// Usa as configurações vindas do arquivo json ou usa alguns valores default
 		this.configs.setCrawlStorageFolder(userConfigs.optString("crawlStorageFolder", "./tmp"));
-		this.configs.setPolitenessDelay(userConfigs.optInt("politenessDelay", 1000));
+		this.configs.setPolitenessDelay(userConfigs.optInt("politenessDelay", 500));
 		this.configs.setMaxDepthOfCrawling(userConfigs.optInt("maxDepthOfCrawling", -1));
 		this.configs.setMaxPagesToFetch(userConfigs.optInt("maxPagesToFetch", 10000));
 		this.configs.setIncludeBinaryContentInCrawling(userConfigs.optBoolean("includeBinaryContentInCrawling", false));
@@ -52,6 +54,7 @@ public class CrawlerController {
 		
 		PageFetcher pageFetcher = new PageFetcher(this.configs);
 	    RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
+	    
 	    RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcher);
 	    this.controller = new CrawlController(this.configs, pageFetcher, robotstxtServer);
 	}

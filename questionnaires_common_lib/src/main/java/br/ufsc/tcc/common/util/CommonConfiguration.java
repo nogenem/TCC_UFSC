@@ -85,6 +85,9 @@ public abstract class CommonConfiguration {
 		}
 	}
 	
+	/**
+	 * Tenta validar os dados obrigatórios do arquivo de configuração.
+	 */
 	protected void validateConfigs() {
 		try {
 			validatingPath = "";

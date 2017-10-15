@@ -195,7 +195,6 @@ public class CommonUtil {
 	 * 					<b>FALSE</b> caso contrario.
 	 */
 	public static boolean openFile(final File file) {
-		//TODO testar no linux
 		if (!Desktop.isDesktopSupported())
 			return false;
 

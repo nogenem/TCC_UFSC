@@ -85,7 +85,7 @@ public class DeweyExt {
 	// Demais métodos
 	private DeweyExt add(int n){
 		// Se o 'numbers' estiver vazio não se deve adicionar
-		// o valor zero, para evitar coisas como: 00.01 ...
+		// o valor zero, para evitar coisas como: 000.001 ...
 		if(!this.numbers.isEmpty() || n != 0){
 			this.numbers.add(n);
 			//Limpa a 'cache'

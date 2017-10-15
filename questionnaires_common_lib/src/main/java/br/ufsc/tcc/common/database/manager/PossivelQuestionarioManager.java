@@ -110,7 +110,7 @@ public class PossivelQuestionarioManager {
 			CommonLogger.debug("{} carregou os links dos possiveis questionarios do banco de dados.", 
 					Thread.currentThread().getName());
 		} catch (Exception e) {
-			// Database não deve esta funcionado, então mata a aplicação
+			// Database não deve esta funcionando, então mata a aplicação
 			CommonLogger.fatalError(e);
 		}
 	}
@@ -130,7 +130,7 @@ public class PossivelQuestionarioManager {
 			CommonLogger.debug("{} carregou os links dos possiveis questionarios do banco de dados.", 
 					Thread.currentThread().getName());
 		} catch (Exception e) {
-			// Database não deve esta funcionado, então mata a aplicação
+			// Database não deve esta funcionando, então mata a aplicação
 			CommonLogger.fatalError(e);
 		}
 	}
