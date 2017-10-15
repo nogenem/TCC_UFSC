@@ -116,10 +116,6 @@ public class QuestionarioBuilder {
 		}else if(!this.currentQ.getPerguntas().isEmpty())
 			CommonLogger.debug("================== Questionario invalido! ==================");
 		
-//		cStack.add(cTmp);
-//		CommonLogger.debug("\nClusters:");
-//		CommonLogger.debug(cStack);
-		
 		CommonLogger.debug("\t\t\t================> Questionarios <================");
 		CommonLogger.debug(ret);
 		return ret;

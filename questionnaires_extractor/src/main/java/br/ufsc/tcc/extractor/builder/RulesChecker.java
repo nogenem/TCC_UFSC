@@ -337,7 +337,27 @@ public class RulesChecker {
 		
 		return flag;
 	}
-
+	
+	/**
+	 * Verifica se esta lidando com uma 'simple matrix'. </br>
+	 * Uma 'simple matrix' é uma matriz que possui simplesmente componentes em sequencia. </br>
+	 * A quantidade de componentes em sequencia deve bater com a quantidade de textos no header. </br>
+	 * Exemplo: </br>
+	 * <pre>Descrição da pergunta
+	 *   header
+	 * 	
+	 *   descrição da primeira subpergunta
+	 *      sequencia de componentes (alternativas) desta subpergunta
+	 *   descrição da segunda subpergunta
+	 *      sequencia de componentes (alternativas) desta subpergunta
+	 *   etc...</pre>
+	 * 	
+	 * @param header
+	 * @param nodes
+	 * @param i
+	 * @param cStack
+	 * @return
+	 */
 	public boolean isSimpleMatrix(Cluster header, List<MyNode> nodes, int i, Stack<Cluster> cStack) {
 		int count = 0;
 		Cluster head = header != null ? header :

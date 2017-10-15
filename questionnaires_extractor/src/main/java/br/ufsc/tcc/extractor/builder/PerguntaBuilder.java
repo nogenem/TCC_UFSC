@@ -150,7 +150,7 @@ public class PerguntaBuilder {
 				this.currentI = extractor.extract(null, nodes, this.currentI);
 			}
 		}else{
-			//Checagem duplicada mas, infelizmente, necessaria
+			//Checagem duplicada mas, infelizmente, necessária
 			if((firstNode.isA("CHECKBOX_INPUT") || firstNode.isA("RADIO_INPUT")) && 
 					checker.checkIfTextIsAbove(nodes, currentI))
 				desc = cStack.pop();
@@ -160,7 +160,7 @@ public class PerguntaBuilder {
 		}
 		extractor = null;
 		
-		//Verifica se foi possivel extrair a pergunta
+		//Verifica se foi possível extrair a pergunta
 		if(this.currentP.getForma() != null){
 			this.currentP.convertFormaToTipo();
 			
@@ -413,7 +413,7 @@ public class PerguntaBuilder {
 		this.lastQWithSubQsDesc = this.checker.
 				checkIfDescIsComplete(this.lastQWithSubQsDesc, cStack, nodes, this.currentI);
 		this.lastQWithSubQsCommonPrefix = nTmp1.getDewey().
-				getCommonPrefix(this.lastQWithSubQsDesc.first().getDewey());//.last()//TODO verificar isso
+				getCommonPrefix(this.lastQWithSubQsDesc.first().getDewey());
 		
 		this.lastQWithSubQs = new Pergunta();
 		String forma = this.currentP.getForma().toString();

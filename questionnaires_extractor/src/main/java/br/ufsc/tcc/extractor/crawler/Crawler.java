@@ -56,7 +56,7 @@ public class Crawler extends WebCrawler {
 				qBuilder.setCurrentLink(link);
 				ArrayList<Questionario> questionarios = qBuilder.build(root, doc.title());
 				for(Questionario q : questionarios){
-//					this.qManager.save(q);
+					this.qManager.save(q);
 					
 					System.out.println("<"+Thread.currentThread().getName()+">URL: " +link+ " - SAVE DONE!");
 				}

@@ -9,7 +9,6 @@ public class Figura {
 	// Legenda
 	private String legenda;
 	
-
 	/////////////////// Dono da figura \\\\\\\\\\\\\\\\\\
 	// Irá guardar uma Pergunta, P, uma Alternativa, A, ou
 	// um Questionario, Q, que será usado para setar os campos

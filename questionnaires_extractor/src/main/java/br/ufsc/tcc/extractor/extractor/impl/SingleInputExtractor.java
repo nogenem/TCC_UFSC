@@ -14,6 +14,7 @@ import br.ufsc.tcc.extractor.model.Questionario;
 
 public class SingleInputExtractor implements IPerguntaExtractor {
 
+	@SuppressWarnings("unused")
 	private Questionario currentQ;
 	private Pergunta currentP; 
 	private RulesChecker checker;
@@ -29,18 +30,6 @@ public class SingleInputExtractor implements IPerguntaExtractor {
 		String type = nodes.get(currentI).getType().toString();
 		CommonLogger.debug("\tInput [{}].", type);
 		currentP.setForma(FormaDaPerguntaManager.getForma(type));
-		
-		//TODO remover isso?
-		// Verifica se não tem uma imagem entre o input e a sua descrição
-		//		Ex: https://www.123contactform.com/js-form--37173.html [ultima pergunta]
-//		int i = currentI-1;
-//		while(nodes.get(i).isImage()){
-//			Figura fig = new Figura(nodes.get(i).getAttr("src"), nodes.get(i).getAttr("alt"));
-//			fig.setDono(this.currentP);
-//			currentQ.addFigura(fig);
-//			CommonLogger.debug("\t\tFigura da pergunta: {}", fig);
-//			i--;
-//		}
 		
 		int ret = checker.checkCompositeInput(nodes, type, currentI);
 		switch(ret){

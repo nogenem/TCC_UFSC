@@ -13,6 +13,23 @@ import br.ufsc.tcc.extractor.model.Alternativa;
 import br.ufsc.tcc.extractor.model.Pergunta;
 import br.ufsc.tcc.extractor.model.Questionario;
 
+/**
+ * Classe responsável pela extração de 'simple matrices'. </br>
+ * Uma 'simple matrix' é uma matriz que possui simplesmente componentes em sequencia. </br>
+ * A quantidade de componentes em sequencia deve bater com a quantidade de textos no header. </br>
+ * Exemplo: </br>
+ * <pre>Descrição da pergunta
+ *   header
+ * 	
+ *   descrição da primeira subpergunta
+ *      sequencia de componentes (alternativas) desta subpergunta
+ *   descrição da segunda subpergunta
+ *      sequencia de componentes (alternativas) desta subpergunta
+ *   etc...</pre> 
+ *   
+ * @author Gilney N. Mathias
+ *
+ */
 public class SimpleMatrixExtractor implements IPerguntaExtractor {
 
 	private Questionario currentQ;

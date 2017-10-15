@@ -27,7 +27,6 @@
 		"resumableCrawling": false	
 	},
 	"seeds": [
-		"http://www.questionpro.com/survey-templates/product-use-and-satisfaction/"
 	],
 	"parameters": {
 		"minQuestionsOnQuestionnaire": 2,

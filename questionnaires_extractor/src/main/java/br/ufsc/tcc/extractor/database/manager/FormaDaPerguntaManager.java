@@ -44,7 +44,7 @@ public class FormaDaPerguntaManager {
 			CommonLogger.debug("{} carregou as formas das perguntas do banco de dados.", 
 					Thread.currentThread().getName());
 		} catch (Exception e) {
-			// Database não deve ta funcionado, então mata a aplicação
+			// Database não deve ta funcionando, então mata a aplicação
 			CommonLogger.fatalError(e);
 		}
 	}
