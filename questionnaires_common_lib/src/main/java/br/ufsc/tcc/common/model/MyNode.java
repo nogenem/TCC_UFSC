@@ -6,8 +6,8 @@ import org.jsoup.nodes.Node;
 import br.ufsc.tcc.common.util.CommonUtil;
 
 /**
- * Classe que possui os atribuitos necessarios para representar
- * um nodo da arvore HTML.
+ * Classe que possui os atribuitos necessários para representar
+ * um nodo da árvore HTML.
  * 
  * @author Gilney N. Mathias
  */

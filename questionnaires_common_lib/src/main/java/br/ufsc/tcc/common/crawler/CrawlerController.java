@@ -27,9 +27,9 @@ public class CrawlerController {
 	}
 	
 	/**
-	 * Inicializa o Crawler utilizando as configurações do usuario, ou usando
+	 * Inicializa o Crawler utilizando as configurações do usuário, ou usando
 	 * alguns valores padrão.  </br>
-	 * Os valores padão utilizados são: </br>
+	 * Os valores padrão utilizados são: </br>
 	 * <ul>
 	 * 	<li>CrawlerStorageFolder = ./tmp</li>
 	 * 	<li>PolitenessDelay = 1000</li>
