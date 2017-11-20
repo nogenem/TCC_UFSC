@@ -79,8 +79,7 @@ public class Main {
 	
 	@SuppressWarnings("unused")
 	private static void simpleTest(){
-		String path = "cache/Survio_1.html";
-//		path = "https://www.questionpro.com/survey-templates/auto-purchase-lease-satisfaction/";
+		String path = "";
 
 		BasicConnection conn = new BasicConnection(CommonConfiguration.getInstance().getExtractorDatabaseConfigs());;
 		FormaDaPerguntaManager.loadFormas(conn);
@@ -98,7 +97,6 @@ public class Main {
 				path = path.replaceAll("%20", " ");
 				doc = Jsoup.connect(path)
 					.validateTLSCertificates(false)
-					.userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.82 Safari/537.36")
 					.get();
 			}
 			Element root = doc.select("body").get(0);

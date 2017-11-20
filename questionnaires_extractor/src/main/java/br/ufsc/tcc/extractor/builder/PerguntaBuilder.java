@@ -406,7 +406,8 @@ public class PerguntaBuilder {
 	 * @param cStack
 	 * @param nTmp1
 	 */
-	private void updateLastQWithSubQs(Questionario currentQ, List<MyNode> nodes, Stack<Cluster> cStack, MyNode nTmp1) {
+	private void updateLastQWithSubQs(Questionario currentQ, List<MyNode> nodes, 
+			Stack<Cluster> cStack, MyNode nTmp1) {
 		if(cStack.isEmpty()) return;
 		
 		this.lastQWithSubQsDesc = cStack.pop();
@@ -422,7 +423,8 @@ public class PerguntaBuilder {
 		this.lastQWithSubQs.addFilha(this.currentP);
 		
 		if(this.lastQWithSubQsDesc.last().isImage()) {
-			Figura fig = new Figura(this.lastQWithSubQsDesc.last().getAttr("src"), this.lastQWithSubQsDesc.last().getAttr("alt"));
+			Figura fig = new Figura(this.lastQWithSubQsDesc.last().getAttr("src"), 
+					this.lastQWithSubQsDesc.last().getAttr("alt"));
 			fig.setDono(this.lastMatrix);
 			currentQ.addFigura(fig);
 			CommonLogger.debug("Figura da qWithSubQ: {}\n", fig);
@@ -454,7 +456,8 @@ public class PerguntaBuilder {
 	 * @param descFirstNode 
 	 * @param cTmp2
 	 */
-	private void updateLastMatrix(List<MyNode> nodes, Stack<Cluster> cStack, Questionario currentQ, MyNode descFirstNode, Cluster cTmp2) {
+	private void updateLastMatrix(List<MyNode> nodes, Stack<Cluster> cStack, 
+			Questionario currentQ, MyNode descFirstNode, Cluster cTmp2) {
 		if(!cStack.isEmpty() && cTmp2 == cStack.peek())
 			this.lastMatrixHead = cStack.pop();
 		
