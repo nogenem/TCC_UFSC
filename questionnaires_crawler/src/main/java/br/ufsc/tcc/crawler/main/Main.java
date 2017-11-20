@@ -149,10 +149,9 @@ public class Main {
 				doc = Jsoup.parse(html);				
 			}else{
 //				System.setProperty("javax.net.debug", "all");
-				System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2");//TLSv1,TLSv1.1,TLSv1.2
+				System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2");
 				
 				doc = Jsoup.connect(url)
-					.userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36")
 					.validateTLSCertificates(false)
 					.get();
 			}
