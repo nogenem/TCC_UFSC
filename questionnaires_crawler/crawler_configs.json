@@ -22,7 +22,6 @@
 		"resumableCrawling": true	
 	},
 	"seeds": [
-		"http://search.lycos.com/web/?q=survey+online+template&keyvol=00aa017b8d49c5e939c7"
 	],
 	"parameters": {
 		"distBetweenNearNodes": {
